@@ -41,19 +41,26 @@ string Token::tokenType_to_string() const {
   switch (type) {
   case NUM:
     res = "NUM";
+    break;
   case IDENT:
     res = "IDENT";
+    break;
   case TYPE:
     res = "TYPE";
+    break;
   case ASSIGN:
     res = "ASSIGN";
+    break;
+  case SEMICOLON:
+    res = "SEMICOLON";
+    break;
   default:
     res = "ERR";
   }
   return res;
 }
 
-Token* Token::create(string token, unsigned int line) {
+Token* Token::create(string& token, unsigned int line) {
   if(Token::is_type(token)) {
     return new Token(TokenType::TYPE, token, line);
   } else if(Token::is_ident(token)) {
@@ -64,10 +71,12 @@ Token* Token::create(string token, unsigned int line) {
     return new Token(TokenType::NUM, token, line);
   } else if(Token::is_semicolon(token)) {
     return new Token(TokenType::SEMICOLON, token, line);
+  } else {
+    cout << "[Error] Unknown token." << endl;
   }
 }
 
-bool Token::is_type(string t) {
+bool Token::is_type(string& t) {
   if(t == "int") {
     return true;
   } else {
@@ -75,7 +84,7 @@ bool Token::is_type(string t) {
   }
 }
 
-bool Token::is_ident(string t) {
+bool Token::is_ident(string& t) {
   if((t[0] >= 'A' && t[0] <= 'Z') || (t[0] >= 'a' && t[0] <= 'z')) {
     return true;
   } else {
@@ -83,11 +92,11 @@ bool Token::is_ident(string t) {
   }
 } 
 
-bool Token::is_assign(string t) {
+bool Token::is_assign(string& t) {
   return t == "=";
 }
 
-bool Token::is_number(string t) {
+bool Token::is_number(string& t) {
   bool res = true;
   int i = 0;
   while (i < t.size() && res) {
@@ -99,7 +108,7 @@ bool Token::is_number(string t) {
   return res;
 }
 
-bool Token::is_semicolon(string t) {
-  return t[0] == ';';
+bool Token::is_semicolon(string& t) {
+  return t == ";";
 }
     

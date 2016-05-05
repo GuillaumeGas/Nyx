@@ -76,10 +76,10 @@ struct Token {
 
   unsigned int line;
 
-  static Token* create(std::string token, unsigned int line);
-  static bool is_type(std::string t);
-  static bool is_ident(std::string t);
-  static bool is_assign(std::string t);
-  static bool is_number(std::string t);
-  static bool is_semicolon(std::string t);
+  static Token* create(std::string& token, unsigned int line);
+  static bool is_type(std::string& t);
+  static bool is_ident(std::string& t);
+  static bool is_assign(std::string& t);
+  static bool is_number(std::string& t);
+  static bool is_semicolon(std::string& t);
 };
