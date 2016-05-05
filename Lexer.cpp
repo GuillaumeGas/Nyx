@@ -31,7 +31,7 @@ void Lexer::next_word() {
   m_token = "";
   char c = m_current_line[m_current_index];
   int i = 0;
-  while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+  while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '\'' || c == '"') {
     m_token += c;
     m_current_index++;
     c = m_current_line[m_current_index];
@@ -40,14 +40,27 @@ void Lexer::next_word() {
   if(i == 0) {
     if(c != ' ') {
       m_token = c;
+      if(c == '>' || c == '<' || c == '=' || c == '!') {
+	char next = m_current_line[m_current_index+1];
+	if(next == '>' || next == '<' || next == '=') {
+	  m_token += next;
+	  m_current_index++;
+	}
+      }
     }
     m_current_index++;
   }
 }
 
 void Lexer::register_token() {
-  if(m_token.size() > 0)
-    m_tokens.push_back(Token::create(m_token, m_line));
+  if(m_token.size() > 0) {
+    Token * t = Token::create(m_token, m_line);
+    if(t) {
+      m_tokens.push_back(t);
+    } else {
+      cout << "Syntax error : line " << m_line << endl << m_current_line << endl;
+    }
+  }
 }
 
 vector<Token*> Lexer::get_tokens() const {
