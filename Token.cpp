@@ -39,8 +39,8 @@ string Token::to_string() const {
 string Token::tokenType_to_string() const {
   string res;
   switch (type) {
-  case NUM:
-    res = "NUM";
+  case INT:
+    res = "INT";
     break;
   case IDENT:
     res = "IDENT";
@@ -141,6 +141,9 @@ string Token::tokenType_to_string() const {
   case FALSE:
     res = "FALSE";
     break;
+  case RETURN:
+    res = "RETURN";
+    break;
   default:
     res = "ERR";
   }
@@ -174,12 +177,14 @@ Token* Token::create(string& token, unsigned int line) {
     return new Token(TokenType::SCAN_S, token, line);
   } else if(Token::is_type(token)) {
     return new Token(TokenType::TYPE, token, line);
+  } else if(Token::is_return(token)) {
+    return new Token(TokenType::RETURN, token, line);
   } else if(Token::is_ident(token)) {
     return new Token(TokenType::IDENT, token, line);
   } else if(Token::is_assign(token)) {
     return new Token(TokenType::ASSIGN, token, line);
-  } else if(Token::is_number(token)) {
-    return new Token(TokenType::NUM, token, line);
+  } else if(Token::is_integer(token)) {
+    return new Token(TokenType::INT, token, line);
   } else if(Token::is_semicolon(token)) {
     return new Token(TokenType::SEMICOLON, token, line);
   } else if(Token::is_char(token)) {
@@ -249,7 +254,7 @@ bool Token::is_assign(string& t) {
   return t == "=";
 }
 
-bool Token::is_number(string& t) {
+bool Token::is_integer(string& t) {
   bool res = true;
   int i = 0;
   while (i < t.size() && res) {
@@ -379,4 +384,8 @@ bool Token::is_true(string& t) {
 
 bool Token::is_false(string& t) {
   return t == "false";
+}
+
+bool Token::is_return(string& t) {
+  return t == "return";
 }

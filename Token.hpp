@@ -4,7 +4,7 @@
 #include <vector>
 
 enum TokenType {
-  NUM,
+  INT,
   CHAR,
   BOOL,
   STRING,
@@ -38,7 +38,8 @@ enum TokenType {
   SCAN_I,
   SCAN_S,
   TRUE,
-  FALSE
+  FALSE,
+  RETURN
 };
 
 struct TokenValue {
@@ -85,9 +86,8 @@ struct Token {
   static bool is_type(std::string& t);
   static bool is_ident(std::string& t);
   static bool is_assign(std::string& t);
-  static bool is_number(std::string& t);
+  static bool is_integer(std::string& t);
   static bool is_semicolon(std::string& t);
-
   static bool is_char(std::string& t);
   static bool is_string(std::string& t);
   static bool is_plus(std::string& t);
@@ -117,4 +117,5 @@ struct Token {
   static bool is_scan_s(std::string& t);
   static bool is_true(std::string& t);
   static bool is_false(std::string& t);
+  static bool is_return(std::string& t);
 };
