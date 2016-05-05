@@ -223,7 +223,7 @@ Token* Token::create(string& token, unsigned int line) {
 }
 
 bool Token::is_type(string& t) {
-  if(t == "int") {
+  if(t == "int" || t == "bool" || t == "char") {
     return true;
   } else {
     return false;
