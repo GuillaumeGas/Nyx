@@ -10,7 +10,7 @@ void Lexer::analyze() {
   ifstream file(m_file_name.c_str(), std::ios::in);
   if(file.is_open()) {
     while (getline(file, m_current_line)) {
-      m_current_index = 0;
+      m_current_index = 1;
       next_line();
       m_line++;
     }

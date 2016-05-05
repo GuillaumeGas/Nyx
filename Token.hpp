@@ -36,6 +36,8 @@ enum TokenType {
   PRINT_S,
   SCAN_I,
   SCAN_S,
+  TRUE,
+  FALSE
 };
 
 struct TokenValue {
@@ -112,4 +114,6 @@ struct Token {
   static bool is_print_s(std::string& t);
   static bool is_scan_i(std::string& t);
   static bool is_scan_s(std::string& t);
+  static bool is_true(std::string& t);
+  static bool is_false(std::string& t);
 };

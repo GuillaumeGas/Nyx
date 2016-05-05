@@ -135,7 +135,12 @@ string Token::tokenType_to_string() const {
   case SCAN_S:
     res = "SCAN_S";
     break;
-
+  case TRUE:
+    res = "TRUE";
+    break;
+  case FALSE:
+    res = "FALSE";
+    break;
   default:
     res = "ERR";
   }
@@ -157,6 +162,10 @@ Token* Token::create(string& token, unsigned int line) {
     return new Token(TokenType::FOR, token, line);
   } else if(Token::is_print_i(token)) {
     return new Token(TokenType::PRINT_I, token, line);
+  } else if(Token::is_true(token)) {
+    return new Token(TokenType::TRUE, token, line);
+  } else if(Token::is_false(token)) {
+    return new Token(TokenType::FALSE, token, line);
   } else if(Token::is_print_s(token)) {
     return new Token(TokenType::PRINT_S, token, line);
   } else if(Token::is_scan_i(token)) {
@@ -362,4 +371,12 @@ bool Token::is_scan_i(string& t) {
 
 bool Token::is_scan_s(string& t) {
   return t == "scan_s";
+}
+
+bool Token::is_true(string& t) {
+  return t == "true";
+}
+
+bool Token::is_false(string& t) {
+  return t == "false";
 }
