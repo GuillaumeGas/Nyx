@@ -4,9 +4,10 @@
 #include <vector>
 #include <fstream>
 
-#include "Token.hpp"
-#include "Lexer.hpp"
-//#include "Syntaxe.hpp"
+#include "../parser/Token.hpp"
+#include "../parser/Lexer.hpp"
+#include "../parser/Syntaxe.hpp"
+#include "../ast/Ast.hpp"
 
 class Compilo {
 public:
@@ -15,8 +16,10 @@ public:
 
   void compile(std::string file_name);
   void print_tokens() const;
+  void print_ast() const;
 
 private:
   std::string m_file_name;
   std::vector<Token*> m_tokens;
+  ast::Ast * m_ast;
 };

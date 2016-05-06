@@ -10,7 +10,6 @@ class Lexer {
 public:
   Lexer(std::string file_name);
 
-  void analyze();
   std::vector<Token*> get_tokens() const;
 
 private:

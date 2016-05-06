@@ -2,9 +2,7 @@
 
 using namespace std;
 
-Lexer::Lexer(string file_name) : m_file_name(file_name) {}
-
-void Lexer::analyze() {
+Lexer::Lexer(string file_name) : m_file_name(file_name) {
   m_line = 1;
 
   ifstream file(m_file_name.c_str(), std::ios::in);
