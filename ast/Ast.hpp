@@ -1,9 +1,12 @@
 #pragma once
 
+#include <iostream>
+
 namespace ast {
   class Ast {
   public:
-    virtual std::string to_string(int padd);
+    virtual ~Ast();
+    virtual std::string to_string() const;
     //    Position position;
   };
 }

@@ -1,17 +1,17 @@
 #include "VarDecl.hpp"
 
 using namespace std;
+using namespace ast;
 
-VarDecl::VarDecl(Type * type, string name) : m_type(type), m_name(name) {}
+VarDecl::VarDecl(Type * type, string name) : type(type), name(name) {}
 
 VarDecl::~VarDecl() { 
-  if (m_type)
-    delete m_type; 
+  if (type)
+    delete type; 
 }
 
-string VarDecl::to_string(int padd) {
+string VarDecl::to_string() const {
   string res = "";
-  for(int i = 0; i < padd; i++) { res += " "; }
-  res += "VarDecl " + type.to_string() + " " name;
+  res += "VarDecl " + type->to_string() + " " + name;
   return res;
 }

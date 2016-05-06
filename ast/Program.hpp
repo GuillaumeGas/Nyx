@@ -3,15 +3,15 @@
 #include <iostream>
 #include <vector>
 
-#include "Declaration.hpp"
+#include "Ast.hpp"
 
 namespace ast {
   class Program : public Ast {
   public:
     ~Program();
 
-    std::string to_string(int padd) const;
+    std::string to_string() const;
 
-    std::vector<Declaration*> declarations;
+    std::vector<Ast*> content;
   };
 };

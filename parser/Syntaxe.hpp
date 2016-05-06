@@ -4,7 +4,10 @@
 #include <vector>
 
 #include "Token.hpp"
-#include "../ast/includes.hpp" 
+#include "../ast/Ast.hpp" 
+#include "../ast/Program.hpp"
+#include "../ast/Type.hpp"
+#include "../ast/VarDecl.hpp"
 
 class Syntaxe {
 public:
@@ -18,7 +21,7 @@ private:
 
   std::string m_file_name;
   
-  std::vector<Token*> * m_tokens;
-  ast::Ast * m_program;
+  std::vector<Token*> m_tokens;
+  ast::Program * m_program;
   unsigned int m_index;
 };

@@ -10,6 +10,8 @@ int main(int argc, char** argv) {
     Compilo c;
     c.compile(argv[1]);
     c.print_tokens();
+    cout << endl;
+    c.print_ast();
   } else {
     cout << "[Error] no source file." << endl;
   }

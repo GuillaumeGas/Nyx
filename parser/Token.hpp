@@ -75,7 +75,7 @@ struct Token {
   ~Token();
 
   std::string to_string() const;
-  std::string tokenType_to_string() const;
+  std::string type_to_string() const;
 
   TokenType type;
   TokenValue * value;

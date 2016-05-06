@@ -32,11 +32,11 @@ Token::~Token() { if (value) { delete value; } }
 
 string Token::to_string() const {
   string res = "[Type = ";
-  res += tokenType_to_string() + ", Value = " + value->to_string() + ", Line : " + std::to_string(line)  + "]";
+  res += type_to_string() + ", Value = " + value->to_string() + ", Line : " + std::to_string(line)  + "]";
   return res;
 }
 
-string Token::tokenType_to_string() const {
+string Token::type_to_string() const {
   string res;
   switch (type) {
   case INT:

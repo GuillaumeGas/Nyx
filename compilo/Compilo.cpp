@@ -26,7 +26,7 @@ void Compilo::print_tokens() const {
 }
 
 void Compilo::print_ast() const {
-  cout << m_ast->to_string(0) << endl;
+  cout << m_ast->to_string() << endl;
 }
 
 

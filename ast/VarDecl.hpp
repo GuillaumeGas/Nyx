@@ -1,17 +1,18 @@
 #pragma once
 
 #include <iostream>
+#include "Ast.hpp"
 #include "Type.hpp"
 
 namespace ast {
-  class VarDecl {
+  class VarDecl : public Ast {
   public:
     VarDecl(Type * type, std::string name);
     ~VarDecl();
 
-    std::string to_string(int padd) const;
+    std::string to_string() const;
 
-    Type * m_type;
-    std::string m_name;
+    Type * type;
+    std::string name;
   };
 };
