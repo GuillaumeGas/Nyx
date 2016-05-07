@@ -8,6 +8,7 @@
 namespace ast {
   class Program : public Ast {
   public:
+    Program();
     ~Program();
 
     std::string to_string() const;

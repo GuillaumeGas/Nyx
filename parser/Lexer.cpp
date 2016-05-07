@@ -20,6 +20,7 @@ Lexer::Lexer(string file_name) : m_file_name(file_name) {
 
 void Lexer::next_line() {
   while (m_current_index < m_current_line.size()) {
+    m_tmp_col = -1;
     next_word();
     register_token();
   }
@@ -30,6 +31,9 @@ void Lexer::next_word() {
   char c = m_current_line[m_current_index];
   int i = 0;
   while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '\'' || c == '"' || c == '_') {
+    if(m_tmp_col < 0) {
+      m_tmp_col = m_current_index+1;
+    }
     m_token += c;
     m_current_index++;
     c = m_current_line[m_current_index];
@@ -37,6 +41,7 @@ void Lexer::next_word() {
   }
   if(i == 0) {
     if(c != ' ') {
+      m_tmp_col = m_current_index+1;
       m_token = c;
       if(c == '>' || c == '<' || c == '=' || c == '!') {
 	char next = m_current_line[m_current_index+1];
@@ -51,10 +56,12 @@ void Lexer::next_word() {
 }
 
 void Lexer::register_token() {
+  m_column = m_tmp_col;
   if(m_token.size() > 0) {
-    Token * t = Token::create(m_token, m_line);
+    Token * t = Token::create(m_token, m_line, m_column);
     if(t) {
       m_tokens.push_back(t);
+      m_column = -1;
     } else {
       cout << "Syntax error : line " << m_line << endl << m_current_line << endl;
     }

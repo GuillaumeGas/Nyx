@@ -69,9 +69,9 @@ struct TokenStringValue : TokenValue  {
 };
 
 struct Token {
-  Token(TokenType t, int v, unsigned int l);
-  Token(TokenType t, char c, unsigned int l);
-  Token(TokenType t, std::string& s, unsigned int l);
+  Token(TokenType t, int v, unsigned int l, unsigned int col);
+  Token(TokenType t, char c, unsigned int l, unsigned int col);
+  Token(TokenType t, std::string& s, unsigned int l, unsigned int col);
   ~Token();
 
   std::string to_string() const;
@@ -81,8 +81,9 @@ struct Token {
   TokenValue * value;
 
   unsigned int line;
+  unsigned int column;
 
-  static Token* create(std::string& token, unsigned int line);
+  static Token* create(std::string& token, unsigned int line, unsigned int col);
   static bool is_type(std::string& t);
   static bool is_ident(std::string& t);
   static bool is_assign(std::string& t);

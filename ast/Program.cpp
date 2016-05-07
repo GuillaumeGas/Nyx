@@ -3,10 +3,15 @@
 using namespace std;
 using namespace ast;
 
+Program::Program() {
+  pos = new Position(0, 0);
+}
+
 Program::~Program() {
   for(Ast* a : content) {
-    if (a)
+    if (a) {
       delete a;
+    }
   }
 }
 

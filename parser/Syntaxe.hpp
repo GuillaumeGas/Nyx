@@ -12,12 +12,13 @@
 class Syntaxe {
 public:
   Syntaxe(std::string& file_name, std::vector<Token*>& tokens);
+  ~Syntaxe();
   
   void analyze_current_token();
   ast::Ast * get_ast() const;
 
 private:
-  TokenType getTokenType(unsigned int index);
+  Token * getToken(unsigned int index);
 
   std::string m_file_name;
   

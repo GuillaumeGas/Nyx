@@ -2,21 +2,29 @@
 
 using namespace std;
 
-Compilo::Compilo() {}
+Compilo::Compilo(string file_name) {
+  m_file_name = file_name;
+}
+
 Compilo::~Compilo() {
   for(Token* t : m_tokens) {
     if (t) {
       delete t;
     }
   }
+
+  if (m_lex)
+    delete m_lex;
+  if (m_syn)
+    delete m_syn;
 }
 
-void Compilo::compile(string file_name) {
-  Lexer lex(file_name);
-  m_tokens = lex.get_tokens();
+void Compilo::compile() {
+  m_lex = new Lexer(m_file_name);
+  m_tokens = m_lex->get_tokens();
   
-  Syntaxe syn(file_name, m_tokens);
-  m_ast = syn.get_ast();
+  m_syn = new Syntaxe(m_file_name, m_tokens);
+  m_ast = m_syn->get_ast();
 }
 
 void Compilo::print_tokens() const {

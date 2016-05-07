@@ -10,29 +10,32 @@ string TokenIntValue::to_string() const { return std::to_string(value); }
 string TokenCharValue::to_string() const { return std::to_string(value); }
 string TokenStringValue::to_string() const { return value; }
 
-Token::Token(TokenType t, int v, unsigned int l) {
+Token::Token(TokenType t, int v, unsigned int l, unsigned int col) {
   type = t;
   value = new TokenIntValue(v);
   line = l;
+  column = col;
 }
 
-Token::Token(TokenType t, char c, unsigned int l) {
+Token::Token(TokenType t, char c, unsigned int l, unsigned int col) {
   type = t;
   value = new TokenCharValue(c);
   line = l;
+  column = col;
 }
 
-Token::Token(TokenType t, string& s, unsigned int l) {
+Token::Token(TokenType t, string& s, unsigned int l, unsigned int col) {
   type = t;
   value = new TokenStringValue(s);
   line = l;
+  column = col;
 }
 
 Token::~Token() { if (value) { delete value; } }
 
 string Token::to_string() const {
   string res = "[Type = ";
-  res += type_to_string() + ", Value = " + value->to_string() + ", Line : " + std::to_string(line)  + "]";
+  res += type_to_string() + ", Value = " + value->to_string() + ", Line : " + std::to_string(line)  + ", Column : " + std::to_string(column) + "]";
   return res;
 }
 
@@ -150,77 +153,77 @@ string Token::type_to_string() const {
   return res;
 }
 
-Token* Token::create(string& token, unsigned int line) {
+Token* Token::create(string& token, unsigned int line, unsigned int col) {
   if(Token::is_if(token)) {
-    return new Token(TokenType::IF, token, line);
+    return new Token(TokenType::IF, token, line, col);
   } else if(Token::is_else(token)) {
-    return new Token(TokenType::ELSE, token, line);
+    return new Token(TokenType::ELSE, token, line, col);
   } else if(Token::is_elseif(token)) {
-    return new Token(TokenType::ELSEIF, token, line);
+    return new Token(TokenType::ELSEIF, token, line, col);
   } else if(Token::is_while(token)) {
-    return new Token(TokenType::WHILE, token, line);
+    return new Token(TokenType::WHILE, token, line, col);
   } else if(Token::is_do(token)) {
-    return new Token(TokenType::DO, token, line);
+    return new Token(TokenType::DO, token, line, col);
   } else if(Token::is_for(token)) {
-    return new Token(TokenType::FOR, token, line);
+    return new Token(TokenType::FOR, token, line, col);
   } else if(Token::is_print_i(token)) {
-    return new Token(TokenType::PRINT_I, token, line);
+    return new Token(TokenType::PRINT_I, token, line, col);
   } else if(Token::is_true(token)) {
-    return new Token(TokenType::TRUE, token, line);
+    return new Token(TokenType::TRUE, token, line, col);
   } else if(Token::is_false(token)) {
-    return new Token(TokenType::FALSE, token, line);
+    return new Token(TokenType::FALSE, token, line, col);
   } else if(Token::is_print_s(token)) {
-    return new Token(TokenType::PRINT_S, token, line);
+    return new Token(TokenType::PRINT_S, token, line, col);
   } else if(Token::is_scan_i(token)) {
-    return new Token(TokenType::SCAN_I, token, line);
+    return new Token(TokenType::SCAN_I, token, line, col);
   } else if(Token::is_scan_s(token)) {
-    return new Token(TokenType::SCAN_S, token, line);
+    return new Token(TokenType::SCAN_S, token, line, col);
   } else if(Token::is_type(token)) {
-    return new Token(TokenType::TYPE, token, line);
+    return new Token(TokenType::TYPE, token, line, col);
   } else if(Token::is_return(token)) {
-    return new Token(TokenType::RETURN, token, line);
+    return new Token(TokenType::RETURN, token, line, col);
   } else if(Token::is_ident(token)) {
-    return new Token(TokenType::IDENT, token, line);
+    return new Token(TokenType::IDENT, token, line, col);
   } else if(Token::is_assign(token)) {
-    return new Token(TokenType::ASSIGN, token, line);
+    return new Token(TokenType::ASSIGN, token, line, col);
   } else if(Token::is_integer(token)) {
-    return new Token(TokenType::INT, token, line);
+    return new Token(TokenType::INT, token, line, col);
   } else if(Token::is_semicolon(token)) {
-    return new Token(TokenType::SEMICOLON, token, line);
+    return new Token(TokenType::SEMICOLON, token, line, col);
   } else if(Token::is_char(token)) {
-    return new Token(TokenType::CHAR, token, line);
+    return new Token(TokenType::CHAR, token, line, col);
   } else if(Token::is_string(token)) {
-    return new Token(TokenType::STRING, token, line);
+    return new Token(TokenType::STRING, token, line, col);
   } else if(Token::is_plus(token)) {
-    return new Token(TokenType::PLUS, token, line);
+    return new Token(TokenType::PLUS, token, line, col);
   } else if(Token::is_minus(token)) {
-    return new Token(TokenType::MINUS, token, line);
+    return new Token(TokenType::MINUS, token, line, col);
   } else if(Token::is_mul(token)) {
-    return new Token(TokenType::MUL, token, line);
+    return new Token(TokenType::MUL, token, line, col);
   } else if(Token::is_div(token)) {
-    return new Token(TokenType::DIV, token, line);
+    return new Token(TokenType::DIV, token, line, col);
   } else if(Token::is_mod(token)) {
-    return new Token(TokenType::MOD, token, line);
+    return new Token(TokenType::MOD, token, line, col);
   } else if(Token::is_lt(token)) {
-    return new Token(TokenType::LT, token, line);
+    return new Token(TokenType::LT, token, line, col);
   } else if(Token::is_le(token)) {
-    return new Token(TokenType::LE, token, line);
+    return new Token(TokenType::LE, token, line, col);
   } else if(Token::is_gt(token)) {
-    return new Token(TokenType::GT, token, line);
+    return new Token(TokenType::GT, token, line, col);
   } else if(Token::is_ge(token)) {
-    return new Token(TokenType::GE, token, line);
+    return new Token(TokenType::GE, token, line, col);
   } else if(Token::is_eq(token)) {
-    return new Token(TokenType::EQ, token, line);
+    return new Token(TokenType::EQ, token, line, col);
   } else if(Token::is_ne(token)) {
-    return new Token(TokenType::NE, token, line);
+    return new Token(TokenType::NE, token, line, col);
   } else if(Token::is_par_l(token)) {
-    return new Token(TokenType::PAR_L, token, line);
+    return new Token(TokenType::PAR_L, token, line, col);
   } else if(Token::is_par_r(token)) {
-    return new Token(TokenType::PAR_R, token, line);
+    return new Token(TokenType::PAR_R, token, line, col);
   } else if(Token::is_accol_l(token)) {
-    return new Token(TokenType::ACCOL_L, token, line);
+    return new Token(TokenType::ACCOL_L, token, line, col);
   } else if(Token::is_accol_r(token)) {
-    return new Token(TokenType::ACCOL_R, token, line);
+    return new Token(TokenType::ACCOL_R, token, line, col);
   } else {
     cout << "Err -> [" << token << "]" << endl;
     return NULL;

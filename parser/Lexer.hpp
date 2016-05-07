@@ -24,4 +24,6 @@ private:
   unsigned int m_current_index;
   std::string m_token;
   unsigned int m_line;
+  unsigned int m_column;
+  int m_tmp_col;
 };

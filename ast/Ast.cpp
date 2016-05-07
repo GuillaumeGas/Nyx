@@ -2,6 +2,10 @@
 
 using namespace ast;
 
-Ast::~Ast() {}
+Ast::~Ast() {
+  if (pos) {
+    delete pos;
+  }
+}
 
 std::string Ast::to_string() const { return ""; }

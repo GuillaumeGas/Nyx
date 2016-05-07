@@ -11,14 +11,17 @@
 
 class Compilo {
 public:
-  Compilo();
+  Compilo(std::string file_name);
   ~Compilo();
 
-  void compile(std::string file_name);
+  void compile();
   void print_tokens() const;
   void print_ast() const;
 
 private:
+  Lexer * m_lex;
+  Syntaxe * m_syn;
+
   std::string m_file_name;
   std::vector<Token*> m_tokens;
   ast::Ast * m_ast;
