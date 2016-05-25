@@ -6,7 +6,7 @@
 
 #include "../parser/Token.hpp"
 #include "../parser/Lexer.hpp"
-#include "../parser/Syntaxe.hpp"
+#include "../parser/Syntax.hpp"
 #include "../ast/Ast.hpp"
 
 class Compilo {
@@ -20,7 +20,7 @@ public:
 
 private:
   Lexer * m_lex;
-  Syntaxe * m_syn;
+  Syntax * m_syn;
 
   std::string m_file_name;
   std::vector<Token*> m_tokens;

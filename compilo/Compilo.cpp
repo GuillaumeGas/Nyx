@@ -23,7 +23,7 @@ void Compilo::compile() {
   m_lex = new Lexer(m_file_name);
   m_tokens = m_lex->get_tokens();
   
-  m_syn = new Syntaxe(m_file_name, m_tokens);
+  m_syn = new Syntax(m_file_name, m_tokens);
   m_ast = m_syn->get_ast();
 }
 

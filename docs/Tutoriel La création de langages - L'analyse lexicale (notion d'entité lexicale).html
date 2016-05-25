@@ -1,0 +1,2114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0115)http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale) -->
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="fr" id="vbulletin_html"><script type="text/javascript">window["_gaUserPrefs"] = { ioo : function() { return true; } }</script><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	
+<!-- Tapatalk Detect Start -->
+<script type="text/javascript" async="" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/ga.js"></script><script type="text/javascript">
+var tapatalk_iphone_msg = "Hackademics est disponible sur la plateforme Tapatalk, appuyez sur OK si vous souhaitez être redirigé vers votre store. Mactux & SAKAROV";
+var tapatalk_iphone_url = "http://itunes.apple.com/us/app/tapatalk-forum-app/id307880732?mt=8";
+var tapatalk_ipad_msg = "Hackademics est disponible sur la plateforme Tapatalk, appuyez sur OK si vous souhaitez être redirigé vers votre store. Mactux & SAKAROV";
+var tapatalk_ipad_url = "http://itunes.apple.com/us/app/tapatalk-hd-for-ipad/id481579541?mt=8";
+var tapatalk_kindle_msg = "Hackademics est disponible sur la plateforme Tapatalk, appuyez sur OK si vous souhaitez être redirigé vers votre store. Mactux & SAKAROV";
+var tapatalk_kindle_url = "http://www.amazon.com/gp/mas/dl/android?p=com.quoord.tapatalkpro.activity";
+var tapatalk_android_msg = "Hackademics est disponible sur la plateforme Tapatalk, appuyez sur OK si vous souhaitez être redirigé vers votre store. Mactux & SAKAROV";
+var tapatalk_android_url = "market://details?id=com.quoord.tapatalkpro.activity";
+var tapatalk_chrome_enable = true;
+var tapatalkdir = "mobiquo";
+</script>
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/tapatalkdetect.js"></script><script src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/jquery-1.7.min.js" type="text/javascript"></script>
+<!-- Tapatalk Detect End -->
+<meta name="google-site-verification" content="9jeQncvuFrDq9yRQOCd5CVhW7XrzMXxigWAvk0nMeis">
+<meta name="msvalidate.01" content="D573FC99BA939D2D9CCBE837A832AC6F">
+
+<meta id="e_vb_meta_bburl" name="vb_meta_bburl" content="http://hackademics.fr">
+<!--<base href="http://hackademics.fr/">--><base href="."><!--[if IE]></base><![endif]-->
+<meta name="generator" content="vBulletin 4.2.0">
+
+	<link rel="SHORTCUT ICON" href="http://hackademics.fr/favicon.ico">
+
+
+
+
+
+
+
+
+	
+		<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/combo"></script>
+	
+
+<script type="text/javascript">
+<!--
+	if (typeof YAHOO === 'undefined') // Load ALL YUI Local
+	{
+		document.write('<script type="text/javascript" src="clientscript/yui/yuiloader-dom-event/yuiloader-dom-event.js?v=420"><\/script>');
+		document.write('<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v=420"><\/script>');
+		var yuipath = 'clientscript/yui';
+		var yuicombopath = '';
+		var remoteyui = false;
+	}
+	else	// Load Rest of YUI remotely (where possible)
+	{
+		var yuipath = 'http://yui.yahooapis.com/2.9.0/build';
+		var yuicombopath = 'http://yui.yahooapis.com/combo';
+		var remoteyui = true;
+		if (!yuicombopath)
+		{
+			document.write('<script type="text/javascript" src="http://yui.yahooapis.com/2.9.0/build/connection/connection-min.js"><\/script>');
+		}
+	}
+	var SESSIONURL = "s=1d9dfd724929022c65ba75342edbcea7&";
+	var SECURITYTOKEN = "guest";
+	var IMGDIR_MISC = "images/metro/blue/misc";
+	var IMGDIR_BUTTON = "images/metro/blue/buttons";
+	var vb_disable_ajax = parseInt("0", 10);
+	var SIMPLEVERSION = "420";
+	var BBURL = "http://hackademics.fr";
+	var LOGGEDIN = 0 > 0 ? true : false;
+	var THIS_SCRIPT = "showthread";
+	var RELPATH = "showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)";
+	var PATHS = {
+		forum : "",
+		cms   : "",
+		blog  : ""
+	};
+	var AJAXBASEURL = "http://hackademics.fr/";
+// -->
+</script>
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/vbulletin-core.js"></script>
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/animation-min.js"></script>
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/yui_animation_effects.js"></script>
+
+
+	<link rel="alternate" type="application/rss+xml" title="Hackademics : Forum de hacking – hackers white hat – cours de securite informatique, apprendre langage python, tutoriels de reverse engineering Flux RSS" href="http://hackademics.fr/external.php?type=RSS2">
+	
+		<link rel="alternate" type="application/rss+xml" title="Hackademics : Forum de hacking – hackers white hat – cours de securite informatique, apprendre langage python, tutoriels de reverse engineering - Autres - Flux RSS" href="http://hackademics.fr/external.php?type=RSS2&amp;forumids=72">
+	
+
+
+
+	<link rel="stylesheet" type="text/css" href="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/css.php">
+
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="css.php?styleid=27&amp;langid=2&amp;d=1376330793&amp;td=ltr&amp;sheet=popupmenu-ie.css,vbulletin-ie.css,vbulletin-chrome-ie.css,vbulletin-formcontrols-ie.css,editor-ie.css" />
+	<![endif]-->
+
+
+<!--Google Web Fonts /-->
+<link href="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/css" rel="stylesheet" type="text/css">
+
+
+
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('a.login-window').click(function() {
+		
+		// Getting the variable's value from a link 
+		var loginBox = this.hash;
+
+		//Fade in the Popup and add close button
+		$(loginBox).fadeIn(300);
+		
+		//Set the center alignment padding + border
+		var popMargTop = ($(loginBox).height() + 24) / 2; 
+		var popMargLeft = ($(loginBox).width() + 24) / 2; 
+		
+		$(loginBox).css({ 
+			'margin-top' : -popMargTop,
+			'margin-left' : -popMargLeft
+		});
+		
+		// Add the mask to body
+		$('body').append('<div id="mask"></div>');
+		$('#mask').fadeIn(300);
+		
+		return false;
+	});
+	
+	// When clicking on the button close or the mask layer the popup closed
+	$('a.close, #mask').live('click', function() { 
+	  $('#mask , .login-popup').fadeOut(300 , function() {
+		$('#mask').remove();  
+	}); 
+	return false;
+	});
+	
+	$('#navbar_username').focus(function() {
+		$('#navbar_username').parent().addClass('active');
+	}); 
+	$('#navbar_username').blur(function() {
+		$('#navbar_username').parent().removeClass('active');
+	}); 
+	$('#navbar_password').focus(function() {
+		$('#navbar_password_hint').parent().addClass('active');
+	}); 
+	$('#navbar_password').blur(function() {
+		$('#navbar_password_hint').parent().removeClass('active');
+	}); 
+
+});
+</script>
+
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/animation-min(1).js"></script>
+<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/collapse_anime.js"></script> 
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38983420-1']);
+  _gaq.push(['_setDomainName', 'hackademics.fr']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- Google Analytics Content Experiment code -->
+<script>function utmx_section(){}function utmx(){}(function(){var
+k='UA-38983420-1',d=document,l=d.location,c=d.cookie;
+if(l.search.indexOf('utm_expid='+k)>0)return;
+function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
+indexOf(';',i);return escape(c.substring(i+n.length+1,j<0?c.
+length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;d.write(
+'<sc'+'ript src="'+'http'+(l.protocol=='https:'?'s://ssl':
+'://www')+'.google-analytics.com/ga_exp.js?'+'utmxkey='+k+
+'&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
+valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
+'" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
+</script><script src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/ga_exp.js" type="text/javascript" charset="utf-8"></script><script>utmx('url','A/B');</script>
+<!-- End of Google Analytics Content Experiment code --><script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/post_thanks.js"></script>
+
+<style type="text/css">
+.postbitlegacy .postfoot .textcontrols a.post_thanks_button, .postbit .postfoot .textcontrols a.post_thanks_button  {
+	background: url(images/metro/blue/buttons/post_thanks.png) no-repeat transparent left;
+	padding-left: 20px;
+}
+.postbitlegacy .postfoot .textcontrols a.post_thanks_button:hover, .postbit .postfoot .textcontrols a.post_thanks_button:hover  {
+	background: url(images/metro/blue/buttons/post_thanks-hover.png) no-repeat transparent left;
+</style>
+ 
+	<meta name="keywords" content="création, dentité, lanalyse, langages, lexicale, notion, Tutoriel, token, langage, nature, string, tokens, utiliser, structure, valeurs, alors, gérer, lexer, donnée, valeur, types, manière, comme, caractères, exemple, phrase, cette, programmation, ponctuation, suite, lexique, simple, float, verbe, créer, typiquement, tokenvalue, selon, français, nombre, données, seront, stocker, constructeur, syntaxique, chaîne, ocaml, mots-clefs, convient, autre">
+	<meta name="description" content="Introduction 
+ 
+La série d&#39;articles concernant la création de langages de programmation commence dès maintenant par une notion simple. Il s&#39;agit ici d&#39;étudier le lexique du code afin de déterminer précisément la nature des constuctions lexicales du langage et permettra par la suite de décrire une grammaire non contextuelle se basant sur des définitions telles que le &quot;mot-clé&quot; plutôt que la chaîne de caractère &quot;while&quot;. Dans cette leçon sera développé le concept d&#39;entité lexicale (souvent appelé">
+
+	<title>Tutoriel La création de langages - L'analyse lexicale (notion d'entité lexicale)</title>
+	<link rel="canonical" href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)&amp;s=1d9dfd724929022c65ba75342edbcea7">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+		<link rel="stylesheet" type="text/css" href="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/css(1).php">
+	
+	<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="css.php?styleid=27&amp;langid=2&amp;d=1376330793&amp;td=ltr&amp;sheet=toolsmenu-ie.css,postlist-ie.css,showthread-ie.css,postbit-ie.css,poll-ie.css" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/css(2).php">
+
+<link rel="stylesheet" type="text/css" href="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/css(3).php">
+<link rel="stylesheet" type="text/css" href="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/notice.css" media="screen"><script src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/jquery.purr.js" type="text/javascript"></script></head>
+
+<body>
+
+<!-- Metro Theme from PixelGoose.com v.1.0.6 -->
+
+<div class="above_body"> <!-- closing tag is in template navbar -->
+
+<div id="header" class="floatcontainer doc_header">
+
+
+<div class="ad_global_header">
+     
+     
+</div>
+
+
+<div id="top_header">
+
+	
+		<div id="globalsearch" class="globalsearch">
+			<form action="http://hackademics.fr/search.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=process" method="post" id="navbar_search" class="navbar_search">
+				
+				<input type="hidden" name="securitytoken" value="guest">
+				<input type="hidden" name="do" value="process">
+				<input type="text" value="" name="query" class="textbox" tabindex="99">
+				<input type="submit" class="searchbutton" name="submit" onclick="document.getElementById(&#39;navbar_search&#39;).submit;" tabindex="100">
+			</form>
+		</div>
+		<ul class="advanced_search">
+				<li><a href="http://hackademics.fr/search.php?s=1d9dfd724929022c65ba75342edbcea7" accesskey="4">Recherche avancée</a></li>
+				
+		</ul>
+	
+
+
+
+	<div id="toplinks" class="toplinks">
+		
+			<ul class="nouser">
+			
+				<li><a href="http://hackademics.fr/register.php?s=1d9dfd724929022c65ba75342edbcea7" rel="nofollow">Inscription</a></li>
+			
+				<li>or</li>
+				<li><a href="http://hackademics.fr/#login-box" class="login-window">Login</a></li>
+			</ul>
+		
+	</div>
+
+	
+</div>
+
+
+    <div id="login-box" class="login-popup">
+        <a href="http://hackademics.fr/#" class="close"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/close_popup.png" class="close-button" title="Close" alt="Close"></a>
+        <div id="login-text">Login to Your Account</div>
+			<script type="text/javascript" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/vbulletin_md5.js"></script>
+			<form id="navbar_loginform" action="http://hackademics.fr/login.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=login" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, 0)">
+				<fieldset id="logindetails" class="logindetails">
+                
+					<div>
+					<div class="navbar_username_outer"><input type="text" class="textbox default-value" name="vb_login_username" id="navbar_username" size="10" accesskey="u" tabindex="101" value="Pseudo "></div>
+					<div class="navbar_password_outer"><input type="password" class="textbox" tabindex="102" name="vb_login_password" id="navbar_password" size="10" style="display: none;">
+					<input type="text" class="textbox default-value" tabindex="102" name="vb_login_password_hint" id="navbar_password_hint" size="10" value="Mot de passe " style="display: inline;"></div>
+                    
+					<div class="login-ctrl">
+                        <div id="remember" class="remember">
+                            <label for="cb_cookieuser_navbar"><input type="checkbox" name="cookieuser" value="1" id="cb_cookieuser_navbar" class="cb_cookieuser_navbar" accesskey="c" tabindex="103"> Se souvenir de moi ?</label>
+                        </div>                
+                        
+                        <input type="submit" class="loginbutton" tabindex="104" value="Se connecter" title="Entrez votre pseudo et votre mot de passe dans les champs fournis pour vous connecter, ou cliquez sur le bouton &#39;Inscription&#39; pour vous créer un profil." accesskey="s">
+                        </div>
+                    </div>
+				</fieldset>
+
+
+				<input type="hidden" name="s" value="1d9dfd724929022c65ba75342edbcea7">
+				<input type="hidden" name="securitytoken" value="guest">
+				<input type="hidden" name="do" value="login">
+				<input type="hidden" name="vb_login_md5password">
+				<input type="hidden" name="vb_login_md5password_utf">
+			</form>
+			<script type="text/javascript">
+			YAHOO.util.Dom.setStyle('navbar_password_hint', "display", "inline");
+			YAHOO.util.Dom.setStyle('navbar_password', "display", "none");
+			vB_XHTML_Ready.subscribe(function()
+			{
+			//
+				YAHOO.util.Event.on('navbar_username', "focus", navbar_username_focus);
+				YAHOO.util.Event.on('navbar_username', "blur", navbar_username_blur);
+				YAHOO.util.Event.on('navbar_password_hint', "focus", navbar_password_hint);
+				YAHOO.util.Event.on('navbar_password', "blur", navbar_password);
+			});
+			
+			function navbar_username_focus(e)
+			{
+			//
+				var textbox = YAHOO.util.Event.getTarget(e);
+				if (textbox.value == 'Pseudo ')
+				{
+				//
+					textbox.value='';
+					textbox.style.color='#000000';
+				}
+			}
+
+			function navbar_username_blur(e)
+			{
+			//
+				var textbox = YAHOO.util.Event.getTarget(e);
+				if (textbox.value == '')
+				{
+				//
+					textbox.value='Pseudo ';
+					textbox.style.color='#777777';
+				}
+			}
+			
+			function navbar_password_hint(e)
+			{
+			//
+				var textbox = YAHOO.util.Event.getTarget(e);
+				
+				YAHOO.util.Dom.setStyle('navbar_password_hint', "display", "none");
+				YAHOO.util.Dom.setStyle('navbar_password', "display", "inline");
+				YAHOO.util.Dom.get('navbar_password').focus();
+			}
+
+			function navbar_password(e)
+			{
+			//
+				var textbox = YAHOO.util.Event.getTarget(e);
+				
+				if (textbox.value == '')
+				{
+					YAHOO.util.Dom.setStyle('navbar_password_hint', "display", "inline");
+					YAHOO.util.Dom.setStyle('navbar_password', "display", "none");
+				}
+			}
+			</script>
+            
+            <div class="register-ctrl">
+            	<a class="login-popup-register" href="http://hackademics.fr/register.php?s=1d9dfd724929022c65ba75342edbcea7" rel="nofollow">Inscription</a>
+                <div class="login-popup-fb">
+				
+                </div>
+            </div>
+</div>
+
+
+<div id="middle_header">
+<a name="top" href="http://hackademics.fr/forum.php?s=1d9dfd724929022c65ba75342edbcea7" class="logo-image"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/vbulletin4_logo.png" alt="Hackademics : Forum de hacking – hackers white hat – cours de securite informatique, apprendre langage python, tutoriels de reverse engineering - édité par vBulletin" title="Hackademics : Forum de hacking – hackers white hat – cours de securite informatique, apprendre langage python, tutoriels de reverse engineering - édité par vBulletin"></a>
+<div id="navbar" class="navbar">
+	<ul id="navtabs" class="navtabs floatcontainer">
+		
+		
+	<li class="selected" id="vbtab_forum">
+		<a class="navtab" href="http://hackademics.fr/forum.php?s=1d9dfd724929022c65ba75342edbcea7"><span>Forum</span></a>
+		
+			<ul class="floatcontainer">
+				
+					
+						
+							<li id="vbflink_faq"><a href="http://hackademics.fr/faq.php?s=1d9dfd724929022c65ba75342edbcea7">FAQ</a></li>
+						
+					
+				
+					
+						
+							<li id="vbflink_calendar"><a href="http://hackademics.fr/calendar.php?s=1d9dfd724929022c65ba75342edbcea7">Calendrier</a></li>
+						
+					
+				
+					
+						<li class="popupmenu" id="vbmenu_actions">
+							<a href="javascript://" class="popupctrl" id="yui-gen1">Forum</a>
+							<ul class="popupbody" id="yui-gen0">
+								
+									<li id="vbalink_mfr"><a href="http://hackademics.fr/forumdisplay.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=markread&amp;markreadhash=guest">Marquer les messages comme lus</a></li>
+								
+								
+							</ul>
+						</li>
+					
+				
+					
+						<li class="popupmenu" id="vbmenu_qlinks">
+							<a href="javascript://" class="popupctrl" id="yui-gen3">Liens utiles</a>
+							<ul class="popupbody" id="yui-gen2">
+								
+									<li id="vbqlink_leaders"><a href="http://hackademics.fr/showgroups.php?s=1d9dfd724929022c65ba75342edbcea7">Voir l'équipe du forum</a></li>
+								
+								
+							</ul>
+						</li>
+					
+				
+				
+			</ul>
+		
+	</li>
+
+		
+	</ul>
+</div>
+</div>
+</div>
+</div><!-- closing div for above_body -->
+
+<div class="body_wrapper">
+<div id="breadcrumb" class="breadcrumb">
+	<ul class="floatcontainer">
+		<li class="navbithome"><a href="http://hackademics.fr/index.php?s=1d9dfd724929022c65ba75342edbcea7" accesskey="1"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/navbit-home.png" alt="Accueil" title="Accueil"></a></li>
+		
+	<li class="navbit"><a href="http://hackademics.fr/forum.php?s=1d9dfd724929022c65ba75342edbcea7">Forum</a></li>
+
+	<li class="navbit"><a href="http://hackademics.fr/forumdisplay.php?50-D%E9veloppement&amp;s=1d9dfd724929022c65ba75342edbcea7">Développement</a></li>
+
+	<li class="navbit"><a href="http://hackademics.fr/forumdisplay.php?51-Applicatif&amp;s=1d9dfd724929022c65ba75342edbcea7">Applicatif</a></li>
+
+	<li class="navbit"><a href="http://hackademics.fr/forumdisplay.php?72-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+
+		
+	<li class="navbit lastnavbit"><span>Tutoriel La création de langages - L'analyse lexicale (notion d'entité lexicale)</span></li>
+
+	</ul>
+	<hr>
+</div>
+
+ 
+ 
+
+
+	<form action="http://hackademics.fr/profile.php?do=dismissnotice" method="post" id="notices" class="notices">
+		<input type="hidden" name="do" value="dismissnotice">
+		<input type="hidden" name="s" value="s=1d9dfd724929022c65ba75342edbcea7&amp;">
+		<input type="hidden" name="securitytoken" value="guest">
+		<input type="hidden" id="dismiss_notice_hidden" name="dismiss_noticeid" value="">
+		<input type="hidden" name="url" value="">
+		<ol>
+			<li class="restore" id="navbar_notice_2">
+	
+	Les visiteurs n'ont qu'un droit de lecture. Pour obtenir les droits en écriture et ainsi partager avec les membres de la communauté Hackademics, vous devez vous <a target="_blank" href="http://hackademics.fr/register.php?">
+<b>inscrire.</b>
+</a>
+</li>
+		</ol>
+	</form>
+
+
+
+
+
+	<div id="above_postlist" class="above_postlist">
+		
+		<div id="pagination_top" class="pagination_top">
+		
+			<div id="postpagestats_above" class="postpagestats">
+				Affiche les résultats de 1 à 1 sur 1
+			</div>
+		</div>
+	</div>
+	<div id="pagetitle" class="pagetitle">
+		<h1>
+			Sujet : <span class="threadtitle"><a href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Recharger cette page">La création de langages - L'analyse lexicale (notion d'entité lexicale)</a></span>
+		</h1>
+		
+	</div>
+	<div id="thread_controls" class="thread_controls toolsmenu">
+		<div>
+		<ul id="postlist_popups" class="postlist_popups popupgroup">
+			
+			
+			<li class="popupmenu" id="threadtools">
+				<h6><a class="popupctrl" href="javascript://" id="yui-gen5">Outils du sujet</a></h6>
+				<ul class="popupbody" id="yui-gen4">
+					<li><a href="http://hackademics.fr/printthread.php?s=1d9dfd724929022c65ba75342edbcea7&amp;t=2677&amp;pp=20&amp;page=1" accesskey="3" rel="nofollow">Afficher la version imprimable</a></li>
+					
+					<li>
+						
+							<a href="http://hackademics.fr/subscription.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=addsubscription&amp;t=2677" rel="nofollow">Suivre ce sujet…</a>
+						
+					</li>
+					
+				</ul>
+			</li>
+
+			
+
+			
+
+			
+
+			
+
+			
+			</ul>
+		</div>
+	</div>
+
+<div id="postlist" class="postlist restrain">
+	
+
+	
+		<ol id="posts" class="posts" start="1">
+			
+<li class="postbitlegacy postbitim postcontainer old" id="post_13937">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">13/01/2013,&nbsp;<span class="time">15h51</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post13937" href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)&amp;s=1d9dfd724929022c65ba75342edbcea7&amp;p=13937&amp;viewfull=1#post13937" class="postcounter">#1</a><a id="postcount13937" name="1"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen6">
+	<a class="username offline popupctrl" href="http://hackademics.fr/member.php?2025-Docteur-Lalla&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Docteur Lalla est déconnecté" id="yui-gen8"><strong>Docteur Lalla</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen7">
+		<li class="left">
+			<a href="http://hackademics.fr/member.php?2025-Docteur-Lalla&amp;s=1d9dfd724929022c65ba75342edbcea7" class="siteicon_profile">
+				Voir le profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="http://hackademics.fr/search.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=finduser&amp;userid=2025&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				Voir les messages
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/user-offline.png" alt="Docteur Lalla est déconnecté" border="0" title="Docteur Lalla est déconnecté">
+
+			
+			</div>
+			<span class="usertitle">
+				Hackadémicien
+			</span>
+			
+				<span class="rank">Membre intéressé</span>
+			
+			
+			
+				<span class="postbit_reputation" id="repdisplay_13937_2025" title="Docteur Lalla Brown Belt">
+					
+						<img class="repimg" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/reputation_pos.png" alt="">
+					
+						<img class="repimg" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/reputation_pos.png" alt="">
+					
+				</span>
+			
+			
+			<a class="postuseravatar" href="http://hackademics.fr/member.php?2025-Docteur-Lalla&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Docteur Lalla est déconnecté">
+				<img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/image.php" alt="Avatar de Docteur Lalla" title="Avatar de Docteur Lalla">
+			</a>
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Inscrit </dt> <dd>November 2012</dd>
+					
+					
+					<dt>Messages</dt> <dd>70</dd>	
+					
+	<dt>Thanks</dt> <dd>10</dd>
+	
+		<dd style="white-space:nowrap; display:inline; float: right;">Thanked 15 Times in 7 Posts</dd>
+	
+ 
+				</dl>
+				
+				<dl class="user_rep">
+					
+					
+						
+					<dt>Pouvoir de réputation</dt> 
+					<dd id="reppower_13937_2025">49</dd> 
+						
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+				<h2 class="title icon">
+					La création de langages - L'analyse lexicale (notion d'entité lexicale)
+				</h2>
+				
+
+
+						
+							
+							
+						
+						
+							
+						
+				<div class="content">
+					<div id="post_message_13937">
+						<blockquote class="postcontent restore ">
+							<b><font size="+2"><font color="white">Introduction</font></font></b><br>
+<br>
+La série d'articles concernant la création de langages de programmation commence dès maintenant par une notion simple. Il s'agit ici d'étudier le lexique du code afin de déterminer précisément la nature des constuctions lexicales du langage et permettra par la suite de décrire une grammaire non contextuelle se basant sur des définitions telles que le "mot-clé" plutôt que la chaîne de caractère "while". Dans cette leçon sera développé le concept d'entité lexicale (souvent appelé token). Nous aborderons d'abord de manière théorique la nécessité d'abstraire le code en le coupant en une liste de tokens au lieu de travailler directement sur la chaîne de caractères qui le défini.<br>
+Le but avoué de cet article est de comprendre la structure lexicale d'un code source, peu importe son langage et de savoir créer un générateur d'analyse lexicale (aussi appelé lexer). La majeure partie des exemples donnés seront écrits en langage naturel (en français pour nous) puisque l'analyse lexicale est une étape de la compilation qui fonctionne de manière identique pour les langages de programmation et pour les langues naturelles.<br>
+En dernier lieu, le lexer du HKS sera décrit et des ébauches de code seront présentées afin de permettre à chacun d'écrire son propre lexer dans de bonnes conditions.<br>
+<br>
+<b><font size="+2"><font color="white">La notion d'entité lexicale</font></font></b><br>
+<br>
+Pour une langue naturelle telle que le français, il est très simple de décrire de manière formelle le contenu d'une phrase en rangeant méthodiquement les mots employés dans des catégories précises qu'on appelle aussi <u>nature d'un mot</u>. On peut donc découper la phrase suivante selon cette même idée :<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_description">Code:</div>
+	<pre class="bbcode_code" style="height:144px;">Un chat noir regarde par la fenêtre.
+
+article indéfini "un"
+nom commun "chat"
+adjectif qualificatif de couleur "noir"
+verbe "regarder", 3ème personne du singulier, présent de l'indicatif
+préposition "par"
+article défini "la"
+nom commun "fenêtre"
+ponctuation "."</pre>
+</div>On peut noter qu'à chaque constructeur (catégorie), des attributs ont été associés. Dans la majorité des cas, ce fut le mot en lui-même. Le verbe est un parfait contre exemple. Pour la suite des opérations (analyse syntaxique, sémantique...), le temps et la personne utilisée sont des informations qui pourraient être très utiles, il convient donc de les retenir et les noter avec le verbe lui-même. Par ailleurs, la ponctuation n'est jamais oubliée. Une maxime bien connue dit : "Une phrase commence par une majuscule et se termine par un point". La syntaxe du français (exemple utilisé ici) indique donc explicitement qu'un phrase doit se terminer par un point, il faut donc pouvoir vérifier ce détail à tout moment par la suite. C'est la raison pour laquelle la ponctuation est une partie intégrante du lexique.<br>
+<br>
+<u>Pour simplifier les explications, on admettra qu'un signe de ponctuation est un mot à part entière.</u><br>
+<br>
+Avec l'exemple précédent, on a montré qu'à chaque mot peut être associé une nature et que chaque nature dispose d'un constructeur demandant plus ou moins d'attributs. Une nature de mot est <u>une entité lexicale</u>, soit <u>un token</u>. Pour une langue naturelle, on trouvera typiquement les noms, les adjectifs, les verbes. Alors qu'un langage de programmation verra plutôt un mot-clef, une valeur numérique, une chaîne de caractères... On peut donc dire qu'en dehors des types de tokens qui varient selon le langage décrit, tout les lexiques fonctionnent de la même manière (y compris pour les langues aglutinantes telles que le japonais).<br>
+<br>
+<b><font size="+2"><font color="white">Structure détaillé d'un token</font></font></b><br>
+<br>
+Comme nous l'avons vu précédemment, un token peut utiliser un nombre variable de données et il convient de créer un type de donnée adéquat pour utiliser ce nouvel outil. Nous pouvons tout d'abord couper la nature du token en deux parties bien distinctes : son identité (ou type) et sa valeur. Vous avez certainement remarqué qu'on pouvait appeler tel mot "un verbe", un autre "un nom" et ce, indépendamment de sa valeur. Il s'agissait de la nature du mot, sa catégorie, son type. Il nous faudra alors stocker dans un endroit bien à l'abri le type du token.<br>
+<br>
+Selon le langage que vous utilisez, on utilisera une méthode différente. Typiquement, pour le C (et ses dérivés), l'énumération est de loin le meilleur moyen de stocker le type du token, sachant <u>qu'il existe dans un lexique un nombre fini de types de token</u>.<br>
+<br>
+Ici en C++ :<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_description">Code:</div>
+	<pre class="bbcode_code" style="height:72px;">enum TokenType
+{
+    NUM, STRING, KWD, IDENT, SYMBOL // ...
+};</pre>
+</div>L'énumération présentée ci-dessus permet de gérer un lexique où on peut trouver des nombres, des chaînes de caractères (typiquement entre guillemets), des mots-clefs, des identifiants (nom de variables en règle générale, ce sont des mots-clefs secondaires qui seront définis par l'utilisateur) et des symboles (souvent la même utilisation que les mots-clefs, mais permettent utilisation propre des caractères spéciaux). Partant de cette énumération, on peut gérer à peu près tout les langages de programmation (certains malins pourraient poser problèmes, bien que je n'ai pas d'exemple concret à proposer).<br>
+<br>
+Pour des langages comme OCaml, utilisera un autre format de donnée. L'idée sera d'associer les valeurs du token à un constructeur.<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_description">Code:</div>
+	<pre class="bbcode_code" style="height:108px;">type Token =
+| Num of float (* pas de distinction pour cet exemple, même si, pour ma part je sépare float et int.
+| Kwd of string
+| Ident of string
+| Symbol of string
+| String of string
+;;</pre>
+</div>Il convient de préciser que le lexer crée des tokens ayant une sémantique très abstraite. Il ne faudrait en aucun cas créer un type de token par symbole utilisé par le langage. La structure de donnée s'en verrait terriblement alourdie. Il est possible de procéder ainsi, mais le but même du lexer d'abstraire le code en serait dévié et l'analyse syntaxique sera ensuite plus difficile à gérer. Il vaut mieux avoir un nombre de type de tokens réduit et des valeurs très détaillées que l'inverse.<br>
+<br>
+Les valeurs des tokens doivent maintenant être gérées intelligemment. Pour un langage comme OCaml, la question ne se pose pas, la réponse est au-dessus. On a déjà associé des valeurs à des constructeurs. Pour un langage comme le C qui ne propose pas ce genre de types de données, il va nous falloir ruser. Une technique consiste en l'utilisation des unions. Les unions ressemble fortement à une structure à la différence près qu'on ne peut utiliser qu'un seul atribut à la fois.<br>
+<br>
+Voici un exemple typique d'une union symbolisant la valeur d'un token :<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_description">Code:</div>
+	<pre class="bbcode_code" style="height:120px;">union TokenValue
+{
+    int i;
+    float f;
+    char* s;
+
+    TokenValue* p; // Si on a besoin de plusieurs attributs, on peut utiliser un tableau de sous-attributs.
+};</pre>
+</div>Nous avons ici réuni 4 types de données en un seul et grâce au tableau p, nous pouvons gérer les tokens utilisant plus d'un attribut <u>qu'importe leur type</u>.<br>
+Pour ma part, je suis adepte du C++ et je préfère utiliser une autre version de ce type de donnée :<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_description">Code:</div>
+	<pre class="bbcode_code" style="height:120px;">struct TokenValue // les unions ne prennent pas les classes, alors j'utilise une structure simple
+{
+    int i;
+    float f;
+    std::string s;
+
+    std::vector&lt;TokenValue*&gt; p;
+};</pre>
+</div>Une fois les valeurs et types du token définis, il ne nous reste plus alors qu'à stocker les deux informations dans un seul type de donnée : le token. En OCaml, le token est déjà créé, en C il va nous falloir utiliser une bête structure liant un type et une valeur ensemble. Un conseil que je puis donner est de rajouter une troisième information : la ligne à laquelle le token a été trouvé. Par la suite, lors de l'analyse syntaxique puis sémantique du code, dans le but de générer de bons messages d'erreur, il serait utile de connaître la ligne où se trouvait le token incriminé. Il est cent fois plus simple de gérer cette information à partir de l'analyse lexicale (qui a un accès direct au code) qu'ensuite où nous n'utiliserons plus du tout le code.<br>
+<br>
+Nous aurons alors :<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_description">Code:</div>
+	<pre class="bbcode_code" style="height:108px;">struct Token
+{
+    TokenType type;
+    TokenValue value;
+
+    unsigned int line;
+};</pre>
+</div>
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+					 
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer">Y a deux ailes au cul de Lalla, sinon ça peut pas voler.</div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_13937" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/progress.gif" alt="">
+					
+					
+					
+						<a id="qrwq_13937" class="newreply" href="http://hackademics.fr/newreply.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=newreply&amp;p=13937" rel="nofollow" title="Répondre en citant"><img id="quoteimg_13937" src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/clear.gif" alt="Répondre en citant" title="Répondre en citant">  Répondre en citant</a> 
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+<li class="postbitlegacy postbitim" id="post_thanks_box_13937">
+	<div class="postbody" style="margin-left: 0">
+	<div class="postrow">
+	
+	<h2 class="title">
+		
+			The Following 2 Users Say Thank You to Docteur Lalla For This Useful Post:
+		
+	</h2>
+	<div class="content">
+		<div id="post_thanks_bit_13937">
+			<blockquote class="postcontent restore">
+				<a href="http://hackademics.fr/member.php?s=1d9dfd724929022c65ba75342edbcea7&amp;u=2" rel="nofollow">SAKAROV</a>&nbsp;(13/01/2013), <a href="http://hackademics.fr/member.php?s=1d9dfd724929022c65ba75342edbcea7&amp;u=24" rel="nofollow">_47</a>&nbsp;(13/01/2013) 
+			</blockquote>
+		</div>
+	</div>
+	</div>
+</div>
+<hr> 
+</li> 
+		</ol>
+		<div class="separator"></div>
+		<div class="postlistfoot">
+			
+		</div>
+
+	
+
+</div>
+
+<div id="below_postlist" class="noinlinemod below_postlist">
+	
+	<div id="pagination_bottom" class="pagination_bottom">
+	
+		<div class="clear"></div>
+<div class="navpopupmenu popupmenu nohovermenu" id="showthread_navpopup">
+	
+		<span class="shade">Navigation rapide</span>
+		<a href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)&amp;s=1d9dfd724929022c65ba75342edbcea7" class="popupctrl" id="yui-gen10"><span class="ctrlcontainer">Autres</span></a>
+		<a href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)#top" class="textcontrol" onclick="document.location.hash=&#39;top&#39;;return false;">Haut de page</a>
+	
+	<ul class="navpopupbody popupbody" id="yui-gen9">
+		
+		<li class="optionlabel">Zones du site</li>
+		<li><a href="http://hackademics.fr/usercp.php?s=1d9dfd724929022c65ba75342edbcea7">Mon compte</a></li>
+		<li><a href="http://hackademics.fr/private.php?s=1d9dfd724929022c65ba75342edbcea7">Messages privés</a></li>
+		<li><a href="http://hackademics.fr/subscription.php?s=1d9dfd724929022c65ba75342edbcea7">Suivis</a></li>
+		<li><a href="http://hackademics.fr/online.php?s=1d9dfd724929022c65ba75342edbcea7">Utilisateurs en ligne</a></li>
+		<li><a href="http://hackademics.fr/search.php?s=1d9dfd724929022c65ba75342edbcea7">Rechercher dans les forums</a></li>
+		<li><a href="http://hackademics.fr/forum.php?s=1d9dfd724929022c65ba75342edbcea7">Accueil des forums</a></li>
+		
+			<li class="optionlabel">Forum</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?824-Accueil&amp;s=1d9dfd724929022c65ba75342edbcea7">Accueil</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?825-Pr%E9sentation&amp;s=1d9dfd724929022c65ba75342edbcea7">Présentation</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?20-Membres&amp;s=1d9dfd724929022c65ba75342edbcea7">Membres</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?21-Staff&amp;s=1d9dfd724929022c65ba75342edbcea7">Staff</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?826-Informations&amp;s=1d9dfd724929022c65ba75342edbcea7">Informations</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?19-Charte&amp;s=1d9dfd724929022c65ba75342edbcea7">Charte</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?23-L%E9gislation&amp;s=1d9dfd724929022c65ba75342edbcea7">Législation</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?24-Disclaimer&amp;s=1d9dfd724929022c65ba75342edbcea7">Disclaimer</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?22-M%E9canisme-du-forum&amp;s=1d9dfd724929022c65ba75342edbcea7">Mécanisme du forum</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?31-Suggestions-d-am%E9liorations&amp;s=1d9dfd724929022c65ba75342edbcea7">Suggestions d'améliorations</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?543-Livre-d-or&amp;s=1d9dfd724929022c65ba75342edbcea7">Livre d'or</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?827-Liens&amp;s=1d9dfd724929022c65ba75342edbcea7">Liens</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?599-Partenaires&amp;s=1d9dfd724929022c65ba75342edbcea7">Partenaires</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?600-Liens-utiles&amp;s=1d9dfd724929022c65ba75342edbcea7">Liens utiles</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?713-Espace-publicitaire&amp;s=1d9dfd724929022c65ba75342edbcea7">Espace publicitaire</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?840-FAQ-Foire-aux-Questions&amp;s=1d9dfd724929022c65ba75342edbcea7">[FAQ] Foire aux Questions</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?26-News&amp;s=1d9dfd724929022c65ba75342edbcea7">News</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?27-Forum&amp;s=1d9dfd724929022c65ba75342edbcea7">Forum</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?542-Hacking-News&amp;s=1d9dfd724929022c65ba75342edbcea7">Hacking News</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?521-G%E9n%E9rales&amp;s=1d9dfd724929022c65ba75342edbcea7">Générales</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?828-Linux-Windows-Mac&amp;s=1d9dfd724929022c65ba75342edbcea7">Linux/Windows/Mac</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?768-Projets&amp;s=1d9dfd724929022c65ba75342edbcea7">Projets</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?769-Propositions&amp;s=1d9dfd724929022c65ba75342edbcea7">Propositions</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?772-Projets-en-cours&amp;s=1d9dfd724929022c65ba75342edbcea7">Projets en cours</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?780-Team-1-CryptoTool&amp;s=1d9dfd724929022c65ba75342edbcea7">Team#1 : CryptoTool</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?829-Demande-de-Tutoriels&amp;s=1d9dfd724929022c65ba75342edbcea7">Demande de Tutoriels</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?830-R%E9servation-de-tutoriels&amp;s=1d9dfd724929022c65ba75342edbcea7">Réservation de tutoriels</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?874-Orientation-(%E9tudes)-S%E9curit%E9-informatique&amp;s=1d9dfd724929022c65ba75342edbcea7">Orientation (études) - Sécurité informatique</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?875-Questions-g%E9n%E9rales-(S%E9curit%E9)&amp;s=1d9dfd724929022c65ba75342edbcea7">Questions générales (Sécurité)</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?876-%C9tudes-dans-le-domaine-de-la-s%E9curit%E9&amp;s=1d9dfd724929022c65ba75342edbcea7">Études dans le domaine de la sécurité</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?880-Bac-2&amp;s=1d9dfd724929022c65ba75342edbcea7">Bac + 2</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?881-Bac-3&amp;s=1d9dfd724929022c65ba75342edbcea7">Bac + 3</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?882-Bac-5&amp;s=1d9dfd724929022c65ba75342edbcea7">Bac + 5</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?883-Bac-5&amp;s=1d9dfd724929022c65ba75342edbcea7">Bac &gt; 5</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?877-Certifications-S%E9curit%E9-Informatique&amp;s=1d9dfd724929022c65ba75342edbcea7">Certifications Sécurité Informatique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?878-Conf%E9rences-S%E9curit%E9-Informatique&amp;s=1d9dfd724929022c65ba75342edbcea7">Conférences Sécurité Informatique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?879-Entreprises-(en-lien-avec-la-S%E9curit%E9-Informatique)&amp;s=1d9dfd724929022c65ba75342edbcea7">Entreprises (en lien avec la Sécurité Informatique)</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?40-Syst%E8me&amp;s=1d9dfd724929022c65ba75342edbcea7">Système</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?41-Syst%E8me-interne&amp;s=1d9dfd724929022c65ba75342edbcea7">Système interne</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?43-Linux&amp;s=1d9dfd724929022c65ba75342edbcea7">Linux</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?44-Mac&amp;s=1d9dfd724929022c65ba75342edbcea7">Mac</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?46-Windows&amp;s=1d9dfd724929022c65ba75342edbcea7">Windows</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?601-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?42-Mobiles-et-p%E9riph%E9riques&amp;s=1d9dfd724929022c65ba75342edbcea7">Mobiles et périphériques</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?48-Windows-Windows-Phone&amp;s=1d9dfd724929022c65ba75342edbcea7">Windows / Windows Phone</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?602-Mac-iOS&amp;s=1d9dfd724929022c65ba75342edbcea7">Mac / iOS</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?49-Linux-Android&amp;s=1d9dfd724929022c65ba75342edbcea7">Linux / Android</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?603-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?610-Hardware&amp;s=1d9dfd724929022c65ba75342edbcea7">Hardware</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?707-PC&amp;s=1d9dfd724929022c65ba75342edbcea7">PC</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?708-Network&amp;s=1d9dfd724929022c65ba75342edbcea7">Network</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?889-Electronics&amp;s=1d9dfd724929022c65ba75342edbcea7">Electronics</a>
+					<ol class="d3">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?609-Phreaking&amp;s=1d9dfd724929022c65ba75342edbcea7">Phreaking</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?890-RFID-NFC&amp;s=1d9dfd724929022c65ba75342edbcea7">RFID/NFC</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?614-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?615-Serveur&amp;s=1d9dfd724929022c65ba75342edbcea7">Serveur</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?831-Administration&amp;s=1d9dfd724929022c65ba75342edbcea7">Administration</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?616-Hosting&amp;s=1d9dfd724929022c65ba75342edbcea7">Hosting</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?832-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?617-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?50-D%E9veloppement&amp;s=1d9dfd724929022c65ba75342edbcea7">Développement</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?51-Applicatif&amp;s=1d9dfd724929022c65ba75342edbcea7">Applicatif</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?56-C-C&amp;s=1d9dfd724929022c65ba75342edbcea7">C/C++</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?58-Python&amp;s=1d9dfd724929022c65ba75342edbcea7">Python</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?68-Bash&amp;s=1d9dfd724929022c65ba75342edbcea7">Bash</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?72-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?53-Web-BDD&amp;s=1d9dfd724929022c65ba75342edbcea7">Web/BDD</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?73-HTML-CSS&amp;s=1d9dfd724929022c65ba75342edbcea7">HTML/CSS</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?837-SQL&amp;s=1d9dfd724929022c65ba75342edbcea7">SQL</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?76-PHP&amp;s=1d9dfd724929022c65ba75342edbcea7">PHP</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?77-Javascript-Ajax&amp;s=1d9dfd724929022c65ba75342edbcea7">Javascript / Ajax</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?537-Challenges&amp;s=1d9dfd724929022c65ba75342edbcea7">Challenges</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?540-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?100-R%E9seau&amp;s=1d9dfd724929022c65ba75342edbcea7">Réseau</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?101-LAN&amp;s=1d9dfd724929022c65ba75342edbcea7">LAN</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?503-Linux&amp;s=1d9dfd724929022c65ba75342edbcea7">Linux</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?504-Windows&amp;s=1d9dfd724929022c65ba75342edbcea7">Windows</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?505-Mac&amp;s=1d9dfd724929022c65ba75342edbcea7">Mac</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?102-WAN&amp;s=1d9dfd724929022c65ba75342edbcea7">WAN</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?539-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?864-Virtualisation&amp;s=1d9dfd724929022c65ba75342edbcea7">Virtualisation</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?865-Syst%E8me&amp;s=1d9dfd724929022c65ba75342edbcea7">Système</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?867-VMware&amp;s=1d9dfd724929022c65ba75342edbcea7">VMware</a>
+					<ol class="d3">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?870-Client&amp;s=1d9dfd724929022c65ba75342edbcea7">Client</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?871-Serveur&amp;s=1d9dfd724929022c65ba75342edbcea7">Serveur</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?868-HyperV&amp;s=1d9dfd724929022c65ba75342edbcea7">HyperV</a>
+					<ol class="d3">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?872-Client&amp;s=1d9dfd724929022c65ba75342edbcea7">Client</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?873-Serveur&amp;s=1d9dfd724929022c65ba75342edbcea7">Serveur</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?869-VirtualBox&amp;s=1d9dfd724929022c65ba75342edbcea7">VirtualBox</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?866-Appliance&amp;s=1d9dfd724929022c65ba75342edbcea7">Appliance</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?103-Cryptologie&amp;s=1d9dfd724929022c65ba75342edbcea7">Cryptologie</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?833-Chiffrement&amp;s=1d9dfd724929022c65ba75342edbcea7">Chiffrement</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?104-Asym%E9trique&amp;s=1d9dfd724929022c65ba75342edbcea7">Asymétrique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?105-Sym%E9trique&amp;s=1d9dfd724929022c65ba75342edbcea7">Symétrique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?111-Quantique&amp;s=1d9dfd724929022c65ba75342edbcea7">Quantique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?834-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?108-Tools&amp;s=1d9dfd724929022c65ba75342edbcea7">Tools</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?109-St%E9ganographie&amp;s=1d9dfd724929022c65ba75342edbcea7">Stéganographie</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?534-Challenges&amp;s=1d9dfd724929022c65ba75342edbcea7">Challenges</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?523-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?14-Hacking-Connaissances-%E9l%E9mentaires&amp;s=1d9dfd724929022c65ba75342edbcea7">Hacking: Connaissances élémentaires</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?782-Premiers-pas&amp;s=1d9dfd724929022c65ba75342edbcea7">Premiers pas</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?783-Les-bases-du-hacking&amp;s=1d9dfd724929022c65ba75342edbcea7">Les bases du hacking</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?784-Vocabulaire&amp;s=1d9dfd724929022c65ba75342edbcea7">Vocabulaire</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?274-Social-engineering&amp;s=1d9dfd724929022c65ba75342edbcea7">Social engineering</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?835-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?785-Anonymat-amp-s%E9curit%E9&amp;s=1d9dfd724929022c65ba75342edbcea7">Anonymat &amp; sécurité</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?786-Linux&amp;s=1d9dfd724929022c65ba75342edbcea7">Linux</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?787-Windows&amp;s=1d9dfd724929022c65ba75342edbcea7">Windows</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?788-Mac&amp;s=1d9dfd724929022c65ba75342edbcea7">Mac</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?276-Challenges&amp;s=1d9dfd724929022c65ba75342edbcea7">Challenges</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?112-Hacking-Connaissances-avanc%E9es&amp;s=1d9dfd724929022c65ba75342edbcea7">Hacking: Connaissances avancées</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?841-Virologie&amp;s=1d9dfd724929022c65ba75342edbcea7">Virologie</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?842-Notions-th%E9oriques&amp;s=1d9dfd724929022c65ba75342edbcea7">Notions théoriques</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?843-Malware-reverse&amp;s=1d9dfd724929022c65ba75342edbcea7">Malware reverse</a>
+					<ol class="d3">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?845-Tutoriels&amp;s=1d9dfd724929022c65ba75342edbcea7">Tutoriels</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?846-Tools&amp;s=1d9dfd724929022c65ba75342edbcea7">Tools</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?844-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?702-Local&amp;s=1d9dfd724929022c65ba75342edbcea7">Local</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?794-MITM&amp;s=1d9dfd724929022c65ba75342edbcea7">MITM</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?797-Scanning&amp;s=1d9dfd724929022c65ba75342edbcea7">Scanning</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?800-Privilege-escalation&amp;s=1d9dfd724929022c65ba75342edbcea7">Privilege escalation</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?795-Sniffing&amp;s=1d9dfd724929022c65ba75342edbcea7">Sniffing</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?703-Crack-wifi&amp;s=1d9dfd724929022c65ba75342edbcea7">Crack wifi</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?836-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?799-Unhash&amp;s=1d9dfd724929022c65ba75342edbcea7">Unhash</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?724-Reversing&amp;s=1d9dfd724929022c65ba75342edbcea7">Reversing</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?729-Failles-applicatives&amp;s=1d9dfd724929022c65ba75342edbcea7">Failles applicatives</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?730-Failles-OS&amp;s=1d9dfd724929022c65ba75342edbcea7">Failles OS</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?731-Tools&amp;s=1d9dfd724929022c65ba75342edbcea7">Tools</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?732-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?654-Remote-amp-Web&amp;s=1d9dfd724929022c65ba75342edbcea7">Remote &amp; Web</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?733-Exploits&amp;s=1d9dfd724929022c65ba75342edbcea7">Exploits</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?655-Failles&amp;s=1d9dfd724929022c65ba75342edbcea7">Failles</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?656-Tools&amp;s=1d9dfd724929022c65ba75342edbcea7">Tools</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?734-Shell&amp;s=1d9dfd724929022c65ba75342edbcea7">Shell</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?657-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?764-Challenges&amp;s=1d9dfd724929022c65ba75342edbcea7">Challenges</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?860-Lockpicking&amp;s=1d9dfd724929022c65ba75342edbcea7">Lockpicking</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?706-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?133-Lounge&amp;s=1d9dfd724929022c65ba75342edbcea7">Lounge</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?156-Humour&amp;s=1d9dfd724929022c65ba75342edbcea7">Humour</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?175-Humoristes-francophones&amp;s=1d9dfd724929022c65ba75342edbcea7">Humoristes francophones</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?176-News-spectacles&amp;s=1d9dfd724929022c65ba75342edbcea7">News spectacles</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?178-Blagues-en-tout-genre&amp;s=1d9dfd724929022c65ba75342edbcea7">Blagues en tout genre</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?171-Trolls&amp;s=1d9dfd724929022c65ba75342edbcea7">Trolls</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?179-Informatique&amp;s=1d9dfd724929022c65ba75342edbcea7">Informatique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?180-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?812-Films&amp;s=1d9dfd724929022c65ba75342edbcea7">Films</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?813-Cin%E9ma&amp;s=1d9dfd724929022c65ba75342edbcea7">Cinéma</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?814-S%E9ries&amp;s=1d9dfd724929022c65ba75342edbcea7">Séries</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?815-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?160-Musique&amp;s=1d9dfd724929022c65ba75342edbcea7">Musique</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?197-Rap-R-amp-B-Reggaeton&amp;s=1d9dfd724929022c65ba75342edbcea7">Rap / R&amp;B / Reggaeton</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?198-House-Electro-Techno&amp;s=1d9dfd724929022c65ba75342edbcea7">House / Electro / Techno</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?199-Hard-rock-M%E9tal-Hardcore&amp;s=1d9dfd724929022c65ba75342edbcea7">Hard rock / Métal / Hardcore</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?200-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?161-E-books&amp;s=1d9dfd724929022c65ba75342edbcea7">E-books</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?202-E-books-d-informatique&amp;s=1d9dfd724929022c65ba75342edbcea7">E-books d'informatique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?204-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?798-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a>
+					<ol class="d2">
+						
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?816-Jeux-vid%E9os&amp;s=1d9dfd724929022c65ba75342edbcea7">Jeux vidéos</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?817-Jeux-de-r%E9flexion&amp;s=1d9dfd724929022c65ba75342edbcea7">Jeux de réflexion</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?818-Graphisme-Web&amp;s=1d9dfd724929022c65ba75342edbcea7">Graphisme/Web</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?819-Audio-Vid%E9o&amp;s=1d9dfd724929022c65ba75342edbcea7">Audio/Vidéo</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?822-Esot%E9rique&amp;s=1d9dfd724929022c65ba75342edbcea7">Esotérique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?823-Erotique&amp;s=1d9dfd724929022c65ba75342edbcea7">Erotique</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?821-Sports&amp;s=1d9dfd724929022c65ba75342edbcea7">Sports</a></li>
+			
+		
+			
+				<li><a href="http://hackademics.fr/forumdisplay.php?820-Autres&amp;s=1d9dfd724929022c65ba75342edbcea7">Autres</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+		
+	</ul>
+</div>
+<div class="clear"></div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+	<!-- next / previous links -->
+	<div class="navlinks">
+		
+			<strong>«</strong>
+			<a href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)&amp;s=1d9dfd724929022c65ba75342edbcea7&amp;goto=nextoldest" rel="nofollow">Sujet précédent</a>
+			|
+			<a href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)&amp;s=1d9dfd724929022c65ba75342edbcea7&amp;goto=nextnewest" rel="nofollow">Sujet suivant</a>
+			<strong>»</strong>
+		
+	</div>
+	<!-- / next / previous links -->
+
+<div id="thread_info" class="thread_info block">
+	
+	
+	<div id="similar_threads">
+		<h4 class="threadinfohead blockhead">Sujets similaires</h4>
+		<div id="similar_threads_list" class="thread_info_block blockbody formcontrols">
+			<ol class="similar_threads">
+			<li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="http://hackademics.fr/showthread.php?1399-Analyse-fr%E9quentielle&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Ce n&#39;est pas un tool, mais un technique 
+ 
+ 
+ 
+Bien, tout le monde connait l&#39;analyse fréquentielle en crypto, qui consiste à chercher des occurrences...">Analyse fréquentielle</a></h6>
+    <div class="starter_forum">
+       Par SAKAROV dans le forum Tools
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Réponses:</span> 1
+      <div class="starter_forum">
+        <span class="shade">Dernier message:</span> 30/08/2014, <span class="time">00h28</span>
+      </div>
+  </div>
+</li><li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="http://hackademics.fr/showthread.php?2393-Cr%E9ation-ou-evolution&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Alors comme ça c&#39;est ici qu&#39;on Troll^^ Bon et bien je pense que le sujet que j&#39;ai choisi est adéquat 
+J&#39;ai souvent lancer le débat et généralement ça...">Création ou evolution ?</a></h6>
+    <div class="starter_forum">
+       Par Yodark dans le forum Autres
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Réponses:</span> 32
+      <div class="starter_forum">
+        <span class="shade">Dernier message:</span> 10/12/2012, <span class="time">09h02</span>
+      </div>
+  </div>
+</li><li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="http://hackademics.fr/showthread.php?2022-Classement-tendanciel-de-popularit%E9-des-langages-de-programmation-informatique&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Ce qui est donc à relever est l&#39;incidence de ces tendances sur les emplois de demain, l&#39;impact sur les futurs embauches des futurs développeurs, à...">Classement tendanciel de popularité des langages de programmation informatique</a></h6>
+    <div class="starter_forum">
+       Par SAKAROV dans le forum Autres
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Réponses:</span> 0
+      <div class="starter_forum">
+        <span class="shade">Dernier message:</span> 23/09/2012, <span class="time">18h00</span>
+      </div>
+  </div>
+</li><li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="http://hackademics.fr/showthread.php?1808-Article-10-langages-de-d%E9veloppement-pour-secouer-la-IT&amp;s=1d9dfd724929022c65ba75342edbcea7" title="Bonjour à tous, 
+ 
+Voici 10 nouveaux langages pour secouer l&#39;IT ;) Qu&#39;en pensez-vous ? 
+...">Article : 10 langages de développement pour secouer la IT</a></h6>
+    <div class="starter_forum">
+       Par Mac dans le forum Générales
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Réponses:</span> 5
+      <div class="starter_forum">
+        <span class="shade">Dernier message:</span> 20/03/2012, <span class="time">19h36</span>
+      </div>
+  </div>
+</li>
+			</ol>
+		</div>
+	</div>
+
+
+	
+	
+	
+	
+	<h4 class="threadinfohead blockhead">Tags pour ce sujet</h4>
+	<div id="thread_tags_list" class="thread_info_block blockbody formcontrols">
+		<div class="inner_block">
+			
+			<div id="tag_list_cell">
+				
+		
+			<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7&amp;tag=cr%E9ation">création</a>, 
+		
+			<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7&amp;tag=dentit%E9">dentité</a>, 
+		
+			<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7&amp;tag=lanalyse">lanalyse</a>, 
+		
+			<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7&amp;tag=langages">langages</a>, 
+		
+			<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7&amp;tag=lexicale">lexicale</a>, 
+		
+			<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7&amp;tag=notion">notion</a>
+		
+
+<img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/11x11progress.gif" id="tag_form_progress" class="inlineimg hidden" alt="">
+			</div>
+			<p>
+				<a href="http://hackademics.fr/tags.php?s=1d9dfd724929022c65ba75342edbcea7">Voir tous les tags</a>
+			</p>
+		</div>
+	</div>
+	
+	<div class="options_block_container">
+		
+		<div class="options_block2">
+			<h4 class="blockhead options_correct">Liens sociaux</h4>
+			<div id="social_bookmarks_list" class="thread_info_block blockbody formcontrols floatcontainer options_correct">
+				<h5 class="blocksubhead">Liens sociaux</h5>
+				<ul class="icon_list"><li class="smallfont">
+	
+		<a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/bookmarksite_digg.gif" alt="Soumettre à Digg" title="Soumettre à Digg"></a>
+	
+	<a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark">Digg</a>
+</li><li class="smallfont">
+	
+		<a href="http://del.icio.us/post?url=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/bookmarksite_delicious.gif" alt="Soumettre à del.icio.us" title="Soumettre à del.icio.us"></a>
+	
+	<a href="http://del.icio.us/post?url=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark">del.icio.us</a>
+</li><li class="smallfont">
+	
+		<a href="http://www.stumbleupon.com/submit?url=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/bookmarksite_stumbleupon.gif" alt="Soumettre à StumbleUpon" title="Soumettre à StumbleUpon"></a>
+	
+	<a href="http://www.stumbleupon.com/submit?url=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark">StumbleUpon</a>
+</li><li class="smallfont">
+	
+		<a href="http://www.google.com/bookmarks/mark?op=edit&amp;output=popup&amp;bkmk=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/bookmarksite_google.gif" alt="Soumettre à Google" title="Soumettre à Google"></a>
+	
+	<a href="http://www.google.com/bookmarks/mark?op=edit&amp;output=popup&amp;bkmk=http%3A%2F%2Fhackademics.fr%2Fshowthread.php%3Ft%3D2677&amp;title=La+cr%E9ation+de+langages+-+L%27analyse+lexicale+%28notion+d%27entit%E9+lexicale%29" target="socialbookmark">Google</a>
+</li></ul>
+			</div>
+		</div>
+		
+		<div class="options_block">
+			<h4 class="collapse blockhead options_correct">
+				<a class="collapse" id="collapse_posting_rules" href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)#top"><img src="./Tutoriel La création de langages - L&#39;analyse lexicale (notion d&#39;entité lexicale)_files/collapse_40b.png" alt=""></a>
+				Règles des messages
+			</h4>
+			<div id="posting_rules" class="thread_info_block blockbody formcontrols floatcontainer options_correct" style="overflow: hidden;">
+				
+<div id="forumrules" class="info_subblock">
+
+	<ul class="youcandoblock">
+		<li>Vous <strong>ne pouvez pas</strong> créer de sujets</li>
+		<li>Vous <strong>ne pouvez pas</strong> répondre aux sujets</li>
+		<li>Vous <strong>ne pouvez pas</strong> importer de fichiers joints</li>
+		<li>Vous <strong>ne pouvez pas</strong> modifier vos messages</li>
+		<li>&nbsp;</li>
+	</ul>
+	<div class="bbcodeblock">
+		<ul>
+			<li>Les <a href="http://hackademics.fr/misc.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=bbcode" target="_blank">BB codes</a> sont <strong>Activés</strong></li>
+			<li>Les <a href="http://hackademics.fr/misc.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=showsmilies" target="_blank">Smileys</a> sont <strong>Activés</strong></li>
+			<li>Le BB code <a href="http://hackademics.fr/misc.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=bbcode#imgcode" target="_blank">[IMG]</a> est <strong>Activé</strong></li>
+			<li>Le code <a href="http://hackademics.fr/misc.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=bbcode#videocode" target="_blank">[VIDEO]</a> est <strong>Activé</strong></li>
+			<li>Le code HTML est <strong>Désactivé</strong></li>
+		</ul>
+	</div>
+	<p class="rules_link"><a href="http://hackademics.fr/misc.php?s=1d9dfd724929022c65ba75342edbcea7&amp;do=showrules" target="_blank">Règles du forum</a></p>
+
+</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<div style="clear: left">
+   
+   
+</div>
+
+
+
+<div style="clear:both;"></div>
+
+
+<table class="prefooter" width="100%" border="0">
+  <tbody><tr>
+    <td class="column-left">
+		
+				<div class="prefooter-block-01 ">
+					<h6>Projets</h6>
+		<a href="http://cyprium.hackademics.fr/">Cyprium</a><br>
+<a href="http://anonymat.hackademics.fr/">Anonymat et loi renseignement</a><br>
+				</div>
+		
+		
+				<div class="prefooter-block-02">
+					<h6>Partenaires</h6>
+		
+				</div>
+		
+    </td>
+	
+	<td class="column-right" width="244">
+		
+			<div class="prefooter-block-03">
+				<h6>Suivez-nous !</h6>
+				<ul>
+					<li><a class="twitter" target="_blank" href="https://twitter.com/hackademics_"></a></li>
+					<li><a class="facebook" target="_blank" href="https://www.facebook.com/pages/Hackademics-Forum/450075978380133"></a></li>
+					<li><a class="gplus" target="_blank" href="https://plus.google.com/113093487586149863245/"></a></li>
+					<li><a class="youtube" target="_blank" href="http://www.youtube.com/channel/UCMZ0kJrbiuLNripBzO0hSQw"></a></li>
+					
+				</ul>
+			</div>
+		
+		
+    </td>
+	
+  </tr>
+</tbody></table>
+ 
+
+
+
+<div id="footer" class="floatcontainer footer">
+
+	<form action="http://hackademics.fr/forum.php" method="get" id="footer_select" class="footer_select">
+
+		
+			<select name="styleid" onchange="switch_id(this, &#39;style&#39;)">
+				<optgroup label="Choix du style"><option class="hidden"></option></optgroup>
+				
+									
+					<option value="26" class="">-- Metro</option><option value="27" class="" selected="selected">---- Metro-Fluid</option><option value="33" class="">---- Metro Black &amp; White</option><option value="34" class="">------ Metro Black &amp; White Fluid</option><option value="31" class="">---- Metro Green</option><option value="32" class="">------ Metro Green Fluid</option><option value="35" class="">---- Metro Golden</option><option value="36" class="">------ Metro Golden Fluid</option><option value="37" class="">---- Metro Lime</option><option value="38" class="">------ Metro Lime Fluid</option><option value="39" class="">---- Metro Orange</option><option value="40" class="">------ Metro Orange Fluid</option><option value="41" class="">---- Metro Purple</option><option value="42" class="">------ Metro Purple Fluid</option><option value="43" class="">---- Metro Red</option><option value="44" class="">------ Metro Red Fluid</option><option value="45" class="">---- Metro Teal</option><option value="46" class="">------ Metro Teal Fluid</option><option value="47" class="">---- Metro Violet Red</option><option value="28" class="">-- Default vBulletin</option>
+										
+				
+				
+			</select>	
+		
+		
+		
+			<select name="langid" onchange="switch_id(this, &#39;lang&#39;)">
+				<optgroup label="Choix de la langue">
+					<option value="1" class="">-- English (US)</option><option value="2" class="" selected="selected">-- Français (FR)</option>
+				</optgroup>
+			</select>
+		
+	</form>
+
+	<ul id="footer_links" class="footer_links">
+		
+		<li><a href="http://hackademics.fr/">Hackademics</a>  |  </li>
+		
+		
+		<li><a href="http://hackademics.fr/archive/index.php?s=1d9dfd724929022c65ba75342edbcea7">Archives</a>  |  </li>
+		
+		<li><a href="http://www.legifrance.gouv.fr/affichCodeArticle.do;jsessionid=7F043BD72C11400DAB14554D2B073869.tpdjo05v_2?idArticle=LEGIARTI000006417977&amp;cidTexte=LEGITEXT000006070719">Charte de confidentialité</a>  |  </li>
+		<li><a href="http://hackademics.fr/showthread.php?10-Charte-du-forum">Conditions d'utilisation</a>  |  </li>
+		<li><a href="http://hackademics.fr/showthread.php?2677-La-cr%E9ation-de-langages-L-analyse-lexicale-(notion-d-entit%E9-lexicale)#top" onclick="document.location.hash=&#39;top&#39;; return false;">Haut de page</a></li>
+	</ul>
+	
+	
+	
+	
+	<script type="text/javascript">
+	<!--
+		// Main vBulletin Javascript Initialization
+		vBulletin_init();
+	//-->
+	</script>
+        
+</div>
+</div> <!-- closing div for body_wrapper -->
+
+<div class="below_body">
+<div id="footer_time" class="shade footer_time">Fuseau horaire : GMT +2. Il est <span class="time">12h37</span>.</div>
+
+<div id="footer_copyright" class="shade footer_copyright">
+	<!-- Do not remove this copyright notice -->
+	Propulsé par <a href="http://www.vbulletin.com/" id="vbulletinlink">vBulletin™</a> Version 4.2.0 <br>Copyright © 2016 vBulletin Solutions, Inc. Tous droits réservés.<br>
+Version française par <a href="http://www.vbulletin-ressources.com/" target="_blank">vBulletin-Ressources.com</a>
+	<!-- Do not remove this copyright notice -->	
+</div>
+<div id="footer_morecopyright" class="shade footer_morecopyright">
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	Hackademics © - Tous droits réservés en adéquation avec le Code de la propriété intellectuelle et littéraire
+	
+<div id="pixelgoose-copyright">vBulletin Metro Theme by <a href="http://pixelgoose.com/" title="Premium vBulletin Themes">PixelGoose Studio</a></div>
+</div>
+
+ 
+
+</div>
+
+<div id="purr-container"></div></body></html>

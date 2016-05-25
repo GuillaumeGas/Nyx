@@ -4,25 +4,22 @@
 #include <vector>
 
 #include "Token.hpp"
+#include "syntax/Program.hpp"
 #include "../ast/Ast.hpp" 
 #include "../ast/Program.hpp"
-#include "../ast/Type.hpp"
-#include "../ast/VarDecl.hpp"
 
-class Syntaxe {
+class Syntax {
 public:
-  Syntaxe(std::string& file_name, std::vector<Token*>& tokens);
-  ~Syntaxe();
+  Syntax(std::string& file_name, std::vector<Token*>& tokens);
+  ~Syntax();
   
-  void analyze_current_token();
   ast::Ast * get_ast() const;
+  Token * get_token(unsigned int index);
+  void add_elem(ast::Ast * elem);
 
 private:
-  Token * getToken(unsigned int index);
-
   std::string m_file_name;
   
   std::vector<Token*> m_tokens;
   ast::Program * m_program;
-  unsigned int m_index;
 };

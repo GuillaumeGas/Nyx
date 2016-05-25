@@ -1,14 +1,13 @@
 #pragma once
 
 #include <iostream>
-
-#include "Position.hpp"
+#include "Ast.hpp"
 
 namespace ast {
-  class Ast {
+  class Value : public Ast {
   public:
-    virtual ~Ast();
+    Value();
+    ~Value();
     virtual std::string to_string() const;
-    Position * pos;
   };
 };

@@ -19,7 +19,7 @@ string Program::to_string() const {
   string res = "";
   res += "BEGIN\n";
   for(Ast* a : content) {
-    res += a->to_string();
+    res += a->to_string() + "\n";
   }
   res += "\nEND";
   return res;
