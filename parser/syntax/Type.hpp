@@ -6,6 +6,7 @@
 #include "../../ast/Type.hpp"
 #include "../../ast/Position.hpp"
 #include "Assign.hpp"
+#include "VarDecl.hpp"
 
 namespace bob {
   class Syntax;

@@ -13,7 +13,7 @@ void Assign::analyze(bob::Syntax * syntax, unsigned int index) {
   if(syntax->get_token(index+1)->type == TokenType::ASSIGN) {
     if(value == NULL)
       throw MissingErrorException("rvalue", Position(var_name->line, var_name->column));
-    if(next == NULL)
+    if(next == NULL || next->type != TokenType::SEMICOLON)
       throw MissingErrorException(";", Position(var_name->line, var_name->column));
     if(next->type == TokenType::SEMICOLON) {
       if(value->type == TokenType::INT) {
@@ -34,6 +34,7 @@ void Assign::analyze(bob::Syntax * syntax, unsigned int index) {
       } else {
 	throw SyntaxErrorException(value->value->to_string(), Position(value->line, value->column));
       }
+      Program::analyze(syntax, index+4);
     }
   } else {
     throw MissingErrorException("=", Position(var_name->line, var_name->column));

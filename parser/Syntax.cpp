@@ -6,19 +6,10 @@ using namespace bob;
 
 Syntax::Syntax(string& file_name, vector<Token*>& tokens) : m_file_name(file_name), m_tokens(tokens) {
   m_program = new Program();
-  // try {
-    bob::syntax::Program program;
-    program.analyze(this, 0);
-  // } catch (SyntaxException const& e) {
-  //   cout << e.to_string() << endl;
-  // }
+  syntax::Program::analyze(this, 0);
 }
 
-Syntax::~Syntax() {
-  if(m_program) {
-    delete m_program;
-  }
-}
+Syntax::~Syntax() {}
 
 void Syntax::add_elem(Ast * elem) {
   if (elem != NULL)

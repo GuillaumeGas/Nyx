@@ -5,6 +5,8 @@ using namespace bob;
 
 Compilo::Compilo(string file_name) {
   m_file_name = file_name;
+  m_lex = NULL;
+  m_syn = NULL;
 }
 
 Compilo::~Compilo() {
