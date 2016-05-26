@@ -13,10 +13,17 @@ namespace bob {
     TYPE,
     ASSIGN,
     PLUS,
+    PLUSEQ,
+    PLUSPLUS,
     MINUS,
+    MINUSEQ,
+    MINUSMINUS,
     MUL,
+    MULEQ,
     DIV,
+    DIVEQ,
     MOD,
+    MODEQ,
     LT,  // '<'
     LE, // '<='
     GT,  // '>'
@@ -93,10 +100,17 @@ namespace bob {
     static bool is_char(std::string& t);
     static bool is_string(std::string& t);
     static bool is_plus(std::string& t);
+    static bool is_plusplus(std::string& t);
+    static bool is_pluseq(std::string& t);
     static bool is_minus(std::string& t);
+    static bool is_minusminus(std::string& t);
+    static bool is_minuseq(std::string& t);
     static bool is_mul(std::string& t);
+    static bool is_muleq(std::string& t);
     static bool is_div(std::string& t);
+    static bool is_diveq(std::string& t);
     static bool is_mod(std::string& t);
+    static bool is_modeq(std::string& t);
     static bool is_lt(std::string& t);
     static bool is_le(std::string& t);
     static bool is_gt(std::string& t);

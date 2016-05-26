@@ -67,17 +67,37 @@ string Token::type_to_string() const {
   case PLUS:
     res = "PLUS";
     break;
+  case PLUSPLUS:
+    res = "PLUSPLUS";
+    break;
+  case PLUSEQ:
+    res = "PLUSEQ";
+    break;
   case MINUS:
     res = "MINUS";
     break;
+  case MINUSMINUS:
+    res = "MINUSMINUS";
+    break;
+  case MINUSEQ:
+    res = "MINUSEQ";
   case MUL:
     res = "MUL";
+    break;
+  case MULEQ:
+    res = "MULEQ";
     break;
   case DIV:
     res = "DIV";
     break;
+  case DIVEQ:
+    res = "DIVEQ";
+    break;
   case MOD:
     res = "MOD";
+    break;
+  case MODEQ:
+    res = "MODEQ";
     break;
   case LT:
     res = "LT";
@@ -199,14 +219,28 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
     return new Token(TokenType::STRING, tok, line, col);
   } else if(Token::is_plus(token)) {
     return new Token(TokenType::PLUS, token, line, col);
+  } else if(Token::is_plusplus(token)) {
+    return new Token(TokenType::PLUSPLUS, token, line, col);
+  } else if(Token::is_pluseq(token)) {
+    return new Token(TokenType::PLUSEQ, token, line, col);
   } else if(Token::is_minus(token)) {
     return new Token(TokenType::MINUS, token, line, col);
+  } else if(Token::is_minusminus(token)) {
+    return new Token(TokenType::MINUSMINUS, token, line, col);
+  } else if(Token::is_minuseq(token)) {
+    return new Token(TokenType::MINUSEQ, token, line, col);
   } else if(Token::is_mul(token)) {
     return new Token(TokenType::MUL, token, line, col);
+  } else if(Token::is_muleq(token)) {
+    return new Token(TokenType::MULEQ, token, line, col);
   } else if(Token::is_div(token)) {
     return new Token(TokenType::DIV, token, line, col);
+  } else if(Token::is_diveq(token)) {
+    return new Token(TokenType::DIVEQ, token, line, col);
   } else if(Token::is_mod(token)) {
     return new Token(TokenType::MOD, token, line, col);
+  } else if(Token::is_modeq(token)) {
+    return new Token(TokenType::MODEQ, token, line, col);
   } else if(Token::is_lt(token)) {
     return new Token(TokenType::LT, token, line, col);
   } else if(Token::is_le(token)) {
@@ -284,23 +318,51 @@ bool Token::is_string(string& t) {
 }
 
 bool Token::is_plus(string& t) {
-  return t[0] == '+';
+  return t == "+";
+}
+
+bool Token::is_plusplus(string& t) {
+  return t == "++";
+}
+
+bool Token::is_pluseq(string& t) {
+  return t == "+=";
 }
 
 bool Token::is_minus(string& t) {
-  return t[0] == '-';
+  return t == "-";
+}
+
+bool Token::is_minusminus(string& t) {
+  return t == "--";
+}
+
+bool Token::is_minuseq(string& t) {
+  return t == "-=";
 }
 
 bool Token::is_mul(string& t) {
-  return t[0] == '*';
+  return t == "*";
+}
+
+bool Token::is_muleq(string& t) {
+  return t == "*=";
 }
 
 bool Token::is_div(string& t) {
-  return t[0] == '/';
+  return t == "/";
+}
+
+bool Token::is_diveq(string& t) {
+  return t == "/=";
 }
 
 bool Token::is_mod(string& t) {
-  return t[0] == '%';
+  return t == "%";
+}
+
+bool Token::is_modeq(string& t) {
+  return t == "%=";
 }
 
 bool Token::is_lt(string& t) {
@@ -328,19 +390,19 @@ bool Token::is_ne(string& t) {
 }
 
 bool Token::is_par_l(string& t) {
-  return t[0] == '(';
+  return t == "(";
 }
 
 bool Token::is_par_r(string& t) {
-  return t[0] == ')';
+  return t == ")";
 }
 
 bool Token::is_accol_l(string& t) {
-  return t[0] == '{';
+  return t == "{";
 }
 
 bool Token::is_accol_r(string& t) {
-  return t[0] == '}';
+  return t == "}";
 }
 
 bool Token::is_if(string& t) {

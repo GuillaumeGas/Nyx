@@ -43,13 +43,13 @@ void Lexer::next_word() {
     if(c != ' ') {
       m_tmp_col = m_current_index+1;
       m_token = c;
-      if(c == '>' || c == '<' || c == '=' || c == '!') {
-	char next = m_current_line[m_current_index+1];
-	if(next == '>' || next == '<' || next == '=') {
+      char next = m_current_line[m_current_index+1];
+      if(c == '>' || c == '<' || c == '!' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%') {
+	if(next == '=' || (c == '+' && next == '+') || (c == '-' && next == '-')) {
 	  m_token += next;
 	  m_current_index++;
 	}
-      } //else if(c == '+' || c == '-' || 
+      }
     }
     m_current_index++;
   }
