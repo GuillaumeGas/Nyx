@@ -1,6 +1,7 @@
 #include "Compilo.hpp"
 
 using namespace std;
+using namespace bob;
 
 Compilo::Compilo(string file_name) {
   m_file_name = file_name;
@@ -20,11 +21,20 @@ Compilo::~Compilo() {
 }
 
 void Compilo::compile() {
-  m_lex = new Lexer(m_file_name);
-  m_tokens = m_lex->get_tokens();
-  
-  m_syn = new Syntax(m_file_name, m_tokens);
-  m_ast = m_syn->get_ast();
+  try {
+    m_lex = new Lexer(m_file_name);
+    m_tokens = m_lex->get_tokens();
+  } catch(LexerException const& e) {
+    cout << e.to_string() << endl;
+    exit(-1);
+  } 
+  try {
+    m_syn = new Syntax(m_file_name, m_tokens);
+    m_ast = m_syn->get_ast();
+  } catch(SyntaxException const& e) {
+    cout << e.to_string() << endl;
+    exit(-1);
+  }
 }
 
 void Compilo::print_tokens() const {

@@ -1,6 +1,7 @@
 #include "Lexer.hpp"
 
 using namespace std;
+using namespace bob;
 
 Lexer::Lexer(string file_name) : m_file_name(file_name) {
   m_line = 1;
@@ -13,8 +14,7 @@ Lexer::Lexer(string file_name) : m_file_name(file_name) {
       m_line++;
     }
   } else {
-    cout << "[Error] Can't open file." << endl;
-    // TODO exception
+    throw FileNotFoundException(file_name);
   }
 }
 
@@ -63,7 +63,7 @@ void Lexer::register_token() {
       m_tokens.push_back(t);
       m_column = -1;
     } else {
-      cout << "Syntax error : line " << m_line << endl << m_current_line << endl;
+      throw TokenErrorException(m_file_name, m_token, m_line, m_column);
     }
   }
 }

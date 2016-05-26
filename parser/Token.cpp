@@ -1,6 +1,7 @@
 #include "Token.hpp"
 
 using namespace std;
+using namespace bob;
 
 TokenIntValue::TokenIntValue(int i) : value(i){}
 TokenCharValue::TokenCharValue(char c) : value(c) {} 

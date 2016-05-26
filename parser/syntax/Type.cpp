@@ -2,9 +2,10 @@
 #include "../Syntax.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace syntax;
 
-void Type::analyze(Syntax * syntax, unsigned int index) {
+void Type::analyze(bob::Syntax * syntax, unsigned int index) {
   Token * type = syntax->get_token(index);
   Token * t = syntax->get_token(index+1);
 

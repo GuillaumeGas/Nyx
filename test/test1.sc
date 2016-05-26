@@ -1,2 +1,1 @@
-int a = "test";
-int b;
+int a = 13;

@@ -5,25 +5,28 @@
 #include <vector>
 
 #include "Token.hpp"
+#include "exceptions/LexerException.hpp"
 
-class Lexer {
-public:
-  Lexer(std::string file_name);
+namespace bob {
+  class Lexer {
+  public:
+    Lexer(std::string file_name);
 
-  std::vector<Token*> get_tokens() const;
+    std::vector<Token*> get_tokens() const;
 
-private:
-  void next_word();
-  void next_line();
-  void register_token();
+  private:
+    void next_word();
+    void next_line();
+    void register_token();
 
-  std::string m_file_name;
-  std::vector<Token*> m_tokens;
+    std::string m_file_name;
+    std::vector<Token*> m_tokens;
 
-  std::string m_current_line;
-  unsigned int m_current_index;
-  std::string m_token;
-  unsigned int m_line;
-  unsigned int m_column;
-  int m_tmp_col;
+    std::string m_current_line;
+    unsigned int m_current_index;
+    std::string m_token;
+    unsigned int m_line;
+    unsigned int m_column;
+    int m_tmp_col;
+  };
 };

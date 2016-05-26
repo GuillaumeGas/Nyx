@@ -4,11 +4,12 @@
 #include "../Token.hpp"
 #include "Type.hpp"
 
-class Syntax;
-
-namespace syntax {
-  class Program {
-  public:
-    static void analyze(Syntax * syntax, unsigned int index);
+namespace bob {
+  class Syntax;
+  namespace syntax {
+    class Program {
+    public:
+      static void analyze(bob::Syntax * syntax, unsigned int index);
+    };
   };
 };
