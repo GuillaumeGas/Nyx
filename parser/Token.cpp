@@ -188,11 +188,11 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
   } else if(Token::is_assign(token)) {
     return new Token(TokenType::ASSIGN, token, line, col);
   } else if(Token::is_integer(token)) {
-    return new Token(TokenType::INT, token, line, col);
+    return new Token(TokenType::INT, std::stoi(token), line, col);
   } else if(Token::is_semicolon(token)) {
     return new Token(TokenType::SEMICOLON, token, line, col);
   } else if(Token::is_char(token)) {
-    return new Token(TokenType::CHAR, token, line, col);
+    return new Token(TokenType::CHAR, token[0], line, col);
   } else if(Token::is_string(token)) {
     return new Token(TokenType::STRING, token, line, col);
   } else if(Token::is_plus(token)) {
