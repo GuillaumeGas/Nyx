@@ -9,8 +9,7 @@ void Type::analyze(bob::Syntax * syntax, unsigned int index) {
   Token * type = syntax->get_token(index);
   Token * t = syntax->get_token(index+1);
 
-  switch (t->type){
-  case TokenType::IDENT:
+  if(t->type == TokenType::IDENT) {
     Token * next = syntax->get_token(index+2);
     if (next->type == TokenType::SEMICOLON) {
       syntax->add_elem(new ast::VarDecl(new ast::Type(type->value->to_string(), true), t->value->to_string(), new ast::Position(type->line, type->column)));
@@ -18,8 +17,9 @@ void Type::analyze(bob::Syntax * syntax, unsigned int index) {
       syntax->add_elem(new ast::VarDecl(new ast::Type(type->value->to_string(), true), t->value->to_string(), new ast::Position(type->line, type->column)));
       Assign::analyze(syntax, index+1);
     } else {
-      cout << "Syntax error line " << type->line << endl;
+      throw SyntaxErrorException(next->value->to_string(), Position(next->line, next->column));
     }
-    break;
+  } else {
+    throw SyntaxErrorException(t->value->to_string(), Position(t->line, t->column));
   }
 }

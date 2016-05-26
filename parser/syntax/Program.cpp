@@ -12,6 +12,6 @@ void Program::analyze(bob::Syntax * syntax, unsigned int index) {
     Type::analyze(syntax, index);
     break;
   default:
-    cout << "Syntax error line " << t->line << endl;
+    throw SyntaxErrorException(t->value->to_string(), Position(t->line, t->column));
   }
 }

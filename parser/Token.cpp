@@ -226,7 +226,6 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
   } else if(Token::is_accol_r(token)) {
     return new Token(TokenType::ACCOL_R, token, line, col);
   } else {
-    cout << "Err -> [" << token << "]" << endl;
     return NULL;
   }
 }

@@ -49,7 +49,7 @@ void Lexer::next_word() {
 	  m_token += next;
 	  m_current_index++;
 	}
-      }
+      } //else if(c == '+' || c == '-' || 
     }
     m_current_index++;
   }

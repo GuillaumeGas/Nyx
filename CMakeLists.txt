@@ -12,7 +12,7 @@ file (
 )
 
 add_executable (
-  bob
+  ../bob
   main.cpp
   ${source_files}
 )
