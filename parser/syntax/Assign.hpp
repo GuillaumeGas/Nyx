@@ -7,6 +7,7 @@
 #include "../../ast/VarAssign.hpp"
 #include "../../ast/IntValue.hpp"
 #include "../../ast/StringValue.hpp"
+#include "../../ast/CharValue.hpp"
 
 namespace bob {
   class Syntax;

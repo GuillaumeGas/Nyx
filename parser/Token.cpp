@@ -192,9 +192,11 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
   } else if(Token::is_semicolon(token)) {
     return new Token(TokenType::SEMICOLON, token, line, col);
   } else if(Token::is_char(token)) {
-    return new Token(TokenType::CHAR, token[0], line, col);
+    return new Token(TokenType::CHAR, token.at(1), line, col);
   } else if(Token::is_string(token)) {
-    return new Token(TokenType::STRING, token, line, col);
+    string tok = token.erase(0, 1);
+    tok = tok.erase(tok.size()-1, 1);
+    return new Token(TokenType::STRING, tok, line, col);
   } else if(Token::is_plus(token)) {
     return new Token(TokenType::PLUS, token, line, col);
   } else if(Token::is_minus(token)) {

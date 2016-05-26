@@ -6,13 +6,13 @@
 #include "Position.hpp"
 
 namespace ast {
-  class StringValue : public Value {
+  class CharValue : public Value {
   public:
-    StringValue(std::string value, Position * pos);
-
-    std::string get_value() const;
+    CharValue(const char value, Position * pos);
+    
+    char get_value() const;
     std::string to_string() const;
 
-    std::string value;
+    char value;
   };
 };

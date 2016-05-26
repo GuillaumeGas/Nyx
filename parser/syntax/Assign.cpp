@@ -26,6 +26,11 @@ void Assign::analyze(bob::Syntax * syntax, unsigned int index) {
 	ast::Position * assign_pos = new ast::Position(var_name->line, var_name->column);
 	TokenStringValue * string_val = (TokenStringValue*) value->value;
 	syntax->add_elem(new ast::VarAssign(var_name->value->to_string(), new ast::StringValue(string_val->value, value_pos), assign_pos));
+      } else if(value->type == TokenType::CHAR) {
+	ast::Position * value_pos = new ast::Position(value->line, value->column); 
+	ast::Position * assign_pos = new ast::Position(var_name->line, var_name->column);
+	TokenCharValue * char_val = (TokenCharValue*) value->value;
+	syntax->add_elem(new ast::VarAssign(var_name->value->to_string(), new ast::CharValue(char_val->value, value_pos), assign_pos));
       } else {
 	throw SyntaxErrorException(value->value->to_string(), Position(value->line, value->column));
       }
