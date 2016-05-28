@@ -5,9 +5,9 @@
 #include "../exceptions/SyntaxException.hpp"
 #include "../Token.hpp"
 #include "../../ast/VarAssign.hpp"
-#include "../../ast/IntValue.hpp"
-#include "../../ast/StringValue.hpp"
-#include "../../ast/CharValue.hpp"
+#include "../../ast/ConstInt.hpp"
+#include "../../ast/ConstString.hpp"
+#include "../../ast/ConstChar.hpp"
 
 namespace bob {
   class Syntax;

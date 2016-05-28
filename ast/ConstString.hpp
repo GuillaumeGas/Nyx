@@ -6,12 +6,13 @@
 #include "Position.hpp"
 
 namespace ast {
-  class IntValue : public Value {
+  class ConstString : public Value {
   public:
-    IntValue(int value, Position * pos);
+    ConstString(std::string value, Position * pos);
 
+    std::string get_value() const;
     std::string to_string() const;
 
-    int value;
+    std::string value;
   };
 };
