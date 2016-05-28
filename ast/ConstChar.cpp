@@ -7,6 +7,8 @@ ConstChar::ConstChar(const char value, Position * pos) : value(value) {
   this->pos = pos;
 }
 
+ConstChar::~ConstChar() {}
+
 char ConstChar::get_value() const {
   return value;
 }

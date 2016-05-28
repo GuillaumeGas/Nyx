@@ -3,7 +3,7 @@
 using namespace std;
 using namespace ast;
 
-VarAssign::VarAssign(string var_name, Value * value, Position * pos) : name(var_name), value(value) {
+VarAssign::VarAssign(string var_name, Expression * value, Position * pos) : name(var_name), value(value) {
   this->pos = pos;
 }
 

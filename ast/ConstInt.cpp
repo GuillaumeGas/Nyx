@@ -7,6 +7,8 @@ ConstInt::ConstInt(int value, Position * pos) : value(value) {
   this->pos = pos;
 }
 
+ConstInt::~ConstInt() {}
+
 string ConstInt::to_string() const {
   string res = "";
   res += std::to_string(value);

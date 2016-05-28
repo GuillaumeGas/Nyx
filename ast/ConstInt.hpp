@@ -2,13 +2,14 @@
 
 #include <iostream>
 #include "Ast.hpp"
-#include "Value.hpp"
+#include "Expression.hpp"
 #include "Position.hpp"
 
 namespace ast {
-  class ConstInt : public Value {
+  class ConstInt : public Expression {
   public:
     ConstInt(int value, Position * pos);
+    ~ConstInt();
 
     std::string to_string() const;
 

@@ -7,6 +7,8 @@ ConstString::ConstString(string value, Position * pos) : value(value) {
   this->pos = pos;
 }
 
+ConstString::~ConstString() {}
+
 string ConstString::get_value() const {
   return value;
 }
