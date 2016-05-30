@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
+#include <queue>
 #include <fstream>
 
 #include "../parser/Token.hpp"
@@ -26,7 +26,7 @@ namespace bob {
     Syntax * m_syn;
 
     std::string m_file_name;
-    std::vector<Token*> m_tokens;
+    std::queue<Token*> * m_tokens;
     ast::Ast * m_ast;
   };
 };

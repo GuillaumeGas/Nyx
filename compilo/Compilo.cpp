@@ -10,11 +10,12 @@ Compilo::Compilo(string file_name) {
 }
 
 Compilo::~Compilo() {
-  for(Token* t : m_tokens) {
-    if (t) {
-      delete t;
-    }
-  }
+  // Token * t = NULL;
+  // while (m_tokens->size() > 0) {
+  //   t = m_tokens->front();
+  //   m_tokens->pop();
+  //   delete t;
+  // }
 
   if (m_lex)
     delete m_lex;
@@ -40,9 +41,13 @@ void Compilo::compile() {
 }
 
 void Compilo::print_tokens() const {
-  for(Token* t : m_tokens) {
-    cout << t->to_string() << endl;
-  }
+  // Token * t = NULL;
+  // while (m_tokens->size() > 0) {
+  //   t = m_tokens->front();
+  //   t->to_string();
+  //   m_tokens->pop();
+  //   delete t;
+  // }
 }
 
 void Compilo::print_ast() const {

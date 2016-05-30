@@ -5,12 +5,12 @@ using namespace bob;
 using namespace syntax;
 using namespace std;
 
-void Program::analyze(bob::Syntax * syntax, unsigned int index) {
-  Token * t = syntax->get_token(index);
+void Program::analyze(Syntax * syntax) {
+  Token * t = syntax->pop();
   if(t) {
     switch (t->type) {
     case TokenType::TYPE:
-      Type::analyze(syntax, index);
+      Type::analyze(syntax, t);
       break;
     default:
       throw SyntaxErrorException(t->value->to_string(), Position(t->line, t->column));

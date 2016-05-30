@@ -5,22 +5,21 @@ using namespace std;
 using namespace bob;
 using namespace syntax;
 
-void Type::analyze(bob::Syntax * syntax, unsigned int index) {
-  Token * type  = syntax->get_token(index);
-  Token * ident = syntax->get_token(index+1);
-
-  if(ident->type == TokenType::IDENT) {
-    Token * next = syntax->get_token(index+2);
+void Type::analyze(Syntax * syntax, Token * type) {
+  Token * next = syntax->pop(); //on récupère la suite
+  if(next->type == TokenType::IDENT) {
+    Token * ident = next;
+    next = syntax->pop();
     if (next->type == TokenType::SEMICOLON) {
-      VarDecl::analyze(syntax, index, type, ident);
-      Program::analyze(syntax, index+3);
+      VarDecl::analyze(syntax, type, ident);
+      Program::analyze(syntax);
     } else if(next->type == TokenType::ASSIGN) {
-      VarDecl::analyze(syntax, index, type, ident);
-      Assign::analyze(syntax, index+1);
+      VarDecl::analyze(syntax, type, ident);
+      Assign::analyze(syntax, ident);
     } else {
       throw SyntaxErrorException(next->value->to_string(), Position(next->line, next->column));
     }
   } else {
-    throw SyntaxErrorException(ident->value->to_string(), Position(ident->line, ident->column));
+    throw SyntaxErrorException(next->value->to_string(), Position(next->line, next->column));
   }
 }

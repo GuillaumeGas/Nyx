@@ -5,38 +5,13 @@ using namespace std;
 using namespace bob;
 using namespace syntax;
 
-void Assign::analyze(bob::Syntax * syntax, unsigned int index) {
-  Token * var_name = syntax->get_token(index);
-  Token * value    = syntax->get_token(index+2);
-  Token * next     = syntax->get_token(index+3);
+void Assign::analyze(bob::Syntax * syntax, Token * token_name) {
+  ast::Expression * expr = Expression::analyze(syntax);
+  if (expr == NULL)
+    throw MissingErrorException("expression", Position(token_name->line, token_name->column));
+  ast::Position * assign_pos = new ast::Position(token_name->line, token_name->column);
+  ast::VarAssign * var_assign = new ast::VarAssign(token_name->value->to_string(), expr, assign_pos);
+  syntax->add_elem(var_assign);
 
-  if(syntax->get_token(index+1)->type == TokenType::ASSIGN) {
-    if(value == NULL)
-      throw MissingErrorException("rvalue", Position(var_name->line, var_name->column));
-    if(next == NULL || next->type != TokenType::SEMICOLON)
-      throw MissingErrorException(";", Position(var_name->line, var_name->column));
-    if(next->type == TokenType::SEMICOLON) {
-      if(value->type == TokenType::INT) {
-	ast::Position * value_pos = new ast::Position(value->line, value->column); 
-	ast::Position * assign_pos = new ast::Position(var_name->line, var_name->column);
-	TokenIntValue * int_val = (TokenIntValue*) value->value;
-	syntax->add_elem(new ast::VarAssign(var_name->value->to_string(), new ast::ConstInt(int_val->value, value_pos), assign_pos));
-      } else if(value->type == TokenType::STRING) {
-	ast::Position * value_pos = new ast::Position(value->line, value->column); 
-	ast::Position * assign_pos = new ast::Position(var_name->line, var_name->column);
-	TokenStringValue * string_val = (TokenStringValue*) value->value;
-	syntax->add_elem(new ast::VarAssign(var_name->value->to_string(), new ast::ConstString(string_val->value, value_pos), assign_pos));
-      } else if(value->type == TokenType::CHAR) {
-	ast::Position * value_pos = new ast::Position(value->line, value->column); 
-	ast::Position * assign_pos = new ast::Position(var_name->line, var_name->column);
-	TokenCharValue * char_val = (TokenCharValue*) value->value;
-	syntax->add_elem(new ast::VarAssign(var_name->value->to_string(), new ast::ConstChar(char_val->value, value_pos), assign_pos));
-      } else {
-	throw SyntaxErrorException(value->value->to_string(), Position(value->line, value->column));
-      }
-      Program::analyze(syntax, index+4);
-    }
-  } else {
-    throw MissingErrorException("=", Position(var_name->line, var_name->column));
-  }
+  Program::analyze(syntax);
 }

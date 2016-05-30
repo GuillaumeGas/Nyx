@@ -60,7 +60,7 @@ void Lexer::register_token() {
   if(m_token.size() > 0) {
     Token * t = Token::create(m_token, m_line, m_column);
     if(t) {
-      m_tokens.push_back(t);
+      m_tokens.push(t);
       m_column = -1;
     } else {
       throw TokenErrorException(m_file_name, m_token, m_line, m_column);
@@ -68,6 +68,6 @@ void Lexer::register_token() {
   }
 }
 
-vector<Token*> Lexer::get_tokens() const {
-  return m_tokens;
+queue<Token*> * Lexer::get_tokens() {
+  return &m_tokens;
 }

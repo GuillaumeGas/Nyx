@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <iostream>
-#include <vector>
+#include <queue>
 
 #include "Token.hpp"
 #include "exceptions/LexerException.hpp"
@@ -12,7 +12,7 @@ namespace bob {
   public:
     Lexer(std::string file_name);
 
-    std::vector<Token*> get_tokens() const;
+    std::queue<Token*> * get_tokens();
 
   private:
     void next_word();
@@ -20,7 +20,7 @@ namespace bob {
     void register_token();
 
     std::string m_file_name;
-    std::vector<Token*> m_tokens;
+    std::queue<Token*> m_tokens;
 
     std::string m_current_line;
     unsigned int m_current_index;

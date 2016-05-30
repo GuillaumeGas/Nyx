@@ -10,7 +10,7 @@ namespace bob {
   namespace syntax {
     class VarDecl {
     public:
-      static void analyze(Syntax * syntax, unsigned int index, Token * token_type, Token * token_name);
+      static void analyze(Syntax * syntax, Token * token_type, Token * token_name);
     };
   };
 };

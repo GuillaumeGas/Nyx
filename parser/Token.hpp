@@ -45,8 +45,6 @@ namespace bob {
     PRINT_S,
     SCAN_I,
     SCAN_S,
-    TRUE,
-    FALSE,
     RETURN
   };
 
@@ -75,11 +73,19 @@ namespace bob {
 
     std::string value;
   };
+  struct TokenBoolValue : TokenValue {
+    TokenBoolValue(bool b);
+
+    std::string to_string() const;
+
+    bool value;
+  };
 
   struct Token {
     Token(TokenType t, int v, unsigned int l, unsigned int col);
     Token(TokenType t, char c, unsigned int l, unsigned int col);
     Token(TokenType t, std::string& s, unsigned int l, unsigned int col);
+    Token(TokenType t, bool b, unsigned int l, unsigned int col);
     ~Token();
 
     std::string to_string() const;
@@ -99,6 +105,7 @@ namespace bob {
     static bool is_semicolon(std::string& t);
     static bool is_char(std::string& t);
     static bool is_string(std::string& t);
+    static bool is_bool(std::string& t);
     static bool is_plus(std::string& t);
     static bool is_plusplus(std::string& t);
     static bool is_pluseq(std::string& t);
@@ -115,6 +122,7 @@ namespace bob {
     static bool is_le(std::string& t);
     static bool is_gt(std::string& t);
     static bool is_ge(std::string& t);
+
     static bool is_eq(std::string& t);
     static bool is_ne(std::string& t);
     static bool is_par_l(std::string& t);
@@ -131,8 +139,9 @@ namespace bob {
     static bool is_print_s(std::string& t);
     static bool is_scan_i(std::string& t);
     static bool is_scan_s(std::string& t);
-    static bool is_true(std::string& t);
-    static bool is_false(std::string& t);
     static bool is_return(std::string& t);
+
+    static bool is_value(std::string& t);
+    static bool is_binop(std::string& t);
   };
 };

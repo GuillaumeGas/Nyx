@@ -9,7 +9,7 @@ namespace bob {
   namespace syntax {
     class Program {
     public:
-      static void analyze(bob::Syntax * syntax, unsigned int index);
+      static void analyze(Syntax * syntax);
     };
   };
 };

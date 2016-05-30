@@ -6,10 +6,12 @@ using namespace bob;
 TokenIntValue::TokenIntValue(int i) : value(i){}
 TokenCharValue::TokenCharValue(char c) : value(c) {} 
 TokenStringValue::TokenStringValue(string& s) : value(s) {}
+TokenBoolValue::TokenBoolValue(bool b) : value(b) {}
 
 string TokenIntValue::to_string() const { return std::to_string(value); }
 string TokenCharValue::to_string() const { return std::to_string(value); }
 string TokenStringValue::to_string() const { return value; }
+string TokenBoolValue::to_string() const { return value ? "true" : "false"; }
 
 Token::Token(TokenType t, int v, unsigned int l, unsigned int col) {
   type = t;
@@ -31,6 +33,14 @@ Token::Token(TokenType t, string& s, unsigned int l, unsigned int col) {
   line = l;
   column = col;
 }
+
+Token::Token(TokenType t, bool b, unsigned int l, unsigned int col) {
+  type = t;
+  value = new TokenBoolValue(b);
+  line = l;
+  column = col;
+}
+
 
 Token::~Token() { if (value) { delete value; } }
 
@@ -63,6 +73,9 @@ string Token::type_to_string() const {
     break;
   case STRING:
     res = "STRING";
+    break;
+  case BOOL:
+    res = "BOOL";
     break;
   case PLUS:
     res = "PLUS";
@@ -159,12 +172,6 @@ string Token::type_to_string() const {
   case SCAN_S:
     res = "SCAN_S";
     break;
-  case TRUE:
-    res = "TRUE";
-    break;
-  case FALSE:
-    res = "FALSE";
-    break;
   case RETURN:
     res = "RETURN";
     break;
@@ -189,10 +196,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
     return new Token(TokenType::FOR, token, line, col);
   } else if(Token::is_print_i(token)) {
     return new Token(TokenType::PRINT_I, token, line, col);
-  } else if(Token::is_true(token)) {
-    return new Token(TokenType::TRUE, token, line, col);
-  } else if(Token::is_false(token)) {
-    return new Token(TokenType::FALSE, token, line, col);
+  } else if(Token::is_bool(token)) {
+    return new Token(TokenType::BOOL, token, line, col);
   } else if(Token::is_print_s(token)) {
     return new Token(TokenType::PRINT_S, token, line, col);
   } else if(Token::is_scan_i(token)) {
@@ -445,14 +450,18 @@ bool Token::is_scan_s(string& t) {
   return t == "scan_s";
 }
 
-bool Token::is_true(string& t) {
-  return t == "true";
-}
-
-bool Token::is_false(string& t) {
-  return t == "false";
+bool Token::is_bool(string& t) {
+  return t == "true" || t == "false";
 }
 
 bool Token::is_return(string& t) {
   return t == "return";
+}
+
+bool Token::is_value(string& t) {
+  return Token::is_string(t) || Token::is_integer(t) || Token::is_char(t) || Token::is_bool(t);
+}
+
+bool Token::is_binop(string& t) {
+  return Token::is_plus(t) || Token::is_minus(t) || Token::is_mul(t) || Token::is_div(t) || Token::is_mod(t);
 }
