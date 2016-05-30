@@ -11,19 +11,19 @@ namespace bob {
     STRING,
     IDENT,
     TYPE,
-    ASSIGN,
-    PLUS,
-    PLUSEQ,
-    PLUSPLUS,
-    MINUS,
-    MINUSEQ,
-    MINUSMINUS,
-    MUL,
-    MULEQ,
-    DIV,
-    DIVEQ,
-    MOD,
-    MODEQ,
+    ASSIGN, // '='
+    PLUS,   // '+'
+    PLUSEQ, // '+='
+    PLUSPLUS, // '++'
+    MINUS, // '-'
+    MINUSEQ, // '-='
+    MINUSMINUS, // '--'
+    MUL, // '*'
+    MULEQ, // '*='
+    DIV, // '/'
+    DIVEQ, // '/='
+    MOD, // '%'
+    MODEQ, // '%='
     LT,  // '<'
     LE, // '<='
     GT,  // '>'
