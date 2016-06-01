@@ -1,3 +1,6 @@
+#include <queue>
+#include <stack>
+
 #include "Expression.hpp"
 #include "../Syntax.hpp"
 
@@ -6,36 +9,60 @@ using namespace bob;
 using namespace syntax;
 
 ast::Expression * Expression::analyze(Syntax * syntax) {
-  Token * current_token = syntax->pop();;
-  Token * last_token = NULL;
-  ast::Ast * expr = NULL;
-  if (current_token != NULL) {
-    do {
-      string val = current_token->value->to_string();
-      if (Token::is_value(val)) {
-	expr = Expression::create_value(current_token);
-      } else if (Token::is_binop(val)) {
-	last_token = current_token;
-	current_token = syntax->pop();
-	val = current_token->value->to_string();
-	if (current_token == NULL) {
-	  throw MissingErrorException("expression", Position(last_token->line, last_token->column));
-	} else if (!Token::is_value(val)) {
-	  throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
-	}
-	
-	ast::Position * pos = new ast::Position(last_token->line, last_token->column);
-	ast::Expression * right_expr = Expression::create_value(current_token);
-	ast::BinOperator op = Expression::create_operator(last_token);
-	ast::Binop * binop = new ast::Binop((ast::Expression*)expr, right_expr, op, pos);
+  
+  /* Transformation de l'expression en notation polonaise inversée */
+  queue<Token*> out;
+  stack<Token*> op;
 
-	expr = (ast::Ast*) binop;
+  Token * current_token = syntax->pop();
+  Token * tmp = NULL;
+
+  while (current_token != NULL && current_token->type != TokenType::SEMICOLON) {
+    string val = current_token->value->to_string();
+
+    if (Token::is_value(val)) {
+      out.push(current_token);
+    } else if (Token::is_par_l(val)) {
+      out.push(current_token);
+    } else if (Token::is_par_r(val)) {
+      tmp = op.top();
+      while (tmp->type != TokenType::PAR_L && op.size() > 0) {
+	out.push(tmp);
+	op.pop();
+	tmp = op.top();
       }
-      last_token = current_token;
-      current_token = syntax->pop();
-    } while (current_token != NULL && current_token->type != TokenType::SEMICOLON);
-    return (ast::Expression*)expr;
+      if (tmp->type != TokenType::PAR_L) {
+	throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp->column));
+      } else {
+	op.pop();
+      }
+    } else if (Token::is_binop(val)) {
+      if (op.size() == 0 || op.top()->type == TokenType::PAR_L) {
+	op.push(current_token);
+      } else {
+	ast::Operator op1(current_token->value->to_string());
+	ast::Operator op2(op.top()->value->to_string());
+	if (op1.priority > op2.priority) {
+	  op.push(current_token);
+	} else {
+	  out.push(op.top());
+	  op.pop();
+	  op.push(current_token);
+	}
+      } 
+    } else {
+      throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp-column));
+    }
   }
+  while (op.size() > 0) {
+    out.push(op.top());
+    op.pop();
+  }
+
+  /* On prend la sortie et créé l'ast relatif à l'expression */
+  
+
+
   return NULL;
 }
 
