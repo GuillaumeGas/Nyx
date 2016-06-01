@@ -1,35 +1,33 @@
 #pragma once
 
 namespace ast {
-  enum BinOperator {
+  
+  class Operator {
+  public:
+    Operator(std::string s);
+    OpPriority priority;
+    Op value;
+
+    std::string to_string() const;
+
+  private:
+    Op get_value(std::string s);
+    OpPriority get_priority(Op o);
+  };
+
+  enum OpPriority {
+    UUULOW_OP,
+    UULOW_OP,
+    ULOW_OP,
+    LOW_OP,
+    HIGH_OP
+  };
+
+  enum Op {
     PLUS,
     MINUS,
     MUL,
     DIV,
     MOD
-  };
-
-  struct Operator {
-    static std::string to_string(BinOperator op) {
-      switch (op) {
-      case PLUS:
-	return "+";
-	break;
-      case MINUS:
-	return "-";
-	break;
-      case MUL:
-	return "*";
-	break;
-      case DIV:
-	return "/";
-	break;
-      case MOD:
-	return "%";
-	break;
-      default:
-	return "?";
-      }
-    }
   };
 };
