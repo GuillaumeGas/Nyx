@@ -1,19 +1,8 @@
 #pragma once
 
+#include <iostream>
+
 namespace ast {
-  
-  class Operator {
-  public:
-    Operator(std::string s);
-    OpPriority priority;
-    Op value;
-
-    std::string to_string() const;
-
-  private:
-    Op get_value(std::string s);
-    OpPriority get_priority(Op o);
-  };
 
   enum OpPriority {
     UUULOW_OP,
@@ -30,4 +19,18 @@ namespace ast {
     DIV,
     MOD
   };
+  
+  class Operator {
+  public:
+    Operator(std::string s);
+    OpPriority priority;
+    Op value;
+
+    std::string to_string() const;
+
+  private:
+    Op get_value(std::string s);
+    OpPriority get_priority(Op o);
+  };
+
 };
