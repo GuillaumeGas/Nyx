@@ -19,7 +19,6 @@ namespace bob {
     public:
       static ast::Expression * analyze(Syntax * syntax);
       static ast::Expression * create_value(Token * token);
-      static ast::BinOperator create_operator(Token * token);
     };
   };
 };

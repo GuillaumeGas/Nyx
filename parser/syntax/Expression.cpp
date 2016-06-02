@@ -20,6 +20,8 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
   while (current_token != NULL && current_token->type != TokenType::SEMICOLON) {
     string val = current_token->value->to_string();
 
+    cout << "val : " << val << endl;
+
     if (Token::is_value(val)) {
       out.push(current_token);
     } else if (Token::is_par_l(val)) {
@@ -51,19 +53,39 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
 	}
       } 
     } else {
-      throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp-column));
+      throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp->column));
     }
+    current_token = syntax->pop();
   }
   while (op.size() > 0) {
     out.push(op.top());
     op.pop();
   }
 
-  /* On prend la sortie et créé l'ast relatif à l'expression */
-  
+  /* On prendl la sortie et créé l'ast relatif à l'expression */
+  stack<ast::Expression*> st;
 
+  while (out.size() > 0) {
+    Token * t = out.front();
+    out.pop();
 
-  return NULL;
+    string val = t->value->to_string();
+    cout << "val2 = " << val << endl;
+    if (Token::is_value(val)) {
+      st.push(Expression::create_value(t));
+    } else {
+      ast::Operator * op = new ast::Operator(val);
+      ast::Expression * e2 = st.top();
+      st.pop();
+      ast::Expression * e1 = st.top();
+      st.pop();
+      st.push(new ast::Binop(e1, e2, op, new ast::Position(t->line, t->column)));
+    }
+  }
+
+  if (st.size() != 1)
+    throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
+  return st.top();
 }
 
 ast::Expression * Expression::create_value(Token * token) {
@@ -86,27 +108,4 @@ ast::Expression * Expression::create_value(Token * token) {
     throw SyntaxErrorException(token->value->to_string(), Position(token->line, token->column));
   }
   return NULL;
-}
-
-ast::BinOperator Expression::create_operator(Token * token) {
-  ast::Position * pos = new ast::Position(token->line, token->column);
-  switch (token->type) {
-  case TokenType::PLUS:
-    return ast::BinOperator::PLUS;
-    break;
-  case TokenType::MINUS:
-    return ast::BinOperator::MINUS;
-    break;
-  case TokenType::MUL:
-    return ast::BinOperator::MUL;
-    break;
-  case TokenType::DIV:
-    return ast::BinOperator::DIV;
-    break;
-  case TokenType::MOD:
-    return ast::BinOperator::MOD;
-    break;
-  default:
-    throw SyntaxErrorException(token->value->to_string(), Position(token->line, token->column));
-  }
 }
