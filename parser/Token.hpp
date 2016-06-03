@@ -142,6 +142,7 @@ namespace bob {
     static bool is_return(std::string& t);
 
     static bool is_value(Token * t);
+    static bool is_ident(Token * t);
     static bool is_binop(Token * t);
     static bool is_par_l(Token * t);
     static bool is_par_r(Token * t);

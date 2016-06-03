@@ -2,15 +2,13 @@
 
 #include <iostream>
 #include "../Token.hpp"
-#include "Type.hpp"
-#include "Ident.hpp"
 
 namespace bob {
   class Syntax;
   namespace syntax {
-    class Program {
+    class Ident {
     public:
-      static void analyze(Syntax * syntax);
+      static void analyze(bob::Syntax * syntax, Token * token_ident);
     };
   };
 };

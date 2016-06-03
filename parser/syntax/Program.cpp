@@ -12,6 +12,9 @@ void Program::analyze(Syntax * syntax) {
     case TokenType::TYPE:
       Type::analyze(syntax, t);
       break;
+    case TokenType::IDENT:
+      Ident::analyze(syntax, t);
+      break;
     default:
       throw SyntaxErrorException(t->value->to_string(), Position(t->line, t->column));
     }

@@ -463,6 +463,10 @@ bool Token::is_value(Token * t) {
   return (type == TokenType::INT || type == TokenType::CHAR || type == TokenType::STRING || type == TokenType::BOOL);
 }
 
+bool Token::is_ident(Token * t) {
+  return t->type == TokenType::IDENT;
+}
+
 bool Token::is_binop(Token * t) { 
   TokenType type = t->type;
   return (type == TokenType::PLUS || type == TokenType::MINUS || type == TokenType::MUL || type == TokenType::DIV || type == TokenType::MOD);

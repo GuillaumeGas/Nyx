@@ -20,7 +20,7 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
   while (current_token != NULL && current_token->type != TokenType::SEMICOLON) {
     string val = current_token->value->to_string();
 
-    if (Token::is_value(current_token)) {
+    if (Token::is_value(current_token) || Token::is_ident(current_token)) {
       out.push(current_token);
     } else if (Token::is_par_l(current_token)) {
       op.push(current_token);
@@ -70,6 +70,8 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
 
     if (Token::is_value(t)) {
       st.push(Expression::create_value(t));
+    } else if (Token::is_ident(t)) {
+      st.push(new ast::VarId(t->value->to_string(), new ast::Position(t->line, t->column)));
     } else {
       ast::Operator * op = new ast::Operator(t->value->to_string());
       ast::Expression * e2 = st.top();
