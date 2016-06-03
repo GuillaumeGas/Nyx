@@ -458,10 +458,15 @@ bool Token::is_return(string& t) {
   return t == "return";
 }
 
-bool Token::is_value(string& t) {
-  return Token::is_string(t) || Token::is_integer(t) || Token::is_char(t) || Token::is_bool(t);
+bool Token::is_value(Token * t) {
+  TokenType type = t->type;
+  return (type == TokenType::INT || type == TokenType::CHAR || type == TokenType::STRING || type == TokenType::BOOL);
 }
 
-bool Token::is_binop(string& t) {
-  return Token::is_plus(t) || Token::is_minus(t) || Token::is_mul(t) || Token::is_div(t) || Token::is_mod(t);
+bool Token::is_binop(Token * t) { 
+  TokenType type = t->type;
+  return (type == TokenType::PLUS || type == TokenType::MINUS || type == TokenType::MUL || type == TokenType::DIV || type == TokenType::MOD);
 }
+
+bool Token::is_par_l(Token * t) { return t->type == TokenType::PAR_L; }
+bool Token::is_par_r(Token * t) { return t->type == TokenType::PAR_R; }

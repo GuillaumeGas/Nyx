@@ -20,25 +20,25 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
   while (current_token != NULL && current_token->type != TokenType::SEMICOLON) {
     string val = current_token->value->to_string();
 
-    if (Token::is_value(val)) {
+    if (Token::is_value(current_token)) {
       out.push(current_token);
-    } else if (Token::is_par_l(val)) {
+    } else if (Token::is_par_l(current_token)) {
       op.push(current_token);
-    } else if (Token::is_par_r(val)) {
+    } else if (Token::is_par_r(current_token)) {
       tmp = op.top();
-      while (tmp->type != TokenType::PAR_L && op.size() > 0) {
+      while (!Token::is_par_l(tmp) && op.size() > 0) {
 	out.push(tmp);
 	op.pop();
 	if (op.size() > 0)
 	  tmp = op.top();
       }
-      if (tmp->type != TokenType::PAR_L) {
+      if (!Token::is_par_l(tmp)) {
 	throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp->column));
       } else {
 	op.pop();
       }
-    } else if (Token::is_binop(val)) {
-      if (op.size() == 0 || op.top()->type == TokenType::PAR_L) {
+    } else if (Token::is_binop(current_token)) {
+      if (op.size() == 0 || Token::is_par_l(op.top())) {
 	op.push(current_token);
       } else {
 	ast::Operator op1(current_token->value->to_string());
@@ -52,7 +52,7 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
 	}
       } 
     } else {
-      throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp->column));
+      throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
     }
     current_token = syntax->pop();
   }
@@ -68,11 +68,10 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
     Token * t = out.front();
     out.pop();
 
-    string val = t->value->to_string();
-    if (Token::is_value(val)) {
+    if (Token::is_value(t)) {
       st.push(Expression::create_value(t));
     } else {
-      ast::Operator * op = new ast::Operator(val);
+      ast::Operator * op = new ast::Operator(t->value->to_string());
       ast::Expression * e2 = st.top();
       st.pop();
       ast::Expression * e1 = st.top();
@@ -104,6 +103,7 @@ ast::Expression * Expression::create_value(Token * token) {
     return new ast::ConstBool(((TokenBoolValue*)token_value)->value, pos);
     break;
   default:
+    cout << "tok " << token->to_string() << endl;
     throw SyntaxErrorException(token->value->to_string(), Position(token->line, token->column));
   }
   return NULL;
