@@ -46,7 +46,7 @@ Token::~Token() { if (value) { delete value; } }
 
 string Token::to_string() const {
   string res = "[Type = ";
-  res += type_to_string() + ", Value = " + value->to_string() + ", Line : " + std::to_string(line)  + ", Column : " + std::to_string(column) + "]";
+  res += type_to_string() + ", Value " + value->to_string() + ", Line : " + std::to_string(line)  + ", Column : " + std::to_string(column) + "]";
   return res;
 }
 

@@ -20,18 +20,17 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
   while (current_token != NULL && current_token->type != TokenType::SEMICOLON) {
     string val = current_token->value->to_string();
 
-    cout << "val : " << val << endl;
-
     if (Token::is_value(val)) {
       out.push(current_token);
     } else if (Token::is_par_l(val)) {
-      out.push(current_token);
+      op.push(current_token);
     } else if (Token::is_par_r(val)) {
       tmp = op.top();
       while (tmp->type != TokenType::PAR_L && op.size() > 0) {
 	out.push(tmp);
 	op.pop();
-	tmp = op.top();
+	if (op.size() > 0)
+	  tmp = op.top();
       }
       if (tmp->type != TokenType::PAR_L) {
 	throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp->column));
@@ -70,7 +69,6 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
     out.pop();
 
     string val = t->value->to_string();
-    cout << "val2 = " << val << endl;
     if (Token::is_value(val)) {
       st.push(Expression::create_value(t));
     } else {
@@ -85,6 +83,7 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
 
   if (st.size() != 1)
     throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
+  
   return st.top();
 }
 

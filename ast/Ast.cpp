@@ -8,4 +8,4 @@ Ast::~Ast() {
   }
 }
 
-std::string Ast::to_string() const { return ""; }
+std::string Ast::to_string() const { return "ROOT"; }
