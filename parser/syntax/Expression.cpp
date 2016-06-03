@@ -17,7 +17,7 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
   Token * current_token = syntax->pop();
   Token * tmp = NULL;
 
-  while (current_token != NULL && current_token->type != TokenType::SEMICOLON) {
+  while (current_token->type != TokenType::SEMICOLON) {
     string val = current_token->value->to_string();
 
     if (Token::is_value(current_token) || Token::is_ident(current_token)) {
@@ -54,7 +54,12 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
     } else {
       throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
     }
+    
+    Token * last = current_token;
     current_token = syntax->pop();
+
+    if (current_token == NULL)
+      throw MissingErrorException(";", Position(last->line, last->column));
   }
   while (op.size() > 0) {
     out.push(op.top());
