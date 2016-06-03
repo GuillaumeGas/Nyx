@@ -17,6 +17,5 @@ Binop::~Binop() {
 }
 
 string Binop::to_string() const {
-  cout << "binop : " << e1->to_string() << ", " << e2->to_string() << endl; 
-  return e1->to_string() + " " + op->to_string() + " " + e2->to_string();
+  return "(" + e1->to_string() + " " + op->to_string() + " " + e2->to_string() + ")";
 }
