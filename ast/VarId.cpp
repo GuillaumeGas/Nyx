@@ -10,6 +10,9 @@ VarId::VarId(string name, Position * pos) : name(name) {
 
 VarId::~VarId() {}
 
+void VarId::interpret() {
+}
+
 string VarId::to_string() const {
   return name;
 }

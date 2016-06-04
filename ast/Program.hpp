@@ -12,6 +12,7 @@ namespace bob {
       Program();
       ~Program();
 
+      void interpret();
       std::string to_string() const;
 
       std::vector<Ast*> content;

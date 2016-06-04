@@ -13,6 +13,16 @@ VarAssign::~VarAssign() {
     delete value;
 }
 
+void VarAssign::interpret() {
+  symbol::Table * table = symbol::Table::get_instance();
+  
+  symbol::Symbol * s = table->get_symbol(name);
+  
+  // TODO : interpret de l'expression renvoie une valeur symbol::Value (type + valeur)
+  // checker si les types correspondent
+  // exception ou maj du symbole en mémoire
+}
+
 string VarAssign::to_string() const {
   string res = "";
   res += "VarAssign " + name + " " + value->to_string() + ", " + pos->to_string();

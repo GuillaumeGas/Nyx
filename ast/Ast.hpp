@@ -10,6 +10,7 @@ namespace bob {
     public:
       virtual ~Ast();
       virtual std::string to_string() const;
+      virtual void interpret();
       Position * pos;
     };
   };

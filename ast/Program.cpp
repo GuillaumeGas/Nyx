@@ -16,6 +16,12 @@ Program::~Program() {
   }
 }
 
+void Program::interpret() {
+  for (Ast * a : content) {
+    a->interpret();
+  }
+}
+
 string Program::to_string() const {
   string res = "";
   res += "BEGIN\n";

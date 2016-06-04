@@ -4,6 +4,8 @@
 #include "Ast.hpp"
 #include "Type.hpp"
 #include "Position.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 namespace bob {
   namespace ast {
@@ -12,6 +14,7 @@ namespace bob {
       VarDecl(Type * type, std::string name, Position * pos);
       ~VarDecl();
 
+      void interpret();
       std::string to_string() const;
 
       Type * type;

@@ -1,5 +1,6 @@
 #include "Ast.hpp"
 
+using namespace std;
 using namespace bob;
 using namespace ast;
 
@@ -10,3 +11,5 @@ Ast::~Ast() {
 }
 
 std::string Ast::to_string() const { return "ROOT"; }
+
+void Ast::interpret() {  }

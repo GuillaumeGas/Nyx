@@ -14,6 +14,12 @@ VarDecl::~VarDecl() {
   }
 }
 
+void VarDecl::interpret() {
+  symbol::Table * table = symbol::Table::get_instance();
+
+  table->add_symbol(new symbol::Symbol(name));
+}
+
 string VarDecl::to_string() const {
   string res = "";
   res += "VarDecl " + type->to_string() + " " + name + ", " + pos->to_string();

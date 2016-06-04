@@ -4,6 +4,8 @@
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 namespace bob {
   namespace ast {
@@ -12,6 +14,7 @@ namespace bob {
       VarId(std::string name, Position * pos);
       ~VarId();
 
+      void interpret();
       std::string to_string() const;
     
       std::string name;
