@@ -1,14 +1,18 @@
-// #pragma once
+#pragma once
 
-// #include "../Syntax.hpp"
-// #include "../../ast/PrintI.hpp"
-// #include "../exceptions/SyntaxException.hpp"
+#include "Expression.hpp"
+#include "../Syntax.hpp"
+#include "../Token.hpp"
+#include "../exceptions/SyntaxException.hpp"
+#include "../../ast/PrintI.hpp"
+#include "../../ast/Position.hpp"
+#include "../../ast/Expression.hpp"
 
-// namespace bob {
-//   namespace syntax {
-//     class PrintI {
-//     public:
-//       void analyze(Syntax * syntax, unsigned int index);
-//     };
-//   };
-// };
+namespace bob {
+  namespace syntax {
+    class PrintI {
+    public:
+      static void analyze(Syntax * syntax, Token * token);
+    };
+  };
+};

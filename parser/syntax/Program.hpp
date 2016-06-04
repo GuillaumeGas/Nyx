@@ -4,6 +4,7 @@
 #include "../Token.hpp"
 #include "Type.hpp"
 #include "Ident.hpp"
+#include "PrintI.hpp"
 
 namespace bob {
   class Syntax;

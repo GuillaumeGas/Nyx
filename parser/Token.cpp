@@ -166,6 +166,12 @@ string Token::type_to_string() const {
   case PRINT_S:
     res = "PRINT_S";
     break;
+  case PRINT_C:
+    res = "PRINT_C";
+    break;
+  case PRINT_B:
+    res = "PRINT_B";
+    break;
   case SCAN_I:
     res = "SCAN_I";
     break;
@@ -200,6 +206,10 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
     return new Token(TokenType::BOOL, token, line, col);
   } else if(Token::is_print_s(token)) {
     return new Token(TokenType::PRINT_S, token, line, col);
+ } else if(Token::is_print_s(token)) {
+    return new Token(TokenType::PRINT_C, token, line, col);
+ } else if(Token::is_print_s(token)) {
+    return new Token(TokenType::PRINT_B, token, line, col);
   } else if(Token::is_scan_i(token)) {
     return new Token(TokenType::SCAN_I, token, line, col);
   } else if(Token::is_scan_s(token)) {
@@ -440,6 +450,14 @@ bool Token::is_print_i(string& t) {
 
 bool Token::is_print_s(string& t) {
   return t == "print_s";
+}
+
+bool Token::is_print_c(string& t) {
+  return t == "print_c";
+}
+
+bool Token::is_print_b(string& t) {
+  return t == "print_b";
 }
 
 bool Token::is_scan_i(string& t) {

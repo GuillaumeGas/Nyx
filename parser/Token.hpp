@@ -43,6 +43,8 @@ namespace bob {
     FOR,
     PRINT_I,
     PRINT_S,
+    PRINT_C,
+    PRINT_B,
     SCAN_I,
     SCAN_S,
     RETURN
@@ -137,6 +139,8 @@ namespace bob {
     static bool is_while(std::string& t);
     static bool is_print_i(std::string& t);
     static bool is_print_s(std::string& t);
+    static bool is_print_c(std::string& t);
+    static bool is_print_b(std::string& t);
     static bool is_scan_i(std::string& t);
     static bool is_scan_s(std::string& t);
     static bool is_return(std::string& t);
