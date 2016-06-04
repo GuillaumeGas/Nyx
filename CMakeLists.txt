@@ -9,6 +9,7 @@ file (
   compilo/*
   parser/*
   ast/*
+  symbol/*
 )
 
 add_executable (

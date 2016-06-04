@@ -10,13 +10,6 @@ Compilo::Compilo(string file_name) {
 }
 
 Compilo::~Compilo() {
-  // Token * t = NULL;
-  // while (m_tokens->size() > 0) {
-  //   t = m_tokens->front();
-  //   m_tokens->pop();
-  //   delete t;
-  // }
-
   if (m_lex)
     delete m_lex;
   if (m_syn)
@@ -38,6 +31,12 @@ void Compilo::compile() {
     cout << e.to_string() << endl;
     exit(-1);
   }
+
+  cout << "Interpret..." << endl;
+  m_ast->interpret();
+  cout << "End" << endl;
+
+  cout << symbol::Table::get_instance()->to_string() << endl;
 }
 
 void Compilo::print_tokens() const {

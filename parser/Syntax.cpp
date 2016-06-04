@@ -1,5 +1,7 @@
 #include "Syntax.hpp"
 
+#include "../symbol/Table.hpp"
+
 using namespace std;
 using namespace bob;
 using namespace ast;
@@ -7,6 +9,8 @@ using namespace ast;
 Syntax::Syntax(string& file_name, queue<Token*> * tokens) : m_file_name(file_name), m_tokens(tokens) {
   m_program = new Program();
   syntax::Program::analyze(this);
+
+  symbol::Table * t = symbol::Table::get_instance();
 }
 
 Syntax::~Syntax() {}

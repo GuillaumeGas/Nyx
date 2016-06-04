@@ -10,6 +10,7 @@
 #include "../parser/exceptions/LexerException.hpp"
 #include "../parser/exceptions/SyntaxException.hpp"
 #include "../ast/Ast.hpp"
+#include "../symbol/Table.hpp"
 
 namespace bob {
   class Compilo {
