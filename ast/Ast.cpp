@@ -1,5 +1,6 @@
 #include "Ast.hpp"
 
+using namespace bob;
 using namespace ast;
 
 Ast::~Ast() {

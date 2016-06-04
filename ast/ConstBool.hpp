@@ -5,15 +5,17 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 
-namespace ast {
-  class ConstBool : public Expression {
-  public:
-    ConstBool(bool value, Position * pos);
-    ~ConstBool();
+namespace bob {
+  namespace ast {
+    class ConstBool : public Expression {
+    public:
+      ConstBool(bool value, Position * pos);
+      ~ConstBool();
 
-    bool get_value() const;
-    std::string to_string() const;
+      bool get_value() const;
+      std::string to_string() const;
 
-    bool value;
+      bool value;
+    };
   };
 };

@@ -1,6 +1,7 @@
 #include "VarDecl.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 VarDecl::VarDecl(Type * type, string name, Position * pos) : type(type), name(name) {

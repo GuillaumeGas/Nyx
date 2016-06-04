@@ -5,14 +5,16 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 
-namespace ast {
-  class VarId : public Expression {
-  public:
-    VarId(std::string name, Position * pos);
-    ~VarId();
+namespace bob {
+  namespace ast {
+    class VarId : public Expression {
+    public:
+      VarId(std::string name, Position * pos);
+      ~VarId();
 
-    std::string to_string() const;
+      std::string to_string() const;
     
-    std::string name;
+      std::string name;
+    };
   };
 };

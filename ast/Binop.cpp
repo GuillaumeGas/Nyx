@@ -1,6 +1,7 @@
 #include "Binop.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 Binop::Binop(Expression * e1, Expression * e2, Operator * op, Position * pos) : e1(e1), e2(e2), op(op) {

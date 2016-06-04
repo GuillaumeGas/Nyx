@@ -1,8 +1,8 @@
 #include "Syntax.hpp"
 
 using namespace std;
-using namespace ast;
 using namespace bob;
+using namespace ast;
 
 Syntax::Syntax(string& file_name, queue<Token*> * tokens) : m_file_name(file_name), m_tokens(tokens) {
   m_program = new Program();

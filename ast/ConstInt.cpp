@@ -1,6 +1,7 @@
 #include "ConstInt.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 ConstInt::ConstInt(int value, Position * pos) : value(value) {

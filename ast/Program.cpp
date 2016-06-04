@@ -1,6 +1,7 @@
 #include "Program.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 Program::Program() {

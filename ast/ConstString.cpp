@@ -1,6 +1,7 @@
 #include "ConstString.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 ConstString::ConstString(string value, Position * pos) : value(value) {

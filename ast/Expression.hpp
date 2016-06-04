@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Ast.hpp"
 
-//namespace bob {
+namespace bob {
   namespace ast {
     class Expression : public Ast {
     public:
@@ -11,4 +11,4 @@
       virtual std::string to_string() const = 0;
     };
   };
-//};
+};

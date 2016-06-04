@@ -5,15 +5,17 @@
 #include "Type.hpp"
 #include "Position.hpp"
 
-namespace ast {
-  class VarDecl : public Ast {
-  public:
-    VarDecl(Type * type, std::string name, Position * pos);
-    ~VarDecl();
+namespace bob {
+  namespace ast {
+    class VarDecl : public Ast {
+    public:
+      VarDecl(Type * type, std::string name, Position * pos);
+      ~VarDecl();
 
-    std::string to_string() const;
+      std::string to_string() const;
 
-    Type * type;
-    std::string name;
+      Type * type;
+      std::string name;
+    };
   };
 };

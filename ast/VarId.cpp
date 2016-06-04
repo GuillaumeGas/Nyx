@@ -1,6 +1,7 @@
 #include "VarId.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 VarId::VarId(string name, Position * pos) : name(name) {

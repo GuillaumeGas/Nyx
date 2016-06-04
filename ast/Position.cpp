@@ -1,6 +1,7 @@
 #include "Position.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 Position::Position(unsigned int line, unsigned int column) : line(line), column(column) {}

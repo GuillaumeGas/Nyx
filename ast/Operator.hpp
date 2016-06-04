@@ -2,35 +2,37 @@
 
 #include <iostream>
 
-namespace ast {
+namespace bob {
+  namespace ast {
 
-  enum OpPriority {
-    UUULOW_OP,
-    UULOW_OP,
-    ULOW_OP,
-    LOW_OP,
-    HIGH_OP
-  };
+    enum OpPriority {
+      UUULOW_OP,
+      UULOW_OP,
+      ULOW_OP,
+      LOW_OP,
+      HIGH_OP
+    };
 
-  enum Op {
-    PLUS,
-    MINUS,
-    MUL,
-    DIV,
-    MOD
-  };
+    enum Op {
+      PLUS,
+      MINUS,
+      MUL,
+      DIV,
+      MOD
+    };
   
-  class Operator {
-  public:
-    Operator(std::string s);
-    OpPriority priority;
-    Op value;
+    class Operator {
+    public:
+      Operator(std::string s);
+      OpPriority priority;
+      Op value;
 
-    std::string to_string() const;
+      std::string to_string() const;
 
-  private:
-    Op get_value(std::string s);
-    OpPriority get_priority(Op o);
+    private:
+      Op get_value(std::string s);
+      OpPriority get_priority(Op o);
+    };
+
   };
-
 };

@@ -1,6 +1,7 @@
 #include "PrintI.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 PrintI::PrintI(Expression * expr, Position * pos) : expr(expr) {

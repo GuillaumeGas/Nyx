@@ -1,6 +1,7 @@
 #include "ConstBool.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 ConstBool::ConstBool(bool value, Position * pos) : value(value) {

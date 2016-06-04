@@ -1,6 +1,7 @@
 #include "VarAssign.hpp"
 
 using namespace std;
+using namespace bob;
 using namespace ast;
 
 VarAssign::VarAssign(string var_name, Expression * value, Position * pos) : name(var_name), value(value) {
