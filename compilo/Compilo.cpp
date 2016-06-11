@@ -33,8 +33,13 @@ void Compilo::compile() {
   }
 
   cout << "Interpret..." << endl;
-  m_ast->interpret();
-  cout << "End" << endl;
+  try {
+    m_ast->interpret();
+    cout << "End" << endl;
+  } catch(SymbolException const& e) {
+    cout << e.to_string() << endl;
+    exit(-1);
+  }
 
   cout << symbol::Table::get_instance()->to_string() << endl;
 }

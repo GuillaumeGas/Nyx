@@ -11,6 +11,7 @@
 #include "../parser/exceptions/SyntaxException.hpp"
 #include "../ast/Ast.hpp"
 #include "../symbol/Table.hpp"
+#include "../symbol/exceptions/SymbolException.hpp"
 
 namespace bob {
   class Compilo {

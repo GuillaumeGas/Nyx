@@ -4,6 +4,7 @@
 #include <iostream>
 #include <queue>
 
+#include "../global/Global.hpp"
 #include "Token.hpp"
 #include "exceptions/LexerException.hpp"
 

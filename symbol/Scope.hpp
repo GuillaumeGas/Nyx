@@ -4,6 +4,9 @@
 #include <map>
 
 #include "Symbol.hpp"
+#include "exceptions/SymbolException.hpp"
+#include "../global/Global.hpp"
+#include "../ast/Position.hpp"
 
 namespace bob {
   namespace symbol {
@@ -14,8 +17,8 @@ namespace bob {
 
       Scope * new_scope();
       Scope * get_parent();
-      void add_symbol(Symbol * s);
-      Symbol * get_symbol(std::string name);
+      void add_symbol(Symbol * s, ast::Position * pos);
+      Symbol * get_symbol(std::string name, ast::Position * pos);
 
       std::string to_string() const;
 

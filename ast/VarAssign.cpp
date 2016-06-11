@@ -16,7 +16,7 @@ VarAssign::~VarAssign() {
 void VarAssign::interpret() {
   symbol::Table * table = symbol::Table::get_instance();
   
-  symbol::Symbol * s = table->get_symbol(name);
+  symbol::Symbol * s = table->get_symbol(name, this->pos);
   
   // TODO : interpret de l'expression renvoie une valeur symbol::Value (type + valeur)
   // checker si les types correspondent

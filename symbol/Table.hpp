@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Symbol.hpp"
 #include "Scope.hpp"
+#include "../ast/Position.hpp"
 
 namespace bob {
   namespace symbol {
@@ -12,8 +13,8 @@ namespace bob {
       
       void enter_block();
       void exit_block();
-      void add_symbol(Symbol * s);
-      Symbol * get_symbol(std::string name);
+      void add_symbol(Symbol * s, ast::Position * pos);
+      Symbol * get_symbol(std::string name, ast::Position * pos);
 
       std::string to_string() const;
 

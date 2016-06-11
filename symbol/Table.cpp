@@ -30,12 +30,12 @@ void Table::exit_block() {
   }
 }
 
-void Table::add_symbol(Symbol * s) {
-  current_scope->add_symbol(s);
+void Table::add_symbol(Symbol * s, ast::Position * pos) {
+  current_scope->add_symbol(s, pos);
 }
 
-Symbol * Table::get_symbol(string name) {
-  current_scope->get_symbol(name);
+Symbol * Table::get_symbol(string name, ast::Position * pos) {
+  current_scope->get_symbol(name, pos);
 }
 
 string Table::to_string() const {

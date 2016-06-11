@@ -30,19 +30,19 @@ Scope * Scope::get_parent() {
   return parent_scope;
 }
 
-void Scope::add_symbol(Symbol * s) {
+void Scope::add_symbol(Symbol * s, ast::Position * pos) {
   if (list.find(s->name) != list.end()) {
-    cout << "[Error] multiple definition of '" << s->name << "'" << endl;
+    throw MultipleDefException(Global::get_instance()->file_name, pos, s->name);
     exit(-1);
   }
   list[s->name] = s;
 }
 
-Symbol * Scope::get_symbol(string name) {
+Symbol * Scope::get_symbol(string name, ast::Position * pos) {
   auto it = list.find(name);
   if (it != list.end()) 
     return it->second;
-  cout << "[Error] symbol '" << name << "' not found." << endl;
+  throw SymbolNotFoundException(Global::get_instance()->file_name, pos, name);
   exit(-1);
 }
 

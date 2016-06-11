@@ -5,10 +5,12 @@ using namespace bob;
 
 Lexer::Lexer(string file_name) : m_file_name(file_name) {
   m_line = 1;
+  Global::get_instance()->set_file(file_name);
 
   ifstream file(m_file_name.c_str(), std::ios::in);
   if(file.is_open()) {
     while (getline(file, m_current_line)) {
+      Global::get_instance()->add_line(m_current_line);
       m_current_index = 0;
       next_line();
       m_line++;
