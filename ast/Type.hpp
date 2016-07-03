@@ -19,6 +19,7 @@ namespace bob {
       std::string to_string() const;
       TYPE get_type() const;
 
+      TYPE type;
       std::string name;
       bool is_basic;
     };

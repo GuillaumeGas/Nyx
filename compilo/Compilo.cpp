@@ -39,6 +39,9 @@ void Compilo::compile() {
   } catch(SymbolException const& e) {
     cout << e.to_string() << endl;
     exit(-1);
+  } catch(SemanticException const& e) {
+    cout << e.to_string() << endl;
+    exit(-1);
   }
 
   cout << symbol::Table::get_instance()->to_string() << endl;

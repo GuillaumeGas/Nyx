@@ -46,10 +46,15 @@ namespace bob {
       Symbol(std::string name, ast::Type * type, std::string value);
       ~Symbol();
 
+      void set_value(int value);
+      void set_value(char value);
+      void set_value(std::string value);
+
+      ast::Type * get_type() const;
       std::string to_string() const;
 
       std::string name;
-      SymbolValue * value;
+      SymbolValue * symbol_value;
     };
   };
 };

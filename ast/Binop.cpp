@@ -17,6 +17,45 @@ Binop::~Binop() {
     delete op;
 }
 
+Expression * Binop::interpret_expr() {
+  e1 = e1->interpret_expr();
+  e2 = e2->interpret_expr();
+  if (check_compatibility()) {
+    switch (op->value) {
+    case Op::PLUS:
+      return interpret_plus();
+    case Op::MINUS:
+      return interpret_minus();
+    case Op::MUL:
+      return interpret_mul();
+    case Op::DIV:
+      return interpret_div();
+    case Op::MOD:
+      return interpret_mod();
+    }
+  } else {
+    throw TypeErrorException(e1, e2, pos);
+  }
+}
+
+/* TODO, version de test ici */
+bool Binop::check_compatibility() const {
+  return e1->type->get_type() == e2->type->get_type();
+}
+
+Expression * Binop::interpret_plus() { 
+  if (e1->type->is_basic) {
+    cout << "sum..." << endl;
+    return e1->sum(e2);
+  } else {
+    //TODO
+  }
+}
+Expression * Binop::interpret_minus() { return NULL; }
+Expression * Binop::interpret_mul() { return NULL; }
+Expression * Binop::interpret_div() { return NULL; }
+Expression * Binop::interpret_mod() { return NULL; }
+
 string Binop::to_string() const {
   return "(" + e1->to_string() + " " + op->to_string() + " " + e2->to_string() + ")";
 }

@@ -14,7 +14,7 @@ namespace bob {
       VarId(std::string name, Position * pos);
       ~VarId();
 
-      void interpret();
+      Expression * interpret_expr();
       std::string to_string() const;
     
       std::string name;

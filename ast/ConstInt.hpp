@@ -4,6 +4,7 @@
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
+#include "Type.hpp"
 
 namespace bob {
   namespace ast {
@@ -13,6 +14,9 @@ namespace bob {
       ~ConstInt();
 
       std::string to_string() const;
+      Expression * interpret_expr();
+
+      Expression * sum(Expression * expr);
 
       int value;
     };

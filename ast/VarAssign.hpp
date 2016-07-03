@@ -4,6 +4,7 @@
 #include "Ast.hpp"
 #include "Position.hpp"
 #include "Expression.hpp"
+#include "exceptions/SemanticException.hpp"
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"
 

@@ -10,7 +10,7 @@ VarId::VarId(string name, Position * pos) : name(name) {
 
 VarId::~VarId() {}
 
-void VarId::interpret() {
+Expression * VarId::interpret_expr() {
 }
 
 string VarId::to_string() const {

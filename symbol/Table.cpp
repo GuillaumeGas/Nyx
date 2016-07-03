@@ -35,7 +35,7 @@ void Table::add_symbol(Symbol * s, ast::Position * pos) {
 }
 
 Symbol * Table::get_symbol(string name, ast::Position * pos) {
-  current_scope->get_symbol(name, pos);
+  return current_scope->get_symbol(name, pos);
 }
 
 string Table::to_string() const {

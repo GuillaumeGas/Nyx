@@ -17,10 +17,12 @@ void VarAssign::interpret() {
   symbol::Table * table = symbol::Table::get_instance();
   
   symbol::Symbol * s = table->get_symbol(name, this->pos);
+  Expression * right = value->interpret_expr();
   
-  // TODO : interpret de l'expression renvoie une valeur symbol::Value (type + valeur)
-  // checker si les types correspondent
-  // exception ou maj du symbole en mémoire
+  if (s->get_type()->type != right->type->type)
+    throw TypeErrorException(s->get_type(), right->type, pos);
+
+  //  s->set_value(right->get_value());
 }
 
 string VarAssign::to_string() const {
