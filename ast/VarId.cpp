@@ -11,8 +11,17 @@ VarId::VarId(string name, Position * pos) : name(name) {
 VarId::~VarId() {}
 
 Expression * VarId::interpret_expr() {
+    this->type = get_type();
+    return this;
 }
 
 string VarId::to_string() const {
   return name;
+}
+
+Type * VarId::get_type() const {
+    symbol::Table * table = symbol::Table::get_instance();
+
+    symbol::Symbol * s = table->get_symbol (name, pos);
+    return s->get_type();
 }

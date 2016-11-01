@@ -23,7 +23,7 @@ void Compilo::compile() {
   } catch(LexerException const& e) {
     cout << e.to_string() << endl;
     exit(-1);
-  } 
+  }
   try {
     m_syn = new Syntax(m_file_name, m_tokens);
     m_ast = m_syn->get_ast();
@@ -45,16 +45,6 @@ void Compilo::compile() {
   }
 
   cout << symbol::Table::get_instance()->to_string() << endl;
-}
-
-void Compilo::print_tokens() const {
-  // Token * t = NULL;
-  // while (m_tokens->size() > 0) {
-  //   t = m_tokens->front();
-  //   t->to_string();
-  //   m_tokens->pop();
-  //   delete t;
-  // }
 }
 
 void Compilo::print_ast() const {

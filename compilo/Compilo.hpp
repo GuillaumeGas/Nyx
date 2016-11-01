@@ -20,7 +20,6 @@ namespace bob {
     ~Compilo();
 
     void compile();
-    void print_tokens() const;
     void print_ast() const;
 
   private:

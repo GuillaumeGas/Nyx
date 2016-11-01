@@ -26,3 +26,6 @@ Expression * ConstInt::sum(Expression * expr) {
   return res;
 }
 
+int ConstInt::get_int() {
+    return value;
+}

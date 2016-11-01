@@ -8,9 +8,9 @@ VarDecl::VarDecl(Type * type, string name, Position * pos) : type(type), name(na
   this->pos = pos;
 }
 
-VarDecl::~VarDecl() { 
+VarDecl::~VarDecl() {
   if (type) {
-    delete type; 
+    delete type;
   }
 }
 

@@ -11,3 +11,13 @@ Expression::~Expression() {
 Expression * Expression::interpret_expr() { return NULL; }
 
 Expression * Expression::sum(Expression * expr) { return NULL; }
+
+void Expression::interpret() {
+    interpret_expr();
+}
+
+Type * Expression::get_type() const {
+    return type;
+}
+
+int Expression::get_int() { return 0; }
