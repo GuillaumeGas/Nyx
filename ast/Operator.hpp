@@ -18,9 +18,10 @@ namespace bob {
       MINUS,
       MUL,
       DIV,
-      MOD
+      MOD,
+      ASSIGN
     };
-  
+
     class Operator {
     public:
       Operator(std::string s);
