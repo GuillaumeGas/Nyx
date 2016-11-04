@@ -5,23 +5,18 @@
 
 namespace bob {
   enum TokenType {
+      /*0 --> 18 -> May be part of an expression */
     INT,
     CHAR,
     BOOL,
     STRING,
     IDENT,
-    TYPE,
-    ASSIGN, // '='
     PLUS,   // '+'
-    PLUSEQ, // '+='
     PLUSPLUS, // '++'
     MINUS, // '-'
-    MINUSEQ, // '-='
     MINUSMINUS, // '--'
     MUL, // '*'
-    MULEQ, // '*='
     DIV, // '/'
-    DIVEQ, // '/='
     MOD, // '%'
     MODEQ, // '%='
     LT,  // '<'
@@ -30,11 +25,18 @@ namespace bob {
     GE, // '>='
     EQ,  // '=='
     NE, // '!='
+    /* Off part of an expression */
+    ASSIGN, // '='
+    PLUSEQ, // '+='
+    MINUSEQ, // '-='
+    MULEQ, // '*='
+    DIVEQ, // '/='
     PAR_L, // '('
     PAR_R, // ')'
     ACCOL_R, // '{'
     ACCOL_L, // '}'
     SEMICOLON, // ';'
+    TYPE,
     IF,
     ELSE,
     ELSEIF,

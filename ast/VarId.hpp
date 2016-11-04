@@ -5,6 +5,7 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 #include "Type.hpp"
+#include "Value.hpp"
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"
 
@@ -18,6 +19,7 @@ namespace bob {
 	    Expression * interpret_expr();
 	    std::string to_string() const;
 	    Type * get_type() const;
+	    Value * get_value() const;
 
 	    std::string name;
 	};

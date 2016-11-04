@@ -17,7 +17,7 @@ namespace bob {
 
 	    Type * get_type() const;
 
-	    Value * get_value() const;
+	    virtual Value * get_value() const;
 
 	    //	private:
 	    Type * type;

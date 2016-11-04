@@ -7,7 +7,6 @@ namespace bob {
     enum TYPE {
       INT,
       CHAR,
-      STRING,
       ERR
     };
 

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "../Token.hpp"
+#include "../../ast/Ast.hpp"
 #include "../../ast/Expression.hpp"
 #include "../../ast/Operator.hpp"
 #include "../../ast/Binop.hpp"
@@ -12,7 +13,7 @@ namespace bob {
   namespace syntax {
     class Ident {
     public:
-      static void analyze(bob::Syntax * syntax, Token * token_ident);
+      static Ast * analyze(bob::Syntax * syntax, Token * token_ident);
     };
   };
 };

@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include "Position.hpp"
 #include "../Token.hpp"
@@ -14,12 +14,13 @@
 #include "../exceptions/SyntaxException.hpp"
 
 namespace bob {
-  class Syntax;
-  namespace syntax {
-    class Expression {
-    public:
-      static ast::Expression * analyze(Syntax * syntax);
-      static ast::Expression * create_value(Token * token);
+    class Syntax;
+    namespace syntax {
+	class Expression {
+	public:
+	    static ast::Expression * visit(Syntax * syntax);
+	    static ast::Expression * create_value(Token * token);
+	    static bool is_part_of_expr(Token * token);
+	};
     };
-  };
 };

@@ -1,17 +1,17 @@
 #pragma once
 
 #include <iostream>
+#include "InstructionBloc.hpp"
+#include "../Syntax.hpp"
 #include "../Token.hpp"
-#include "Type.hpp"
-#include "Ident.hpp"
-#include "PrintI.hpp"
+#include "../../ast/InstructionBloc.hpp"
 
 namespace bob {
   class Syntax;
   namespace syntax {
     class Program {
     public:
-      static void analyze(Syntax * syntax);
+      static void visit(Syntax * syntax);
     };
   };
 };

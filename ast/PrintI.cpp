@@ -13,6 +13,11 @@ PrintI::~PrintI() {
     delete expr;
 }
 
+void PrintI::interpret() const {
+    Expression * e = expr->interpret();
+    cout << e->get_value()->Int;
+}
+
 string PrintI::to_string() const {
   return "print_i " + expr->to_string();
 }

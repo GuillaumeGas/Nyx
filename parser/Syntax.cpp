@@ -8,17 +8,21 @@ using namespace ast;
 
 Syntax::Syntax(string& file_name, queue<Token*> * tokens) : m_file_name(file_name), m_tokens(tokens) {
   m_program = new Program();
-  syntax::Program::analyze(this);
+  syntax::Program::visit(this);
 
   symbol::Table * t = symbol::Table::get_instance();
 }
 
 Syntax::~Syntax() {}
 
-Token * Syntax::pop() {
+Token * Syntax::pop() const {
   Token * t = m_tokens->front();
   m_tokens->pop();
   return t;
+}
+
+Token * Syntax::front() const {
+    return m_tokens->front();
 }
 
 void Syntax::add_elem(Ast * elem) {
