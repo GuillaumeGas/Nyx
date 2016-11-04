@@ -12,6 +12,7 @@ void Ident::analyze(bob::Syntax * syntax, Token * token_ident) {
 	ast::Expression * e2 = Expression::analyze (syntax);
 	ast::Operator * op = new ast::Operator (next->value->to_string());
 	syntax->add_elem (new ast::Binop (e1, e2, op, new ast::Position (next->line, next->column)));
+
 	Program::analyze(syntax);
     } else {
 	if (next != NULL)

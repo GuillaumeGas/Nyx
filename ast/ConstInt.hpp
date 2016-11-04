@@ -5,6 +5,7 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 #include "Type.hpp"
+#include "Value.hpp"
 
 namespace bob {
     namespace ast {
@@ -18,8 +19,6 @@ namespace bob {
 
 	    int get_int();
 	    Expression * sum(Expression * expr);
-
-	    int value;
 	};
     };
 };

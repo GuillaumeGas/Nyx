@@ -4,7 +4,7 @@ using namespace std;
 using namespace bob;
 
 TokenIntValue::TokenIntValue(int i) : value(i){}
-TokenCharValue::TokenCharValue(char c) : value(c) {} 
+TokenCharValue::TokenCharValue(char c) : value(c) {}
 TokenStringValue::TokenStringValue(string& s) : value(s) {}
 TokenBoolValue::TokenBoolValue(bool b) : value(b) {}
 
@@ -302,7 +302,7 @@ bool Token::is_ident(string& t) {
     i++;
   }
   return res;
-} 
+}
 
 bool Token::is_assign(string& t) {
   return t == "=";
@@ -314,7 +314,7 @@ bool Token::is_integer(string& t) {
   while (i < t.size() && res) {
     if(t[i] < '0' || t[i] > '9') {
       res = false;
-    } 
+    }
     i++;
   }
   return res;
@@ -485,9 +485,17 @@ bool Token::is_ident(Token * t) {
   return t->type == TokenType::IDENT;
 }
 
-bool Token::is_binop(Token * t) { 
+bool Token::is_binop(Token * t) {
   TokenType type = t->type;
-  return (type == TokenType::PLUS || type == TokenType::MINUS || type == TokenType::MUL || type == TokenType::DIV || type == TokenType::MOD);
+  return (type == TokenType::PLUS
+	  || type == TokenType::MINUS
+	  || type == TokenType::MUL
+	  || type == TokenType::DIV
+	  || type == TokenType::MOD
+	  || type == TokenType::LT
+	  || type == TokenType::LE
+	  || type == TokenType::GT
+	  || type == TokenType::GE);
 }
 
 bool Token::is_par_l(Token * t) { return t->type == TokenType::PAR_L; }

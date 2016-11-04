@@ -63,7 +63,7 @@ Expression * Binop::interpret_assign() {
 
     symbol::Symbol * s = table->get_symbol (e1->to_string(), e1->pos);
     if (e2->get_type()->get_type() == TYPE::INT) {
-	s->set_value (e2->get_int());
+	s->set_value (e2->get_value()->Int);
     }
 }
 

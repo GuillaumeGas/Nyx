@@ -29,6 +29,18 @@ string Operator::to_string() const {
     case ASSIGN:
 	return "=";
 	break;
+    case LT:
+	return "<";
+	break;
+    case LE:
+	return "<=";
+	break;
+    case GT:
+	return ">";
+	break;
+    case GE:
+	return ">=";
+	break;
     default:
 	return "?";
     }
@@ -47,6 +59,16 @@ Op Operator::get_value(string s) {
 	return Op::MOD;
     } else if (s == "=") {
 	return Op::ASSIGN;
+    } else if (s == "<") {
+	return Op::LT;
+    } else if (s == "<=") {
+	return Op::LE;
+    } else if (s == ">") {
+	return Op::GT;
+    } else if (s == ">=") {
+	return Op::GE;
+    } else {
+	return Op::UNKNOWN;
     }
 }
 

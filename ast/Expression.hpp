@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Ast.hpp"
 #include "Type.hpp"
+#include "Value.hpp"
 
 namespace bob {
     namespace ast {
@@ -16,11 +17,11 @@ namespace bob {
 
 	    Type * get_type() const;
 
-	    virtual int get_int();
-	    // ...
+	    Value * get_value() const;
 
 	    //	private:
 	    Type * type;
+	    Value * value;
 	};
     };
 };

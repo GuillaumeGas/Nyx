@@ -4,8 +4,9 @@ using namespace bob;
 using namespace ast;
 
 Expression::~Expression() {
-  if (type)
-    delete type;
+    this->value = new Value;
+    if (type)
+	delete type;
 }
 
 Expression * Expression::interpret_expr() { return NULL; }
@@ -20,4 +21,6 @@ Type * Expression::get_type() const {
     return type;
 }
 
-int Expression::get_int() { return 0; }
+Value * Expression::get_value() const {
+    return value;
+}

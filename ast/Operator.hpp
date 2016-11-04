@@ -19,7 +19,12 @@ namespace bob {
       MUL,
       DIV,
       MOD,
-      ASSIGN
+      ASSIGN,
+      LT,
+      LE,
+      GT,
+      GE,
+      UNKNOWN
     };
 
     class Operator {

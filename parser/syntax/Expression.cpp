@@ -9,7 +9,7 @@ using namespace bob;
 using namespace syntax;
 
 ast::Expression * Expression::analyze(Syntax * syntax) {
-  
+
   /* Transformation de l'expression en notation polonaise inversée */
   queue<Token*> out;
   stack<Token*> op;
@@ -50,11 +50,11 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
 	  op.pop();
 	  op.push(current_token);
 	}
-      } 
+      }
     } else {
       throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
     }
-    
+
     Token * last = current_token;
     current_token = syntax->pop();
 
@@ -89,7 +89,7 @@ ast::Expression * Expression::analyze(Syntax * syntax) {
 
   if (st.size() != 1)
     throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
-  
+
   return st.top();
 }
 
