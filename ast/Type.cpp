@@ -19,8 +19,6 @@ TYPE Type::get_type() const {
     return TYPE::INT;
   } else if (name == "char") {
     return TYPE::CHAR;
-  } else if (name == "string") {
-    return TYPE::STRING;
   } else {
     return TYPE::ERR;
   }

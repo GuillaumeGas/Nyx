@@ -17,7 +17,6 @@ namespace bob {
 	    std::string to_string() const;
 	    Expression * interpret_expr();
 
-	    int get_int();
 	    Expression * sum(Expression * expr);
 	};
     };

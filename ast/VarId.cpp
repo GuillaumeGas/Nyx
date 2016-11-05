@@ -19,15 +19,15 @@ string VarId::to_string() const {
   return name;
 }
 
-// Value * VarId::get_value() const {
-//     symbol::Table * table = symbol::Table::get_instance();
+Value * VarId::get_value() const {
+    // symbol::Table * table = symbol::Table::get_instance();
 
-//     symbol::Symbol * s = table->get_symbol (name, pos);
-//     switch (this->type->get_type()) {
-//     case TYPE::INT:
-// 	this->value.Int = s->
-//     }
-// }
+    // symbol::Symbol * s = table->get_symbol (name, pos);
+    // switch (this->type->get_type()) {
+    // case TYPE::INT:
+    // 	this->value.Int = s->
+    // }
+}
 
 Type * VarId::get_type() const {
     symbol::Table * table = symbol::Table::get_instance();

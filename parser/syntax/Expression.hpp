@@ -8,7 +8,6 @@
 #include "../../ast/Operator.hpp"
 #include "../../ast/ConstInt.hpp"
 #include "../../ast/ConstChar.hpp"
-#include "../../ast/ConstString.hpp"
 #include "../../ast/ConstBool.hpp"
 #include "../../ast/VarId.hpp"
 #include "../exceptions/SyntaxException.hpp"

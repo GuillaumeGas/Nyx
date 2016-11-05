@@ -104,9 +104,6 @@ ast::Expression * Expression::create_value(Token * token) {
     case TokenType::CHAR:
 	return new ast::ConstChar(((TokenCharValue*)token_value)->value, pos);
 	break;
-    case TokenType::STRING:
-	return new ast::ConstString(((TokenStringValue*)token_value)->value, pos);
-	break;
     case TokenType::BOOL:
 	return new ast::ConstBool(((TokenBoolValue*)token_value)->value, pos);
 	break;

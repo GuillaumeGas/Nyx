@@ -14,7 +14,7 @@ PrintI::~PrintI() {
 }
 
 void PrintI::interpret() const {
-    Expression * e = expr->interpret();
+    Expression * e = expr->interpret_expr();
     cout << e->get_value()->Int;
 }
 

@@ -12,9 +12,6 @@ Symbol::Symbol(string name, ast::Type * type) : name(name) {
     } else if (t == ast::TYPE::CHAR) {
       char c = -1;
       symbol_value = new SymbolCharValue(type, c);
-    } else if (t == ast::TYPE::STRING) {
-      string s;
-      symbol_value = new SymbolStringValue(type, s);
     } else {
       cout << "[Error] Unknown type.";
       exit(-1);
@@ -23,7 +20,7 @@ Symbol::Symbol(string name, ast::Type * type) : name(name) {
     cout << "[Error] Unknown type.";
     exit(-1);
   }
-} 
+}
 Symbol::Symbol(string name, ast::Type * type, int value) : name(name) {
   symbol_value = new SymbolIntValue(type, value);
 }

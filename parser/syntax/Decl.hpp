@@ -1,12 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <deque>
+#include "Assign.hpp"
 #include "../Token.hpp"
 #include "../../ast/VarDecl.hpp"
-#include "../../ast/Type.hpp"
 #include "../../ast/Position.hpp"
-#include "Assign.hpp"
-#include "VarDecl.hpp"
+#include "../../ast/Binop.hpp"
 
 namespace bob {
     class Syntax;
@@ -16,17 +16,17 @@ namespace bob {
 	    /**
 	       Decl := VarDecl | FunDecl
 	     */
-	    static Ast * visit(Syntax * syntax, Token * type);
+	    static ast::Ast * visit(Syntax * syntax, Token * type);
 
 	    /**
 	       VarDecl := Type Ident (= Expression)?
 	     */
-	    static Ast * visitVarDecl (Syntax * syntax, Token * type, Token * ident);
+	    static ast::Ast * visitVarDecl (Syntax * syntax, Token * type, Token * ident);
 
 	    /**
 	       FunDecl := Type Ident (VarDeclr*) { InstructionBloc }
 	     */
-	    static Ast * visitFunDecl (Syntax * syntax, Token * type, Token * ident);
+	    static ast::Ast * visitFunDecl (Syntax * syntax, Token * type, Token * ident);
 	};
     };
 };

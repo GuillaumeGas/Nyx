@@ -19,6 +19,7 @@ namespace bob {
 	Token * pop() const;
 	Token * front() const;
 	void add_elem(ast::Ast * elem);
+	bool is_empty () const;
 
     private:
 	std::string m_file_name;

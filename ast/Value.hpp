@@ -5,4 +5,5 @@ union Value {
     char Char;
     float Float;
     double Double;
+    bool Bool;
 };

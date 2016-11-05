@@ -1,5 +1,4 @@
 #include "Program.hpp"
-#include "../Syntax.hpp"
 
 using namespace bob;
 using namespace syntax;
