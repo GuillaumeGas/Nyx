@@ -21,9 +21,9 @@
 #include "../symbol/Table.hpp"
 #include "exceptions/SyntaxException.hpp"
 
-#define TODO(p)					\
-    printf ("%s\n", p);				\
-    assert (false);
+#define TODO(p)						\
+    printf ("[!] Unimplement token : %s\n", p);				\
+    exit (-1);
 
 namespace bob {
     class Syntax {
