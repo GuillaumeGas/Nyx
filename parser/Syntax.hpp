@@ -14,6 +14,7 @@
 #include "../ast/VarDecl.hpp"
 #include "../ast/Operator.hpp"
 #include "../ast/Binop.hpp"
+#include "../ast/VarAssign.hpp"
 #include "../ast/VarId.hpp"
 #include "../ast/ConstInt.hpp"
 #include "../ast/ConstChar.hpp"

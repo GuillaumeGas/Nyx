@@ -11,7 +11,7 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_if, Position * pos) {
     this->pos = pos;
 }
 
-IfElse::IfElse (Expression * cond, Bloc * bloc_id, Bloc * bloc_else, Position * pos) {
+IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * pos) {
     this->cond = cond;
     this->bloc_if = bloc_if;
     this->bloc_else = bloc_else;
@@ -19,10 +19,11 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_id, Bloc * bloc_else, Position * 
 }
 
 string IfElse::to_string() const {
-    string res = "IF " + cond->to_string() + " {\n" + bloc_if->to_string() + "}";
-    if (bloc_else) {
-	res + " ELSE {" + bloc_else->to_string() + "}";
+    string res = "IF " + cond->to_string() + " {\n" + bloc_if->to_string();
+    if (bloc_else != NULL) {
+	res += "} ELSE {\n" + bloc_else->to_string();
     }
+    res += "}\n";
     return res;
 }
 

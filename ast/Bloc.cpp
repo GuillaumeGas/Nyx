@@ -26,7 +26,7 @@ void Bloc::interpret() {
 string Bloc::to_string() const {
   string res = "";
   for(Ast* a : *content) {
-    res += a->to_string() + "\n";
+    res += a->to_string();
   }
   return res;
 }

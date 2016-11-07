@@ -116,7 +116,7 @@ ast::Ast * Syntax::visitVarAssign (Token * token_ident) {
     ast::Expression * e2 = visitExpression ();
     ast::Operator * op = new ast::Operator (token_op->value->to_string());
 
-    return new ast::Binop (e1, e2, op, new ast::Position (token_op->line, token_op->column));
+    return new ast::VarAssign (e1, e2, op, new ast::Position (token_op->line, token_op->column));
 }
 
 ast::Ast * Syntax::visitIfElse (Token * token_if) {
@@ -133,6 +133,7 @@ ast::Ast * Syntax::visitIfElse (Token * token_if) {
     next = front();
     if (next->type == TokenType::ELSE) {
 	pop();
+	next = pop();
 	if (next->type != ACCOL_L) {
 	    throw MissingErrorException ("{", Position (next->line, next->column));
 	}
