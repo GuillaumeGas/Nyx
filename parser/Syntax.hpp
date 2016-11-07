@@ -43,7 +43,7 @@ namespace bob {
 	void visitInstruction (Token * token);
 	void visitFunDecl (Token * token_type, Token * token_ident);
 	void visitVarDecl (Token * token_type, Token * token_ident);
-	void visitVarAssign (Token * token_ident, Token * token_op);
+	void visitVarAssign (Token * token_ident);
 	void visitIfElse ();
 	ast::Expression * visitExpression ();
 	ast::Expression * create_value (Token * token);

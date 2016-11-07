@@ -64,17 +64,17 @@ void Syntax::visitInstruction (Token * token) {
 	Token * next = pop ();
 	if (next->type == TokenType::IDENT) {
 	    Token * ident = next;
-	    next = pop ();
+	    next = front ();
 	    if (next->type == TokenType::PAR_L) {
 		visitFunDecl (type, ident);
-	    } else if (next->type == TokenType::ASSIGN) {
-		visitVarDecl (type, ident);
-		visitVarAssign (ident, next);
-	    } else if (next->type == TokenType::SEMICOLON) {
+	    } else if (next->type == TokenType::ASSIGN
+		       || next->type == TokenType::SEMICOLON
+		       || next->type == TokenType::COLON) {
 		visitVarDecl (type, ident);
 	    } else {
 		throw MissingErrorException (";", Position (next->line, next->column));
 	    }
+	    pop();
 	} else {
 	    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
 	}
@@ -84,6 +84,7 @@ void Syntax::visitInstruction (Token * token) {
 }
 
 void Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
+    pop(); // '('
     TODO("FunDecl");
 }
 
@@ -95,25 +96,28 @@ void Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
     add_elem (var_decl);
 
     Token * next = front ();
+    if (next->type == TokenType::ASSIGN) {
+	visitVarAssign (token_ident);
+	next = front ();
+    }
     if (next->type == TokenType::COLON) {
-	pop ();
+	pop();
 	Token * ident = pop ();
-	if (ident->type != TokenType::IDENT)
+	if (ident->type != TokenType::IDENT) {
 	    throw SyntaxErrorException (ident->value->to_string(), Position (ident->line, ident->column));
+	}
 	visitVarDecl (token_type, ident);
     }
 }
 
-void Syntax::visitVarAssign (Token * token_ident, Token * token_op) {
+void Syntax::visitVarAssign (Token * token_ident) {
+    Token * token_op = pop();
     ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
     ast::Expression * e1 = new ast::VarId (token_ident->value->to_string(), pos);
     ast::Expression * e2 = visitExpression ();
     ast::Operator * op = new ast::Operator (token_op->value->to_string());
 
     add_elem (new ast::Binop (e1, e2, op, new ast::Position (token_op->line, token_op->column)));
-    Token * next = pop();
-    if (next->type != TokenType::SEMICOLON)
-	throw MissingErrorException (";", Position (next->line, next->column));
 }
 
 void Syntax::visitIfElse () {
@@ -121,7 +125,6 @@ void Syntax::visitIfElse () {
 }
 
 ast::Expression * Syntax::visitExpression () {
-
     /* Transformation de l'expression en notation polonaise inversée */
     queue<Token*> out;
     stack<Token*> op;
@@ -199,7 +202,6 @@ ast::Expression * Syntax::visitExpression () {
 	    st.push(new ast::Binop(e1, e2, op, new ast::Position(t->line, t->column)));
 	}
     }
-
     if (st.size() != 1)
 	throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
 
@@ -227,7 +229,33 @@ ast::Expression * Syntax::create_value(Token * token) {
 }
 
 bool Syntax::is_part_of_expr (Token * token) const {
-    return (token->type >= 0 && token->type <= 18);
+    return token->type >= 0 && token->type <= 18;
 }
 
 
+// bool Syntax::is_part_of_expr (Token * token) const {
+//     switch (token->type) {
+//     case INT:
+//     case CHAR:
+//     case BOOL:
+//     case STRING:
+//     case IDENT:
+//     case PLUS:
+//     case PLUSPLUS:
+//     case MINUS:
+//     case MINUSMINUS:
+//     case MUL:
+//     case DIV:
+//     case MOD:
+//     case MODEQ:
+//     case LT:
+//     case LE:
+//     case GT:
+//     case GE:
+//     case EQ:
+//     case NE:
+// 	return true;
+//     default:
+// 	return false;
+//     }
+// }

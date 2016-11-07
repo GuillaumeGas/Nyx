@@ -71,6 +71,9 @@ string Token::type_to_string() const {
     case SEMICOLON:
 	res = "SEMICOLON";
 	break;
+    case COLON:
+	res = "COLON";
+	break;
     case CHAR:
 	res = "CHAR";
 	break;
