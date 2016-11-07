@@ -9,6 +9,7 @@ namespace bob {
     namespace ast {
 	class Expression : public Ast {
 	public:
+	    Expression();
 	    virtual ~Expression();
 	    virtual std::string to_string() const = 0;
 	    virtual Expression * interpret_expr();

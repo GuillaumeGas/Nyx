@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "../syntax/Position.hpp"
+#include "../Position.hpp"
 
 namespace bob {
   class SyntaxException {

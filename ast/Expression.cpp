@@ -3,8 +3,11 @@
 using namespace bob;
 using namespace ast;
 
-Expression::~Expression() {
+Expression::Expression () {
     this->value = new Value;
+}
+
+Expression::~Expression() {
     if (type)
 	delete type;
 }
