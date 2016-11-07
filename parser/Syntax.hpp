@@ -44,6 +44,7 @@ namespace bob {
 	ast::Bloc * visitBloc ();
 	ast::Ast * visitInstruction (Token * token);
 	ast::Ast * visitFunDecl (Token * token_type, Token * token_ident);
+	ast::Ast * visitFunCall (Token * token_ident);
 	ast::Bloc * visitVarDecl (Token * token_type, Token * token_ident);
 	ast::Ast * visitVarAssign (Token * token_ident);
 	ast::Ast * visitIfElse (Token * token_if);

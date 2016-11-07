@@ -54,9 +54,10 @@ ast::Bloc * Syntax::visitBloc () {
 
 ast::Ast * Syntax::visitInstruction (Token * token) {
     ast::Ast * res = NULL;
+    Token * next;
     if (token->type == TokenType::TYPE) {
 	Token * type = token;
-	Token * next = pop ();
+	next = pop ();
 	if (next->type == TokenType::IDENT) {
 	    Token * ident = next;
 	    next = front ();
@@ -73,6 +74,17 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 	} else {
 	    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
 	}
+    } else if (token->type == TokenType::IDENT) {
+	Token * ident = token;
+	next = front ();
+	if (next->type == TokenType::PAR_L) {
+	    res = visitFunCall (ident);
+	} else if (next->type == TokenType::ASSIGN) {
+	    res = visitVarAssign (ident);
+	} else {
+	    throw MissingErrorException (";", Position (next->line, next->column));
+	}
+	pop();
     } else {
 	throw SyntaxErrorException (token->value->to_string(), Position (token->line, token->column));
     }
@@ -82,6 +94,12 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 ast::Ast * Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
     pop(); // '('
     TODO("FunDecl");
+    return NULL;
+}
+
+ast::Ast * Syntax::visitFunCall (Token * token_ident) {
+    pop ();
+    TODO("FunCall");
     return NULL;
 }
 
