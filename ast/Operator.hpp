@@ -24,6 +24,8 @@ namespace bob {
       LE,
       GT,
       GE,
+      EQ,
+      NE,
       UNKNOWN
     };
 

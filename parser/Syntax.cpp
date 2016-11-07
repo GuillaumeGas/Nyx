@@ -5,9 +5,8 @@ using namespace bob;
 using namespace syntax;
 
 Syntax::Syntax(string& file_name, queue<Token*> * tokens) : m_file_name(file_name), m_tokens(tokens) {
-    m_program = new ast::Program();
     m_table = symbol::Table::get_instance();
-    visitBloc ();
+    m_program = visitBloc ();
 }
 
 Syntax::~Syntax() {}
@@ -27,38 +26,34 @@ Token * Syntax::front() const {
     return new TokenEof ();
 }
 
-void Syntax::add_elem(ast::Ast * elem) {
-    if (elem != NULL)
-	m_program->content.push_back(elem);
-}
-
-ast::Ast * Syntax::get_ast() const {
-    return m_program;
-}
-
 bool Syntax::is_empty() const {
     return m_tokens->empty();
 }
 
-void Syntax::visitBloc () {
+ast::Ast * Syntax::get_ast () const { return m_program; }
+
+ast::Bloc * Syntax::visitBloc () {
+    vector<ast::Ast*> * instr = new vector<ast::Ast*> ();
     Token * next = pop ();
     while (next->type != TokenType::_EOF_ && next->type != TokenType::ACCOL_R) {
 	switch (next->type) {
 	case TokenType::TYPE:
 	case TokenType::IDENT:
-	    visitInstruction (next);
+	    instr->push_back (visitInstruction (next));
 	    break;
 	case TokenType::IF:
-	    visitIfElse ();
+	    instr->push_back (visitIfElse (next));
 	    break;
 	default:
 	    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
 	}
 	next = pop ();
     }
+    return new ast::Bloc (instr);
 }
 
-void Syntax::visitInstruction (Token * token) {
+ast::Ast * Syntax::visitInstruction (Token * token) {
+    ast::Ast * res = NULL;
     if (token->type == TokenType::TYPE) {
 	Token * type = token;
 	Token * next = pop ();
@@ -66,11 +61,11 @@ void Syntax::visitInstruction (Token * token) {
 	    Token * ident = next;
 	    next = front ();
 	    if (next->type == TokenType::PAR_L) {
-		visitFunDecl (type, ident);
+		res = visitFunDecl (type, ident);
 	    } else if (next->type == TokenType::ASSIGN
 		       || next->type == TokenType::SEMICOLON
 		       || next->type == TokenType::COLON) {
-		visitVarDecl (type, ident);
+		res = visitVarDecl (type, ident);
 	    } else {
 		throw MissingErrorException (";", Position (next->line, next->column));
 	    }
@@ -81,23 +76,26 @@ void Syntax::visitInstruction (Token * token) {
     } else {
 	throw SyntaxErrorException (token->value->to_string(), Position (token->line, token->column));
     }
+    return res;
 }
 
-void Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
+ast::Ast * Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
     pop(); // '('
     TODO("FunDecl");
+    return NULL;
 }
 
-void Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
+ast::Bloc * Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
     ast::Position * pos = new ast::Position (token_type->line, token_type->column);
     ast::Type * type = new ast::Type (token_type->value->to_string(), true);
     ast::VarDecl * var_decl = new ast::VarDecl (type, token_ident->value->to_string(), pos);
 
-    add_elem (var_decl);
+    vector<ast::Ast*> * instr = new vector<ast::Ast*> ();
+    instr->push_back (var_decl);
 
     Token * next = front ();
     if (next->type == TokenType::ASSIGN) {
-	visitVarAssign (token_ident);
+	instr->push_back (visitVarAssign (token_ident));
 	next = front ();
     }
     if (next->type == TokenType::COLON) {
@@ -106,22 +104,44 @@ void Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
 	if (ident->type != TokenType::IDENT) {
 	    throw SyntaxErrorException (ident->value->to_string(), Position (ident->line, ident->column));
 	}
-	visitVarDecl (token_type, ident);
+	instr->push_back (visitVarDecl (token_type, ident));
     }
+    return new ast::Bloc (instr);
 }
 
-void Syntax::visitVarAssign (Token * token_ident) {
+ast::Ast * Syntax::visitVarAssign (Token * token_ident) {
     Token * token_op = pop();
     ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
     ast::Expression * e1 = new ast::VarId (token_ident->value->to_string(), pos);
     ast::Expression * e2 = visitExpression ();
     ast::Operator * op = new ast::Operator (token_op->value->to_string());
 
-    add_elem (new ast::Binop (e1, e2, op, new ast::Position (token_op->line, token_op->column)));
+    return new ast::Binop (e1, e2, op, new ast::Position (token_op->line, token_op->column));
 }
 
-void Syntax::visitIfElse () {
-    TODO("ifelse");
+ast::Ast * Syntax::visitIfElse (Token * token_if) {
+    ast::Expression * expr_condition = Syntax::visitExpression ();
+    ast::Position * pos = new ast::Position (token_if->line, token_if->column);
+
+    Token * next = pop();
+    if (next->type != ACCOL_L) {
+	throw MissingErrorException ("{", Position (next->line, next->column));
+    }
+
+    ast::Bloc * bloc_if = visitBloc ();
+
+    next = front();
+    if (next->type == TokenType::ELSE) {
+	pop();
+	if (next->type != ACCOL_L) {
+	    throw MissingErrorException ("{", Position (next->line, next->column));
+	}
+	ast::Bloc * bloc_else = visitBloc ();
+	return new ast::IfElse (expr_condition, bloc_if, bloc_else, pos);
+    } else {
+	return new ast::IfElse (expr_condition, bloc_if, pos);
+    }
+
 }
 
 ast::Expression * Syntax::visitExpression () {
@@ -188,7 +208,6 @@ ast::Expression * Syntax::visitExpression () {
     while (out.size() > 0) {
 	Token * t = out.front();
 	out.pop();
-
 	if (Token::is_value(t)) {
 	    st.push(Syntax::create_value(t));
 	} else if (Token::is_ident(t)) {
@@ -229,33 +248,5 @@ ast::Expression * Syntax::create_value(Token * token) {
 }
 
 bool Syntax::is_part_of_expr (Token * token) const {
-    return token->type >= 0 && token->type <= 18;
+    return token->type >= 0 && token->type <= 20;
 }
-
-
-// bool Syntax::is_part_of_expr (Token * token) const {
-//     switch (token->type) {
-//     case INT:
-//     case CHAR:
-//     case BOOL:
-//     case STRING:
-//     case IDENT:
-//     case PLUS:
-//     case PLUSPLUS:
-//     case MINUS:
-//     case MINUSMINUS:
-//     case MUL:
-//     case DIV:
-//     case MOD:
-//     case MODEQ:
-//     case LT:
-//     case LE:
-//     case GT:
-//     case GE:
-//     case EQ:
-//     case NE:
-// 	return true;
-//     default:
-// 	return false;
-//     }
-// }

@@ -510,7 +510,9 @@ bool Token::is_binop(Token * t) {
 	    || type == TokenType::LT
 	    || type == TokenType::LE
 	    || type == TokenType::GT
-	    || type == TokenType::GE);
+	    || type == TokenType::GE
+	    || type == TokenType::EQ
+	    || type == TokenType::NE);
 }
 
 bool Token::is_par_l(Token * t) { return t->type == TokenType::PAR_L; }

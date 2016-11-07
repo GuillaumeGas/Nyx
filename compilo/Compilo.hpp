@@ -14,20 +14,20 @@
 #include "../symbol/exceptions/SymbolException.hpp"
 
 namespace bob {
-  class Compilo {
-  public:
-    Compilo(std::string file_name);
-    ~Compilo();
+    class Compilo {
+    public:
+	Compilo(std::string file_name);
+	~Compilo();
 
-    void compile();
-    void print_ast() const;
+	void compile();
+	void print_ast() const;
 
-  private:
-    Lexer * m_lex;
-    Syntax * m_syn;
+    private:
+	Lexer * m_lex;
+	Syntax * m_syn;
 
-    std::string m_file_name;
-    std::queue<Token*> * m_tokens;
-    ast::Ast * m_ast;
-  };
+	std::string m_file_name;
+	std::queue<Token*> * m_tokens;
+	ast::Ast * m_ast;
+    };
 };

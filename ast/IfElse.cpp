@@ -4,14 +4,14 @@ using namespace std;
 using namespace bob;
 using namespace ast;
 
-IfElse::IfElse (Expression * cond, InstructionBloc * bloc_if, Position * pos) {
+IfElse::IfElse (Expression * cond, Bloc * bloc_if, Position * pos) {
     this->cond = cond;
     this->bloc_if = bloc_if;
     this->bloc_else = NULL;
     this->pos = pos;
 }
 
-IfElse::IfElse (Expression * cond, InstructionBloc * bloc_id, InstructionBloc * bloc_else, Position * pos) {
+IfElse::IfElse (Expression * cond, Bloc * bloc_id, Bloc * bloc_else, Position * pos) {
     this->cond = cond;
     this->bloc_if = bloc_if;
     this->bloc_else = bloc_else;
@@ -21,9 +21,9 @@ IfElse::IfElse (Expression * cond, InstructionBloc * bloc_id, InstructionBloc * 
 string IfElse::to_string() const {
     string res = "IF " + cond->to_string() + " {\n" + bloc_if->to_string() + "}";
     if (bloc_else) {
-	res + " ELSE {" + bloc_else->to_string();
+	res + " ELSE {" + bloc_else->to_string() + "}";
     }
-    res += "}\n";
+    return res;
 }
 
 void IfElse::interpret () {

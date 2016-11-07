@@ -7,7 +7,7 @@
 
 #include "Token.hpp"
 #include "../ast/Ast.hpp"
-#include "../ast/Program.hpp"
+#include "../ast/Bloc.hpp"
 #include "../ast/Expression.hpp"
 #include "../ast/Position.hpp"
 #include "../ast/Type.hpp"
@@ -18,6 +18,7 @@
 #include "../ast/ConstInt.hpp"
 #include "../ast/ConstChar.hpp"
 #include "../ast/ConstBool.hpp"
+#include "../ast/IfElse.hpp"
 #include "../symbol/Table.hpp"
 #include "exceptions/SyntaxException.hpp"
 
@@ -39,12 +40,12 @@ namespace bob {
 	bool is_empty () const;
 
 	/* Visitor */
-	void visitBloc ();
-	void visitInstruction (Token * token);
-	void visitFunDecl (Token * token_type, Token * token_ident);
-	void visitVarDecl (Token * token_type, Token * token_ident);
-	void visitVarAssign (Token * token_ident);
-	void visitIfElse ();
+	ast::Bloc * visitBloc ();
+	ast::Ast * visitInstruction (Token * token);
+	ast::Ast * visitFunDecl (Token * token_type, Token * token_ident);
+	ast::Bloc * visitVarDecl (Token * token_type, Token * token_ident);
+	ast::Ast * visitVarAssign (Token * token_ident);
+	ast::Ast * visitIfElse (Token * token_if);
 	ast::Expression * visitExpression ();
 	ast::Expression * create_value (Token * token);
 	bool is_part_of_expr (Token * token) const;
@@ -53,7 +54,7 @@ namespace bob {
 	std::string m_file_name;
 
 	std::queue<Token*> * m_tokens;
-	ast::Program * m_program;
+	ast::Bloc * m_program;
 
 	symbol::Table * m_table;
     };

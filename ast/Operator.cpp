@@ -41,6 +41,12 @@ string Operator::to_string() const {
     case GE:
 	return ">=";
 	break;
+    case EQ:
+	return "==";
+	break;
+    case NE:
+	return "!=";
+	break;
     default:
 	return "?";
     }
@@ -67,6 +73,10 @@ Op Operator::get_value(string s) {
 	return Op::GT;
     } else if (s == ">=") {
 	return Op::GE;
+    } else if (s == "==") {
+	return Op::EQ;
+    } else if (s == "!=") {
+	return Op::NE;
     } else {
 	return Op::UNKNOWN;
     }
