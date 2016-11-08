@@ -47,7 +47,6 @@ bool Binop::check_compatibility() const {
 
 Expression * Binop::interpret_plus() {
     if (e1->type->is_basic) {
-	cout << "sum..." << endl;
 	return e1->sum(e2);
     } else {
 	//TODO
@@ -59,14 +58,18 @@ Expression * Binop::interpret_div() { return NULL; }
 Expression * Binop::interpret_mod() { return NULL; }
 
 Expression * Binop::interpret_assign() {
-    symbol::Table * table = symbol::Table::get_instance();
+    // symbol::Table * table = symbol::Table::get_instance();
 
-    symbol::Symbol * s = table->get_symbol (e1->to_string(), e1->pos);
-    if (e2->get_type()->get_type() == TYPE::INT) {
-	s->set_value (e2->get_value()->Int);
-    }
+    // symbol::Symbol * s = table->get_symbol (e1->to_string(), e1->pos);
+    // if (e2->get_type()->get_type() == TYPE::INT) {
+    // 	s->set_value (e2->get_value()->Int);
+    // }
 }
 
-string Binop::to_string() const {
-    return "Binop(" + e1->to_string() + " " + op->to_string() + " " + e2->to_string() + ")";
+void Binop::print (ostream & out, int offset) const {
+    out << "Binop(";
+    e1->print (out);
+    out << " " << op->to_string() << " ";
+    e2->print (out);
+    out << ")";
 }

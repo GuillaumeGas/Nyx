@@ -8,6 +8,9 @@ VarAssign::VarAssign (Expression * e1, Expression * e2, Operator * op, Position 
 
 VarAssign::~VarAssign () {}
 
-string VarAssign::to_string() const {
-    return "VarAssign " + Binop::to_string() + "\n";
+void VarAssign::print (ostream & out, int offset) const {
+    shift (out, offset);
+    out << "VarAssign ";
+    Binop::print (out);
+    out << endl;
 }

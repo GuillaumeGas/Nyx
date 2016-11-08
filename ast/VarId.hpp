@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
@@ -17,7 +18,7 @@ namespace bob {
 	    ~VarId();
 
 	    Expression * interpret_expr();
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 	    Type * get_type() const;
 	    Value * get_value() const;
 

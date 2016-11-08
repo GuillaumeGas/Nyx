@@ -11,6 +11,6 @@ ConstBool::ConstBool(bool value, Position * pos) {
 
 ConstBool::~ConstBool() {}
 
-string ConstBool::to_string() const {
-    return value ? "true" : "false";
+void ConstBool::print (ostream & out, int offset) const {
+    out << (value ? "true" : "false");
 }

@@ -15,8 +15,8 @@ Expression * VarId::interpret_expr() {
     return this;
 }
 
-string VarId::to_string() const {
-  return name;
+void VarId::print (ostream & out, int offset) const {
+    out << name;
 }
 
 Value * VarId::get_value() const {

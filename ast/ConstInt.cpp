@@ -12,8 +12,8 @@ ConstInt::ConstInt(int v, Position * pos) {
 
 ConstInt::~ConstInt() {}
 
-string ConstInt::to_string() const {
-    return std::to_string(value->Int);
+void ConstInt::print (ostream & out, int offset) const {
+    out << value->Int;
 }
 
 Expression * ConstInt::interpret_expr() {
@@ -23,6 +23,5 @@ Expression * ConstInt::interpret_expr() {
 Expression * ConstInt::sum(Expression * expr) {
     ConstInt * i = (ConstInt *) expr;
     ConstInt * res = new ConstInt(value->Int + i->value->Int, pos);
-    cout << "constint : " << res->to_string() << endl;
     return res;
 }

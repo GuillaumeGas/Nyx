@@ -18,13 +18,19 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * 
     this->pos = pos;
 }
 
-string IfElse::to_string() const {
-    string res = "IF " + cond->to_string() + " {\n" + bloc_if->to_string();
+void IfElse::print (ostream & out, int offset) const {
+    shift (out, offset);
+    out << "IF ";
+    cond->print (out);
+    out << " {" << endl;
+    bloc_if->print (out, offset+5);
     if (bloc_else != NULL) {
-	res += "} ELSE {\n" + bloc_else->to_string();
+	shift (out, offset);
+	out << "} ELSE {" << endl;
+	bloc_else->print (out, offset+5);
     }
-    res += "}\n";
-    return res;
+    shift (out, offset);
+    out << "}" << endl;
 }
 
 void IfElse::interpret () {

@@ -10,6 +10,12 @@ Ast::~Ast() {
   }
 }
 
-std::string Ast::to_string() const { return "ROOT"; }
+void Ast::print (ostream & out, int offset) const { out << "ROOT"; }
+
+void Ast::shift (ostream & out, int offset) const {
+    for (int i = 0; i < offset; i++) {
+	out << " ";
+    }
+}
 
 void Ast::interpret() {  }

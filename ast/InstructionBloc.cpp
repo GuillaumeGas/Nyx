@@ -9,12 +9,10 @@ InstructionBloc::InstructionBloc (deque<Ast*> * instructions_list, Position * po
     this->pos = pos;
 }
 
-string InstructionBloc::to_string() const {
-    string res = "";
+void InstructionBloc::print (ostream & out, int offset) const {
     for (auto it = instructions_list->begin(); it != instructions_list->end(); it++) {
-	res += (*it)->to_string();
+	(*it)->print (out, offset);
     }
-    return res;
 }
 
 void InstructionBloc::interpret() {

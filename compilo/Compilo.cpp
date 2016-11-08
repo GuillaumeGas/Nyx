@@ -4,51 +4,52 @@ using namespace std;
 using namespace bob;
 
 Compilo::Compilo(string file_name) {
-  m_file_name = file_name;
-  m_lex = NULL;
-  m_syn = NULL;
+    m_file_name = file_name;
+    m_lex = NULL;
+    m_syn = NULL;
 }
 
 Compilo::~Compilo() {
-  if (m_lex)
-    delete m_lex;
-  if (m_syn)
-    delete m_syn;
+    if (m_lex)
+	delete m_lex;
+    if (m_syn)
+	delete m_syn;
 }
 
 void Compilo::compile() {
-  try {
-    m_lex = new Lexer(m_file_name);
-    m_tokens = m_lex->get_tokens();
-  } catch(LexerException const& e) {
-    cout << e.to_string() << endl;
-    exit(-1);
-  }
-  try {
-    m_syn = new Syntax(m_file_name, m_tokens);
-    m_ast = m_syn->get_ast();
-  } catch(SyntaxException const& e) {
-    cout << e.to_string() << endl;
-    exit(-1);
-  }
+    try {
+	m_lex = new Lexer(m_file_name);
+	m_tokens = m_lex->get_tokens();
+    } catch(LexerException const& e) {
+	cout << e.to_string() << endl;
+	exit(-1);
+    }
+    try {
+	m_syn = new Syntax(m_file_name, m_tokens);
+	m_ast = m_syn->get_ast();
+    } catch(SyntaxException const& e) {
+	cout << e.to_string() << endl;
+	exit(-1);
+    }
 
-  // cout << "Interpret..." << endl;
-  // try {
-  //   m_ast->interpret();
-  //   cout << "End" << endl;
-  // } catch(SymbolException const& e) {
-  //   cout << e.to_string() << endl;
-  //   exit(-1);
-  // } catch(SemanticException const& e) {
-  //   cout << e.to_string() << endl;
-  //   exit(-1);
-  // }
+    // cout << "Interpret..." << endl;
+    // try {
+    //   m_ast->interpret();
+    //   cout << "End" << endl;
+    // } catch(SymbolException const& e) {
+    //   cout << e.to_string() << endl;
+    //   exit(-1);
+    // } catch(SemanticException const& e) {
+    //   cout << e.to_string() << endl;
+    //   exit(-1);
+    // }
 
-  // cout << symbol::Table::get_instance()->to_string() << endl;
+    // cout << symbol::Table::get_instance()->to_string() << endl;
 }
 
 void Compilo::print_ast() const {
-  cout << m_ast->to_string() << endl;
+    m_ast->print (cout);
+    cout.flush ();
 }
 
 

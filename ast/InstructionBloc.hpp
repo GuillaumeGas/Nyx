@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include <deque>
 #include "Ast.hpp"
 
@@ -10,7 +11,7 @@ namespace bob {
 	public:
 	    InstructionBloc (std::deque<Ast*> * instructions_list, Position * pos);
 
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 	    void interpret ();
 
 	private:

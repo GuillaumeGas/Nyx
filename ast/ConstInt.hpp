@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
@@ -14,7 +15,7 @@ namespace bob {
 	    ConstInt(int value, Position * pos);
 	    ~ConstInt();
 
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 	    Expression * interpret_expr();
 
 	    Expression * sum(Expression * expr);

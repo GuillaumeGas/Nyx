@@ -18,6 +18,9 @@ void PrintI::interpret() const {
     cout << e->get_value()->Int;
 }
 
-string PrintI::to_string() const {
-  return "print_i " + expr->to_string();
+void PrintI::print (ostream & out, int offset) const {
+    shift (out, offset);
+    out << "print_i ";
+    expr->print (out);
+    out << endl;
 }

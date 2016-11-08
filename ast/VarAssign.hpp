@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <ostream>
 #include "Binop.hpp"
 #include "Expression.hpp"
 #include "Operator.hpp"
@@ -13,7 +14,7 @@ namespace bob {
 	    VarAssign (Expression * e1, Expression * e2, Operator * op, Position * pos);
 	    virtual ~VarAssign ();
 
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 	};
     };
 };

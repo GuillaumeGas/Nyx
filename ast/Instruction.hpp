@@ -9,7 +9,7 @@ namespace bob {
 	public:
 	    virtual ~Instruction();
 	    virtual void interpret ();
-	    virtual std::string to_string() const = 0;
+	    virtual void print (std::ostream & out, int offset = 0) const = 0;
 	};
     };
 };

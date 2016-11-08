@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Bloc.hpp"
@@ -12,7 +13,7 @@ namespace bob {
 	    IfElse (Expression * cond, Bloc * bloc_if, Position * pos);
 	    IfElse (Expression * cond, Bloc * bloc_id, Bloc * bloc_else, Position * pos);
 
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 	    void interpret ();
 
 	private:

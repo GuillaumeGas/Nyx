@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
 #include "Ast.hpp"
 
@@ -13,7 +14,7 @@ namespace bob {
 	    ~Bloc();
 
 	    void interpret();
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 
 	    std::vector<Ast*> * content;
 	};

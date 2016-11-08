@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include "Operator.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
@@ -23,7 +24,7 @@ namespace bob {
 	    Expression * interpret_mod();
 	    Expression * interpret_assign();
 
-	    std::string to_string() const;
+	    void print (std::ostream & out, int offset = 0) const;
 
 	    Expression * e1;
 	    Expression * e2;

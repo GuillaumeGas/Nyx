@@ -11,7 +11,7 @@ namespace bob {
 	public:
 	    Expression();
 	    virtual ~Expression();
-	    virtual std::string to_string() const = 0;
+	    virtual void print (std::ostream & out, int offset = 0) const = 0;
 	    virtual Expression * interpret_expr();
 	    virtual Expression * sum(Expression * expr);
 	    virtual void interpret();
