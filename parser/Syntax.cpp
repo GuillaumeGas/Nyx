@@ -152,10 +152,14 @@ ast::Ast * Syntax::visitIfElse (Token * token_if) {
     if (next->type == TokenType::ELSE) {
 	pop();
 	next = pop();
-	if (next->type != ACCOL_L) {
+	ast::Bloc * bloc_else;
+	if (next->type == TokenType::ACCOL_L) {
+	    bloc_else = visitBloc ();
+	} else if (next->type == TokenType::IF) {
+	    bloc_else = (ast::Bloc*) visitIfElse (next);
+	} else {
 	    throw MissingErrorException ("{", Position (next->line, next->column));
 	}
-	ast::Bloc * bloc_else = visitBloc ();
 	return new ast::IfElse (expr_condition, bloc_if, bloc_else, pos);
     } else {
 	return new ast::IfElse (expr_condition, bloc_if, pos);
