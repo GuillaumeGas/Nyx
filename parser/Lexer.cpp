@@ -42,7 +42,7 @@ void Lexer::next_word() {
     i++;
   }
   if(i == 0) {
-    if(c != ' ') {
+    if(c != ' ' && c != '\t') {
       m_tmp_col = m_current_index+1;
       m_token = c;
       char next = m_current_line[m_current_index+1];
