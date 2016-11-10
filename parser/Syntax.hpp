@@ -24,6 +24,7 @@
 #include "../ast/FunDecl.hpp"
 #include "../ast/PrintI.hpp"
 #include "../ast/For.hpp"
+#include "../ast/While.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -57,6 +58,8 @@ namespace bob {
 	ast::Ast * visitIfElse (Token * token_if);
 	ast::Ast * visitPrintI (Token * token);
 	ast::Ast * visitFor (Token * token);
+	ast::Ast * visitWhile (Token * token);
+
 	ast::Expression * visitExpression ();
 	ast::Expression * create_value (Token * token);
 	bool is_part_of_expr (Token * token) const;

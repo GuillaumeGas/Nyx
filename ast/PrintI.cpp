@@ -22,5 +22,4 @@ void PrintI::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "print_i ";
     expr->print (out);
-    out << endl;
 }

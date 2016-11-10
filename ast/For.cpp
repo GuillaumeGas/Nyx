@@ -36,5 +36,5 @@ void For::print (ostream & out, int offset) const {
     out << ") {" << endl;
     bloc->print (out, offset+INDENT);
     shift (out, offset);
-    out << "}" << endl;
+    out << "}";
 }

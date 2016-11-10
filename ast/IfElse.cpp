@@ -30,7 +30,7 @@ void IfElse::print (ostream & out, int offset) const {
 	bloc_else->print (out, offset+INDENT);
     }
     shift (out, offset);
-    out << "}" << endl;
+    out << "}";
 }
 
 void IfElse::interpret () {

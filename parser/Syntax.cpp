@@ -48,6 +48,9 @@ ast::Bloc * Syntax::visitBloc () {
 	case TokenType::FOR:
 	    instr->push_back (visitFor (next));
 	    break;
+	case TokenType::WHILE:
+	    instr->push_back (visitWhile (next));
+	    break;
 	default:
 	    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
 	}
@@ -259,6 +262,20 @@ ast::Ast * Syntax::visitFor (Token * token) {
     ast::Position * pos = new ast::Position (token->line, token->column);
 
     return new ast::For (var_loop, start_value, end_value, for_bloc, pos);
+}
+
+/**
+   While := While ( expr ) { bloc }
+ */
+ast::Ast * Syntax::visitWhile (Token * token) {
+    ast::Expression * expr = visitExpression ();
+    Token * next = pop();
+    if (next->type != TokenType::ACCOL_L)
+	throw MissingErrorException ("{", Position (next->line, next->column));
+
+    ast::Bloc * bloc = visitBloc ();
+    ast::Position * pos = new ast::Position (token->line, token->column);
+    return new ast::While (expr, bloc, pos);
 }
 
 ast::Expression * Syntax::visitExpression () {

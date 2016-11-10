@@ -12,5 +12,4 @@ void VarAssign::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "VarAssign ";
     Binop::print (out);
-    out << endl;
 }
