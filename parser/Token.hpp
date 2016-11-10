@@ -51,6 +51,8 @@ namespace bob {
 	SCAN_I,
 	SCAN_S,
 	RETURN,
+	POINT,
+	IN,
 	_EOF_,
     };
 
@@ -150,6 +152,8 @@ namespace bob {
 	static bool is_scan_i(std::string& t);
 	static bool is_scan_s(std::string& t);
 	static bool is_return(std::string& t);
+	static bool is_point(std::string& t);
+	static bool is_in(std::string& t);
 
 	static bool is_value(Token * t);
 	static bool is_ident(Token * t);

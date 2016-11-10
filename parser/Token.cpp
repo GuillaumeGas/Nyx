@@ -201,8 +201,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 	return new Token(TokenType::IF, token, line, col);
     } else if(Token::is_else(token)) {
 	return new Token(TokenType::ELSE, token, line, col);
-    } else if(Token::is_elseif(token)) {
-	return new Token(TokenType::ELSEIF, token, line, col);
+    } else if(Token::is_in(token)) {
+	return new Token(TokenType::IN, token, line, col);
     } else if(Token::is_while(token)) {
 	return new Token(TokenType::WHILE, token, line, col);
     } else if(Token::is_do(token)) {
@@ -287,6 +287,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 	return new Token(TokenType::ACCOL_L, token, line, col);
     } else if(Token::is_accol_r(token)) {
 	return new Token(TokenType::ACCOL_R, token, line, col);
+    } else if(Token::is_point (token)) {
+	return new Token(TokenType::POINT, token, line, col);
     } else {
 	return NULL;
     }
@@ -323,12 +325,13 @@ bool Token::is_integer(string& t) {
     bool res = true;
     int i = 0;
     while (i < t.size() && res) {
-	if(t[i] < '0' || t[i] > '9') {
-	    res = false;
-	}
+	if (t[i] == '-' && i > 0)
+	    return false;
+	if((t[i] < '0' || t[i] > '9') && t[i] != '-')
+	    return false;
 	i++;
     }
-    return res;
+	return true;
 }
 
 bool Token::is_semicolon(string& t) {
@@ -490,6 +493,10 @@ bool Token::is_bool(string& t) {
 bool Token::is_return(string& t) {
     return t == "return";
 }
+
+bool Token::is_point(string& t) { return t == ".."; }
+
+bool Token::is_in (string& t) { return t == "in"; }
 
 bool Token::is_value(Token * t) {
     TokenType type = t->type;

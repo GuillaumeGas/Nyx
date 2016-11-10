@@ -45,6 +45,9 @@ ast::Bloc * Syntax::visitBloc () {
 	case TokenType::IF:
 	    instr->push_back (visitIfElse (next));
 	    break;
+	case TokenType::FOR:
+	    instr->push_back (visitFor (next));
+	    break;
 	default:
 	    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
 	}
@@ -216,6 +219,46 @@ ast::Ast * Syntax::visitPrintI (Token * token) {
     if (next->type != TokenType::SEMICOLON)
 	throw MissingErrorException (";", Position (next->line, next->column));
     return new ast::PrintI (expr, pos);
+}
+
+/**
+   For := for (i in 0 .. 10)*/
+ast::Ast * Syntax::visitFor (Token * token) {
+    Token * next = pop();
+    if (next->type != TokenType::PAR_L)
+	throw MissingErrorException ("(", Position (next->line, next->column));
+
+    next = pop();
+    if (next->type != TokenType::IDENT)
+	throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
+
+    Token * var = next;
+    next = pop();
+    if (next->type != TokenType::IN)
+	throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
+
+    next = pop();
+    if (next->type != TokenType::INT)
+	throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
+    Token * start = next;
+    if (pop()->type != TokenType::POINT)
+	throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
+    next = pop();
+    if (next->type != TokenType::INT)
+	throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
+    Token * end = next;
+    if (pop()->type != TokenType::PAR_R)
+	throw MissingErrorException (")", Position(next->line, next->column));
+    if (pop()->type != TokenType::ACCOL_L)
+	throw MissingErrorException ("{", Position(next->line, next->column));
+
+    ast::Bloc * for_bloc = visitBloc ();
+    ast::VarId * var_loop = new ast::VarId (var->value->to_string(), new ast::Position (var->line, var->column));
+    ast::ConstInt * start_value = (ast::ConstInt*)create_value (start);
+    ast::ConstInt * end_value = (ast::ConstInt*)create_value (end);
+    ast::Position * pos = new ast::Position (token->line, token->column);
+
+    return new ast::For (var_loop, start_value, end_value, for_bloc, pos);
 }
 
 ast::Expression * Syntax::visitExpression () {

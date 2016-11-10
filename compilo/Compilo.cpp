@@ -24,12 +24,13 @@ void Compilo::compile() {
 	cout << e.to_string() << endl;
 	exit(-1);
     }
+
     try {
-	m_syn = new Syntax(m_file_name, m_tokens);
-	m_ast = m_syn->get_ast();
+    	m_syn = new Syntax(m_file_name, m_tokens);
+    	m_ast = m_syn->get_ast();
     } catch(SyntaxException const& e) {
-	cout << e.to_string() << endl;
-	exit(-1);
+    	cout << e.to_string() << endl;
+    	exit(-1);
     }
 
     // cout << "Interpret..." << endl;

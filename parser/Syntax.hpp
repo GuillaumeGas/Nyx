@@ -23,6 +23,7 @@
 #include "../ast/IfElse.hpp"
 #include "../ast/FunDecl.hpp"
 #include "../ast/PrintI.hpp"
+#include "../ast/For.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -55,6 +56,7 @@ namespace bob {
 	ast::Ast * visitVarAssign (Token * token_ident);
 	ast::Ast * visitIfElse (Token * token_if);
 	ast::Ast * visitPrintI (Token * token);
+	ast::Ast * visitFor (Token * token);
 	ast::Expression * visitExpression ();
 	ast::Expression * create_value (Token * token);
 	bool is_part_of_expr (Token * token) const;
