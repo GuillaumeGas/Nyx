@@ -23,11 +23,11 @@ void IfElse::print (ostream & out, int offset) const {
     out << "IF ";
     cond->print (out);
     out << " {" << endl;
-    bloc_if->print (out, offset+5);
+    bloc_if->print (out, offset+INDENT);
     if (bloc_else != NULL) {
 	shift (out, offset);
 	out << "} ELSE {" << endl;
-	bloc_else->print (out, offset+5);
+	bloc_else->print (out, offset+INDENT);
     }
     shift (out, offset);
     out << "}" << endl;

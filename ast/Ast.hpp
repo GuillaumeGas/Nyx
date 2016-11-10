@@ -4,6 +4,8 @@
 
 #include "Position.hpp"
 
+#define INDENT 5
+
 namespace bob {
     namespace ast {
 	class Ast {

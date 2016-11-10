@@ -36,7 +36,7 @@ void FunDecl::print (ostream & out, int offset) const {
 	}
     out << ") {" << endl;
     shift (out, offset);
-    content->print (out, offset+1);
+    content->print (out, offset+INDENT);
     shift (out, offset);
     out << "}" << endl;
 }

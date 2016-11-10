@@ -34,7 +34,7 @@ void For::print (ostream & out, int offset) const {
     out << " .. ";
     end_value->print (out);
     out << ") {" << endl;
-    bloc->print (out, offset+1);
+    bloc->print (out, offset+INDENT);
     shift (out, offset);
     out << "}" << endl;
 }
