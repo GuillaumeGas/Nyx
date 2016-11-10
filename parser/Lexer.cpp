@@ -32,7 +32,7 @@ void Lexer::next_word() {
   m_token = "";
   char c = m_current_line[m_current_index];
   int i = 0;
-  while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '\'' || c == '"' || c == '_' || c == '.') {
+  while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '\'' || c == '"' || c == '_' || c == '.' || c== '$') {
     if(m_tmp_col < 0) {
       m_tmp_col = m_current_index+1;
     }

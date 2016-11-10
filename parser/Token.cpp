@@ -166,26 +166,11 @@ string Token::type_to_string() const {
     case FOR:
 	res = "FOR";
 	break;
-    case PRINT_I:
-	res = "PRINT_I";
-	break;
-    case PRINT_S:
-	res = "PRINT_S";
-	break;
-    case PRINT_C:
-	res = "PRINT_C";
-	break;
-    case PRINT_B:
-	res = "PRINT_B";
-	break;
-    case SCAN_I:
-	res = "SCAN_I";
-	break;
-    case SCAN_S:
-	res = "SCAN_S";
-	break;
     case RETURN:
 	res = "RETURN";
+	break;
+    case SYSCALL:
+	res = "SYSCALL";
 	break;
     case _EOF_:
 	res = "EOF";
@@ -209,20 +194,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 	return new Token(TokenType::DO, token, line, col);
     } else if(Token::is_for(token)) {
 	return new Token(TokenType::FOR, token, line, col);
-    } else if(Token::is_print_i(token)) {
-	return new Token(TokenType::PRINT_I, token, line, col);
     } else if(Token::is_bool(token)) {
 	return new Token(TokenType::BOOL, token, line, col);
-    } else if(Token::is_print_s(token)) {
-	return new Token(TokenType::PRINT_S, token, line, col);
-    } else if(Token::is_print_s(token)) {
-	return new Token(TokenType::PRINT_C, token, line, col);
-    } else if(Token::is_print_s(token)) {
-	return new Token(TokenType::PRINT_B, token, line, col);
-    } else if(Token::is_scan_i(token)) {
-	return new Token(TokenType::SCAN_I, token, line, col);
-    } else if(Token::is_scan_s(token)) {
-	return new Token(TokenType::SCAN_S, token, line, col);
     } else if(Token::is_type(token)) {
 	return new Token(TokenType::TYPE, token, line, col);
     } else if(Token::is_return(token)) {
@@ -289,6 +262,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 	return new Token(TokenType::ACCOL_R, token, line, col);
     } else if(Token::is_point (token)) {
 	return new Token(TokenType::POINT, token, line, col);
+    } else if(Token::is_syscall (token)) {
+	return new Token(TokenType::SYSCALL, token, line, col);
     } else {
 	return NULL;
     }
@@ -462,30 +437,6 @@ bool Token::is_for(string& t) {
     return t == "for";
 }
 
-bool Token::is_print_i(string& t) {
-    return t == "print_i";
-}
-
-bool Token::is_print_s(string& t) {
-    return t == "print_s";
-}
-
-bool Token::is_print_c(string& t) {
-    return t == "print_c";
-}
-
-bool Token::is_print_b(string& t) {
-    return t == "print_b";
-}
-
-bool Token::is_scan_i(string& t) {
-    return t == "scan_i";
-}
-
-bool Token::is_scan_s(string& t) {
-    return t == "scan_s";
-}
-
 bool Token::is_bool(string& t) {
     return t == "true" || t == "false";
 }
@@ -497,6 +448,13 @@ bool Token::is_return(string& t) {
 bool Token::is_point(string& t) { return t == ".."; }
 
 bool Token::is_in (string& t) { return t == "in"; }
+
+bool Token::is_syscall (string& t) {
+    if (t[0] != '$')
+	return false;
+    string ident = t.substr (1, t.size()-1);
+    return Token::is_ident (ident);
+}
 
 bool Token::is_value(Token * t) {
     TokenType type = t->type;

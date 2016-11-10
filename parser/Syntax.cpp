@@ -39,7 +39,6 @@ ast::Bloc * Syntax::visitBloc () {
 	switch (next->type) {
 	case TokenType::TYPE:
 	case TokenType::IDENT:
-	case TokenType::PRINT_I:
 	    instr->push_back (visitInstruction (next));
 	    break;
 	case TokenType::IF:
@@ -50,6 +49,9 @@ ast::Bloc * Syntax::visitBloc () {
 	    break;
 	case TokenType::WHILE:
 	    instr->push_back (visitWhile (next));
+	    break;
+	case TokenType::SYSCALL:
+	    instr->push_back (visitSyscall (next));
 	    break;
 	default:
 	    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
@@ -92,8 +94,6 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 	    throw MissingErrorException (";", Position (next->line, next->column));
 	}
 	pop();
-    } else if (token->type == TokenType::PRINT_I) {
-	res = visitPrintI (token);
     } else {
 	throw SyntaxErrorException (token->value->to_string(), Position (token->line, token->column));
     }
@@ -276,6 +276,42 @@ ast::Ast * Syntax::visitWhile (Token * token) {
     ast::Bloc * bloc = visitBloc ();
     ast::Position * pos = new ast::Position (token->line, token->column);
     return new ast::While (expr, bloc, pos);
+}
+
+/**
+   syscall := $ident ( params* );
+ */
+ast::Ast * Syntax::visitSyscall (Token * token) {
+    Token * next = pop();
+    if (next->type != TokenType::PAR_L)
+	throw MissingErrorException ("(", Position (next->line, next->column));
+    vector<ast::Ast*> * params = visitParams ();
+    next = pop();
+    if (next->type != TokenType::SEMICOLON)
+	throw MissingErrorException (";", Position (next->line, next->column));
+
+    ast::Position * pos = new ast::Position (token->line, token->column);
+    return new ast::Syscall (token->value->to_string(), params, pos);
+}
+
+
+/**
+   params := varid1, varid2... )
+ */
+vector<ast::Ast*> * Syntax::visitParams () {
+    Token * next = pop();
+    vector<ast::Ast*> * params = NULL;
+    while (next->type != TokenType::PAR_R) {
+	if (next->type != TokenType::IDENT)
+	    throw MissingErrorException (")", Position (next->line, next->column));
+	if (!params)
+	    params = new vector<ast::Ast*> ();
+	params->push_back (new ast::VarId (next->value->to_string(), new ast::Position (next->line, next->column)));
+	next = pop();
+	if (next->type != TokenType::COLON && next->type != TokenType::PAR_R)
+	    throw MissingErrorException (")", Position (next->line, next->column));
+    }
+    return params;
 }
 
 ast::Expression * Syntax::visitExpression () {

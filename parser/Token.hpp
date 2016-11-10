@@ -44,15 +44,10 @@ namespace bob {
 	WHILE,
 	DO,
 	FOR,
-	PRINT_I,
-	PRINT_S,
-	PRINT_C,
-	PRINT_B,
-	SCAN_I,
-	SCAN_S,
 	RETURN,
 	POINT,
 	IN,
+	SYSCALL,
 	_EOF_,
     };
 
@@ -145,15 +140,10 @@ namespace bob {
 	static bool is_do(std::string& t);
 	static bool is_for(std::string& t);
 	static bool is_while(std::string& t);
-	static bool is_print_i(std::string& t);
-	static bool is_print_s(std::string& t);
-	static bool is_print_c(std::string& t);
-	static bool is_print_b(std::string& t);
-	static bool is_scan_i(std::string& t);
-	static bool is_scan_s(std::string& t);
 	static bool is_return(std::string& t);
 	static bool is_point(std::string& t);
 	static bool is_in(std::string& t);
+	static bool is_syscall (std::string& t);
 
 	static bool is_value(Token * t);
 	static bool is_ident(Token * t);

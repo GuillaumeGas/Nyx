@@ -25,6 +25,7 @@
 #include "../ast/PrintI.hpp"
 #include "../ast/For.hpp"
 #include "../ast/While.hpp"
+#include "../ast/Syscall.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -59,6 +60,8 @@ namespace bob {
 	ast::Ast * visitPrintI (Token * token);
 	ast::Ast * visitFor (Token * token);
 	ast::Ast * visitWhile (Token * token);
+	ast::Ast * visitSyscall (Token * token);
+	std::vector<ast::Ast*> * visitParams ();
 
 	ast::Expression * visitExpression ();
 	ast::Expression * create_value (Token * token);
