@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <queue>
+#include <vector>
 #include <stack>
 #include <assert.h>
 
@@ -20,7 +21,11 @@
 #include "../ast/ConstChar.hpp"
 #include "../ast/ConstBool.hpp"
 #include "../ast/IfElse.hpp"
+#include "../ast/FunDecl.hpp"
+#include "../ast/PrintI.hpp"
+
 #include "../symbol/Table.hpp"
+
 #include "exceptions/SyntaxException.hpp"
 
 #define TODO(p)						\
@@ -45,9 +50,11 @@ namespace bob {
 	ast::Ast * visitInstruction (Token * token);
 	ast::Ast * visitFunDecl (Token * token_type, Token * token_ident);
 	ast::Ast * visitFunCall (Token * token_ident);
+	std::vector <ast::VarDecl*> * visitParamsDecl ();
 	ast::Bloc * visitVarDecl (Token * token_type, Token * token_ident);
 	ast::Ast * visitVarAssign (Token * token_ident);
 	ast::Ast * visitIfElse (Token * token_if);
+	ast::Ast * visitPrintI (Token * token);
 	ast::Expression * visitExpression ();
 	ast::Expression * create_value (Token * token);
 	bool is_part_of_expr (Token * token) const;

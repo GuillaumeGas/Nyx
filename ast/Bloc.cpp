@@ -26,5 +26,6 @@ void Bloc::interpret() {
 void Bloc::print (ostream & out, int offset) const {
     for(Ast* a : *content) {
 	a->print (out, offset);
+	out << endl;
     }
 }

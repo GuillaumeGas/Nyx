@@ -39,6 +39,7 @@ ast::Bloc * Syntax::visitBloc () {
 	switch (next->type) {
 	case TokenType::TYPE:
 	case TokenType::IDENT:
+	case TokenType::PRINT_I:
 	    instr->push_back (visitInstruction (next));
 	    break;
 	case TokenType::IF:
@@ -85,6 +86,8 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 	    throw MissingErrorException (";", Position (next->line, next->column));
 	}
 	pop();
+    } else if (token->type == TokenType::PRINT_I) {
+	res = visitPrintI (token);
     } else {
 	throw SyntaxErrorException (token->value->to_string(), Position (token->line, token->column));
     }
@@ -92,9 +95,48 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 }
 
 ast::Ast * Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
-    pop(); // '('
-    TODO("FunDecl");
-    return NULL;
+    pop();
+    Token * next = front();
+    vector <ast::VarDecl*> * params = NULL;
+    if (next->type != TokenType::PAR_R) {
+	params = visitParamsDecl ();
+    } else {
+	pop();
+    }
+
+    next = pop();
+    if (next->type != TokenType::ACCOL_L)
+	throw MissingErrorException ("{", Position (next->line, next->column));
+
+    ast::Bloc * content = visitBloc ();
+    ast::Type * type = new ast::Type (token_type->value->to_string(), true);
+    string ident = token_ident->value->to_string();
+    ast::Position * pos = new ast::Position (token_type->line, token_type->column);
+
+    return new ast::FunDecl (type, ident, params, content, pos);
+}
+
+vector <ast::VarDecl*> * Syntax::visitParamsDecl () {
+    vector <ast::VarDecl*> * params = new vector <ast::VarDecl*> ();
+    Token * next;
+    do {
+	Token * type = pop();
+	Token * ident = pop();
+	next = pop();
+
+	if (type->type != TokenType::TYPE)
+	    throw SyntaxErrorException (type->value->to_string(), Position (type->line, type->column));
+	if (ident->type != TokenType::IDENT)
+	    throw SyntaxErrorException (ident->value->to_string(), Position (ident->line, ident->column));
+	if (next->type != TokenType::COLON && next->type != TokenType::PAR_R)
+	    throw MissingErrorException (")", Position (next->line, next->column));
+
+	ast::Type * ast_type = new ast::Type (type->value->to_string(), true);
+	ast::Position * pos = new ast::Position (type->line, type->column);
+	params->push_back (new ast::VarDecl (ast_type, ident->value->to_string(), pos));
+    } while (next->type == TokenType::COLON);
+
+    return params;
 }
 
 ast::Ast * Syntax::visitFunCall (Token * token_ident) {
@@ -165,6 +207,15 @@ ast::Ast * Syntax::visitIfElse (Token * token_if) {
 	return new ast::IfElse (expr_condition, bloc_if, pos);
     }
 
+}
+
+ast::Ast * Syntax::visitPrintI (Token * token) {
+    ast::Expression * expr = visitExpression ();
+    ast::Position * pos = new ast::Position (token->line, token->column);
+    Token * next = pop();
+    if (next->type != TokenType::SEMICOLON)
+	throw MissingErrorException (";", Position (next->line, next->column));
+    return new ast::PrintI (expr, pos);
 }
 
 ast::Expression * Syntax::visitExpression () {

@@ -1,9 +1,9 @@
-int a = 2;
-if (a == 2) {
-    int d;
- } else {
-    int d = 3;
-    if (d == 3) {
-int f, d = 3;
+int main (int a, int b) {
+    int a;
+    a = 1;
+    if (a == 2) {
+	print_i (a);
+    } else {
+	print_i (1);
     }
- }
+}

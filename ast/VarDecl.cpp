@@ -21,5 +21,5 @@ void VarDecl::interpret() {
 
 void VarDecl::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "VarDecl " << type->to_string() << " " << name << endl;
+    out << "VarDecl " << type->to_string() << " " << name;
 }
