@@ -26,6 +26,7 @@
 #include "../ast/For.hpp"
 #include "../ast/While.hpp"
 #include "../ast/Syscall.hpp"
+#include "../ast/FunCall.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -61,11 +62,12 @@ namespace bob {
 	ast::Ast * visitFor (Token * token);
 	ast::Ast * visitWhile (Token * token);
 	ast::Ast * visitSyscall (Token * token);
-	std::vector<ast::Ast*> * visitParams ();
+	std::vector<ast::Expression*> * visitParams ();
 
-	ast::Expression * visitExpression ();
+	ast::Expression * visitExpression (std::vector<char> * delimitors = NULL);
 	ast::Expression * create_value (Token * token);
 	bool is_part_of_expr (Token * token) const;
+	bool is_delimitor (char c, std::vector<char> * delimitors);
 
     private:
 	std::string m_file_name;

@@ -1,16 +1,16 @@
-#include "Syscall.hpp"
+#include "FunCall.hpp"
 
 using namespace std;
 using namespace bob;
 using namespace ast;
 
-Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
-    this->ident = ident;
+FunCall::FunCall (string name, vector<Expression*> * params, Position * pos) {
+    this->name = name;
     this->params = params;
     this->pos = pos;
 }
 
-Syscall::~Syscall () {
+FunCall::~FunCall () {
     if (params) {
 	for (int i = 0; i < params->size(); i++) {
 	    delete (*params)[i];
@@ -18,13 +18,13 @@ Syscall::~Syscall () {
     }
 }
 
-void Syscall::interpret () {}
+void FunCall::interpret () {}
 
-void Syscall::print (ostream & out, int offset) const {
+void FunCall::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "syscall " << ident << " (";
+    out << name << " (";
     for (int i = 0; i < params->size(); i++) {
-	(*params)[i]->print (out);
+	(*params)[i]->print (out, offset);
 	if (i < params->size()-1)
 	    out << ", ";
     }
