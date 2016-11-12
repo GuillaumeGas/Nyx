@@ -298,6 +298,12 @@ ast::Ast * Syntax::visitFor (Token * token) {
 ast::Ast * Syntax::visitWhile (Token * token) {
     ast::Expression * expr = visitExpression ();
     Token * next = pop();
+    Token * ident = NULL;
+    if (next->type == TokenType::COMA) {
+      next = pop();
+      if (next->type != TokenType::IDENT)
+	throw MissingErrorException ("ident", Position (next->line, next->column));
+      ident = next;
     if (next->type != TokenType::ACCOL_L)
 	throw MissingErrorException ("{", Position (next->line, next->column));
 

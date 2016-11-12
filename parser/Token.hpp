@@ -36,7 +36,8 @@ namespace bob {
 	ACCOL_R, // '{'
 	ACCOL_L, // '}'
 	SEMICOLON, // ';'
-	COLON,
+	COMMA, // :
+	COLON, // ,
 	TYPE,
 	IF,
 	ELSE,
