@@ -34,7 +34,7 @@ ast::Ast * Syntax::get_ast () const { return m_program; }
 
 /**
    bloc := '{'? instruction* '}'?
- */
+*/
 ast::Bloc * Syntax::visitBloc () {
     vector<ast::Ast*> * instr = new vector<ast::Ast*> ();
     Token * next = pop ();
@@ -73,7 +73,7 @@ ast::Bloc * Syntax::visitBloc () {
 
 /**
    instruction := (FunDecl | VarDecl | FunCall | VarAssign | Syscall);
- */
+*/
 ast::Ast * Syntax::visitInstruction (Token * token) {
     ast::Ast * res = NULL;
     Token * next;
@@ -106,9 +106,9 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
     } else if (token->type == TokenType::SYSCALL) {
 	res = visitSyscall (token);
     } else if (token->type == TokenType::RETURN) {
-      res = visitReturn (token);
+	res = visitReturn (token);
     } else if (token->type == TokenType::BREAK) {
-      res = visitBreak (token);
+	res = visitBreak (token);
     } else {
 	throw SyntaxErrorException (token->value->to_string(), Position (token->line, token->column));
     }
@@ -120,7 +120,7 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 
 /**
    fundecl := type ident (params*) { bloc }
- */
+*/
 ast::Ast * Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
     pop();
     Token * next = front();
@@ -145,7 +145,7 @@ ast::Ast * Syntax::visitFunDecl (Token * token_type, Token * token_ident) {
 
 /**
    params := (type ident*))
- */
+*/
 vector <ast::VarDecl*> * Syntax::visitParamsDecl () {
     vector <ast::VarDecl*> * params = new vector <ast::VarDecl*> ();
     Token * next;
@@ -171,7 +171,7 @@ vector <ast::VarDecl*> * Syntax::visitParamsDecl () {
 
 /**
    funcall := ident ( params* )
- */
+*/
 ast::Ast * Syntax::visitFunCall (Token * token) {
     vector<ast::Expression*> * params = visitParams ();
     ast::Position * pos = new ast::Position (token->line, token->column);
@@ -180,7 +180,7 @@ ast::Ast * Syntax::visitFunCall (Token * token) {
 
 /**
    varDecl := type (ident (= expression),)*;
- */
+*/
 ast::Bloc * Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
     ast::Position * pos = new ast::Position (token_type->line, token_type->column);
     ast::Type * type = new ast::Type (token_type->value->to_string(), true);
@@ -208,7 +208,7 @@ ast::Bloc * Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
 
 /**
    varAssign := ident = expression;
- */
+*/
 ast::Ast * Syntax::visitVarAssign (Token * token_ident) {
     Token * token_op = pop();
     ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
@@ -221,7 +221,7 @@ ast::Ast * Syntax::visitVarAssign (Token * token_ident) {
 
 /**
    ifElse := if (expression) { bloc } (else (if (expression))? { bloc })*
- */
+*/
 ast::Ast * Syntax::visitIfElse (Token * token_if) {
     ast::Expression * expr_condition = Syntax::visitExpression ();
     ast::Position * pos = new ast::Position (token_if->line, token_if->column);
@@ -256,6 +256,14 @@ ast::Ast * Syntax::visitIfElse (Token * token_if) {
    For := for (i in 0 .. 10)*/
 ast::Ast * Syntax::visitFor (Token * token) {
     Token * next = pop();
+    Token * ident = NULL;
+    if (next->type == TokenType::COMMA) {
+	next = pop();
+	if (next->type != TokenType::IDENT)
+	    throw MissingErrorException ("ident", Position (next->line, next->column));
+	ident = next;
+	next = pop();
+    }
     if (next->type != TokenType::PAR_L)
 	throw MissingErrorException ("(", Position (next->line, next->column));
 
@@ -288,33 +296,37 @@ ast::Ast * Syntax::visitFor (Token * token) {
     ast::ConstInt * start_value = (ast::ConstInt*)create_value (start);
     ast::ConstInt * end_value = (ast::ConstInt*)create_value (end);
     ast::Position * pos = new ast::Position (token->line, token->column);
+    string * id = ident ? new string (ident->value->to_string()) : NULL;
 
-    return new ast::For (var_loop, start_value, end_value, for_bloc, pos);
+    return new ast::For (id, var_loop, start_value, end_value, for_bloc, pos);
 }
 
 /**
    While := While ( expr ) { bloc }
- */
+*/
 ast::Ast * Syntax::visitWhile (Token * token) {
+    Token * ident = NULL;
+    if (front()->type == TokenType::COMMA) {
+	pop();
+	ident = pop();
+	if (ident->type != TokenType::IDENT)
+	    throw MissingErrorException ("ident", Position (ident->line, ident->column));
+    }
     ast::Expression * expr = visitExpression ();
     Token * next = pop();
-    Token * ident = NULL;
-    if (next->type == TokenType::COMA) {
-      next = pop();
-      if (next->type != TokenType::IDENT)
-	throw MissingErrorException ("ident", Position (next->line, next->column));
-      ident = next;
     if (next->type != TokenType::ACCOL_L)
 	throw MissingErrorException ("{", Position (next->line, next->column));
 
     ast::Bloc * bloc = visitBloc ();
     ast::Position * pos = new ast::Position (token->line, token->column);
-    return new ast::While (expr, bloc, pos);
+    string * id = ident ? new string (ident->value->to_string()) : NULL;
+
+    return new ast::While (id, expr, bloc, pos);
 }
 
 /**
    syscall := $ident ( params* );
- */
+*/
 ast::Ast * Syntax::visitSyscall (Token * token) {
     vector<ast::Expression*> * params = visitParams ();
     ast::Position * pos = new ast::Position (token->line, token->column);
@@ -357,27 +369,27 @@ vector<ast::Expression*> * Syntax::visitParams () {
 
 /**
    Return := return expression*;
- */
+*/
 ast::Ast * Syntax::visitReturn (Token * token) {
-  ast::Position * pos = new ast::Position (token->line, token->column);
-  ast::Expression * expr = NULL;
-  if (front()->type != TokenType::SEMICOLON)
-    expr = visitExpression ();
-  return new ast::Return (expr, pos);
+    ast::Position * pos = new ast::Position (token->line, token->column);
+    ast::Expression * expr = NULL;
+    if (front()->type != TokenType::SEMICOLON)
+	expr = visitExpression ();
+    return new ast::Return (expr, pos);
 }
 
 /**
    Break := break ident?;
- */
+*/
 ast::Ast * Syntax::visitBreak (Token * token) {
-  ast::Position * pos = new ast::Position (token->line, token->column);
-  string * ident = NULL;
-  Token * next = front();
-  if (next->type == TokenType::IDENT) {
-    pop();
-    ident = new string (next->value->to_string());
-  }
-  return new ast::Break (ident, pos);
+    ast::Position * pos = new ast::Position (token->line, token->column);
+    string * ident = NULL;
+    Token * next = front();
+    if (next->type == TokenType::IDENT) {
+	pop();
+	ident = new string (next->value->to_string());
+    }
+    return new ast::Break (ident, pos);
 }
 
 ast::Expression * Syntax::visitExpression (vector<char> * delimitors) {

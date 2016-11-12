@@ -4,7 +4,8 @@ using namespace std;
 using namespace bob;
 using namespace ast;
 
-For::For (VarId * var_loop, ConstInt * start_value, ConstInt * end_value, Bloc * bloc, Position * pos) {
+For::For (string * ident, VarId * var_loop, ConstInt * start_value, ConstInt * end_value, Bloc * bloc, Position * pos) {
+    this->ident = ident;
     this->var_loop = var_loop;
     this->start_value = start_value;
     this->end_value = end_value;
@@ -13,6 +14,8 @@ For::For (VarId * var_loop, ConstInt * start_value, ConstInt * end_value, Bloc *
 }
 
 For::~For () {
+    if (ident)
+	delete ident;
     if (var_loop)
 	delete var_loop;
     if (start_value)
@@ -27,7 +30,10 @@ void For::interpret() {}
 
 void For::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "For (";
+    out << "For";
+    if (ident)
+	out << ":" << *ident;
+    out << " (";
     var_loop->print (out);
     out << " in ";
     start_value->print (out);

@@ -110,6 +110,7 @@ namespace bob {
 	static bool is_integer(std::string& t);
 	static bool is_semicolon(std::string& t);
 	static bool is_colon (std::string& t);
+	static bool is_comma (std::string& t);
 	static bool is_char(std::string& t);
 	static bool is_string(std::string& t);
 	static bool is_bool(std::string& t);
@@ -143,7 +144,7 @@ namespace bob {
 	static bool is_for(std::string& t);
 	static bool is_while(std::string& t);
 	static bool is_return(std::string& t);
-      static bool is_break(std::string& t);
+	static bool is_break(std::string& t);
 	static bool is_point(std::string& t);
 	static bool is_in(std::string& t);
 	static bool is_syscall (std::string& t);

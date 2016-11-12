@@ -74,6 +74,9 @@ string Token::type_to_string() const {
     case COLON:
 	res = "COLON";
 	break;
+    case COMMA:
+	res = "COMMA";
+	break;
     case CHAR:
 	res = "CHAR";
 	break;
@@ -215,6 +218,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 	return new Token(TokenType::SEMICOLON, token, line, col);
     } else if (Token::is_colon(token)) {
 	return new Token(TokenType::COLON, token, line, col);
+    } else if (Token::is_comma(token)) {
+	return new Token(TokenType::COMMA, token, line, col);
     } else if(Token::is_char(token)) {
 	return new Token(TokenType::CHAR, token.at(1), line, col);
     } else if(Token::is_string(token)) {
@@ -275,7 +280,7 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 }
 
 bool Token::is_type(string& t) {
-    if(t == "int" || t == "bool" || t == "char" || t == "string") {
+    if(t == "int" || t == "bool" || t == "char" || t == "string" || t == "void") {
 	return true;
     } else {
 	return false;
@@ -320,6 +325,10 @@ bool Token::is_semicolon(string& t) {
 
 bool Token::is_colon (string& t) {
     return t == ",";
+}
+
+bool Token::is_comma (string & t) {
+    return t == ":";
 }
 
 bool Token::is_char(string& t) {
