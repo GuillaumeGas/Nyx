@@ -46,6 +46,8 @@ ast::Bloc * Syntax::visitBloc () {
 	case TokenType::TYPE:
 	case TokenType::IDENT:
 	case TokenType::SYSCALL:
+	case TokenType::RETURN:
+	case TokenType::BREAK:
 	    instr->push_back (visitInstruction (next));
 	    break;
 	case TokenType::IF:
@@ -103,6 +105,10 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 	}
     } else if (token->type == TokenType::SYSCALL) {
 	res = visitSyscall (token);
+    } else if (token->type == TokenType::RETURN) {
+      res = visitReturn (token);
+    } else if (token->type == TokenType::BREAK) {
+      res = visitBreak (token);
     } else {
 	throw SyntaxErrorException (token->value->to_string(), Position (token->line, token->column));
     }
@@ -341,6 +347,31 @@ vector<ast::Expression*> * Syntax::visitParams () {
 	}
     }
     return params;
+}
+
+/**
+   Return := return expression*;
+ */
+ast::Ast * Syntax::visitReturn (Token * token) {
+  ast::Position * pos = new ast::Position (token->line, token->column);
+  ast::Expression * expr = NULL;
+  if (front()->type != TokenType::SEMICOLON)
+    expr = visitExpression ();
+  return new ast::Return (expr, pos);
+}
+
+/**
+   Break := break ident?;
+ */
+ast::Ast * Syntax::visitBreak (Token * token) {
+  ast::Position * pos = new ast::Position (token->line, token->column);
+  string * ident = NULL;
+  Token * next = front();
+  if (next->type == TokenType::IDENT) {
+    pop();
+    ident = new string (next->value->to_string());
+  }
+  return new ast::Break (ident, pos);
 }
 
 ast::Expression * Syntax::visitExpression (vector<char> * delimitors) {

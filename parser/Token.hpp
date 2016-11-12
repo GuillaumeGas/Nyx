@@ -45,6 +45,7 @@ namespace bob {
 	DO,
 	FOR,
 	RETURN,
+	BREAK,
 	POINT,
 	IN,
 	SYSCALL,
@@ -141,6 +142,7 @@ namespace bob {
 	static bool is_for(std::string& t);
 	static bool is_while(std::string& t);
 	static bool is_return(std::string& t);
+      static bool is_break(std::string& t);
 	static bool is_point(std::string& t);
 	static bool is_in(std::string& t);
 	static bool is_syscall (std::string& t);

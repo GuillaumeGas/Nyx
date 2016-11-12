@@ -27,6 +27,8 @@
 #include "../ast/While.hpp"
 #include "../ast/Syscall.hpp"
 #include "../ast/FunCall.hpp"
+#include "../ast/Return.hpp"
+#include "../ast/Break.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -63,6 +65,8 @@ namespace bob {
 	ast::Ast * visitWhile (Token * token);
 	ast::Ast * visitSyscall (Token * token);
 	std::vector<ast::Expression*> * visitParams ();
+      ast::Ast * visitReturn (Token * token);
+      ast::Ast * visitBreak (Token * token);
 
 	ast::Expression * visitExpression (std::vector<char> * delimitors = NULL);
 	ast::Expression * create_value (Token * token);

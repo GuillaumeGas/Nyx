@@ -169,6 +169,9 @@ string Token::type_to_string() const {
     case RETURN:
 	res = "RETURN";
 	break;
+    case BREAK:
+      res = "BREAK";
+      break;
     case SYSCALL:
 	res = "SYSCALL";
 	break;
@@ -200,6 +203,8 @@ Token* Token::create(string& token, unsigned int line, unsigned int col) {
 	return new Token(TokenType::TYPE, token, line, col);
     } else if(Token::is_return(token)) {
 	return new Token(TokenType::RETURN, token, line, col);
+    } else if(Token::is_break(token)) {
+      return new Token(TokenType::BREAK, token, line, col);
     } else if(Token::is_ident(token)) {
 	return new Token(TokenType::IDENT, token, line, col);
     } else if(Token::is_assign(token)) {
@@ -443,6 +448,10 @@ bool Token::is_bool(string& t) {
 
 bool Token::is_return(string& t) {
     return t == "return";
+}
+
+bool Token::is_break (string& t) {
+  return t == "break";
 }
 
 bool Token::is_point(string& t) { return t == ".."; }
