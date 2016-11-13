@@ -10,7 +10,7 @@
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class VarId : public Expression {
 	public:

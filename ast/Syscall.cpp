@@ -1,7 +1,7 @@
 #include "Syscall.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {

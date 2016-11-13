@@ -5,7 +5,7 @@
 #include "Scope.hpp"
 #include "../ast/Position.hpp"
 
-namespace bob {
+namespace nyx {
   namespace symbol {
     class Table {
     public:

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-namespace bob {
+namespace nyx {
     enum TokenType {
 	/*0 --> 20 -> May be part of an expression */
 	INT,
@@ -36,8 +36,8 @@ namespace bob {
 	ACCOL_R, // '{'
 	ACCOL_L, // '}'
 	SEMICOLON, // ';'
-	COMMA, // :
-	COLON, // ,
+	COMMA, // ,
+	COLON, // :
 	TYPE,
 	IF,
 	ELSE,

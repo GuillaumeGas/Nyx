@@ -5,7 +5,7 @@
 #include <deque>
 #include "Ast.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class InstructionBloc : public Ast {
 	public:

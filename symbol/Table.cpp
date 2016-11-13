@@ -1,7 +1,7 @@
 #include "Table.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace symbol;
 
 Table * Table::instance = NULL;

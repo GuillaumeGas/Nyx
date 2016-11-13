@@ -8,7 +8,7 @@
 #include "VarDecl.hpp"
 #include "Bloc.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class FunDecl : public Ast {
 	public:

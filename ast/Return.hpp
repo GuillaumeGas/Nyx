@@ -5,7 +5,7 @@
 #include "Position.hpp"
 #include "Expression.hpp"
 
-namespace bob {
+namespace nyx {
   namespace ast {
     class Return : public Ast {
     public:

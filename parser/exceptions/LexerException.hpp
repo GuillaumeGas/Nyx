@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace bob {
+namespace nyx {
   class LexerException {
   public:
     LexerException(const std::string& file_name) throw() : file_name(file_name) {}

@@ -1,7 +1,7 @@
 #include "For.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 For::For (string * ident, VarId * var_loop, ConstInt * start_value, ConstInt * end_value, Bloc * bloc, Position * pos) {

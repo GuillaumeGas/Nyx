@@ -7,7 +7,7 @@
 #include "Operator.hpp"
 #include "Position.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class VarAssign : public Binop {
 	public:

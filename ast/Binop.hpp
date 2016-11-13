@@ -9,7 +9,7 @@
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	struct Binop : public Expression {
 	    Binop(Expression * e1, Expression * e2, Operator * op, Position * pos);

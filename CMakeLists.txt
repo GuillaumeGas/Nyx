@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-project(Bob)
+project(Nyx)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ggdb")
 
@@ -14,7 +14,7 @@ file (
 )
 
 add_executable (
-  ../bob
+  ../nyx
   main.cpp
   ${source_files}
 )

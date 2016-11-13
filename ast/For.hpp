@@ -8,7 +8,7 @@
 #include "ConstInt.hpp"
 #include "Position.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class For : public Ast {
 	public:

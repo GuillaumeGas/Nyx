@@ -6,7 +6,7 @@
 
 #define INDENT 5
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class Ast {
 	public:

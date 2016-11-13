@@ -8,7 +8,7 @@
 #include "Token.hpp"
 #include "exceptions/LexerException.hpp"
 
-namespace bob {
+namespace nyx {
   class Lexer {
   public:
     Lexer(std::string file_name);

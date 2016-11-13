@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-namespace bob {
+namespace nyx {
   class Global {
   public:
     static Global * get_instance();

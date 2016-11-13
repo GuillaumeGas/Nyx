@@ -1,7 +1,7 @@
 #include "Ast.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 Ast::~Ast() {

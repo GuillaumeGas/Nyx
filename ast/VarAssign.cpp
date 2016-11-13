@@ -1,7 +1,7 @@
 #include "VarAssign.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 VarAssign::VarAssign (Expression * e1, Expression * e2, Operator * op, Position * pos) : Binop (e1, e2, op, pos) {}

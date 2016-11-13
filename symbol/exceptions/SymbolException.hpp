@@ -4,7 +4,7 @@
 #include "../../ast/Position.hpp"
 #include "../../global/Global.hpp"
 
-namespace bob {
+namespace nyx {
   class SymbolException {
   public:
     SymbolException(const std::string& file_name, ast::Position * pos) throw() : file_name(file_name), pos(pos) {}

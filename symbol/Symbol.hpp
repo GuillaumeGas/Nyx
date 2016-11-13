@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../ast/Type.hpp"
 
-namespace bob {
+namespace nyx {
   namespace symbol {
     class SymbolValue {
     public:

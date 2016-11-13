@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace bob {
+namespace nyx {
   namespace ast {
     class Position {
     public:

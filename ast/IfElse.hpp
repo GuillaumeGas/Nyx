@@ -6,7 +6,7 @@
 #include "Expression.hpp"
 #include "Bloc.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class IfElse : public Ast {
 	public:

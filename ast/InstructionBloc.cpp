@@ -1,7 +1,7 @@
 #include "InstructionBloc.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 InstructionBloc::InstructionBloc (deque<Ast*> * instructions_list, Position * pos) {

@@ -1,7 +1,7 @@
 #include "IfElse.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 IfElse::IfElse (Expression * cond, Bloc * bloc_if, Position * pos) {

@@ -1,7 +1,7 @@
 #include "Return.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 Return::Return (Expression * expr, Position * pos) {

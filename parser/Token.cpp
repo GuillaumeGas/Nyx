@@ -1,7 +1,7 @@
 #include "Token.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 
 TokenIntValue::TokenIntValue(int i) : value(i){}
 TokenCharValue::TokenCharValue(char c) : value(c) {}
@@ -324,11 +324,11 @@ bool Token::is_semicolon(string& t) {
 }
 
 bool Token::is_colon (string& t) {
-    return t == ",";
+    return t == ":";
 }
 
 bool Token::is_comma (string & t) {
-    return t == ":";
+    return t == ",";
 }
 
 bool Token::is_char(string& t) {

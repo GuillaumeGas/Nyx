@@ -1,7 +1,7 @@
 #include "FunDecl.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 FunDecl::FunDecl (Type * type, string ident, vector<VarDecl*> * params, Bloc * content, Position * pos) {

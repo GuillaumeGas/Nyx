@@ -1,7 +1,7 @@
 #include "Compilo.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 
 Compilo::Compilo(string file_name) {
     m_file_name = file_name;

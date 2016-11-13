@@ -1,19 +1,10 @@
-void print_i (int val) {
-    $printi (val, 0);
-}
-
-int main () {
-    int a = 0;
-    for (i in 0 .. 10) {
-	while:test (true) {
-		a = a + 1;
-		if (a > 10) {
-		    break test;
-		}
-	    }
+int main(int arg, char t) {
+    int a, b = 2;
+    while (i < 2) {
+	print_i (i);
     }
-    for:f (a in 20 .. 0) {
-	print_i (a);
+    for (i in 0 .. 4) {
+	print_i (i);
+	int a = 8;
     }
-    return 0;
 }

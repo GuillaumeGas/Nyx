@@ -1,7 +1,7 @@
 #include "Global.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 
 Global * Global::instance = NULL;
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Ast.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class Instruction : public Ast {
 	public:

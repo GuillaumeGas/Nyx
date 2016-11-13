@@ -38,7 +38,7 @@
     printf ("[!] Unimplement token : %s\n", p);				\
     exit (-1);
 
-namespace bob {
+namespace nyx {
     class Syntax {
     public:
 	Syntax(std::string& file_name, std::queue<Token*> * tokens);

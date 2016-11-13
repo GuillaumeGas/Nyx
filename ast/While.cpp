@@ -1,7 +1,7 @@
 #include "While.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 While::While (string * ident, Expression * expr, Bloc * bloc, Position * pos) {

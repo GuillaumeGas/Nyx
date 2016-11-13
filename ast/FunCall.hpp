@@ -6,7 +6,7 @@
 #include "Position.hpp"
 #include "Expression.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class FunCall : public Ast {
 	public:

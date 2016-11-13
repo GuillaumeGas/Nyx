@@ -1,7 +1,7 @@
 #include "Type.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 Type::Type(string name, bool is_basic) : name(name), is_basic(is_basic) {

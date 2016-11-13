@@ -1,6 +1,6 @@
 #include "Expression.hpp"
 
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 Expression::Expression () {

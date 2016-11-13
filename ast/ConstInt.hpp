@@ -8,7 +8,7 @@
 #include "Type.hpp"
 #include "Value.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class ConstInt : public Expression {
 	public:

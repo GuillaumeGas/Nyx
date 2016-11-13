@@ -6,7 +6,7 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class PrintI : public Ast {
 	public:

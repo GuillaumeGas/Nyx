@@ -4,7 +4,7 @@
 #include "Ast.hpp"
 #include "Position.hpp"
 
-namespace bob {
+namespace nyx {
   namespace ast {
     class Break : public Ast {
     public:

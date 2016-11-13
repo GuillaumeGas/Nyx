@@ -13,7 +13,7 @@
 #include "../symbol/Table.hpp"
 #include "../symbol/exceptions/SymbolException.hpp"
 
-namespace bob {
+namespace nyx {
     class Compilo {
     public:
 	Compilo(std::string file_name);

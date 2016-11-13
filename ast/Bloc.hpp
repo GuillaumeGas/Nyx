@@ -6,7 +6,7 @@
 
 #include "Ast.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class Bloc : public Ast {
 	public:

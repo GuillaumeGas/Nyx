@@ -1,7 +1,7 @@
 #include "Syntax.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace syntax;
 
 Syntax::Syntax(string& file_name, queue<Token*> * tokens) : m_file_name(file_name), m_tokens(tokens) {
@@ -87,7 +87,7 @@ ast::Ast * Syntax::visitInstruction (Token * token) {
 		return visitFunDecl (type, ident);
 	    } else if (next->type == TokenType::ASSIGN
 		       || next->type == TokenType::SEMICOLON
-		       || next->type == TokenType::COLON) {
+		       || next->type == TokenType::COMMA) {
 		res = visitVarDecl (type, ident);
 	    }
 	} else {
@@ -158,13 +158,13 @@ vector <ast::VarDecl*> * Syntax::visitParamsDecl () {
 	    throw SyntaxErrorException (type->value->to_string(), Position (type->line, type->column));
 	if (ident->type != TokenType::IDENT)
 	    throw SyntaxErrorException (ident->value->to_string(), Position (ident->line, ident->column));
-	if (next->type != TokenType::COLON && next->type != TokenType::PAR_R)
+	if (next->type != TokenType::COMMA && next->type != TokenType::PAR_R)
 	    throw MissingErrorException (")", Position (next->line, next->column));
 
 	ast::Type * ast_type = new ast::Type (type->value->to_string(), true);
 	ast::Position * pos = new ast::Position (type->line, type->column);
 	params->push_back (new ast::VarDecl (ast_type, ident->value->to_string(), pos));
-    } while (next->type == TokenType::COLON);
+    } while (next->type == TokenType::COMMA);
 
     return params;
 }
@@ -194,7 +194,7 @@ ast::Bloc * Syntax::visitVarDecl (Token * token_type, Token * token_ident) {
 	instr->push_back (visitVarAssign (token_ident));
 	next = front ();
     }
-    if (next->type == TokenType::COLON) {
+    if (next->type == TokenType::COMMA) {
 	pop();
 	Token * ident = pop ();
 	if (ident->type != TokenType::IDENT) {
@@ -257,7 +257,7 @@ ast::Ast * Syntax::visitIfElse (Token * token_if) {
 ast::Ast * Syntax::visitFor (Token * token) {
     Token * next = pop();
     Token * ident = NULL;
-    if (next->type == TokenType::COMMA) {
+    if (next->type == TokenType::COLON) {
 	next = pop();
 	if (next->type != TokenType::IDENT)
 	    throw MissingErrorException ("ident", Position (next->line, next->column));
@@ -306,7 +306,7 @@ ast::Ast * Syntax::visitFor (Token * token) {
 */
 ast::Ast * Syntax::visitWhile (Token * token) {
     Token * ident = NULL;
-    if (front()->type == TokenType::COMMA) {
+    if (front()->type == TokenType::COLON) {
 	pop();
 	ident = pop();
 	if (ident->type != TokenType::IDENT)
@@ -348,7 +348,7 @@ vector<ast::Expression*> * Syntax::visitParams () {
 	delimitors.push_back (',');
 	delimitors.push_back (')');
 	while (next->type != TokenType::PAR_R) {
-	    if (next->type == TokenType::COLON) {
+	    if (next->type == TokenType::COMMA) {
 		if (!params) {
 		    throw SyntaxErrorException (next->value->to_string(), Position (next->line, next->column));
 		}
@@ -360,7 +360,7 @@ vector<ast::Expression*> * Syntax::visitParams () {
 	    params->push_back (visitExpression (&delimitors));
 
 	    next = pop();
-	    if (next->type != TokenType::COLON && next->type != TokenType::PAR_R)
+	    if (next->type != TokenType::COMMA && next->type != TokenType::PAR_R)
 		throw MissingErrorException (")", Position (next->line, next->column));
 	}
     }

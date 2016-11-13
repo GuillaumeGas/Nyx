@@ -7,7 +7,7 @@
 #include "../Type.hpp"
 #include "../../global/Global.hpp"
 
-namespace bob {
+namespace nyx {
     class SemanticException {
     public:
 	SemanticException(ast::Position * pos) throw() : file_name(Global::get_instance()->file_name), pos(pos) {}

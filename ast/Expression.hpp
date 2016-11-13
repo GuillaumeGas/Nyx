@@ -5,7 +5,7 @@
 #include "Type.hpp"
 #include "Value.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class Expression : public Ast {
 	public:

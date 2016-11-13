@@ -1,7 +1,7 @@
 #include "FunCall.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 using namespace ast;
 
 FunCall::FunCall (string name, vector<Expression*> * params, Position * pos) {

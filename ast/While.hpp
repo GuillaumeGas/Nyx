@@ -7,7 +7,7 @@
 #include "Bloc.hpp"
 #include "Position.hpp"
 
-namespace bob {
+namespace nyx {
     namespace ast {
 	class While : public Ast {
 	public:

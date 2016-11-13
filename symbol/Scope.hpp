@@ -8,7 +8,7 @@
 #include "../global/Global.hpp"
 #include "../ast/Position.hpp"
 
-namespace bob {
+namespace nyx {
   namespace symbol {
     class Scope {
     public:

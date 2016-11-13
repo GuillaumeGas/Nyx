@@ -1,7 +1,7 @@
 #include "Lexer.hpp"
 
 using namespace std;
-using namespace bob;
+using namespace nyx;
 
 Lexer::Lexer(string file_name) : m_file_name(file_name) {
   m_line = 1;
