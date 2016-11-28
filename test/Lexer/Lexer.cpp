@@ -5,7 +5,7 @@ using namespace std;
 Lexer::Lexer (string file_name) {
     this->file_name = file_name;
     this->current_index = 0;
-    this->current_loc.line = 1;
+    this->current_loc.line = 0;
     this->current_loc.column = 0;
     this->eof = false;
 
@@ -40,15 +40,19 @@ Token Lexer::next () { return this->get_word (); }
 Token Lexer::get_word () {
     string line = this->read_line (this->current_index);
 
-    if (line.size() == 0)
-	return TokenEof (current_loc);
+    // cout << "line : " << line << endl;
 
-    int max = 0, pos = line.size();
+    if (line.size() == 0) {
+	this->eof = true;
+	return TokenEof (current_loc);
+    }
+
+    int max = 0, pos = line.size(), index = -1;
     string tok = "";
     for (auto it : this->keys) {
-	int index = line.find (it);
+	index = line.find (it);
 
-	if (index > 0) {
+	if (index > -1) {
 	    if (index < pos) {
 		pos = index;
 		max = it.size();
@@ -62,19 +66,25 @@ Token Lexer::get_word () {
 	}
     }
 
+    // cout << "tok : [" << tok << "]" << endl;
+
     location_t loc;
     loc.line = this->current_loc.line;
-    if (pos == -1) {
-	Token t = Token (line, this->current_loc);
+    loc.column = this->current_loc.column;
+
+    if (index == -1) {
 	this->current_index += line.size();
-	return t;
-    } else if (pos == current_pos) {
-	loc.column = current_pos;
+	this->current_loc.column += line.size();
+	return Token (line, loc);
+    } else if (pos == 0) {
+	this->current_loc.column += tok.size();
 	this->current_index += tok.size();
 	return Token (tok, loc);
     } else {
-	Token t = Token (line.substr (this->current_loc.column, pos), this->current_loc);
-	this->current_loc.column += (pos - this->current_loc.column);
+	int offset = (pos - this->current_loc.column);
+	this->current_index += pos;
+	this->current_loc.column += pos;
+	return Token (line.substr (0, pos), loc);
     }
 }
 
@@ -85,8 +95,8 @@ string Lexer::read_line (unsigned int offset) {
     if (res.size() == 0) {
 	getline (*this->file, res);
 	this->current_index++;
-	loc.line++;
-	loc.column = 0;
+	this->current_loc.line++;
+	this->current_loc.column = 0;
     }
     file->seekg (0);
     return res;
@@ -98,7 +108,7 @@ Token::Token (string _value, location_t _loc) {
 }
 
 string Token::to_string() const {
-    return "<" + value + ", loc(" + std::to_string(loc.line) + ", " + std::to_string(loc.column) + ">";
+    return "<" + value + ", loc(" + std::to_string(loc.line) + ", " + std::to_string(loc.column) + ")>";
 }
 
 TokenEof::TokenEof (location_t _loc) : Token ("EOF", _loc) {}
