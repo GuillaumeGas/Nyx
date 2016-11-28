@@ -34,10 +34,12 @@ public:
     ~Lexer ();
 
     void setKeys (std::vector<std::string> keys);
+    void setSkips (std::vector<std::string> skips);
     Token next ();
     bool isEof () const;
 
 private:
+    bool isSkip (Token t) const;
     Token get_word ();
     std::string read_line (unsigned int offset);
 
@@ -47,4 +49,5 @@ private:
     location_t current_loc;
     bool eof;
     std::vector<std::string> keys;
+    std::vector<std::string> skips;
 };

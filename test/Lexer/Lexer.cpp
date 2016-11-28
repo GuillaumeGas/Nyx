@@ -29,20 +29,35 @@ bool Lexer::isEof () const {
 }
 
 void Lexer::setKeys (vector<string> keys) {
-    for (auto it : keys) {
-	this->keys.push_back (it);
-    }
+    this->keys = keys;
 }
 
-//TODO : si on doit passer des commentaires, on les passe...
-Token Lexer::next () { return this->get_word (); }
+void Lexer::setSkips (vector<string> skips) {
+    this->skips = skips;
+}
+
+bool Lexer::isSkip (Token t) const {
+    for (auto it : this->skips) {
+	if (it == t.value)
+	    return true;
+    }
+    return false;
+}
+
+Token Lexer::next () {
+    Token t = this->get_word ();
+    while (isSkip (t)) {
+	t = this->get_word ();
+    }
+    return t;
+}
 
 Token Lexer::get_word () {
     string line = this->read_line (this->current_index);
 
     if (line.size() == 0) {
 	this->eof = true;
-	return TokenEof (current_loc);
+	return TokenEof (this->current_loc);
     }
 
     int max = 0, pos = line.size(), index = -1;
@@ -63,26 +78,25 @@ Token Lexer::get_word () {
 	    }
 	}
     }
-}
 
-location_t loc;
-loc.line = this->current_loc.line;
-loc.column = this->current_loc.column;
+    location_t loc;
+    loc.line = this->current_loc.line;
+    loc.column = this->current_loc.column;
 
-if (index == -1) {
-    this->current_index += line.size();
-    this->current_loc.column += line.size();
-    return Token (line, loc);
- } else if (pos == 0) {
-    this->current_loc.column += tok.size();
-    this->current_index += tok.size();
-    return Token (tok, loc);
- } else {
-    int offset = (pos - this->current_loc.column);
-    this->current_index += pos;
-    this->current_loc.column += pos;
-    return Token (line.substr (0, pos), loc);
- }
+    if (index == -1) {
+	this->current_index += line.size();
+	this->current_loc.column += line.size();
+	return Token (line, loc);
+    } else if (pos == 0) {
+	this->current_loc.column += tok.size();
+	this->current_index += tok.size();
+	return Token (tok, loc);
+    } else {
+	int offset = (pos - this->current_loc.column);
+	this->current_index += pos;
+	this->current_loc.column += pos;
+	return Token (line.substr (0, pos), loc);
+    }
 }
 
 string Lexer::read_line (unsigned int offset) {
@@ -100,14 +114,15 @@ string Lexer::read_line (unsigned int offset) {
 	file->seekg (0);
 	return res;
     }
+}
 
-    Token::Token (string _value, location_t _loc) {
-	value = _value;
-	loc = _loc;
-    }
+Token::Token (string _value, location_t _loc) {
+    value = _value;
+    loc = _loc;
+}
 
-    string Token::to_string() const {
-	return "<" + value + ", loc(" + std::to_string(loc.line) + ", " + std::to_string(loc.column) + ")>";
-    }
+string Token::to_string() const {
+    return "<" + value + ", loc(" + std::to_string(loc.line) + ", " + std::to_string(loc.column) + ")>";
+}
 
-    TokenEof::TokenEof (location_t _loc) : Token ("EOF", _loc) {}
+TokenEof::TokenEof (location_t _loc) : Token ("EOF", _loc) {}

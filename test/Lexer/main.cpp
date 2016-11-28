@@ -10,6 +10,7 @@ int main() {
 
     Lexer lex ("test.nx");
     lex.setKeys ({" ", "=", ";"});
+    lex.setSkips ({" ", "\n", "\t", "\r"});
     int i = 0;
     while (!lex.isEof()) {
     	Token t = lex.next();
