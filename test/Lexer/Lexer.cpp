@@ -92,7 +92,6 @@ Token Lexer::get_word () {
 	this->current_index += tok.size();
 	return Token (tok, loc);
     } else {
-	int offset = (pos - this->current_loc.column);
 	this->current_index += pos;
 	this->current_loc.column += pos;
 	return Token (line.substr (0, pos), loc);
@@ -105,12 +104,12 @@ string Lexer::read_line (unsigned int offset) {
     getline (*this->file, res);
     if (res.size() == 0) {
 	getline (*this->file, res);
-	if (res.size() == 0) {
-	    getline (*this->file, res);
+	// if (res.size() == 0) {
+	//     getline (*this->file, res);
 	    this->current_index++;
 	    this->current_loc.line++;
 	    this->current_loc.column = 0;
-	}
+	// }
 	file->seekg (0);
 	return res;
     }
