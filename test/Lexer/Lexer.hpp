@@ -46,6 +46,8 @@ public:
   Token isCom (Token t) const;
   Token get_word ();
   std::string read_line (unsigned int offset);
+  //TODO Read c by c including the \n to be able to use comments like //...\n
+  //std::string read_line (unsigned int offset);
   
   std::string file_name;
   std::ifstream * file;
