@@ -1,33 +1,40 @@
 #pragma once
 
-#include <fstream>
 #include <iostream>
-#include <queue>
+#include <cstdio>
+#include <vector>
 
 #include "../global/Global.hpp"
 #include "Token.hpp"
 #include "exceptions/LexerException.hpp"
 
 namespace nyx {
-  class Lexer {
-  public:
-    Lexer(std::string file_name);
+    class Lexer {
+    public:
+	Lexer (std::string file_name);
+	~Lexer ();
 
-    std::queue<Token*> * get_tokens();
+	void setKeys (std::vector<std::string> keys);
+	void setSkips (std::vector<std::string> skips);
+	void setComs (std::vector<std::pair<std::string, std::string> > coms);
+	TokenPtr next ();
+	bool isEof () const;
 
-  private:
-    void next_word();
-    void next_line();
-    void register_token();
+    private:
+	bool isSkip (TokenPtr t) const;
+	TokenPtr isCom (TokenPtr t) const;
+	TokenPtr getWord ();
+	void getLine (std::string & line);
+	void mfseek (const std::string & tok, unsigned int offset);
 
-    std::string m_file_name;
-    std::queue<Token*> m_tokens;
-
-    std::string m_current_line;
-    unsigned int m_current_index;
-    std::string m_token;
-    unsigned int m_line;
-    unsigned int m_column;
-    int m_tmp_col;
-  };
+	std::string file_name;
+	FILE * file;
+	location_t current_loc;
+	std::string current_line;
+	bool eof;
+	bool new_line;
+	std::vector<std::string> keys;
+	std::vector<std::string> skips;
+	std::vector<std::pair<std::string, std::string> > coms;
+    };
 };

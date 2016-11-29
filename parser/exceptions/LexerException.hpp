@@ -25,12 +25,4 @@ namespace nyx {
       return "[!] Error : " + file_name + " not found.";
     }
   };
-
-  class TokenErrorException : public LexerException {
-  public:
-    TokenErrorException(const std::string& file_name, std::string& token, unsigned int line, unsigned int column) throw() : LexerException(file_name, line, column, token) {}
-    std::string to_string() const {
-      return "[!] Parse error : " + file_name + " (" + std::to_string(line) + "," + std::to_string(column) + ") : unexpected token '" + msg + "'";
-    }
-  };
 };

@@ -3,78 +3,153 @@
 using namespace std;
 using namespace nyx;
 
-Lexer::Lexer(string file_name) : m_file_name(file_name) {
-  m_line = 1;
-  Global::get_instance()->set_file(file_name);
+Lexer::Lexer (string file_name) {
+    this->file_name = file_name;
+    this->current_loc.line = 0;
+    this->current_loc.column = 0;
+    this->eof = false;
+    this->new_line = true;
+    this->file = fopen (file_name.c_str (), "r");
 
-  ifstream file(m_file_name.c_str(), std::ios::in);
-  if(file.is_open()) {
-    while (getline(file, m_current_line)) {
-      Global::get_instance()->add_line(m_current_line);
-      m_current_index = 0;
-      next_line();
-      m_line++;
+    if (!this->file) {
+	throw FileNotFoundException (file_name);
     }
-  } else {
-    throw FileNotFoundException(file_name);
-  }
+
+    Global::getInstance()->setFile (file_name);
 }
 
-void Lexer::next_line() {
-  while (m_current_index < m_current_line.size()) {
-    m_tmp_col = -1;
-    next_word();
-    register_token();
-  }
+Lexer::~Lexer () {
+    if (this->file) {
+	fclose (this->file);
+    }
 }
 
-void Lexer::next_word() {
-  m_token = "";
-  char c = m_current_line[m_current_index];
-  int i = 0;
-  while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '\'' || c == '"' || c == '_' || c == '.' || c== '$') {
-    if(m_tmp_col < 0) {
-      m_tmp_col = m_current_index+1;
+bool Lexer::isEof () const {
+    return this->eof;
+}
+
+void Lexer::setKeys (vector<string> keys) {
+    this->keys = keys;
+}
+
+void Lexer::setSkips (vector<string> skips) {
+    this->skips = skips;
+}
+
+void Lexer::setComs (vector<pair<string, string> > coms) {
+    this->coms = coms;
+}
+
+bool Lexer::isSkip (TokenPtr t) const {
+    for (auto it : this->skips) {
+	if (it == t->value)
+	    return true;
     }
-    m_token += c;
-    m_current_index++;
-    c = m_current_line[m_current_index];
-    i++;
-  }
-  if(i == 0) {
-    if(c != ' ' && c != '\t') {
-      m_tmp_col = m_current_index+1;
-      m_token = c;
-      char next = m_current_line[m_current_index+1];
-      if(c == '>' || c == '<' || c == '!' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%') {
-	if(next == '=' || (c == '+' && next == '+') || (c == '-' && next == '-')) {
-	  m_token += next;
-	  m_current_index++;
-	} else if (c == '-' && next >= '0' && next <= '9') {
-	    do {
-		m_token += next;
-		next = m_current_line[m_current_index++];
-	    } while (next >= '0' && next <= '9');
+    return false;
+}
+
+TokenPtr Lexer::isCom (TokenPtr t) const {
+    for (auto it : this->coms) {
+	if (it.first == t->value) {
+	    return Token::make (it.second, {0, 0});
 	}
-      }
     }
-    m_current_index++;
-  }
+    return Token::makeEof ();
 }
 
-void Lexer::register_token() {
-  m_column = m_tmp_col;
-  if(m_token.size() > 0) {
-    Token * t = Token::create(m_token, m_line, m_column);
-    if(t) {
-      m_tokens.push(t);
-      m_column = -1;
+TokenPtr Lexer::next () {
+    TokenPtr t = this->getWord ();
+    TokenPtr com = isCom (t);
+    while (isSkip (t) || !com->isEof ()) {
+	if (!com->isEof ()) {
+	    do {
+		t = this->getWord ();
+	    } while (t->value != com->value && !t->isEof());
+	    com = Token::makeEof ();
+	    if (!t->isEof())
+		t = this->getWord ();
+	} else {
+	    t = this->getWord ();
+	}
+	com = isCom (t);
+    }
+    return t;
+}
+
+TokenPtr Lexer::getWord () {
+    int current_pos = ftell (this->file);
+    string line;
+    this->getLine (line);
+
+    if (line.size() == 0) {
+	this->eof = true;
+	return Token::makeEof ();
     } else {
-      throw TokenErrorException(m_file_name, m_token, m_line, m_column);
+	if (this->new_line) {
+	    Global::getInstance()->addLine (line);
+	    this->new_line = false;
+	}
     }
-  }
+
+    int max = 0, pos = line.size(), index = -1;
+    string tok = "";
+    for (auto it : this->keys) {
+	index = line.find (it);
+	if (index > -1) {
+	    if (index < pos) {
+		pos = index;
+		max = it.size();
+		tok = it;
+	    } else if (index == pos) {
+		if (max < it.size()) {
+		    max = it.size();
+		    tok = it;
+		}
+	    }
+	}
+    }
+
+    location_t loc;
+    loc.line = this->current_loc.line;
+    loc.column = this->current_loc.column;
+
+    if (pos == line.size()) {
+	mfseek (line, current_pos+line.size());
+	this->current_loc.column += line.size();
+	return Token::make (line, loc);
+    } else if (pos == 0) {
+	mfseek (tok, current_pos+tok.size());
+	this->current_loc.column += tok.size();
+	return Token::make (tok, loc);
+    } else {
+	string str = line.substr (0, pos);
+	mfseek (str, current_pos+pos);
+	this->current_loc.column += pos;
+	return Token::make (str, loc);
+    }
 }
 
-queue<Token*> * Lexer::get_tokens() {
-  return &m_tokens;
+void Lexer::getLine (string & line) {
+    unsigned int size = 256;
+    while (1) {
+	char * buffer = new char[size];
+	fgets (buffer, size, this->file);
+	if (!buffer) {
+	    line = "";
+	    break;
+	}
+	line += string (buffer);
+	if (line.size() < size || line[line.size()-1] != '\n')
+	    break;
+	delete buffer;
+    }
+}
+
+void Lexer::mfseek (const string & tok, unsigned int offset) {
+    if (tok == "\n" || tok == "\r") {
+	this->current_loc.line++;
+	this->current_loc.column = 0;
+	this->new_line = true;
+    }
+    fseek (this->file, offset, SEEK_SET);
 }

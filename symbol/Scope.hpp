@@ -15,12 +15,12 @@ namespace nyx {
       Scope(Scope * parent = NULL);
       ~Scope();
 
-      Scope * new_scope();
-      Scope * get_parent();
-      void add_symbol(Symbol * s, ast::Position * pos);
-      Symbol * get_symbol(std::string name, ast::Position * pos);
+      Scope * newScope();
+      Scope * getParent();
+      void addSymbol(Symbol * s, ast::Position * pos);
+      Symbol * getSymbol(std::string name, ast::Position * pos);
 
-      std::string to_string() const;
+      std::string toString() const;
 
     private:
       std::map<std::string, Symbol*> list;

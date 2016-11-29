@@ -13,11 +13,11 @@ Scope::~Scope() {
   if (next_scope)
     delete next_scope;
 
-  for (auto it = list.begin(); it != list.end(); it++) 
+  for (auto it = list.begin(); it != list.end(); it++)
     delete it->second;
 }
 
-Scope * Scope::new_scope() {
+Scope * Scope::newScope() {
   if (next_scope) {
     cout << "[Error] Next scope already exist." << endl;
     exit(-1);
@@ -26,31 +26,31 @@ Scope * Scope::new_scope() {
   return next_scope;
 }
 
-Scope * Scope::get_parent() {
+Scope * Scope::getParent() {
   return parent_scope;
 }
 
-void Scope::add_symbol(Symbol * s, ast::Position * pos) {
+void Scope::addSymbol(Symbol * s, ast::Position * pos) {
   if (list.find(s->name) != list.end()) {
-    throw MultipleDefException(Global::get_instance()->file_name, pos, s->name);
+    throw MultipleDefException(Global::getInstance()->file_name, pos, s->name);
     exit(-1);
   }
   list[s->name] = s;
 }
 
-Symbol * Scope::get_symbol(string name, ast::Position * pos) {
+Symbol * Scope::getSymbol(string name, ast::Position * pos) {
   auto it = list.find(name);
-  if (it != list.end()) 
+  if (it != list.end())
     return it->second;
-  throw SymbolNotFoundException(Global::get_instance()->file_name, pos, name);
+  throw SymbolNotFoundException(Global::getInstance()->file_name, pos, name);
   exit(-1);
 }
 
-string Scope::to_string() const {
+string Scope::toString() const {
   string res = "";
-  for (auto it = list.begin(); it != list.end(); it++) 
-     res += it->second->to_string() + "\n";
+  for (auto it = list.begin(); it != list.end(); it++)
+     res += it->second->toString() + "\n";
   if (next_scope)
-    res += next_scope->to_string();
+    res += next_scope->toString();
   return res;
 }

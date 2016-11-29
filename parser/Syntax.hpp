@@ -7,6 +7,7 @@
 #include <assert.h>
 
 #include "Token.hpp"
+#include "Lexer.hpp"
 #include "../ast/Ast.hpp"
 #include "../ast/Bloc.hpp"
 #include "../ast/Expression.hpp"
@@ -34,49 +35,44 @@
 
 #include "exceptions/SyntaxException.hpp"
 
-#define TODO(p)						\
-    printf ("[!] Unimplement token : %s\n", p);				\
+#define TODO(p)					\
+    printf ("[!] Unimplement token : %s\n", p);	\
     exit (-1);
 
 namespace nyx {
     class Syntax {
     public:
-	Syntax(std::string& file_name, std::queue<Token*> * tokens);
+	Syntax(Lexer & lex);
 	~Syntax();
 
-	ast::Ast * get_ast() const;
+	ast::Ast * getAst() const;
 
-	Token * pop() const;
-	Token * front() const;
-	void add_elem(ast::Ast * elem);
-	bool is_empty () const;
+	TokenPtr pop() const;
 
 	/* Visitor */
 	ast::Bloc * visitBloc ();
-	ast::Ast * visitInstruction (Token * token);
-	ast::Ast * visitFunDecl (Token * token_type, Token * token_ident);
-	ast::Ast * visitFunCall (Token * token_ident);
+	ast::Ast * visitInstruction (TokenPtr token);
+	ast::Ast * visitFunDecl (TokenPtr token_type, TokenPtr token_ident);
+	ast::Ast * visitFunCall (TokenPtr token_ident);
 	std::vector <ast::VarDecl*> * visitParamsDecl ();
-	ast::Bloc * visitVarDecl (Token * token_type, Token * token_ident);
-	ast::Ast * visitVarAssign (Token * token_ident);
-	ast::Ast * visitIfElse (Token * token_if);
-	ast::Ast * visitPrintI (Token * token);
-	ast::Ast * visitFor (Token * token);
-	ast::Ast * visitWhile (Token * token);
-	ast::Ast * visitSyscall (Token * token);
+	ast::Bloc * visitVarDecl (TokenPtr token_type, TokenPtr token_ident, TokenPtr next);
+	ast::Ast * visitVarAssign (TokenPtr token_ident, TokenPtr token_op);
+	ast::Ast * visitIfElse (TokenPtr token_if);
+	ast::Ast * visitPrintI (TokenPtr token);
+	ast::Ast * visitFor (TokenPtr token);
+	ast::Ast * visitWhile (TokenPtr token);
+	ast::Ast * visitSyscall (TokenPtr token);
 	std::vector<ast::Expression*> * visitParams ();
-      ast::Ast * visitReturn (Token * token);
-      ast::Ast * visitBreak (Token * token);
+	ast::Ast * visitReturn (TokenPtr token);
+	ast::Ast * visitBreak (TokenPtr token);
 
 	ast::Expression * visitExpression (std::vector<char> * delimitors = NULL);
-	ast::Expression * create_value (Token * token);
-	bool is_part_of_expr (Token * token) const;
+	ast::Expression * create_value (TokenPtr token);
+	bool is_part_of_expr (TokenPtr token) const;
 	bool is_delimitor (char c, std::vector<char> * delimitors);
 
     private:
-	std::string m_file_name;
-
-	std::queue<Token*> * m_tokens;
+	Lexer & lex;
 	ast::Bloc * m_program;
 
 	symbol::Table * m_table;

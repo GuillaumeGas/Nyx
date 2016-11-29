@@ -35,11 +35,11 @@ namespace nyx {
       OpPriority priority;
       Op value;
 
-      std::string to_string() const;
+      std::string toString() const;
 
     private:
-      Op get_value(std::string s);
-      OpPriority get_priority(Op o);
+      Op getValue(std::string s);
+      OpPriority getPriority(Op o);
     };
 
   };

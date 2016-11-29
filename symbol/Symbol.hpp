@@ -7,7 +7,7 @@ namespace nyx {
   namespace symbol {
     class SymbolValue {
     public:
-      virtual std::string to_string() const = 0;
+      virtual std::string toString() const = 0;
       ast::Type * type;
     };
 
@@ -15,7 +15,7 @@ namespace nyx {
     public:
       SymbolIntValue(ast::Type * type, int val);
 
-      std::string to_string() const;
+      std::string toString() const;
 
       int value;
     };
@@ -24,7 +24,7 @@ namespace nyx {
     public:
       SymbolCharValue(ast::Type * type, char val);
 
-      std::string to_string() const;
+      std::string toString() const;
 
       char value;
     };
@@ -33,7 +33,7 @@ namespace nyx {
     public:
       SymbolStringValue(ast::Type * type, std::string val);
 
-      std::string to_string() const;
+      std::string toString() const;
 
       std::string value;
     };
@@ -46,12 +46,12 @@ namespace nyx {
       Symbol(std::string name, ast::Type * type, std::string value);
       ~Symbol();
 
-      void set_value(int value);
-      void set_value(char value);
-      void set_value(std::string value);
+      void setValue(int value);
+      void setValue(char value);
+      void setValue(std::string value);
 
-      ast::Type * get_type() const;
-      std::string to_string() const;
+      ast::Type * getType() const;
+      std::string toString() const;
 
       std::string name;
       SymbolValue * symbol_value;

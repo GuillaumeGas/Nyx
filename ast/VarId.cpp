@@ -10,8 +10,8 @@ VarId::VarId(string name, Position * pos) : name(name) {
 
 VarId::~VarId() {}
 
-Expression * VarId::interpret_expr() {
-    this->type = get_type();
+Expression * VarId::interpretExpr() {
+    this->type = getType();
     return this;
 }
 
@@ -19,19 +19,19 @@ void VarId::print (ostream & out, int offset) const {
     out << name;
 }
 
-Value * VarId::get_value() const {
-    // symbol::Table * table = symbol::Table::get_instance();
+Value * VarId::getValue() const {
+    // symbol::Table * table = symbol::Table::getInstance();
 
-    // symbol::Symbol * s = table->get_symbol (name, pos);
-    // switch (this->type->get_type()) {
+    // symbol::Symbol * s = table->getSymbol (name, pos);
+    // switch (this->type->getType()) {
     // case TYPE::INT:
     // 	this->value.Int = s->
     // }
 }
 
-Type * VarId::get_type() const {
-    symbol::Table * table = symbol::Table::get_instance();
+Type * VarId::getType() const {
+    symbol::Table * table = symbol::Table::getInstance();
 
-    symbol::Symbol * s = table->get_symbol (name, pos);
-    return s->get_type();
+    symbol::Symbol * s = table->getSymbol (name, pos);
+    return s->getType();
 }

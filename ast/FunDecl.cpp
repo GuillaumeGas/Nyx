@@ -27,7 +27,7 @@ void FunDecl::interpret () { }
 
 void FunDecl::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << type->to_string() << " " << name << "(";
+    out << type->toString() << " " << name << "(";
     if (params)
 	for (int i = 0; i < params->size(); i++) {
 	    (*params)[i]->print (out);

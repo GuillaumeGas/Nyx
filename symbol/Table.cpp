@@ -9,18 +9,18 @@ Table * Table::instance = NULL;
 Table::Table() { current_scope = &main_scope; }
 Table::~Table() {}
 
-Table * Table::get_instance() {
+Table * Table::getInstance() {
   if (instance == NULL)
     instance = new Table;
   return instance;
 }
 
-void Table::enter_block() {
-  current_scope = current_scope->new_scope();
+void Table::enterBlock() {
+  current_scope = current_scope->newScope();
 }
 
-void Table::exit_block() {
-  Scope * tmp = current_scope->get_parent();
+void Table::exitBlock() {
+  Scope * tmp = current_scope->getParent();
   if (tmp) {
     delete current_scope;
     current_scope = tmp;
@@ -30,14 +30,14 @@ void Table::exit_block() {
   }
 }
 
-void Table::add_symbol(Symbol * s, ast::Position * pos) {
-  current_scope->add_symbol(s, pos);
+void Table::addSymbol(Symbol * s, ast::Position * pos) {
+  current_scope->addSymbol(s, pos);
 }
 
-Symbol * Table::get_symbol(string name, ast::Position * pos) {
-  return current_scope->get_symbol(name, pos);
+Symbol * Table::getSymbol(string name, ast::Position * pos) {
+  return current_scope->getSymbol(name, pos);
 }
 
-string Table::to_string() const {
-  return current_scope->to_string();
+string Table::toString() const {
+  return current_scope->toString();
 }

@@ -17,23 +17,23 @@ Binop::~Binop() {
 	delete op;
 }
 
-Expression * Binop::interpret_expr() {
-    e1 = e1->interpret_expr();
-    e2 = e2->interpret_expr();
-    if (check_compatibility()) {
+Expression * Binop::interpretExpr() {
+    e1 = e1->interpretExpr();
+    e2 = e2->interpretExpr();
+    if (checkCompatibility()) {
 	switch (op->value) {
 	case Op::PLUS:
-	    return interpret_plus();
+	    return interpretPlus();
 	case Op::MINUS:
-	    return interpret_minus();
+	    return interpretMinus();
 	case Op::MUL:
-	    return interpret_mul();
+	    return interpretMul();
 	case Op::DIV:
-	    return interpret_div();
+	    return interpretDiv();
 	case Op::MOD:
-	    return interpret_mod();
+	    return interpretMod();
 	case Op::ASSIGN:
-	    return interpret_assign();
+	    return interpretAssign();
 	}
     } else {
 	throw TypeErrorException(e1, e2, pos);
@@ -41,23 +41,23 @@ Expression * Binop::interpret_expr() {
 }
 
 /* TODO, version de test ici */
-bool Binop::check_compatibility() const {
-    return e1->get_type()->get_type() == e2->get_type()->get_type();
+bool Binop::checkCompatibility() const {
+    return e1->getType()->getType() == e2->getType()->getType();
 }
 
-Expression * Binop::interpret_plus() {
-    if (e1->type->is_basic) {
+Expression * Binop::interpretPlus() {
+    if (e1->type->isBasic()) {
 	return e1->sum(e2);
     } else {
 	//TODO
     }
 }
-Expression * Binop::interpret_minus() { return NULL; }
-Expression * Binop::interpret_mul() { return NULL; }
-Expression * Binop::interpret_div() { return NULL; }
-Expression * Binop::interpret_mod() { return NULL; }
+Expression * Binop::interpretMinus() { return NULL; }
+Expression * Binop::interpretMul() { return NULL; }
+Expression * Binop::interpretDiv() { return NULL; }
+Expression * Binop::interpretMod() { return NULL; }
 
-Expression * Binop::interpret_assign() {
+Expression * Binop::interpretAssign() {
     // symbol::Table * table = symbol::Table::get_instance();
 
     // symbol::Symbol * s = table->get_symbol (e1->to_string(), e1->pos);
@@ -69,7 +69,7 @@ Expression * Binop::interpret_assign() {
 void Binop::print (ostream & out, int offset) const {
     out << "Binop(";
     e1->print (out);
-    out << " " << op->to_string() << " ";
+    out << " " << op->toString() << " ";
     e2->print (out);
     out << ")";
 }

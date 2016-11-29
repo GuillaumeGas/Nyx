@@ -6,11 +6,11 @@
 namespace nyx {
   class Global {
   public:
-    static Global * get_instance();
+    static Global * getInstance();
 
-    void set_file(std::string& file_name);
-    void add_line(std::string& line);
-    std::string get_line(unsigned int num);
+    void setFile(std::string& file_name);
+    void addLine(std::string& line);
+    std::string getLine(unsigned int num);
 
     std::string file_name;
     std::vector<std::string> file_content;

@@ -9,14 +9,14 @@ namespace nyx {
   namespace symbol {
     class Table {
     public:
-      static Table * get_instance();
-      
-      void enter_block();
-      void exit_block();
-      void add_symbol(Symbol * s, ast::Position * pos);
-      Symbol * get_symbol(std::string name, ast::Position * pos);
+      static Table * getInstance();
 
-      std::string to_string() const;
+      void enterBlock();
+      void exitBlock();
+      void addSymbol(Symbol * s, ast::Position * pos);
+      Symbol * getSymbol(std::string name, ast::Position * pos);
+
+      std::string toString() const;
 
     private:
       Table();

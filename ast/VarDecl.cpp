@@ -15,11 +15,11 @@ VarDecl::~VarDecl() {
 }
 
 void VarDecl::interpret() {
-    symbol::Table * table = symbol::Table::get_instance();
-    table->add_symbol(new symbol::Symbol(name, type), pos);
+    symbol::Table * table = symbol::Table::getInstance();
+    table->addSymbol(new symbol::Symbol(name, type), pos);
 }
 
 void VarDecl::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "VarDecl " << type->to_string() << " " << name;
+    out << "VarDecl " << type->toString() << " " << name;
 }

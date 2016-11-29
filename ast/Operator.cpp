@@ -5,11 +5,11 @@ using namespace nyx;
 using namespace ast;
 
 Operator::Operator(string s) {
-    value = get_value(s);
-    priority = get_priority(value);
+    value = getValue(s);
+    priority = getPriority(value);
 }
 
-string Operator::to_string() const {
+string Operator::toString() const {
     switch (value) {
     case PLUS:
 	return "+";
@@ -52,7 +52,7 @@ string Operator::to_string() const {
     }
 }
 
-Op Operator::get_value(string s) {
+Op Operator::getValue(string s) {
     if (s == "+") {
 	return Op::PLUS;
     } else if (s == "-") {
@@ -82,7 +82,7 @@ Op Operator::get_value(string s) {
     }
 }
 
-OpPriority Operator::get_priority(Op o) {
+OpPriority Operator::getPriority(Op o) {
     switch (o) {
     case Op::MUL:
     case Op::DIV:

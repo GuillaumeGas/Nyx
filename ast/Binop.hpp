@@ -15,14 +15,14 @@ namespace nyx {
 	    Binop(Expression * e1, Expression * e2, Operator * op, Position * pos);
 	    ~Binop();
 
-	    bool check_compatibility() const;
-	    Expression * interpret_expr();
-	    Expression * interpret_plus();
-	    Expression * interpret_minus();
-	    Expression * interpret_mul();
-	    Expression * interpret_div();
-	    Expression * interpret_mod();
-	    Expression * interpret_assign();
+	    bool checkCompatibility() const;
+	    Expression * interpretExpr();
+	    Expression * interpretPlus();
+	    Expression * interpretMinus();
+	    Expression * interpretMul();
+	    Expression * interpretDiv();
+	    Expression * interpretMod();
+	    Expression * interpretAssign();
 
 	    void print (std::ostream & out, int offset = 0) const;
 

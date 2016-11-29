@@ -1,164 +1,85 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
+#include <memory>
+
+#include "TokenList.hpp"
 
 namespace nyx {
     enum TokenType {
-	/*0 --> 20 -> May be part of an expression */
-	INT,
-	CHAR,
-	BOOL,
-	STRING,
-	IDENT,
-	PLUS,   // '+'
-	PLUSPLUS, // '++'
-	MINUS, // '-'
-	MINUSMINUS, // '--'
-	MUL, // '*'
-	DIV, // '/'
-	MOD, // '%'
-	MODEQ, // '%='
-	LT,  // '<'
-	LE, // '<='
-	GT,  // '>'
-	GE, // '>='
-	EQ,  // '=='
-	NE, // '!='
-	PAR_L, // '('
-	PAR_R, // ')'
-	/* Off part of an expression */
-	ASSIGN, // '='
-	PLUSEQ, // '+='
-	MINUSEQ, // '-='
-	MULEQ, // '*='
-	DIVEQ, // '/='
-	ACCOL_R, // '{'
-	ACCOL_L, // '}'
-	SEMICOLON, // ';'
-	COMMA, // ,
-	COLON, // :
-	TYPE,
-	IF,
-	ELSE,
-	ELSEIF,
-	WHILE,
-	DO,
-	FOR,
-	RETURN,
-	BREAK,
-	POINT,
-	IN,
-	SYSCALL,
-	_EOF_,
+#define LEX_TOKEN(name, _) name,
+#define LEX_TOKEN_KEYWORD(x, y) LEX_TOKEN(x, y)
+	LEX_TOKEN_LIST
+#undef LEX_TOKEN
+#undef LEX_TOKEN_KEYWORD
     };
 
-    struct TokenValue {
-	virtual std::string to_string() const = 0;
+    struct location_t {
+	unsigned int column;
+	unsigned int line;
     };
 
-    struct TokenIntValue : TokenValue {
-	TokenIntValue(int i);
+    class Token;
+    typedef std::shared_ptr<Token> TokenPtr;
 
-	std::string to_string() const;
+    class Token {
+    public:
+	Token (TokenType type, const std::string & value, location_t loc);
 
-	int value;
-    };
-    struct TokenCharValue : TokenValue  {
-	TokenCharValue(char c);
+	static TokenPtr make (const std::string & value, location_t loc);
+	static TokenPtr makeEof ();
 
-	std::string to_string() const;
+	static TokenType getFromStr (const std::string & str) {
+#define LEX_TOKEN(name, value)			\
+	    if (str == value) return name;
+#define LEX_TOKEN_KEYWORD(x, y) LEX_TOKEN(x, y)
+	    LEX_TOKEN_LIST
+#undef LEX_TOKEN_KEYWORD
+#undef LEX_TOKEN
+		return OTHER;
+	}
 
-	char value;
-    };
-    struct TokenStringValue : TokenValue  {
-	TokenStringValue(std::string& s);
+	static const char * getType (TokenType ttype) {
+	    switch (ttype) {
+#define LEX_TOKEN(name, value)			\
+		case name:			\
+		    return #name;
+#define LEX_TOKEN_KEYWORD(x, y) LEX_TOKEN(x, y)
+		LEX_TOKEN_LIST
+#undef LEX_TOKEN_KEYWORD
+#undef LEX_TOKEN
+	    default:
+		return NULL;
+	    }
+	}
 
-	std::string to_string() const;
+	static const char * getValue (TokenType ttype) {
+	    switch (ttype) {
+#define LEX_TOKEN(name, value)			\
+		case name:			\
+		    return value;
+#define LEX_TOKEN_KEYWORD(x, y) LEX_TOKEN(x, y)
+		LEX_TOKEN_LIST
+#undef LEX_TOKEN_KEYWORD
+#undef LEX_TOKEN
+	    default:
+		return NULL;
+	    }
+	}
 
-	std::string value;
-    };
-    struct TokenBoolValue : TokenValue {
-	TokenBoolValue(bool b);
-
-	std::string to_string() const;
-
-	bool value;
-    };
-
-
-    struct Token {
-	Token(TokenType t, int v, unsigned int l, unsigned int col);
-	Token(TokenType t, char c, unsigned int l, unsigned int col);
-	Token(TokenType t, std::string& s, unsigned int l, unsigned int col);
-	Token(TokenType t, bool b, unsigned int l, unsigned int col);
-	~Token();
-
-	std::string to_string() const;
-	std::string type_to_string() const;
+	std::string toString() const;
+	location_t getLocation () const;
+	bool isEof () const;
 
 	TokenType type;
-	TokenValue * value;
-
+	std::string value;
 	unsigned int line;
 	unsigned int column;
-
-	static Token* create(std::string& token, unsigned int line, unsigned int col);
-	static bool is_type(std::string& t);
-	static bool is_ident(std::string& t);
-	static bool is_assign(std::string& t);
-	static bool is_integer(std::string& t);
-	static bool is_semicolon(std::string& t);
-	static bool is_colon (std::string& t);
-	static bool is_comma (std::string& t);
-	static bool is_char(std::string& t);
-	static bool is_string(std::string& t);
-	static bool is_bool(std::string& t);
-	static bool is_plus(std::string& t);
-	static bool is_plusplus(std::string& t);
-	static bool is_pluseq(std::string& t);
-	static bool is_minus(std::string& t);
-	static bool is_minusminus(std::string& t);
-	static bool is_minuseq(std::string& t);
-	static bool is_mul(std::string& t);
-	static bool is_muleq(std::string& t);
-	static bool is_div(std::string& t);
-	static bool is_diveq(std::string& t);
-	static bool is_mod(std::string& t);
-	static bool is_modeq(std::string& t);
-	static bool is_lt(std::string& t);
-	static bool is_le(std::string& t);
-	static bool is_gt(std::string& t);
-	static bool is_ge(std::string& t);
-
-	static bool is_eq(std::string& t);
-	static bool is_ne(std::string& t);
-	static bool is_par_l(std::string& t);
-	static bool is_par_r(std::string& t);
-	static bool is_accol_l(std::string& t);
-	static bool is_accol_r(std::string& t);
-	static bool is_if(std::string& t);
-	static bool is_else(std::string& t);
-	static bool is_elseif(std::string& t);
-	static bool is_do(std::string& t);
-	static bool is_for(std::string& t);
-	static bool is_while(std::string& t);
-	static bool is_return(std::string& t);
-	static bool is_break(std::string& t);
-	static bool is_point(std::string& t);
-	static bool is_in(std::string& t);
-	static bool is_syscall (std::string& t);
-
-	static bool is_value(Token * t);
-	static bool is_ident(Token * t);
-	static bool is_binop(Token * t);
-	static bool is_par_l(Token * t);
-	static bool is_par_r(Token * t);
+	bool eof;
     };
 
-    struct TokenEof : Token {
+    class TokenEof : public Token {
+    public:
 	TokenEof ();
-	std::string to_string() const;
     };
-
 };

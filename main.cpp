@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
     nyx::Compilo c(argv[1]);
     c.compile();
     cout << " -- AST -- " << endl;
-    c.print_ast();
+    c.printAst();
     cout << " -- FIN AST -- " << endl;
   } else {
     cout << "[Error] no source file." << endl;

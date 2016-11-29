@@ -17,10 +17,10 @@ namespace nyx {
 	    VarId(std::string name, Position * pos);
 	    ~VarId();
 
-	    Expression * interpret_expr();
+	    Expression * interpretExpr();
 	    void print (std::ostream & out, int offset = 0) const;
-	    Type * get_type() const;
-	    Value * get_value() const;
+	    Type * getType() const;
+	    Value * getValue() const;
 
 	    std::string name;
 	};

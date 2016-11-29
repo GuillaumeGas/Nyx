@@ -19,17 +19,22 @@ Compilo::~Compilo() {
 void Compilo::compile() {
     try {
 	m_lex = new Lexer(m_file_name);
-	m_tokens = m_lex->get_tokens();
+	m_lex->setKeys ({"+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=",
+		    "==", "!=", "(", ")", "=", "+=", "-=", "*=", "/=", "{", "}", ";", ",", ":",
+		    ".", "$",
+		    " ", "/*", "*/", "//", "\n", "\r"});
+	m_lex->setSkips ({" ", "\n", "\r"});
+	m_lex->setComs ({make_pair ("/*", "*/"), make_pair ("//", "\n")});
     } catch(LexerException const& e) {
 	cout << e.to_string() << endl;
 	exit(-1);
     }
 
     try {
-    	m_syn = new Syntax(m_file_name, m_tokens);
-    	m_ast = m_syn->get_ast();
+    	m_syn = new Syntax(*m_lex);
+    	m_ast = m_syn->getAst();
     } catch(SyntaxException const& e) {
-    	cout << e.to_string() << endl;
+    	cout << e.toString() << endl;
     	exit(-1);
     }
 
@@ -48,7 +53,7 @@ void Compilo::compile() {
     // cout << symbol::Table::get_instance()->to_string() << endl;
 }
 
-void Compilo::print_ast() const {
+void Compilo::printAst() const {
     m_ast->print (cout);
     cout.flush ();
 }

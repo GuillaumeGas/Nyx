@@ -20,7 +20,7 @@ namespace nyx {
 	~Compilo();
 
 	void compile();
-	void print_ast() const;
+	void printAst() const;
 
     private:
 	Lexer * m_lex;

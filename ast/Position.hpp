@@ -9,7 +9,7 @@ namespace nyx {
       Position(unsigned int line, unsigned int column);
       Position(const Position& p);
       ~Position();
-      std::string to_string() const;
+      std::string toString() const;
       unsigned int line;
       unsigned int column;
     };
