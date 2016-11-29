@@ -9,7 +9,7 @@ using namespace std;
 int main() {
 
     Lexer lex ("test.nx");
-    lex.setKeys ({" ", "=", ";", "/*", "*/", "//"});
+    lex.setKeys ({" ", "=", ";", "/*", "*/", "//", "\n"});
     lex.setSkips ({" ", "\n", "\t", "\r"});
     lex.setComs ({make_pair("/*", "*/"), make_pair("//", "\n")});
     int i = 0;
