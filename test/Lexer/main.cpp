@@ -15,7 +15,7 @@ int main() {
     int i = 0;
     while (!lex.isEof()) {
     	Token t = lex.next();
-    	cout << t.to_string() << endl;
+    	cout << t.toString() << endl;
     }
 
     return 0;

@@ -4,31 +4,7 @@
 #include <cstdio>
 #include <vector>
 
-struct location_t {
-    unsigned int column;
-    unsigned int line;
-};
-
-class Token {
-public:
-    Token (std::string _value, location_t _loc);
-    std::string to_string() const;
-    bool isEof () const;
-    std::string value;
-    location_t loc;
-    bool eof;
-};
-
-class TokenEof : public Token {
-public:
-    TokenEof ();
-};
-
-enum TokenList {
-    SPACE,
-    EQ,
-    COLON
-};
+#include "Token.hpp"
 
 class Lexer {
 public:
@@ -44,8 +20,8 @@ public:
 private:
     bool isSkip (Token t) const;
     Token isCom (Token t) const;
-    Token get_word ();
-    void get_line (std::string & line);
+    Token getWord ();
+    void getLine (std::string & line);
     void mfseek (const std::string & tok, unsigned int offset);
 
     std::string file_name;

@@ -49,39 +49,39 @@ bool Lexer::isSkip (Token t) const {
 Token Lexer::isCom (Token t) const {
     for (auto it : this->coms) {
 	if (it.first == t.value) {
-	    return Token (it.second, {0, 0});
+	    return Token::make (it.second, {0, 0});
 	}
     }
-    return TokenEof ();
+    return Token::makeEof ();
 }
 
 Token Lexer::next () {
-    Token t = this->get_word ();
+    Token t = this->getWord ();
     Token com = isCom (t);
     while (isSkip (t) || !com.isEof ()) {
 	if (!com.isEof ()) {
 	    do {
-		t = this->get_word ();
+		t = this->getWord ();
 	    } while (t.value != com.value && !t.isEof());
-	    com = TokenEof ();
+	    com = Token::makeEof ();
 	    if (!t.isEof())
-		t = this->get_word ();
+		t = this->getWord ();
 	} else {
-	    t = this->get_word ();
+	    t = this->getWord ();
 	}
 	com = isCom (t);
     }
     return t;
 }
 
-Token Lexer::get_word () {
+Token Lexer::getWord () {
     int current_pos = ftell (this->file);
     string line;
-    this->get_line (line);
+    this->getLine (line);
 
     if (line.size() == 0) {
 	this->eof = true;
-	return TokenEof ();
+	return Token::makeEof ();
     }
 
     int max = 0, pos = line.size(), index = -1;
@@ -109,20 +109,20 @@ Token Lexer::get_word () {
     if (pos == line.size()) {
 	mfseek (line, current_pos+line.size());
 	this->current_loc.column += line.size();
-	return Token (line, loc);
+	return Token::make (line, loc);
     } else if (pos == 0) {
 	mfseek (tok, current_pos+tok.size());
 	this->current_loc.column += tok.size();
-	return Token (tok, loc);
+	return Token::make (tok, loc);
     } else {
 	string str = line.substr (0, pos);
 	mfseek (str, current_pos+pos);
 	this->current_loc.column += pos;
-	return Token (str, loc);
+	return Token::make (str, loc);
     }
 }
 
-void Lexer::get_line (string & line) {
+void Lexer::getLine (string & line) {
     unsigned int size = 256;
     while (1) {
 	char * buffer = new char[size];
@@ -144,22 +144,4 @@ void Lexer::mfseek (const string & tok, unsigned int offset) {
 	this->current_loc.column = 0;
     }
     fseek (this->file, offset, SEEK_SET);
-}
-
-Token::Token (string _value, location_t _loc) {
-    value = _value;
-    loc = _loc;
-    eof = false;
-}
-
-string Token::to_string() const {
-    return "<" + value + ", loc(" + std::to_string(loc.line) + ", " + std::to_string(loc.column) + ")>";
-}
-
-bool Token::isEof() const {
-    return this->eof;
-}
-
-TokenEof::TokenEof () : Token ("EOF", {0, 0}) {
-    this->eof = true;
 }
