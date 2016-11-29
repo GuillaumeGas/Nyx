@@ -46,6 +46,7 @@ private:
     Token isCom (Token t) const;
     Token get_word ();
     void get_line (std::string & line);
+    void mfseek (const std::string & tok, unsigned int offset);
 
     std::string file_name;
     FILE * file;

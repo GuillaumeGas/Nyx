@@ -107,17 +107,18 @@ Token Lexer::get_word () {
     loc.column = this->current_loc.column;
 
     if (pos == line.size()) {
-	fseek (this->file, current_pos+line.size(), SEEK_SET);
+	mfseek (line, current_pos+line.size());
 	this->current_loc.column += line.size();
 	return Token (line, loc);
     } else if (pos == 0) {
-	fseek (this->file, current_pos+tok.size(), SEEK_SET);
+	mfseek (tok, current_pos+tok.size());
 	this->current_loc.column += tok.size();
 	return Token (tok, loc);
     } else {
-	fseek (this->file, current_pos+pos, SEEK_SET);
+	string str = line.substr (0, pos);
+	mfseek (str, current_pos+pos);
 	this->current_loc.column += pos;
-	return Token (line.substr (0, pos), loc);
+	return Token (str, loc);
     }
 }
 
@@ -135,6 +136,14 @@ void Lexer::get_line (string & line) {
 	    break;
 	delete buffer;
     }
+}
+
+void Lexer::mfseek (const string & tok, unsigned int offset) {
+    if (tok == "\n" || tok == "\r") {
+	this->current_loc.line++;
+	this->current_loc.column = 0;
+    }
+    fseek (this->file, offset, SEEK_SET);
 }
 
 Token::Token (string _value, location_t _loc) {
