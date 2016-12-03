@@ -15,6 +15,10 @@ TokenPtr Syntax::pop() const {
     return lex.next ();
 }
 
+void Syntax::rewind () {
+    lex.rewind ();
+}
+
 ast::Ast * Syntax::getAst () const { return m_program; }
 
 /**
@@ -73,7 +77,7 @@ ast::Ast * Syntax::visitInstruction (TokenPtr token) {
 	    } else if (next->type == TokenType::ASSIGN
 		       || next->type == TokenType::SEMICOLON
 		       || next->type == TokenType::COMMA) {
-		res = visitVarDecl (type, ident, next);
+		res = visitVarDecl (type, ident);
 	    }
 	} else {
 	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
@@ -165,7 +169,7 @@ ast::Ast * Syntax::visitInstruction (TokenPtr token) {
 /**
    varDecl := type (ident (= expression),)*;
 */
-ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident, TokenPtr next) {
+ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
     ast::Position * pos = new ast::Position (token_type->line, token_type->column);
     ast::Type * type = new ast::Type (token_type->value, true);
     ast::VarDecl * var_decl = new ast::VarDecl (type, token_ident->value, pos);
@@ -173,6 +177,8 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident, Tok
     vector<ast::Ast*> * instr = new vector<ast::Ast*> ();
     instr->push_back (var_decl);
 
+    rewind ();
+    TokenPtr next = pop();
     if (next->type == TokenType::ASSIGN) {
 	// instr->push_back (visitVarAssign (token_ident, next));
 	instr->push_back (NULL);
@@ -183,7 +189,7 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident, Tok
 	if (ident->type != TokenType::OTHER) {
 	    throw SyntaxErrorException (ident->value, Position (ident->line, ident->column));
 	}
-	instr->push_back (visitVarDecl (token_type, ident, next));
+	instr->push_back (visitVarDecl (token_type, ident));
     }
     return new ast::Bloc (instr);
 }

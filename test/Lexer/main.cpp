@@ -13,10 +13,12 @@ int main() {
     lex.setSkips ({" ", "\n", "\t", "\r"});
     lex.setComs ({make_pair("/*", "*/"), make_pair("//", "\n")});
     int i = 0;
-    while (!lex.isEof()) {
-    	Token t = lex.next();
-    	cout << t.toString() << endl;
-    }
+
+    Token t = lex.next();
+    cout << t.toString() << endl;
+    lex.rewind ();
+    t = lex.next ();
+    cout << t.toString() << endl;
 
     return 0;
 }

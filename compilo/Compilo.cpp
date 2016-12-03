@@ -26,7 +26,7 @@ void Compilo::compile() {
 	m_lex->setSkips ({" ", "\n", "\r"});
 	m_lex->setComs ({make_pair ("/*", "*/"), make_pair ("//", "\n")});
     } catch(LexerException const& e) {
-	cout << e.to_string() << endl;
+	cout << e.toString() << endl;
 	exit(-1);
     }
 

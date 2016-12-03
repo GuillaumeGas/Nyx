@@ -19,18 +19,21 @@ namespace nyx {
 	void setComs (std::vector<std::pair<std::string, std::string> > coms);
 	TokenPtr next ();
 	bool isEof () const;
+	void rewind ();
 
     private:
 	bool isSkip (TokenPtr t) const;
 	TokenPtr isCom (TokenPtr t) const;
 	TokenPtr getWord ();
+	TokenPtr getWord (int index);
 	void getLine (std::string & line);
 	void mfseek (const std::string & tok, unsigned int offset);
 
 	std::string file_name;
 	FILE * file;
 	location_t current_loc;
-	std::string current_line;
+	int current_index;
+	std::vector<TokenPtr> current_line;
 	bool eof;
 	bool new_line;
 	std::vector<std::string> keys;

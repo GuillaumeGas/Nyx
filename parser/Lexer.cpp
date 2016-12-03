@@ -10,6 +10,7 @@ Lexer::Lexer (string file_name) {
     this->eof = false;
     this->new_line = true;
     this->file = fopen (file_name.c_str (), "r");
+    this->current_index = 0;
 
     if (!this->file) {
 	throw FileNotFoundException (file_name);
@@ -57,19 +58,35 @@ TokenPtr Lexer::isCom (TokenPtr t) const {
     return Token::makeEof ();
 }
 
+TokenPtr Lexer::getWord (int index) {
+    if (index >= 0) {
+	if (index == this->current_line.size ()) {
+	    this->current_line.push_back (getWord ());
+	}
+	return this->current_line[index];
+    } else {
+	throw OutOfRangeException (this->file_name);
+    }
+}
+
+void Lexer::rewind () {
+    if (this->current_index > 0)
+	this->current_index--;
+}
+
 TokenPtr Lexer::next () {
-    TokenPtr t = this->getWord ();
+    TokenPtr t = this->getWord (this->current_index++);
     TokenPtr com = isCom (t);
     while (isSkip (t) || !com->isEof ()) {
 	if (!com->isEof ()) {
 	    do {
-		t = this->getWord ();
+		t = this->getWord (this->current_index++);
 	    } while (t->value != com->value && !t->isEof());
 	    com = Token::makeEof ();
 	    if (!t->isEof())
-		t = this->getWord ();
+		t = this->getWord (this->current_index++);
 	} else {
-	    t = this->getWord ();
+	    t = this->getWord (this->current_index++);
 	}
 	com = isCom (t);
     }

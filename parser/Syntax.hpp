@@ -48,6 +48,7 @@ namespace nyx {
 	ast::Ast * getAst() const;
 
 	TokenPtr pop() const;
+	void rewind ();
 
 	/* Visitor */
 	ast::Bloc * visitBloc ();
@@ -55,7 +56,7 @@ namespace nyx {
 	ast::Ast * visitFunDecl (TokenPtr token_type, TokenPtr token_ident);
 	ast::Ast * visitFunCall (TokenPtr token_ident);
 	std::vector <ast::VarDecl*> * visitParamsDecl ();
-	ast::Bloc * visitVarDecl (TokenPtr token_type, TokenPtr token_ident, TokenPtr next);
+	ast::Bloc * visitVarDecl (TokenPtr token_type, TokenPtr token_ident);
 	ast::Ast * visitVarAssign (TokenPtr token_ident, TokenPtr token_op);
 	ast::Ast * visitIfElse (TokenPtr token_if);
 	ast::Ast * visitPrintI (TokenPtr token);

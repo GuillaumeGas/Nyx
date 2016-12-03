@@ -7,6 +7,7 @@ Lexer::Lexer (string file_name) {
     this->current_loc.line = 0;
     this->current_loc.column = 0;
     this->eof = false;
+    this->current_index = 0;
 
     this->file = fopen (file_name.c_str (), "r");
 
@@ -55,24 +56,59 @@ Token Lexer::isCom (Token t) const {
     return Token::makeEof ();
 }
 
+Token Lexer::getWord (int index) {
+    if (index >= 0) {
+	if (index == this->current_line.size()) {
+	    this->current_line.push_back (getWord ());
+	}
+	return this->current_line[index];
+    } else {
+	throw -1;
+    }
+}
+
+void Lexer::rewind () {
+    if (this->current_index > 0)
+	this->current_index--;
+}
+
 Token Lexer::next () {
-    Token t = this->getWord ();
+    Token t = getWord (this->current_index++);
     Token com = isCom (t);
     while (isSkip (t) || !com.isEof ()) {
 	if (!com.isEof ()) {
 	    do {
-		t = this->getWord ();
-	    } while (t.value != com.value && !t.isEof());
+		t = getWord (this->current_index++);
+	    } while (t.value != com.value && !t.isEof ());
 	    com = Token::makeEof ();
-	    if (!t.isEof())
-		t = this->getWord ();
+	    if (!t.isEof ())
+		t = getWord (this->current_index++);
 	} else {
-	    t = this->getWord ();
+	    t = getWord (this->current_index++);
 	}
 	com = isCom (t);
     }
     return t;
 }
+
+// Token Lexer::next () {
+//     Token t = this->getWord ();
+//     Token com = isCom (t);
+//     while (isSkip (t) || !com.isEof ()) {
+// 	if (!com.isEof ()) {
+// 	    do {
+// 		t = this->getWord ();
+// 	    } while (t.value != com.value && !t.isEof());
+// 	    com = Token::makeEof ();
+// 	    if (!t.isEof())
+// 		t = this->getWord ();
+// 	} else {
+// 	    t = this->getWord ();
+// 	}
+// 	com = isCom (t);
+//     }
+//     return t;
+// }
 
 Token Lexer::getWord () {
     int current_pos = ftell (this->file);
