@@ -101,8 +101,12 @@ ast::Ast * Syntax::visitInstruction (TokenPtr token) {
     } else {
 	throw SyntaxErrorException (token->value, Position (token->line, token->column));
     }
+
+    rewind ();
+    next = pop ();
     if (next->type != TokenType::SEMICOLON)
 	throw MissingErrorException (";", Position (next->line, next->column));
+
     return res;
 }
 
@@ -180,8 +184,7 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
     rewind ();
     TokenPtr next = pop();
     if (next->type == TokenType::ASSIGN) {
-	// instr->push_back (visitVarAssign (token_ident, next));
-	instr->push_back (NULL);
+	instr->push_back (visitVarAssign (token_ident, next));
 	next = pop ();
     }
     if (next->type == TokenType::COMMA) {
@@ -198,14 +201,14 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
 /**
    varAssign := ident = expression;
 */
-// ast::Ast * Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
-//     ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
-//     ast::Expression * e1 = new ast::VarId (token_ident->value, pos);
-//     ast::Expression * e2 = visitExpression ();
-//     ast::Operator * op = new ast::Operator (token_op->value);
+ast::Ast * Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
+    ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
+    ast::Expression * e1 = new ast::VarId (token_ident->value, pos);
+    ast::Expression * e2 = visitExpression ();
+    ast::Operator * op = new ast::Operator (token_op->value);
 
-//     return new ast::VarAssign (e1, e2, op, new ast::Position (token_op->line, token_op->column));
-// }
+    return new ast::VarAssign (e1, e2, op, new ast::Position (token_op->line, token_op->column));
+}
 
 /**
    ifElse := if (expression) { bloc } (else (if (expression))? { bloc })*
@@ -380,98 +383,321 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
 //     return new ast::Break (ident, pos);
 // }
 
-// ast::Expression * Syntax::visitExpression (vector<char> * delimitors) {
-//     /* Transformation de l'expression en notation polonaise inversée */
-//     queue<TokenPtr*> out;
-//     stack<TokenPtr*> op;
+ast::Expression * Syntax::visitExpression () {
+    return visitLow ();
+}
 
-//     TokenPtr current_token = front();
-//     TokenPtr tmp = NULL;
-//     int nb_par_l = 0;
+ast::Expression * Syntax::visitLow () {
+    ast::Expression * left = visitHigh ();
 
-//     while (is_part_of_expr(current_token)) {
-// 	string val = current_token->value->to_string();
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {LT, LE, GT, GE, EQ})) {
+	ast::Expression * right = visitHigh ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitLow (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
 
-// 	if (TokenPtr::is_value(current_token) || TokenPtr::is_ident(current_token)) {
-// 	    out.push(current_token);
-// 	} else if (TokenPtr::is_par_l(current_token)) {
-// 	    nb_par_l++;
-// 	    op.push(current_token);
-// 	} else if (TokenPtr::is_par_r(current_token)) {
-// 	    if (delimitors && is_delimitor (')', delimitors)) {
-// 		if (nb_par_l == 0) {
-// 		    break;
-// 		}
-// 	    }
-// 	    nb_par_l--;
-// 	    tmp = op.top();
-// 	    while (!TokenPtr::is_par_l(tmp) && op.size() > 0) {
-// 		out.push(tmp);
-// 		op.pop();
-// 		if (op.size() > 0)
-// 		    tmp = op.top();
-// 	    }
-// 	    if (!TokenPtr::is_par_l(tmp)) {
-// 		throw SyntaxErrorException(tmp->value->to_string(), Position(tmp->line, tmp->column));
-// 	    } else {
-// 		op.pop();
-// 	    }
-// 	} else if (TokenPtr::is_binop(current_token)) {
-// 	    if (op.size() == 0 || TokenPtr::is_par_l(op.top())) {
-// 		op.push(current_token);
-// 	    } else {
-// 		ast::Operator op1(current_token->value->to_string());
-// 		ast::Operator op2(op.top()->value->to_string());
-// 		if (op1.priority > op2.priority) {
-// 		    op.push(current_token);
-// 		} else {
-// 		    out.push(op.top());
-// 		    op.pop();
-// 		    op.push(current_token);
-// 		}
-// 	    }
-// 	} else {
-// 	    throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
-// 	}
+ast::Expression * Syntax::visitLow (ast::Expression * left) {
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {LT, LE, GT, GE, EQ})) {
+	ast::Expression * right = visitHigh ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitLow (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
 
-// 	pop();
-// 	TokenPtr last = current_token;
-// 	current_token = front();
+ast::Expression * Syntax::visitHigh () {
+    ast::Expression * left = visitHHigh ();
 
-// 	if (current_token == NULL)
-// 	    throw MissingErrorException(";", Position(last->line, last->column));
-//     }
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {PLUS, MINUS})) {
+	ast::Expression * right = visitHHigh ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitHigh (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
 
-//     while (op.size() > 0) {
-// 	out.push(op.top());
-// 	op.pop();
-//     }
+ast::Expression * Syntax::visitHigh (ast::Expression * left) {
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {PLUS, MINUS})) {
+	ast::Expression * right = visitHHigh ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitHigh (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
 
-//     /* On prendl la sortie et créé l'ast relatif à l'expression */
-//     stack<ast::Expression*> st;
+ast::Expression * Syntax::visitHHigh () {
+    ast::Expression * left = visitLeft ();
 
-//     while (out.size() > 0) {
-// 	TokenPtr t = out.front();
-// 	out.pop();
-// 	if (TokenPtr::is_value(t)) {
-// 	    st.push(Syntax::create_value(t));
-// 	} else if (TokenPtr::is_ident(t)) {
-// 	    st.push(new ast::VarId(t->value->to_string(), new ast::Position(t->line, t->column)));
-// 	} else {
-// 	    ast::Operator * op = new ast::Operator(t->value->to_string());
-// 	    ast::Expression * e2 = st.top();
-// 	    st.pop();
-// 	    ast::Expression * e1 = st.top();
-// 	    st.pop();
-// 	    st.push(new ast::Binop(e1, e2, op, new ast::Position(t->line, t->column)));
-// 	}
-//     }
-//     if (st.size() != 1)
-// 	throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {MUL, DIV, MOD})) {
+	ast::Expression * right = visitLeft ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitHHigh (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
 
-//     return st.top();
-// }
+ast::Expression * Syntax::visitHHigh (ast::Expression * left) {
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {MUL, DIV, MOD})) {
+	ast::Expression * right = visitLeft ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitHHigh (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
 
+ast::Expression * Syntax::visitLeft () {
+    ast::Expression * elem = NULL;
+    if ((elem = visitConst ()) != NULL)
+	return elem;
+    if ((elem = visitIdent ()) != NULL)
+	return elem;
+    if ((elem = visitUnaryOp ()) != NULL)
+	return elem;
+    return NULL;
+}
+
+ast::Expression * Syntax::visitConst () {
+    ast::Expression * elem = NULL;
+    if ((elem = visitConstString ()) != NULL)
+	return elem;
+    if ((elem = visitConstChar ()) != NULL)
+	return elem;
+    if ((elem = visitConstInt ()) != NULL)
+	return elem;
+    if ((elem = visitConstFloat ()) != NULL)
+	return elem;
+    if ((elem = visitConstBool ()) != NULL)
+	return elem;
+    return NULL;
+}
+
+ast::Expression * Syntax::visitConstFloat () {
+    TokenPtr next = pop ();
+    if (next->type == TokenType::POINT) {
+	TokenPtr val = pop ();
+	for (int i = 0; i < val->value.size (); i++) {
+	    if (val->value[i] < '0' || val->value[i] > '9') {
+		throw SyntaxErrorException (val->value, Position (val->line, val->column));
+	    }
+	}
+	float res = (float)stoi (val->value);
+	for (int i = 0; i < val->value.size (); i++) res /= 10;
+	return new ast::ConstFloat (res, new ast::Position (next->line, next->column));
+    } else {
+	//TODO
+	rewind ();
+	return NULL;
+    }
+}
+
+ast::Expression * Syntax::visitConstBool () {
+    TokenPtr next = pop ();
+    if (next->type == TokenType::TRUE)
+	return new ast::ConstBool (true, new ast::Position (next->line, next->column));
+    if (next->type == TokenType::FALSE)
+	return new ast::ConstBool (false, new ast::Position (next->line, next->column));
+    rewind ();
+    return NULL;
+}
+
+ast::Expression * Syntax::visitConstChar () {
+    TokenPtr next = pop ();
+    if (next->type != TokenType::SINGLE_QUOTE) {
+	rewind ();
+	return NULL;
+    }
+    TokenPtr first = next;
+    next = pop ();
+    if (next->type != TokenType::OTHER || next->value.size () > 1)
+	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    char res = next->value[0];
+    next = pop ();
+    if (next->type != TokenType::SINGLE_QUOTE)
+	throw MissingErrorException ("'", Position (next->line, next->column));
+    return new ast::ConstChar (res, new ast::Position (first->line, first->column));
+}
+
+ast::Expression * Syntax::visitConstString () {
+    TokenPtr next = pop ();
+    if (next->type != TokenType::DOUBLE_QUOTE) {
+	rewind ();
+	return NULL;
+    }
+    TODO ("ConstString");
+}
+
+ast::Expression * Syntax::visitConstInt () {
+    TokenPtr next = pop ();
+    for (int i = 0; i < next->value.size (); i++) {
+	if (next->value[i] < '0' || next->value[i] > '9') {
+	    rewind ();
+	    return NULL;
+	}
+    }
+    return new ast::ConstInt (stoi (next->value), new ast::Position (next->line, next->column));
+}
+
+ast::Expression * Syntax::visitIdent () {
+    TokenPtr next = pop ();
+    if ((next->value[0] < 'A' || (next->value[0] > 'Z' && next->value[0] < 'a') || next->value[0] > 'z') && next->value[0] != '_') {
+	rewind ();
+	return NULL;
+    }
+    for (int i = 0; i < next->value.size (); i++) {
+	if (next->value[i] < 'A' || (next->value[i] > 'Z' && next->value[i] < 'a') || next->value[i] > 'z') {
+	    rewind ();
+	    return NULL;
+	}
+    }
+    return new ast::VarId (next->value, new ast::Position (next->line, next->column));
+}
+
+ast::Expression * Syntax::visitUnaryOp () {
+    TokenPtr op = pop ();
+    if (!find (op->type, {NOT})) {
+	rewind ();
+	return NULL;
+    }
+    ast::Ast * next = NULL;
+    if ((next = visitIdent ()) != NULL) {
+	ast::Operator * ope = new ast::Operator (op->value);
+	ast::Position * pos = new ast::Position (op->line, op->column);
+	return new ast::UnOp (ope, (ast::Expression*)next, pos);
+    }
+    TokenPtr tok = pop ();
+    if (tok->type != TokenType::PAR_L)
+	throw SyntaxErrorException (tok->value, Position (tok->line, tok->column));
+    return visitExpression ();
+}
+
+/*
+ast::Expression * Syntax::visitExpression (vector<char> * delimitors) {
+    queue<ast::Ast*> out_expr;
+    queue<ast::Ast*> out_operator;
+    stack<TokenPtr> op;
+
+    TokenPtr current_token = pop ();
+    TokenPtr tmp = NULL;
+    int nb_par_l = 0;
+
+    while (1) {
+	ast::Ast * elem = NULL;
+
+	if ((elem = visitConst (current_token)) != NULL) {
+	    out.push (elem);
+	} else if ((elem = visitIdent (current_token)) != NULL) {
+	    out.push (elem);
+	} else if (current_token->value == TokenType::PAR_L) {
+	    nb_par_l++;
+	    op.push (current_token);
+	} else if (current_token->value == TokenType::PAR_R) {
+	    if (delimitors && isDelimitor (')', delimitors)) {
+		if (nb_par_l == 0) {
+		    break;
+		}
+	    }
+	    nb_par_l--;
+	    tmp = op.top();
+	    while (tmp->type != TokenType::PAR_L && op.size() > 0) {
+		out.push (tmp);
+		op.pop();
+		if (op.size() > 0)
+		    tmp = op.top();
+	    }
+	    if (tmp->type != TokenType::PAR_L) {
+		throw SyntaxErrorException (tmp->value->to_string(), Position(tmp->line, tmp->column));
+	    } else {
+		op.pop();
+	    }
+	} else if (find (current_token->type, {PLUS, MINUS, MUL, DIV, MOD, LT, GT, EQ, NE, AND, OR})) {
+	    if (op.size() == 0 || op.top() == TokenType::PAR_L) {
+		op.push(current_token);
+	    } else {
+		ast::Operator op1(current_token->value->to_string());
+		ast::Operator op2(op.top()->value->to_string());
+		if (op1.priority > op2.priority) {
+		    op.push(current_token);
+		} else {
+		    out.push(op.top());
+		    op.pop();
+		    op.push(current_token);
+		}
+	    }
+	} else if (current_type->type == TokenType::SEMICOLON) {
+	    break;
+	} else {
+	    throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
+	}
+
+	TokenPtr last = current_token;
+	current_token = pop ();
+
+	if (current_token->type == TokenType::_EOF_)
+	    throw MissingErrorException(";", Position(last->line, last->column));
+    }
+
+    while (op.size() > 0) {
+	out.push(op.top());
+	op.pop();
+    }
+
+    stack<ast::Expression*> st;
+
+    while (out.size() > 0) {
+	ast::Ast * elem = out.front();
+	out.pop();
+	if (elem) {
+	    st.push((ast::Expression*)elem);
+	} else {
+	    elem = visitIdent (t);
+	    st.push((ast::VarId*)elem);
+	} else {
+	    ast::Operator * op = new ast::Operator(t->value->to_string());
+	    ast::Expression * e2 = st.top();
+	    st.pop();
+	    ast::Expression * e1 = st.top();
+	    st.pop();
+	    st.push(new ast::Binop(e1, e2, op, new ast::Position(t->line, t->column)));
+	}
+    }
+    if (st.size() != 1)
+	throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
+
+    return st.top();
+}
+*/
 // ast::Expression * Syntax::create_value(TokenPtr token) {
 //     ast::Position * pos = new ast::Position(token->line, token->column);
 //     TokenPtrValue * token_value = token->value;
@@ -491,15 +717,20 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
 //     }
 //     return NULL;
 // }
+/*
+bool Syntax::isDelimitor (char c, vector<char> * delimitors) {
+    for (int i = 0; i < delimitors->size(); i++) {
+	if ((*delimitors)[i] == c)
+	    return true;
+    }
+    return false;
+}
 
-// bool Syntax::is_part_of_expr (TokenPtr token) const {
-//     return token->type >= 0 && token->type <= 20;
-// }
+*/
 
-// bool Syntax::is_delimitor (char c, vector<char> * delimitors) {
-//     for (int i = 0; i < delimitors->size(); i++) {
-// 	if ((*delimitors)[i] == c)
-// 	    return true;
-//     }
-//     return false;
-// }
+bool Syntax::find (TokenType type, vector <TokenType> list) {
+    for (TokenType t : list) {
+	if (t == type) return true;
+    }
+    return false;
+}

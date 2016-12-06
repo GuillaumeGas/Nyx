@@ -9,6 +9,11 @@ Operator::Operator(string s) {
     priority = getPriority(value);
 }
 
+Operator::Operator (const Operator & op) {
+    value = op.value;
+    priority = op.priority;
+}
+
 string Operator::toString() const {
     switch (value) {
     case PLUS:
@@ -93,5 +98,11 @@ OpPriority Operator::getPriority(Op o) {
     case Op::MINUS:
 	return OpPriority::LOW_OP;
 	break;
+    case Op::GT:
+    case Op::LT:
+	return OpPriority::ULOW_OP;
+	break;
+    default:
+	return OpPriority::UUULOW_OP;
     }
 }

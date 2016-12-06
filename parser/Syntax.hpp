@@ -7,6 +7,7 @@
 #include <assert.h>
 
 #include "Token.hpp"
+#include "TokenList.hpp"
 #include "Lexer.hpp"
 #include "../ast/Ast.hpp"
 #include "../ast/Bloc.hpp"
@@ -21,6 +22,8 @@
 #include "../ast/ConstInt.hpp"
 #include "../ast/ConstChar.hpp"
 #include "../ast/ConstBool.hpp"
+#include "../ast/ConstString.hpp"
+#include "../ast/ConstFloat.hpp"
 #include "../ast/IfElse.hpp"
 #include "../ast/FunDecl.hpp"
 #include "../ast/PrintI.hpp"
@@ -30,6 +33,7 @@
 #include "../ast/FunCall.hpp"
 #include "../ast/Return.hpp"
 #include "../ast/Break.hpp"
+#include "../ast/UnOp.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -67,10 +71,24 @@ namespace nyx {
 	ast::Ast * visitReturn (TokenPtr token);
 	ast::Ast * visitBreak (TokenPtr token);
 
-	ast::Expression * visitExpression (std::vector<char> * delimitors = NULL);
-	ast::Expression * create_value (TokenPtr token);
-	bool is_part_of_expr (TokenPtr token) const;
-	bool is_delimitor (char c, std::vector<char> * delimitors);
+	ast::Expression * visitExpression ();
+	ast::Expression * visitLow ();
+	ast::Expression * visitLow (ast::Expression * left);
+	ast::Expression * visitHigh ();
+	ast::Expression * visitHigh (ast::Expression * left);
+	ast::Expression * visitHHigh ();
+	ast::Expression * visitHHigh (ast::Expression * left);
+	ast::Expression * visitLeft ();
+	ast::Expression * visitConst ();
+	ast::Expression * visitIdent ();
+	ast::Expression * visitUnaryOp ();
+	ast::Expression * visitConstFloat ();
+	ast::Expression * visitConstInt ();
+	ast::Expression * visitConstString ();
+	ast::Expression * visitConstChar ();
+	ast::Expression * visitConstBool ();
+
+	bool find (TokenType type, std::vector <TokenType> list);
 
     private:
 	Lexer & lex;

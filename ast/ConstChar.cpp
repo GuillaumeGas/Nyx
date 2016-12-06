@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-ConstChar::ConstChar(const char value, Position * pos) {
+ConstChar::ConstChar(char value, Position * pos) {
     this->value->Char = value;
     this->pos = pos;
 }

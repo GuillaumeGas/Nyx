@@ -1,17 +1,18 @@
 #pragma once
 
 #include <iostream>
-#include <iomanip>
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
+#include "Type.hpp"
+#include "Value.hpp"
 
 namespace nyx {
     namespace ast {
-	class ConstChar : public Expression {
-	public:
-	    ConstChar(char value, Position * pos);
-	    ~ConstChar();
+	struct ConstString : public Expression {
+	    ConstString (const std::string & value, Position * pos);
+	    ~ConstString ();
+
 	    void print (std::ostream & out, int offset = 0) const;
 	};
     };

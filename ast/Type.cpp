@@ -23,6 +23,10 @@ TYPE Type::getType() const {
 	return TYPE::INT;
     } else if (name == "char") {
 	return TYPE::CHAR;
+    } else if (name == "float") {
+	return TYPE::FLOAT;
+    } else if (name == "string") {
+	return TYPE::STRING;
     } else {
 	return TYPE::ERR;
     }

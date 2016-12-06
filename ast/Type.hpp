@@ -7,6 +7,8 @@ namespace nyx {
 	enum TYPE {
 	    INT,
 	    CHAR,
+	    FLOAT,
+	    STRING,
 	    ERR
 	};
 

@@ -11,7 +11,7 @@
 #define LEX_TOKEN_LIST				\
     LEX_TOKEN (PLUS, "+")			\
     LEX_TOKEN (PLUSPLUS, "++")			\
-    LEX_TOKEN (MINUX, "-")			\
+    LEX_TOKEN (MINUS, "-")			\
     LEX_TOKEN (MINUSMINUS, "--")		\
     LEX_TOKEN (MUL, "*")			\
     LEX_TOKEN (DIV, "/")			\
@@ -23,6 +23,9 @@
     LEX_TOKEN (GE, ">=")			\
     LEX_TOKEN (EQ, "==")			\
     LEX_TOKEN (NE, "!=")			\
+    LEX_TOKEN (AND, "&&")			\
+    LEX_TOKEN (OR, "||")			\
+    LEX_TOKEN (NOT, "!")			\
     LEX_TOKEN (PAR_L, "(")			\
     LEX_TOKEN (PAR_R, ")")			\
     LEX_TOKEN (ASSIGN, "=")			\
@@ -36,6 +39,8 @@
     LEX_TOKEN (COMMA, ",")			\
     LEX_TOKEN (COLON, ":")			\
     LEX_TOKEN (POINT, ".")			\
+    LEX_TOKEN (DOUBLE_QUOTE, "\"")		\
+    LEX_TOKEN (SINGLE_QUOTE, "'")		\
     LEX_TOKEN (IF, "if")			\
     LEX_TOKEN (ELSE, "else")			\
     LEX_TOKEN (WHILE, "while")			\
@@ -43,6 +48,10 @@
     LEX_TOKEN (FOR, "for")			\
     LEX_TOKEN (RETURN, "return")		\
     LEX_TOKEN (BREAK, "break")			\
+    LEX_TOKEN (TRUE, "true")			\
+    LEX_TOKEN (FALSE, "false")			\
+    LEX_TOKEN (_NULL_, "null")			\
+    LEX_TOKEN (VOID, "void")			\
     LEX_TOKEN (IN, "in")			\
     LEX_TOKEN (DOLLAR, "$")			\
     LEX_TOKEN (SPACE, " ")			\
