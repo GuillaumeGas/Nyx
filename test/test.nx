@@ -1,2 +1,9 @@
-int a = 213;
-int b, c = 2;
+int main (int a, int b) {
+    if (a) {
+	if (a) {
+	
+	}
+    }
+}
+
+main (1, 2);

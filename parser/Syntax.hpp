@@ -57,8 +57,8 @@ namespace nyx {
 	/* Visitor */
 	ast::Bloc * visitBloc ();
 	ast::Ast * visitInstruction ();
-	ast::Ast * visitFunDecl ();
-	ast::Ast * visitFunCall ();
+	ast::Ast * visitFunDecl (TokenPtr token_type, TokenPtr token_ident);
+	ast::Ast * visitFunCall (TokenPtr token_ident);
 	std::vector <ast::VarDecl*> * visitParamsDecl ();
 	ast::Bloc * visitVarDecl (TokenPtr token_type, TokenPtr token_ident);
 	ast::Ast * visitVarAssign (TokenPtr token_ident, TokenPtr token_op);

@@ -23,10 +23,12 @@ void FunCall::interpret () {}
 void FunCall::print (ostream & out, int offset) const {
     shift (out, offset);
     out << name << " (";
-    for (int i = 0; i < params->size(); i++) {
-	(*params)[i]->print (out, offset);
-	if (i < params->size()-1)
-	    out << ", ";
+    if (params != NULL) {
+	for (int i = 0; i < params->size(); i++) {
+	    (*params)[i]->print (out, offset);
+	    if (i < params->size()-1)
+		out << ", ";
+	}
     }
     out << ")";
 }
