@@ -52,24 +52,24 @@ namespace nyx {
 	ast::Ast * getAst() const;
 
 	TokenPtr pop() const;
-	void rewind ();
+	void rewind (int count = 1);
 
 	/* Visitor */
 	ast::Bloc * visitBloc ();
-	ast::Ast * visitInstruction (TokenPtr token);
-	ast::Ast * visitFunDecl (TokenPtr token_type, TokenPtr token_ident);
-	ast::Ast * visitFunCall (TokenPtr token_ident);
+	ast::Ast * visitInstruction ();
+	ast::Ast * visitFunDecl ();
+	ast::Ast * visitFunCall ();
 	std::vector <ast::VarDecl*> * visitParamsDecl ();
 	ast::Bloc * visitVarDecl (TokenPtr token_type, TokenPtr token_ident);
 	ast::Ast * visitVarAssign (TokenPtr token_ident, TokenPtr token_op);
-	ast::Ast * visitIfElse (TokenPtr token_if);
-	ast::Ast * visitPrintI (TokenPtr token);
-	ast::Ast * visitFor (TokenPtr token);
-	ast::Ast * visitWhile (TokenPtr token);
-	ast::Ast * visitSyscall (TokenPtr token);
+	ast::Ast * visitIfElse ();
+	ast::Ast * visitPrintI ();
+	ast::Ast * visitFor ();
+	ast::Ast * visitWhile ();
+	ast::Ast * visitSyscall ();
 	std::vector<ast::Expression*> * visitParams ();
-	ast::Ast * visitReturn (TokenPtr token);
-	ast::Ast * visitBreak (TokenPtr token);
+	ast::Ast * visitReturn ();
+	ast::Ast * visitBreak ();
 
 	ast::Expression * visitExpression ();
 	ast::Expression * visitLow ();
@@ -81,6 +81,7 @@ namespace nyx {
 	ast::Expression * visitLeft ();
 	ast::Expression * visitConst ();
 	ast::Expression * visitIdent ();
+	ast::Expression * visitIdent (TokenPtr token_ident);
 	ast::Expression * visitUnaryOp ();
 	ast::Expression * visitConstFloat ();
 	ast::Expression * visitConstInt ();

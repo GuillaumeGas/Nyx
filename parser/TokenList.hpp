@@ -39,6 +39,7 @@
     LEX_TOKEN (COMMA, ",")			\
     LEX_TOKEN (COLON, ":")			\
     LEX_TOKEN (POINT, ".")			\
+    LEX_TOKEN (DOUBLE_POINT, "..")		\
     LEX_TOKEN (DOUBLE_QUOTE, "\"")		\
     LEX_TOKEN (SINGLE_QUOTE, "'")		\
     LEX_TOKEN (IF, "if")			\

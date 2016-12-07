@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-For::For (string * ident, VarId * var_loop, ConstInt * start_value, ConstInt * end_value, Bloc * bloc, Position * pos) {
+For::For (string * ident, VarId * var_loop, Expression * start_value, Expression * end_value, Bloc * bloc, Position * pos) {
     this->ident = ident;
     this->var_loop = var_loop;
     this->start_value = start_value;

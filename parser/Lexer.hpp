@@ -19,7 +19,7 @@ namespace nyx {
 	void setComs (std::vector<std::pair<std::string, std::string> > coms);
 	TokenPtr next ();
 	bool isEof () const;
-	void rewind ();
+	void rewind (int count = 1);
 
     private:
 	bool isSkip (TokenPtr t) const;
