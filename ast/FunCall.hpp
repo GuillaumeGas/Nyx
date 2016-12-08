@@ -8,7 +8,7 @@
 
 namespace nyx {
     namespace ast {
-	class FunCall : public Ast {
+	class FunCall : public Expression {
 	public:
 	    FunCall (std::string ident, std::vector<Expression*> * params, Position * pos);
 	    ~FunCall ();

@@ -531,8 +531,8 @@ ast::Expression * Syntax::visitConst () {
     if ((elem = visitConstBool ()) != NULL)
 	return elem;
     return NULL;
-}
 
+}
 ast::Expression * Syntax::visitConstFloat () {
     TokenPtr next = pop ();
     if (next->type == TokenType::POINT) {
@@ -611,7 +611,15 @@ ast::Expression * Syntax::visitIdent () {
 	    return NULL;
 	}
     }
-    return new ast::VarId (next->value, new ast::Position (next->line, next->column));
+
+    TokenPtr ident = next;
+    next = pop ();
+    if (next->type == TokenType::PAR_L) {
+	rewind ();
+	return (ast::Expression*)visitFunCall (ident);
+    }
+    rewind ();
+    return new ast::VarId (ident->value, new ast::Position (ident->line, ident->column));
 }
 
 ast::Expression * Syntax::visitIdent (TokenPtr token_ident) {
@@ -645,132 +653,6 @@ ast::Expression * Syntax::visitUnaryOp () {
 	throw SyntaxErrorException (tok->value, Position (tok->line, tok->column));
     return visitExpression ();
 }
-
-/*
-ast::Expression * Syntax::visitExpression (vector<char> * delimitors) {
-    queue<ast::Ast*> out_expr;
-    queue<ast::Ast*> out_operator;
-    stack<TokenPtr> op;
-
-    TokenPtr current_token = pop ();
-    TokenPtr tmp = NULL;
-    int nb_par_l = 0;
-
-    while (1) {
-	ast::Ast * elem = NULL;
-
-	if ((elem = visitConst (current_token)) != NULL) {
-	    out.push (elem);
-	} else if ((elem = visitIdent (current_token)) != NULL) {
-	    out.push (elem);
-	} else if (current_token->value == TokenType::PAR_L) {
-	    nb_par_l++;
-	    op.push (current_token);
-	} else if (current_token->value == TokenType::PAR_R) {
-	    if (delimitors && isDelimitor (')', delimitors)) {
-		if (nb_par_l == 0) {
-		    break;
-		}
-	    }
-	    nb_par_l--;
-	    tmp = op.top();
-	    while (tmp->type != TokenType::PAR_L && op.size() > 0) {
-		out.push (tmp);
-		op.pop();
-		if (op.size() > 0)
-		    tmp = op.top();
-	    }
-	    if (tmp->type != TokenType::PAR_L) {
-		throw SyntaxErrorException (tmp->value->to_string(), Position(tmp->line, tmp->column));
-	    } else {
-		op.pop();
-	    }
-	} else if (find (current_token->type, {PLUS, MINUS, MUL, DIV, MOD, LT, GT, EQ, NE, AND, OR})) {
-	    if (op.size() == 0 || op.top() == TokenType::PAR_L) {
-		op.push(current_token);
-	    } else {
-		ast::Operator op1(current_token->value->to_string());
-		ast::Operator op2(op.top()->value->to_string());
-		if (op1.priority > op2.priority) {
-		    op.push(current_token);
-		} else {
-		    out.push(op.top());
-		    op.pop();
-		    op.push(current_token);
-		}
-	    }
-	} else if (current_type->type == TokenType::SEMICOLON) {
-	    break;
-	} else {
-	    throw SyntaxErrorException(current_token->value->to_string(), Position(current_token->line, current_token->column));
-	}
-
-	TokenPtr last = current_token;
-	current_token = pop ();
-
-	if (current_token->type == TokenType::_EOF_)
-	    throw MissingErrorException(";", Position(last->line, last->column));
-    }
-
-    while (op.size() > 0) {
-	out.push(op.top());
-	op.pop();
-    }
-
-    stack<ast::Expression*> st;
-
-    while (out.size() > 0) {
-	ast::Ast * elem = out.front();
-	out.pop();
-	if (elem) {
-	    st.push((ast::Expression*)elem);
-	} else {
-	    elem = visitIdent (t);
-	    st.push((ast::VarId*)elem);
-	} else {
-	    ast::Operator * op = new ast::Operator(t->value->to_string());
-	    ast::Expression * e2 = st.top();
-	    st.pop();
-	    ast::Expression * e1 = st.top();
-	    st.pop();
-	    st.push(new ast::Binop(e1, e2, op, new ast::Position(t->line, t->column)));
-	}
-    }
-    if (st.size() != 1)
-	throw MissingErrorException("operator", Position(st.top()->pos->line, st.top()->pos->column));
-
-    return st.top();
-}
-*/
-// ast::Expression * Syntax::create_value(TokenPtr token) {
-//     ast::Position * pos = new ast::Position(token->line, token->column);
-//     TokenPtrValue * token_value = token->value;
-//     switch (token->type) {
-//     case TokenType::INT:
-// 	return new ast::ConstInt(((TokenPtrIntValue*)token_value)->value, pos);
-// 	break;
-//     case TokenType::CHAR:
-// 	return new ast::ConstChar(((TokenPtrCharValue*)token_value)->value, pos);
-// 	break;
-//     case TokenType::BOOL:
-// 	return new ast::ConstBool(((TokenPtrBoolValue*)token_value)->value, pos);
-// 	break;
-//     default:
-// 	cout << "tok " << token->to_string() << endl;
-// 	throw SyntaxErrorException(token->value->to_string(), Position(token->line, token->column));
-//     }
-//     return NULL;
-// }
-/*
-bool Syntax::isDelimitor (char c, vector<char> * delimitors) {
-    for (int i = 0; i < delimitors->size(); i++) {
-	if ((*delimitors)[i] == c)
-	    return true;
-    }
-    return false;
-}
-
-*/
 
 bool Syntax::find (TokenType type, vector <TokenType> list) {
     for (TokenType t : list) {
