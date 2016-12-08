@@ -22,8 +22,8 @@ void Compilo::compile() {
 	m_lex->setKeys ({"+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=",
 		    "==", "!=", "(", ")", "=", "+=", "-=", "*=", "/=", "{", "}", ";", ",", ":",
 		    ".", "$", "\"", "'",
-		    " ", "/*", "*/", "//", "\n", "\r"});
-	m_lex->setSkips ({" ", "\n", "\r"});
+		    " ", "/*", "*/", "//", "\n", "\r", "\t"});
+	m_lex->setSkips ({" ", "\n", "\r", "\t"});
 	m_lex->setComs ({make_pair ("/*", "*/"), make_pair ("//", "\n")});
     } catch(LexerException const& e) {
 	cout << e.toString() << endl;
