@@ -102,10 +102,10 @@ ast::Ast * Syntax::visitInstruction () {
     } else {
 	throw SyntaxErrorException (token->value, Position (token->line, token->column));
     }
-
     next = pop ();
-    if (next->type != TokenType::SEMICOLON)
+    if (next->type != TokenType::SEMICOLON) {
 	throw MissingErrorException (";", Position (next->line, next->column));
+    }
 
     return res;
 }
@@ -126,6 +126,7 @@ ast::Ast * Syntax::visitFunDecl (TokenPtr token_type, TokenPtr token_ident) {
     if (next->type != TokenType::ACCOL_L)
 	throw MissingErrorException ("{", Position (next->line, next->column));
 
+    rewind ();
     ast::Bloc * content = visitBloc ();
     ast::Type * type = new ast::Type (token_type->value, true);
     string ident = token_ident->value;
@@ -254,7 +255,7 @@ ast::Ast * Syntax::visitIfElse () {
 }
 
 /**
-   For := for (i in 0 .. 10)*/
+   For := for (i in 0 .. 10) { bloc }*/
 ast::Ast * Syntax::visitFor () {
     TokenPtr token_for = pop ();
     TokenPtr next = pop();
@@ -294,6 +295,7 @@ ast::Ast * Syntax::visitFor () {
     if (pop()->type != TokenType::ACCOL_L)
 	throw MissingErrorException ("{", Position(next->line, next->column));
 
+    rewind ();
     ast::Bloc * for_bloc = visitBloc ();
     ast::Position * pos = new ast::Position (token_for->line, token_for->column);
     string * id = ident ? new string (ident->value) : NULL;
@@ -305,21 +307,32 @@ ast::Ast * Syntax::visitFor () {
    While := While ( expr ) { bloc }
 */
 ast::Ast * Syntax::visitWhile () {
-    TokenPtr token = pop ();
+    TokenPtr token_while = pop ();
     TokenPtr ident = NULL;
     TokenPtr next = pop ();
     if (next->type == TokenType::COLON) {
 	ident = pop();
 	if (ident->type != TokenType::OTHER)
 	    throw MissingErrorException ("ident", Position (ident->line, ident->column));
+	next = pop ();
     }
+
+    if (next->type != TokenType::PAR_L)
+	throw MissingErrorException ("(", Position (next->line, next->column));
+
     ast::Expression * expr = visitExpression ();
+
+    next = pop ();
+    if (next->type != TokenType::PAR_R)
+	throw MissingErrorException (")", Position (next->line, next->column));
+
     next = pop ();
     if (next->type != TokenType::ACCOL_L)
 	throw MissingErrorException ("{", Position (next->line, next->column));
+    rewind ();
 
     ast::Bloc * bloc = visitBloc ();
-    ast::Position * pos = new ast::Position (token->line, token->column);
+    ast::Position * pos = new ast::Position (token_while->line, token_while->column);
     string * id = ident ? new string (ident->value) : NULL;
 
     return new ast::While (id, expr, bloc, pos);
