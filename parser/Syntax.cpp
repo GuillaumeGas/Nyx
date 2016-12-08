@@ -385,12 +385,14 @@ vector<ast::Expression*> * Syntax::visitParams () {
    Return := return expression*;
 */
 ast::Ast * Syntax::visitReturn () {
-    TokenPtr token = pop ();
-    ast::Position * pos = new ast::Position (token->line, token->column);
+    TokenPtr token_return = pop ();
+    ast::Position * pos = new ast::Position (token_return->line, token_return->column);
     ast::Expression * expr = NULL;
     if (pop()->type != TokenType::SEMICOLON) {
 	rewind ();
 	expr = visitExpression ();
+    } else {
+	rewind ();
     }
     return new ast::Return (expr, pos);
 }
@@ -399,8 +401,8 @@ ast::Ast * Syntax::visitReturn () {
    Break := break ident?;
 */
 ast::Ast * Syntax::visitBreak () {
-    TokenPtr token = pop ();
-    ast::Position * pos = new ast::Position (token->line, token->column);
+    TokenPtr token_break = pop ();
+    ast::Position * pos = new ast::Position (token_break->line, token_break->column);
     string * ident = NULL;
     TokenPtr next = pop ();
     if (next->type == TokenType::OTHER) {
