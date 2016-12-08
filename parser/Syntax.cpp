@@ -526,6 +526,18 @@ ast::Expression * Syntax::visitHHigh (ast::Expression * left) {
 
 ast::Expression * Syntax::visitLeft () {
     ast::Expression * elem = NULL;
+    TokenPtr next = pop ();
+
+    if (next->type == TokenType::PAR_L) {
+	elem = visitExpression  ();
+	next = pop ();
+	if (next->type != TokenType::PAR_R)
+	    throw MissingErrorException (")", Position (next->line, next->column));
+	return elem;
+    } else {
+	rewind ();
+    }
+
     if ((elem = visitConst ()) != NULL)
 	return elem;
     if ((elem = visitArray ()) != NULL)
