@@ -1,8 +1,6 @@
 int main (int a, int b) {
-    if (a) {
-	if (a) {
-	
-	}
+    for (i in 0 .. 10) {
+	foo ();
     }
 }
 

@@ -259,6 +259,8 @@ ast::Ast * Syntax::visitFor () {
     TokenPtr token_for = pop ();
     TokenPtr next = pop();
     TokenPtr ident = NULL;
+    ast::VarId * var_loop;
+
     if (next->type == TokenType::COLON) {
 	next = pop();
 	if (next->type != TokenType::OTHER)
@@ -269,14 +271,15 @@ ast::Ast * Syntax::visitFor () {
     if (next->type != TokenType::PAR_L)
 	throw MissingErrorException ("(", Position (next->line, next->column));
 
-    next = pop();
-    if (next->type != TokenType::OTHER)
+    var_loop = (ast::VarId*)visitIdent ();
+    if (var_loop == NULL) {
+	next = pop ();
 	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    }
 
-    TokenPtr var = next;
     next = pop();
     if (next->type != TokenType::IN)
-	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+	throw MissingErrorException ("in", Position (next->line, next->column));
 
     ast::Expression * expr_start = visitExpression ();
 
@@ -292,7 +295,6 @@ ast::Ast * Syntax::visitFor () {
 	throw MissingErrorException ("{", Position(next->line, next->column));
 
     ast::Bloc * for_bloc = visitBloc ();
-    ast::VarId * var_loop = new ast::VarId (var->value, new ast::Position (var->line, var->column));
     ast::Position * pos = new ast::Position (token_for->line, token_for->column);
     string * id = ident ? new string (ident->value) : NULL;
 
