@@ -364,14 +364,18 @@ vector<ast::Expression*> * Syntax::visitParams () {
 		if (!params) {
 		    throw SyntaxErrorException (next->value, Position (next->line, next->column));
 		}
-		next = pop ();
+		ast::Expression * expr = visitExpression ();
+		if (expr == NULL)
+		    throw SyntaxErrorException (",", Position (next->line, next->column));
+		params->push_back (expr);
+	    } else {
+		rewind ();
+		if (!params)
+		    params = new vector<ast::Expression*> ();
+		ast::Expression * expr = visitExpression ();
+		if (expr != NULL)
+		    params->push_back (expr);
 	    }
-
-	    if (!params)
-		params = new vector<ast::Expression*> ();
-
-	    rewind ();
-	    params->push_back (visitExpression ());
 
 	    next = pop();
 	    if (next->type != TokenType::COMMA && next->type != TokenType::PAR_R)
