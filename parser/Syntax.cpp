@@ -194,9 +194,10 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
 	if (ident->type != TokenType::OTHER) {
 	    throw SyntaxErrorException (ident->value, Position (ident->line, ident->column));
 	}
-	instr->push_back (visitVarDecl (token_type, token_ident));
+	instr->push_back (visitVarDecl (token_type, ident));
+    } else {
+	rewind ();
     }
-    rewind ();
     return new ast::Bloc (instr);
 }
 

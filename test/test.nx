@@ -1,7 +1,7 @@
 void print (int val) {
+    int a, b = 2;
     $print_i (val);
 }
-
 int main (int a, int b) {
     while:test (test) {
 	    foo ([1, 2, 3]);

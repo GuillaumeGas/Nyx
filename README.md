@@ -6,24 +6,25 @@ Ebauche d'un interpréteur avec une syntaxe proche de celle du C.
 Syntaxe actuellement acceptée :
 
 ```
-void print_i (int val) {
-    $printi (val, 0);
+void print (int val) {
+    int a, b = 2;
+    $print_i (val);
 }
-
-int main () {
-    int a = 0;
-    for (i in 0 .. 10) {
-        while:test (true) {
-	    a = a + 1;
-	    if (a > 10) {
-	        break test;
+int main (int a, int b) {
+    while:test (test) {
+	    foo ([1, 2, 3]);
+	if (a) {
+	    for (i in foo (a) .. 3+5) {
+		print (fo(), 5+i);
 	    }
-        }
+	    break test;
+	} else {
+	    for (a in [1, 2, 3]) {
+		print (a);
+	    }
+	}
     }
-    for:f (a in 20 .. 0) {
-	print_i (a);
-    }
-    return 0;
+    return 2*(2+3);
 }
 ```
 
