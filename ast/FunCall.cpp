@@ -25,7 +25,7 @@ void FunCall::print (ostream & out, int offset) const {
     out << name << " (";
     if (params != NULL) {
 	for (int i = 0; i < params->size(); i++) {
-	    (*params)[i]->print (out, offset);
+	    (*params)[i]->print (out);
 	    if (i < params->size()-1)
 		out << ", ";
 	}

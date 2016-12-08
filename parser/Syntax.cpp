@@ -282,13 +282,22 @@ ast::Ast * Syntax::visitFor () {
     if (next->type != TokenType::IN)
 	throw MissingErrorException ("in", Position (next->line, next->column));
 
-    ast::Expression * expr_start = visitExpression ();
-
+    ast::Expression * expr_start = NULL;
+    ast::Expression * expr_end = NULL;
+    ast::Expression * array = NULL;
     next = pop ();
-    if (next->type != TokenType::DOUBLE_POINT)
-	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    rewind ();
+    if (next->type == TokenType::BRACKET_L) {
+	array = visitArray ();
+    } else {
+	expr_start = visitExpression ();
 
-    ast::Expression * expr_end = visitExpression ();
+	next = pop ();
+	if (next->type != TokenType::DOUBLE_POINT)
+	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+
+	expr_end = visitExpression ();
+    }
 
     if (pop()->type != TokenType::PAR_R)
 	throw MissingErrorException (")", Position(next->line, next->column));
@@ -300,7 +309,11 @@ ast::Ast * Syntax::visitFor () {
     ast::Position * pos = new ast::Position (token_for->line, token_for->column);
     string * id = ident ? new string (ident->value) : NULL;
 
-    return new ast::For (id, var_loop, expr_start, expr_end, for_bloc, pos);
+    if (array != NULL) {
+	return new ast::For (id, var_loop, array, for_bloc, pos);
+    } else {
+	return new ast::For (id, var_loop, expr_start, expr_end, for_bloc, pos);
+    }
 }
 
 /**

@@ -20,13 +20,13 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * 
 
 void IfElse::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "IF ";
+    out << "if ";
     cond->print (out);
     out << " {" << endl;
     bloc_if->print (out, offset+INDENT);
     if (bloc_else != NULL) {
 	shift (out, offset);
-	out << "} ELSE {" << endl;
+	out << "} else {" << endl;
 	bloc_else->print (out, offset+INDENT);
     }
     shift (out, offset);

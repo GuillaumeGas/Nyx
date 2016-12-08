@@ -1,14 +1,18 @@
+void print (int val) {
+    $print_i (val);
+}
+
 int main (int a, int b) {
     while:test (test) {
 	    foo ([1, 2, 3]);
 	if (a) {
-	    for (i in 0 .. 3+5) {
-		$print_i (fo(), 5+i);
+	    for (i in foo (a) .. 3+5) {
+		print (fo(), 5+i);
 	    }
 	    break test;
 	} else {
-	    for (a in foo(a) .. 10) {
-		$print_i (b);
+	    for (a in [1, 2, 3]) {
+		print (a);
 	    }
 	}
     }

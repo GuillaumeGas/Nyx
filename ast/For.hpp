@@ -13,6 +13,7 @@ namespace nyx {
 	class For : public Ast {
 	public:
 	    For (std::string * ident, VarId * var_loop, Expression * start_value, Expression * end_value, Bloc * bloc, Position * pos);
+	    For (std::string * ident, VarId * var_loop, Expression * array, Bloc * bloc, Position * pos);
 	    ~For ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -23,6 +24,7 @@ namespace nyx {
 	    VarId * var_loop;
 	    Expression * start_value;
 	    Expression * end_value;
+	    Expression * array;
 	    Bloc * bloc;
 	};
     };

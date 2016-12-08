@@ -54,7 +54,6 @@
     LEX_TOKEN (TRUE, "true")			\
     LEX_TOKEN (FALSE, "false")			\
     LEX_TOKEN (_NULL_, "null")			\
-    LEX_TOKEN (VOID, "void")			\
     LEX_TOKEN (IN, "in")			\
     LEX_TOKEN (DOLLAR, "$")			\
     LEX_TOKEN (SPACE, " ")			\
