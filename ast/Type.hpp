@@ -9,6 +9,7 @@ namespace nyx {
 	    CHAR,
 	    FLOAT,
 	    STRING,
+	    ARRAY,
 	    ERR
 	};
 

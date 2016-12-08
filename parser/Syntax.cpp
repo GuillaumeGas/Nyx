@@ -515,6 +515,8 @@ ast::Expression * Syntax::visitLeft () {
     ast::Expression * elem = NULL;
     if ((elem = visitConst ()) != NULL)
 	return elem;
+    if ((elem = visitArray ()) != NULL)
+	return elem;
     if ((elem = visitIdent ()) != NULL)
 	return elem;
     if ((elem = visitUnaryOp ()) != NULL)
@@ -537,6 +539,7 @@ ast::Expression * Syntax::visitConst () {
     return NULL;
 
 }
+
 ast::Expression * Syntax::visitConstFloat () {
     TokenPtr next = pop ();
     if (next->type == TokenType::POINT) {
@@ -656,6 +659,48 @@ ast::Expression * Syntax::visitUnaryOp () {
     if (tok->type != TokenType::PAR_L)
 	throw SyntaxErrorException (tok->value, Position (tok->line, tok->column));
     return visitExpression ();
+}
+
+ast::Expression * Syntax::visitArray () {
+    TokenPtr next = pop ();
+    if (next->type != TokenType::BRACKET_L) {
+	rewind ();
+	return NULL;
+    }
+    TokenPtr token_array = next;
+    vector <ast::Expression*> * array = NULL;
+    next = pop ();
+    while (next->type != TokenType::BRACKET_R) {
+	rewind ();
+	ast::Expression * expr = visitExpression ();
+	if (expr == NULL) {
+	    next = pop ();
+	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+	}
+
+	if (array == NULL)
+	    array = new vector<ast::Expression*> ();
+
+	array->push_back (expr);
+
+	next = pop ();
+	if (next->type != TokenType::COMMA) {
+	    if (next->type != TokenType::BRACKET_R) {
+		throw MissingErrorException ("]", Position (next->line, next->column));
+	    } else {
+		rewind ();
+	    }
+	} else {
+	    next = pop ();
+	}
+    }
+
+    next = pop ();
+    if (next->type != TokenType::BRACKET_R)
+	throw MissingErrorException ("]", Position (next->line, next->column));
+
+    ast::Position * pos = new ast::Position (token_array->line, token_array->column);
+    return new ast::Array (array, pos);
 }
 
 bool Syntax::find (TokenType type, vector <TokenType> list) {

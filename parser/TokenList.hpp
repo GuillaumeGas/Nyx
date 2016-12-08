@@ -35,6 +35,8 @@
     LEX_TOKEN (DIVEQ, "/=")			\
     LEX_TOKEN (ACCOL_L, "{")			\
     LEX_TOKEN (ACCOL_R, "}")			\
+    LEX_TOKEN (BRACKET_L, "[")			\
+    LEX_TOKEN (BRACKET_R, "]")			\
     LEX_TOKEN (SEMICOLON, ";")			\
     LEX_TOKEN (COMMA, ",")			\
     LEX_TOKEN (COLON, ":")			\

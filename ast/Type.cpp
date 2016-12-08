@@ -27,6 +27,8 @@ TYPE Type::getType() const {
 	return TYPE::FLOAT;
     } else if (name == "string") {
 	return TYPE::STRING;
+    } else if (name == "array") {
+	return TYPE::ARRAY;
     } else {
 	return TYPE::ERR;
     }

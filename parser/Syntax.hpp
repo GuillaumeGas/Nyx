@@ -34,6 +34,7 @@
 #include "../ast/Return.hpp"
 #include "../ast/Break.hpp"
 #include "../ast/UnOp.hpp"
+#include "../ast/Array.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -88,6 +89,7 @@ namespace nyx {
 	ast::Expression * visitConstString ();
 	ast::Expression * visitConstChar ();
 	ast::Expression * visitConstBool ();
+	ast::Expression * visitArray ();
 
 	bool find (TokenType type, std::vector <TokenType> list);
 
