@@ -27,7 +27,7 @@ namespace nyx {
 	Token (TokenType type, const std::string & value, location_t loc);
 
 	static TokenPtr make (const std::string & value, location_t loc);
-	static TokenPtr makeEof ();
+	static TokenPtr makeEof (location_t loc);
 
 	static TokenType getFromStr (const std::string & str) {
 #define LEX_TOKEN(name, value)			\

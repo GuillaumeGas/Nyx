@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 #include <queue>
 #include <vector>
 #include <stack>
@@ -19,11 +20,7 @@
 #include "../ast/Binop.hpp"
 #include "../ast/VarAssign.hpp"
 #include "../ast/VarId.hpp"
-#include "../ast/ConstInt.hpp"
-#include "../ast/ConstChar.hpp"
-#include "../ast/ConstBool.hpp"
-#include "../ast/ConstString.hpp"
-#include "../ast/ConstFloat.hpp"
+#include "../ast/Const.hpp"
 #include "../ast/IfElse.hpp"
 #include "../ast/FunDecl.hpp"
 #include "../ast/PrintI.hpp"
@@ -94,7 +91,7 @@ namespace nyx {
 	bool find (TokenType type, std::vector <TokenType> list);
 
     private:
-	Lexer & lex;
+	Lexer & m_lex;
 	ast::Bloc * m_program;
 
 	symbol::Table * m_table;

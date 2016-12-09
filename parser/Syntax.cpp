@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace syntax;
 
-Syntax::Syntax(Lexer & lex) : lex(lex) {
+Syntax::Syntax(Lexer & lex) : m_lex(lex) {
     m_table = symbol::Table::getInstance();
     m_program = visitBloc ();
 }
@@ -12,11 +12,11 @@ Syntax::Syntax(Lexer & lex) : lex(lex) {
 Syntax::~Syntax() {}
 
 TokenPtr Syntax::pop() const {
-    return lex.next ();
+    return m_lex.next ();
 }
 
 void Syntax::rewind (int count) {
-    lex.rewind (count);
+    m_lex.rewind (count);
 }
 
 ast::Ast * Syntax::getAst () const { return m_program; }
@@ -396,6 +396,7 @@ vector<ast::Expression*> * Syntax::visitParams () {
 		throw MissingErrorException (")", Position (next->line, next->column));
 	}
     }
+
     return params;
 }
 
@@ -614,11 +615,37 @@ ast::Expression * Syntax::visitConstChar () {
 
 ast::Expression * Syntax::visitConstString () {
     TokenPtr next = pop ();
+    TokenPtr start = next;
     if (next->type != TokenType::DOUBLE_QUOTE) {
 	rewind ();
 	return NULL;
     }
-    TODO ("ConstString");
+
+    m_lex.setSkipEnabled (" ", false);
+    m_lex.setCommentsEnabled (false);
+
+    stringstream str;
+    while (next->type != TokenType::_EOF_) {
+	next = pop ();
+	if (next->type == TokenType::BACK_SLASH) {
+	    str << next->value;
+	    next = pop ();
+	    str << next->value;
+	    next = pop ();
+	}
+	if (next->type == TokenType::DOUBLE_QUOTE)
+	    break;
+	str << next->value;
+    }
+    if (next->type == TokenType::_EOF_) {
+	throw MissingErrorException ("\"", Position (next->line, next->column));
+    }
+
+    m_lex.setCommentsEnabled (true);
+    m_lex.setSkipEnabled (" ", true);
+
+    ast::Position * pos = new ast::Position (next->line, next->column);
+    return new ast::ConstString (new string (str.str ()), pos);
 }
 
 ast::Expression * Syntax::visitConstInt () {

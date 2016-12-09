@@ -1,12 +1,12 @@
 void print (int val) {
     int a, b = 2;
-    $print_i (val);
+    $print_i ("test : ", val);
 }
 int main (int a, int b) {
     while:test (test) {
 	    foo ([1, 2, 3]);
 	if (a) {
-	    for (i in foo (a) .. 3+5) {
+	    for (i in foo (2) .. 3+5) {
 		print (fo(), 5+i);
 	    }
 	    break test;

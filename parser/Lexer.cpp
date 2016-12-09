@@ -11,6 +11,7 @@ Lexer::Lexer (string file_name) {
     this->new_line = true;
     this->file = fopen (file_name.c_str (), "r");
     this->current_index = 0;
+    this->comments_enabled = true;
 
     if (!this->file) {
 	throw FileNotFoundException (file_name);
@@ -34,7 +35,9 @@ void Lexer::setKeys (vector<string> keys) {
 }
 
 void Lexer::setSkips (vector<string> skips) {
-    this->skips = skips;
+    for (auto & it : skips) {
+	this->skips.insert (pair<string, bool> (it, true));
+    }
 }
 
 void Lexer::setComs (vector<pair<string, string> > coms) {
@@ -42,20 +45,32 @@ void Lexer::setComs (vector<pair<string, string> > coms) {
 }
 
 bool Lexer::isSkip (TokenPtr t) const {
-    for (auto it : this->skips) {
-	if (it == t->value)
+    auto it = this->skips.find (t->value);
+    if (it != this->skips.end ()) {
+	if (it->second)
 	    return true;
+	return false;
     }
     return false;
+}
+
+void Lexer::setSkipEnabled (const string & skip, bool value) {
+    auto it = this->skips.find (skip);
+    if (it != this->skips.end ())
+	it->second = value;
+}
+
+void Lexer::setCommentsEnabled (bool value) {
+    this->comments_enabled = value;
 }
 
 TokenPtr Lexer::isCom (TokenPtr t) const {
     for (auto it : this->coms) {
 	if (it.first == t->value) {
-	    return Token::make (it.second, {0, 0});
+	    return Token::make (it.second, {t->line, t->column});
 	}
     }
-    return Token::makeEof ();
+    return Token::makeEof (this->current_loc);
 }
 
 TokenPtr Lexer::getWord (int index) {
@@ -76,15 +91,16 @@ void Lexer::rewind (int count) {
     }
 }
 
+
 TokenPtr Lexer::next () {
     TokenPtr t = this->getWord (this->current_index++);
     TokenPtr com = isCom (t);
     while (isSkip (t) || !com->isEof ()) {
-	if (!com->isEof ()) {
+	if (!com->isEof () && this->comments_enabled) {
 	    do {
 		t = this->getWord (this->current_index++);
 	    } while (t->value != com->value && !t->isEof());
-	    com = Token::makeEof ();
+	    com = Token::makeEof (this->current_loc);
 	    if (!t->isEof())
 		t = this->getWord (this->current_index++);
 	} else {
@@ -102,7 +118,7 @@ TokenPtr Lexer::getWord () {
 
     if (line.size() == 0) {
 	this->eof = true;
-	return Token::makeEof ();
+	return Token::makeEof (this->current_loc);
     } else {
 	if (this->new_line) {
 	    Global::getInstance()->addLine (line);

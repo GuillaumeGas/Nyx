@@ -15,8 +15,8 @@ TokenPtr Token::make (const std::string & value, location_t loc) {
     return TokenPtr (new Token (ttype, value, loc));
 }
 
-TokenPtr Token::makeEof () {
-    Token * t = new Token (_EOF_, "EOF", {0, 0});
+TokenPtr Token::makeEof (location_t loc) {
+    Token * t = new Token (_EOF_, "EOF", loc);
     t->eof = true;
     return TokenPtr (t);
 }
