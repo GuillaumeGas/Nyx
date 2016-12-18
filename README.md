@@ -5,7 +5,7 @@ Ebauche d'un interpréteur avec une syntaxe proche de celle du C.
 
 Syntaxe actuellement acceptée :
 
-```
+```C++
 void print (int val) {
     int a, b = 2;
     $print_i (val);
