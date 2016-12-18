@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iostream>
@@ -10,6 +11,7 @@ namespace nyx {
 	    FLOAT,
 	    STRING,
 	    ARRAY,
+	    RANGE,
 	    ERR
 	};
 

@@ -1,0 +1,36 @@
+import std.Array;
+
+class<T> Test {
+    public {
+	this (string str) {
+	    this.name = str;
+
+	    print (this.mList.length);
+	    let new_list = this.mList.dup;
+	    for (let i in 0 .. 10) {
+		this.mList[i] = i;
+		//this.mList.push (i);
+	    }
+
+	    for (let str in ["test", "test2"]) {
+		this.mDic[str] = str;
+	    }
+	}
+
+	~this () {
+	    if (this.mArray != null)
+		delete this.mArray;
+	}
+    }
+
+    private {
+	def<A> print (A var) { }
+	def test () : int { return 0; }
+	def test2 (int & a) { }
+
+	string name;
+	Array<int> mArray;
+	int[] mList;
+	float{} mDic;
+    }
+}

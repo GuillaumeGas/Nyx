@@ -10,28 +10,7 @@
 #include "Token.hpp"
 #include "TokenList.hpp"
 #include "Lexer.hpp"
-#include "../ast/Ast.hpp"
-#include "../ast/Bloc.hpp"
-#include "../ast/Expression.hpp"
-#include "../ast/Position.hpp"
-#include "../ast/Type.hpp"
-#include "../ast/VarDecl.hpp"
-#include "../ast/Operator.hpp"
-#include "../ast/Binop.hpp"
-#include "../ast/VarAssign.hpp"
-#include "../ast/VarId.hpp"
-#include "../ast/Const.hpp"
-#include "../ast/IfElse.hpp"
-#include "../ast/FunDecl.hpp"
-#include "../ast/PrintI.hpp"
-#include "../ast/For.hpp"
-#include "../ast/While.hpp"
-#include "../ast/Syscall.hpp"
-#include "../ast/FunCall.hpp"
-#include "../ast/Return.hpp"
-#include "../ast/Break.hpp"
-#include "../ast/UnOp.hpp"
-#include "../ast/Array.hpp"
+#include "../ast/AstIncludes.hpp"
 
 #include "../symbol/Table.hpp"
 
@@ -64,7 +43,7 @@ namespace nyx {
 	ast::Ast * visitPrintI ();
 	ast::Ast * visitFor ();
 	ast::Ast * visitWhile ();
-	ast::Ast * visitSyscall ();
+	ast::Ast * visitSyscall (TokenPtr token_ident);
 	std::vector<ast::Expression*> * visitParams ();
 	ast::Ast * visitReturn ();
 	ast::Ast * visitBreak ();
@@ -81,11 +60,11 @@ namespace nyx {
 	ast::Expression * visitIdent ();
 	ast::Expression * visitIdent (TokenPtr token_ident);
 	ast::Expression * visitUnaryOp ();
-	ast::Expression * visitConstFloat ();
-	ast::Expression * visitConstInt ();
-	ast::Expression * visitConstString ();
-	ast::Expression * visitConstChar ();
-	ast::Expression * visitConstBool ();
+	ast::Expression * visitFloat ();
+	ast::Expression * visitInt ();
+	ast::Expression * visitString ();
+	ast::Expression * visitChar ();
+	ast::Expression * visitBool ();
 	ast::Expression * visitArray ();
 
 	bool find (TokenType type, std::vector <TokenType> list);

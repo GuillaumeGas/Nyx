@@ -29,6 +29,8 @@ TYPE Type::getType() const {
 	return TYPE::STRING;
     } else if (name == "array") {
 	return TYPE::ARRAY;
+    } else if (name == "range") {
+	return TYPE::RANGE;
     } else {
 	return TYPE::ERR;
     }

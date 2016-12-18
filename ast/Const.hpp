@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <iomanip>
+#include <vector>
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
@@ -10,10 +10,10 @@
 
 namespace nyx {
     namespace ast {
-	class ConstInt : public Expression {
+	class Int : public Expression {
 	public:
-	    ConstInt(int value, Position * pos);
-	    ~ConstInt();
+	    Int(int value, Position * pos);
+	    ~Int();
 
 	    void print (std::ostream & out, int offset = 0) const;
 	    Expression * interpret_expr();
@@ -21,34 +21,52 @@ namespace nyx {
 	    Expression * sum(Expression * expr);
 	};
 
-	class ConstChar : public Expression {
+	class Char : public Expression {
 	public:
-	    ConstChar(char value, Position * pos);
-	    ~ConstChar();
+	    Char(char value, Position * pos);
+	    ~Char();
 	    void print (std::ostream & out, int offset = 0) const;
 	};
 
-	struct ConstFloat : public Expression {
-	    ConstFloat (float value, Position * pos);
-	    ~ConstFloat ();
+	struct Float : public Expression {
+	    Float (float value, Position * pos);
+	    ~Float ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 	};
 
-	class ConstBool : public Expression {
+	class Bool : public Expression {
 	public:
-	    ConstBool(bool value, Position * pos);
-	    ~ConstBool();
+	    Bool(bool value, Position * pos);
+	    ~Bool();
 
 	    void print (std::ostream & out, int offset = 0) const;
 	};
 
-	struct ConstString : public Expression {
-	    ConstString (std::string * value, Position * pos);
-	    ~ConstString ();
+	struct String : public Expression {
+	    String (std::string * value, Position * pos);
+	    ~String ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 	};
 
+	struct Array : public Expression {
+	    Array (std::vector<Expression*> * array, Position * pos);
+	    ~Array ();
+
+	    void print (std::ostream & out, int offset = 0) const;
+
+	    std::vector<Expression*> * array;
+	};
+
+	struct Range : public Expression {
+	    Range (Expression * start, Expression * end, Position * pos);
+	    ~Range ();
+
+	    void print (std::ostream & out, int offset = 0) const;
+
+	    Expression * start;
+	    Expression * end;
+	};
     };
 };

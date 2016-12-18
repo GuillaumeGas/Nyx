@@ -5,73 +5,124 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-ConstBool::ConstBool(bool value, Position * pos) {
+Bool::Bool(bool value, Position * pos) {
     this->value->Bool = value;
     this->pos = pos;
+    this->type = new Type("bool", true);
 }
 
-ConstBool::~ConstBool() {}
+Bool::~Bool() {}
 
-void ConstBool::print (ostream & out, int offset) const {
+void Bool::print (ostream & out, int offset) const {
     out << (value ? "true" : "false");
 }
 
-ConstChar::ConstChar(char value, Position * pos) {
+Char::Char(char value, Position * pos) {
     this->value->Char = value;
     this->pos = pos;
+    this->type = new Type("char", true);
 }
 
-ConstChar::~ConstChar() {}
+Char::~Char() {}
 
-void ConstChar::print (ostream & out, int offset) const {
+void Char::print (ostream & out, int offset) const {
     out << "'" << value->Char << "'";
 }
 
-ConstInt::ConstInt(int v, Position * pos) {
+Int::Int(int v, Position * pos) {
     this->value->Int = v;
     this->pos = pos;
     this->type = new Type("int", true);
 }
 
-ConstInt::~ConstInt() {}
+Int::~Int() {}
 
-void ConstInt::print (ostream & out, int offset) const {
+void Int::print (ostream & out, int offset) const {
     out << value->Int;
 }
 
-Expression * ConstInt::interpret_expr() {
+Expression * Int::interpret_expr() {
     return this;
 }
 
-Expression * ConstInt::sum(Expression * expr) {
-    ConstInt * i = (ConstInt *) expr;
-    ConstInt * res = new ConstInt(value->Int + i->value->Int, pos);
+Expression * Int::sum(Expression * expr) {
+    Int * i = (Int *) expr;
+    Int * res = new Int(value->Int + i->value->Int, pos);
     return res;
 }
 
-ConstFloat::ConstFloat (float value, Position * pos) {
+Float::Float (float value, Position * pos) {
     this->value->Float = value;
     this->pos = pos;
     this->type = new Type ("float", true);
 }
 
-ConstFloat::~ConstFloat () {}
+Float::~Float () {}
 
-void ConstFloat::print (ostream & out, int offset) const {
+void Float::print (ostream & out, int offset) const {
     out << std::to_string (this->value->Float);
 }
 
-ConstString::ConstString (string * value, Position * pos) {
+String::String (string * value, Position * pos) {
     this->value->Str = value;
     this->pos = pos;
     this->type = new Type ("string", true);
 }
 
-ConstString::~ConstString () {
+String::~String () {
     if (this->value->Str)
 	delete this->value->Str;
 }
 
-void ConstString::print (ostream & out, int offset) const {
+void String::print (ostream & out, int offset) const {
     out << "\"" << *(value->Str) << "\"";
+}
+
+Array::Array (vector<Expression*> * array, Position * pos) {
+    this->pos = pos;
+    this->type = new Type ("array", false);
+    this->array = array;
+}
+
+Array::~Array () {
+    if (array != NULL) {
+	for (auto it : *array) {
+	    if (it)
+		delete it;
+	}
+    }
+}
+
+void Array::print (ostream & out, int offset) const {
+    out << "[";
+    if (array != NULL) {
+	for (int i = 0; i < array->size (); i++) {
+	    (*array)[i]->print (out);
+	    if (i < array->size()-1)
+		out << ", ";
+	}
+    }
+    out << "]";
+}
+
+Range::Range (Expression * start, Expression * end, Position * pos) {
+    this->pos = pos;
+    this->start = start;
+    this->end = end;
+    this->type = new Type("range", true);
+}
+
+Range::~Range () {
+    if (start)
+	delete start;
+    if (end)
+	delete end;
+}
+
+void Range::print (ostream & out, int offset) const {
+    out << "[";
+    start->print (out);
+    out << " .. ";
+    end->print (out);
+    out << "]";
 }

@@ -22,11 +22,13 @@ void Syscall::interpret () {}
 
 void Syscall::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "syscall " << ident << " (";
-    for (int i = 0; i < params->size(); i++) {
-	(*params)[i]->print (out);
-	if (i < params->size()-1)
-	    out << ", ";
+    out << "syscall<" << ident << "> (";
+    if (params != NULL) {
+	for (int i = 0; i < params->size(); i++) {
+	    (*params)[i]->print (out);
+	    if (i < params->size()-1)
+		out << ", ";
+	}
     }
     out << ")";
 }

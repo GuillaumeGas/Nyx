@@ -4,21 +4,21 @@
 
 namespace nyx {
     namespace ast {
-
-	enum OpPriority {
-	    UUULOW_OP,
-	    UULOW_OP,
-	    ULOW_OP,
-	    LOW_OP,
-	    HIGH_OP
-	};
-
 	enum Op {
+	    PLUSPLUS,
+	    MINUSMINUS,
+	    POINT,
+	    NOT,
 	    PLUS,
 	    MINUS,
 	    MUL,
 	    DIV,
 	    MOD,
+	    MULEQ,
+	    DIVEQ,
+	    PLUSEQ,
+	    MINUSEQ,
+	    MODEQ,
 	    ASSIGN,
 	    LT,
 	    LE,
@@ -26,6 +26,8 @@ namespace nyx {
 	    GE,
 	    EQ,
 	    NE,
+	    AND,
+	    OR,
 	    UNKNOWN
 	};
 
@@ -33,14 +35,13 @@ namespace nyx {
 	public:
 	    Operator (std::string s);
 	    Operator (const Operator & op);
-	    OpPriority priority;
 	    Op value;
 
 	    std::string toString() const;
 
 	private:
+	    std::string str;
 	    Op getValue(std::string s);
-	    OpPriority getPriority(Op o);
 	};
 
     };
