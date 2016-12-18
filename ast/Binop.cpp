@@ -17,53 +17,24 @@ Binop::~Binop() {
 	delete op;
 }
 
-Expression * Binop::interpretExpr() {
-    e1 = e1->interpretExpr();
-    e2 = e2->interpretExpr();
-    if (checkCompatibility()) {
-	switch (op->value) {
-	case Op::PLUS:
-	    return interpretPlus();
-	case Op::MINUS:
-	    return interpretMinus();
-	case Op::MUL:
-	    return interpretMul();
-	case Op::DIV:
-	    return interpretDiv();
-	case Op::MOD:
-	    return interpretMod();
-	case Op::ASSIGN:
-	    return interpretAssign();
-	}
-    } else {
-	throw TypeErrorException(e1, e2, pos);
+Expression * Binop::interpretExpression () {
+    e1 = e1->interpretExpression ();
+    e2 = e2->interpretExpression ();
+
+    switch (op->value) {
+    case Op::PLUS:
+	return e1->interpretPlus (e2);
+    case Op::MINUS:
+	return e1->interpretMinus (e2);
+    case Op::MUL:
+	return e1->interpretMul (e2);
+    case Op::DIV:
+	return e1->interpretDiv (e2);
+    case Op::MOD:
+	return e1->interpretMod (e2);
+    default:
+	throw SemanticErrorException ("Unknown operator '" + op->toString () + "'", pos);
     }
-}
-
-/* TODO, version de test ici */
-bool Binop::checkCompatibility() const {
-    return e1->getType()->getType() == e2->getType()->getType();
-}
-
-Expression * Binop::interpretPlus() {
-    if (e1->type->isBasic()) {
-	return e1->sum(e2);
-    } else {
-	//TODO
-    }
-}
-Expression * Binop::interpretMinus() { return NULL; }
-Expression * Binop::interpretMul() { return NULL; }
-Expression * Binop::interpretDiv() { return NULL; }
-Expression * Binop::interpretMod() { return NULL; }
-
-Expression * Binop::interpretAssign() {
-    // symbol::Table * table = symbol::Table::get_instance();
-
-    // symbol::Symbol * s = table->get_symbol (e1->to_string(), e1->pos);
-    // if (e2->get_type()->get_type() == TYPE::INT) {
-    // 	s->set_value (e2->get_value()->Int);
-    // }
 }
 
 void Binop::print (ostream & out, int offset) const {

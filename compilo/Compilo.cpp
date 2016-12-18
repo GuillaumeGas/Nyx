@@ -39,19 +39,19 @@ void Compilo::compile() {
     	exit(-1);
     }
 
-    // cout << "Interpret..." << endl;
-    // try {
-    //   m_ast->interpret();
-    //   cout << "End" << endl;
-    // } catch(SymbolException const& e) {
-    //   cout << e.to_string() << endl;
-    //   exit(-1);
-    // } catch(SemanticException const& e) {
-    //   cout << e.to_string() << endl;
-    //   exit(-1);
-    // }
+    cout << "Interpret..." << endl << endl;;
+    try {
+      m_ast->interpret();
+      cout << endl << endl << "End" << endl;
+    } catch(SymbolException const& e) {
+      cout << e.toString () << endl;
+      exit(-1);
+    } catch(SemanticErrorException const& e) {
+      cout << e.toString () << endl;
+      exit(-1);
+    }
 
-    // cout << symbol::Table::get_instance()->to_string() << endl;
+    cout << symbol::Table::getInstance()->toString() << endl;
 }
 
 void Compilo::printAst() const {

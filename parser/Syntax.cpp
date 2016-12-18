@@ -206,7 +206,7 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
 */
 ast::Ast * Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
     ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
-    ast::Expression * e1 = new ast::VarId (token_ident->value, pos);
+    ast::VarId * e1 = new ast::VarId (token_ident->value, pos);
     ast::Expression * e2 = visitExpression ();
     ast::Operator * op = new ast::Operator (token_op->value);
     return new ast::VarAssign (e1, e2, op, new ast::Position (token_op->line, token_op->column));
@@ -584,7 +584,7 @@ ast::Expression * Syntax::visitChar () {
     }
     TokenPtr first = next;
     next = pop ();
-    if (next->type != TokenType::OTHER || next->value.size () > 1)
+    if (next->value.size () != 1)
 	throw SyntaxErrorException (next->value, Position (next->line, next->column));
     char res = next->value[0];
     next = pop ();

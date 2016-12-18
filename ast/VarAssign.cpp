@@ -4,9 +4,39 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-VarAssign::VarAssign (Expression * e1, Expression * e2, Operator * op, Position * pos) : Binop (e1, e2, op, pos) {}
+VarAssign::VarAssign (VarId * e1, Expression * e2, Operator * op, Position * pos) : Binop (e1, e2, op, pos) {}
 
 VarAssign::~VarAssign () {}
+
+Expression * VarAssign::interpretExpression () {
+    e2 = e2->interpretExpression ();
+
+    if (op->value != Op::ASSIGN)
+	throw SemanticErrorException ("An operator '=' was expected !", pos);
+
+    symbol::Table * table = symbol::Table::getInstance ();
+    symbol::Symbol * symbol = table->getSymbol (((VarId*)e1)->name, pos);
+
+    switch (symbol->getType ()->value) {
+    case TYPE::INT:
+	symbol->setValue (e2->value->Int);
+	break;
+    case TYPE::FLOAT:
+	symbol->setValue (e2->value->Float);
+	break;
+    case TYPE::CHAR:
+	symbol->setValue (e2->value->Char);
+	break;
+    case TYPE::BOOL:
+	symbol->setValue (e2->value->Bool);
+	break;
+    case TYPE::STRING:
+	symbol->setValue (e2->value->Str);
+	break;
+    default:
+	throw SemanticErrorException ("Undefined Type !", pos);
+    }
+}
 
 void VarAssign::print (ostream & out, int offset) const {
     shift (out, offset);

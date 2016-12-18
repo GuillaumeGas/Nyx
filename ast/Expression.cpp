@@ -12,18 +12,18 @@ Expression::~Expression() {
 	delete type;
 }
 
-Expression * Expression::interpretExpr() { return NULL; }
-
-Expression * Expression::sum(Expression * expr) { return NULL; }
+Expression * Expression::interpretExpression () { return NULL; }
 
 void Expression::interpret() {
-    interpretExpr();
+    interpretExpression ();
 }
 
 Type * Expression::getType() const {
     return type;
 }
 
-Value * Expression::getValue() const {
+Value * Expression::getValue () const {
     return value;
 }
+
+

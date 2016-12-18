@@ -14,7 +14,11 @@ PrintI::~PrintI() {
 }
 
 void PrintI::interpret() const {
-    Expression * e = expr->interpretExpr();
+    Expression * e = expr->interpretExpression ();
+    if (e->getType ()->value != TYPE::INT) {
+	Type t ("int");
+	throw TypeErrorException (&t, e->getType (), pos);
+    }
     cout << e->getValue()->Int;
 }
 

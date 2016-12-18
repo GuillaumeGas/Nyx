@@ -8,6 +8,7 @@ namespace nyx {
 	enum TYPE {
 	    INT,
 	    CHAR,
+	    BOOL,
 	    FLOAT,
 	    STRING,
 	    ARRAY,
@@ -17,16 +18,19 @@ namespace nyx {
 
 	class Type {
 	public:
-	    Type(std::string name, bool is_basic);
+	    Type (std::string name);
+	    Type (std::string name, bool is_basic);
 	    ~Type();
 
 	    std::string toString() const;
-	    TYPE getType() const;
 	    bool isBasic () const;
 
-	    TYPE type;
+	    TYPE value;
 	    std::string name;
 	    bool is_basic;
+
+	private:
+	    TYPE getValue() const;
 	};
 
     };

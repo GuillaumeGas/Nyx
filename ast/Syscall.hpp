@@ -5,6 +5,7 @@
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
+#include "exceptions/SemanticException.hpp"
 
 namespace nyx {
     namespace ast {
@@ -16,9 +17,15 @@ namespace nyx {
 	    void print (std::ostream & out, int offset = 0) const;
 	    void interpret ();
 
+	    //syscalls list
+	    void sysPrint ();
+	    void sysPrintln ();
+
 	private:
 	    std::string ident;
 	    std::vector<Expression*> * params;
+
+	    void _sysPrint (Expression * e);
 	};
     };
 };

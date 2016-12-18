@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <map>
+#include <sstream>
 
 #include "Symbol.hpp"
 #include "exceptions/SymbolException.hpp"

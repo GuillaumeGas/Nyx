@@ -7,6 +7,7 @@
 #include "Position.hpp"
 #include "Type.hpp"
 #include "Value.hpp"
+#include "exceptions/SemanticException.hpp"
 
 namespace nyx {
     namespace ast {
@@ -16,9 +17,14 @@ namespace nyx {
 	    ~Int();
 
 	    void print (std::ostream & out, int offset = 0) const;
-	    Expression * interpret_expr();
 
-	    Expression * sum(Expression * expr);
+	    Expression * interpretExpression();
+	    Expression * interpretPlus (Expression * e);
+	    Expression * interpretMinus (Expression * e) {}
+	    Expression * interpretMul (Expression * e) {}
+	    Expression * interpretDiv (Expression * e) {}
+	    Expression * interpretMod (Expression * e) {}
+	    Expression * interpretAssign (Expression * e) {}
 	};
 
 	class Char : public Expression {
@@ -26,6 +32,15 @@ namespace nyx {
 	    Char(char value, Position * pos);
 	    ~Char();
 	    void print (std::ostream & out, int offset = 0) const;
+
+	    Expression * interpretExpression();
+	    Expression * interpretPlus (Expression * e);
+	    Expression * interpretMinus (Expression * e) {}
+	    Expression * interpretMul (Expression * e) {}
+	    Expression * interpretDiv (Expression * e) {}
+	    Expression * interpretMod (Expression * e) {}
+	    Expression * interpretAssign (Expression * e) {}
+
 	};
 
 	struct Float : public Expression {
@@ -48,6 +63,8 @@ namespace nyx {
 	    ~String ();
 
 	    void print (std::ostream & out, int offset = 0) const;
+
+	    Expression * interpretExpression();
 	};
 
 	struct Array : public Expression {

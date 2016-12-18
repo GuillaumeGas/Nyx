@@ -12,15 +12,18 @@ namespace nyx {
 	    Expression();
 	    virtual ~Expression();
 	    virtual void print (std::ostream & out, int offset = 0) const = 0;
-	    virtual Expression * interpretExpr();
-	    virtual Expression * sum(Expression * expr);
-	    virtual void interpret();
+	    void interpret ();
+	    virtual Expression * interpretExpression();
+	    virtual Expression * interpretPlus (Expression * e) {}
+	    virtual Expression * interpretMinus (Expression * e) {}
+	    virtual Expression * interpretMul (Expression * e) {}
+	    virtual Expression * interpretDiv (Expression * e) {}
+	    virtual Expression * interpretMod (Expression * e) {}
+	    virtual Expression * interpretAssign (Expression * e) {}
 
-	    Type * getType() const;
+	    virtual Type * getType () const;
+	    virtual Value * getValue () const;
 
-	    virtual Value * getValue() const;
-
-	    //	private:
 	    Type * type;
 	    Value * value;
 	};

@@ -1,40 +1,45 @@
-void main () {
+int a = 1;
+int b = 2;
+a = a + b;
+$println (a, 'a', b, "test");
 
-    print ("More or Less !");
-    int random = $rand () % 100;
-    int rep = 0;
-    while (rep != random) {
-	res = $getInt ();
-	if (res < random) {
-	    $print ("C'est plus !");
-	} else if (res > random) {
-	    $print ("C'est moins !");
-	}
-    }
-    $print ("Bravo !");
+// void main () {
 
-    return 0;
-}
+//     print ("More or Less !");
+//     int random = $rand () % 100;
+//     int rep = 0;
+//     while (rep != random) {
+// 	res = $getInt ();
+// 	if (res < random) {
+// 	    $print ("C'est plus !");
+// 	} else if (res > random) {
+// 	    $print ("C'est moins !");
+// 	}
+//     }
+//     $print ("Bravo !");
 
-void print (int val) {
-    int a, b = 2;
-    $print_i ("test : ");
-}
+//     return 0;
+// }
 
-int test (int a, int b) {
-    while:test (test) {
-	    foo ([1, 2, 3]);
-	    test ([1 .. 2]);
-	if (a) {
-	    for (i in [foo (2) .. 3+5]) {
-		print (fo(), 5+i);
-	    }
-	    break test;
-	} else {
-	    for:ff (a in [2, 5]) {
-		print (a);
-	    }
-	}
-    }
-    return 2*(2+3);
-}
+// void print (int val) {
+//     int a, b = 2;
+//     $print_i ("test : ");
+// }
+
+// int test (int a, int b) {
+//     while:test (test) {
+// 	    foo ([1, 2, 3]);
+// 	    test ([1 .. 2]);
+// 	if (a) {
+// 	    for (i in [foo (2) .. 3+5]) {
+// 		print (fo(), 5+i);
+// 	    }
+// 	    break test;
+// 	} else {
+// 	    for:ff (a in [2, 5]) {
+// 		print (a);
+// 	    }
+// 	}
+//     }
+//     return 2*(2+3);
+// }

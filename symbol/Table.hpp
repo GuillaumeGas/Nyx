@@ -6,26 +6,26 @@
 #include "../ast/Position.hpp"
 
 namespace nyx {
-  namespace symbol {
-    class Table {
-    public:
-      static Table * getInstance();
+    namespace symbol {
+	class Table {
+	public:
+	    static Table * getInstance();
 
-      void enterBlock();
-      void exitBlock();
-      void addSymbol(Symbol * s, ast::Position * pos);
-      Symbol * getSymbol(std::string name, ast::Position * pos);
+	    void enterBlock();
+	    void exitBlock();
+	    void addSymbol(Symbol * s, ast::Position * pos);
+	    Symbol * getSymbol(std::string name, ast::Position * pos);
 
-      std::string toString() const;
+	    std::string toString() const;
 
-    private:
-      Table();
-      ~Table();
+	private:
+	    Table();
+	    ~Table();
 
-      static Table * instance;
+	    static Table * instance;
 
-      Scope main_scope;
-      Scope * current_scope;
+	    Scope main_scope;
+	    Scope * current_scope;
+	};
     };
-  };
 };

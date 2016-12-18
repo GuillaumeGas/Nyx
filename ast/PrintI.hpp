@@ -5,6 +5,8 @@
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Position.hpp"
+#include "Type.hpp"
+#include "exceptions/SemanticException.hpp"
 
 namespace nyx {
     namespace ast {

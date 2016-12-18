@@ -25,6 +25,15 @@ Char::Char(char value, Position * pos) {
 
 Char::~Char() {}
 
+Expression * Char::interpretExpression () { return this; }
+
+Expression * Char::interpretPlus (Expression * e) {
+    if (e->getType ()->value != TYPE::CHAR)
+	throw TypeErrorException (this, e, pos);
+    value->Int = value->Char + e->value->Char;
+    return this;
+}
+
 void Char::print (ostream & out, int offset) const {
     out << "'" << value->Char << "'";
 }
@@ -37,18 +46,17 @@ Int::Int(int v, Position * pos) {
 
 Int::~Int() {}
 
-void Int::print (ostream & out, int offset) const {
-    out << value->Int;
-}
+Expression * Int::interpretExpression () { return this; }
 
-Expression * Int::interpret_expr() {
+Expression * Int::interpretPlus (Expression * e) {
+    if (e->getType ()->value != TYPE::INT)
+	throw TypeErrorException (this, e, pos);
+    value->Int = value->Int + e->value->Int;
     return this;
 }
 
-Expression * Int::sum(Expression * expr) {
-    Int * i = (Int *) expr;
-    Int * res = new Int(value->Int + i->value->Int, pos);
-    return res;
+void Int::print (ostream & out, int offset) const {
+    out << value->Int;
 }
 
 Float::Float (float value, Position * pos) {
@@ -76,6 +84,10 @@ String::~String () {
 
 void String::print (ostream & out, int offset) const {
     out << "\"" << *(value->Str) << "\"";
+}
+
+Expression * String::interpretExpression () {
+    return this;
 }
 
 Array::Array (vector<Expression*> * array, Position * pos) {
