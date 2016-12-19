@@ -31,18 +31,21 @@ void Compilo::compile() {
 	exit(-1);
     }
 
+    cout << "/------------------- AST -------------------\\" << endl << endl;
     try {
     	m_syn = new Syntax(*m_lex);
     	m_ast = m_syn->getAst();
+	printAst ();
+	cout << endl;
     } catch(SyntaxException const& e) {
     	cout << e.toString() << endl;
     	exit(-1);
     }
 
-    cout << "Interpret..." << endl << endl;;
+    cout << "/---------------- Execution -----------------\\" << endl << endl;
     try {
       m_ast->interpret();
-      cout << endl << endl << "End" << endl;
+      cout << endl;
     } catch(SymbolException const& e) {
       cout << e.toString () << endl;
       exit(-1);
@@ -51,6 +54,7 @@ void Compilo::compile() {
       exit(-1);
     }
 
+    cout << "/------------ Final symbols table ------------\\" << endl << endl;
     cout << symbol::Table::getInstance()->toString() << endl;
 }
 

@@ -5,36 +5,36 @@ using namespace nyx;
 using namespace symbol;
 
 Symbol::Symbol (string & name, ast::Type * type) : name (name) {
-    this->value = new ast::Value ();
+    this->value = ast::Value::makeValue ();
     this->type = type;
 }
 
 Symbol::Symbol (string & name, int value) : name (name) {
-    this->value = new ast::Value ();
+    this->value = ast::Value::makeValue ();
     this->type = new ast::Type ("int");
     this->value->Int = value;
 }
 
 Symbol::Symbol (string & name, float value) : name (name) {
-    this->value = new ast::Value ();
+    this->value = ast::Value::makeValue ();
     this->type = new ast::Type ("float");
     this->value->Float = value;
 }
 
 Symbol::Symbol (string & name, bool value) : name (name) {
-    this->value = new ast::Value ();
+    this->value = ast::Value::makeValue ();
     this->type = new ast::Type ("bool");
     this->value->Bool = value;
 }
 
 Symbol::Symbol (string & name, char value) : name (name) {
-    this->value = new ast::Value ();
+    this->value = ast::Value::makeValue ();
     this->type = new ast::Type ("char");
     this->value->Char = value;
 }
 
 Symbol::Symbol (string & name, string * value) : name (name) {
-    this->value = new ast::Value ();
+    this->value = ast::Value::makeValue ();
     this->type = new ast::Type ("string");
     this->value->Str = value;
 }
@@ -61,7 +61,12 @@ void Symbol::setValue(char value) {
 void Symbol::setValue (string * value) {
     if (this->value->Str)
 	delete this->value->Str;
-    this->value->Str = value;
+    this->value->Str = new string (*value);
+}
+
+void Symbol::setType (ast::Type * type) {
+    this->type->value = type->value;
+    this->type->name = type->name;
 }
 
 ast::Type * Symbol::getType() const {

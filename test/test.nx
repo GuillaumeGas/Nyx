@@ -1,7 +1,9 @@
-int a = 1;
-int b = 2;
-a = a + b;
-$println (a, 'a', b, "test");
+for (i in [1, 8, 5, 6]) {
+    for (j in [1 .. 0]) {
+	$println (j);
+    }
+    $println (i);
+ }
 
 // void main () {
 

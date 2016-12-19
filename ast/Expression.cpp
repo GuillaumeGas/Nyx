@@ -4,7 +4,7 @@ using namespace nyx;
 using namespace ast;
 
 Expression::Expression () {
-    this->value = new Value;
+    this->value = Value::makeValue ();
 }
 
 Expression::~Expression() {

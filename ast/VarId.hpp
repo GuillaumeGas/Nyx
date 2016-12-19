@@ -23,7 +23,7 @@ namespace nyx {
 
 	    Expression * interpretExpression ();
 	    Expression * interpretPlus (Expression * e);
-	    Expression * interpretMinus (Expression * e) {}
+	    Expression * interpretMinus (Expression * e);
 	    Expression * interpretMul (Expression * e) {}
 	    Expression * interpretDiv (Expression * e) {}
 	    Expression * interpretMod (Expression * e) {}

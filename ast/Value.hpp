@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstring>
 
 namespace nyx {
     namespace ast {
@@ -11,6 +12,8 @@ namespace nyx {
 	    double Double;
 	    bool Bool;
 	    std::string * Str;
+
+	    static Value * makeValue ();
 	};
     };
 };

@@ -51,7 +51,14 @@ Expression * Int::interpretExpression () { return this; }
 Expression * Int::interpretPlus (Expression * e) {
     if (e->getType ()->value != TYPE::INT)
 	throw TypeErrorException (this, e, pos);
-    value->Int = value->Int + e->value->Int;
+    value->Int = value->Int + e->getValue ()->Int;
+    return this;
+}
+
+Expression * Int::interpretMinus (Expression * e) {
+    if (e->getType ()->value != TYPE::INT)
+	throw TypeErrorException (this, e, pos);
+    value->Int = value->Int - e->getValue ()->Int;
     return this;
 }
 
@@ -106,7 +113,7 @@ Array::~Array () {
 }
 
 void Array::print (ostream & out, int offset) const {
-    out << "[";
+    out << "<array>[";
     if (array != NULL) {
 	for (int i = 0; i < array->size (); i++) {
 	    (*array)[i]->print (out);
@@ -115,6 +122,13 @@ void Array::print (ostream & out, int offset) const {
 	}
     }
     out << "]";
+}
+
+Expression * Array::interpretExpression () {
+    for (auto it : *array) {
+	it->interpretExpression ();
+    }
+    return this;
 }
 
 Range::Range (Expression * start, Expression * end, Position * pos) {
@@ -132,9 +146,22 @@ Range::~Range () {
 }
 
 void Range::print (ostream & out, int offset) const {
-    out << "[";
+    out << "<range>[";
     start->print (out);
     out << " .. ";
     end->print (out);
     out << "]";
+}
+
+Expression * Range::interpretExpression () {
+    start = start->interpretExpression ();
+    end = end->interpretExpression ();
+    if (start->getType ()->value != TYPE::INT) {
+	Type t ("int");
+	throw TypeErrorException (&t, start->getType (), start->pos);
+    } else if (end->getType ()->value != TYPE::INT) {
+	Type t ("int");
+	throw TypeErrorException (&t, end->getType (), end->pos);
+    }
+    return this;
 }

@@ -42,8 +42,17 @@ Symbol * Scope::getSymbol(string name, ast::Position * pos) {
     auto it = list.find(name);
     if (it != list.end())
 	return it->second;
+    if (parent_scope)
+	return parent_scope->getSymbol (name, pos);
     throw SymbolNotFoundException(Global::getInstance()->file_name, pos, name);
     exit(-1);
+}
+
+void Scope::exitBlock () {
+    if (next_scope) {
+	delete next_scope;
+	next_scope = NULL;
+    }
 }
 
 string Scope::toString() const {

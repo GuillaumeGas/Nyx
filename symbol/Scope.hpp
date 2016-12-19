@@ -10,23 +10,24 @@
 #include "../ast/Position.hpp"
 
 namespace nyx {
-  namespace symbol {
-    class Scope {
-    public:
-      Scope(Scope * parent = NULL);
-      ~Scope();
+    namespace symbol {
+	class Scope {
+	public:
+	    Scope(Scope * parent = NULL);
+	    ~Scope();
 
-      Scope * newScope();
-      Scope * getParent();
-      void addSymbol(Symbol * s, ast::Position * pos);
-      Symbol * getSymbol(std::string name, ast::Position * pos);
+	    Scope * newScope();
+	    Scope * getParent();
+	    void addSymbol(Symbol * s, ast::Position * pos);
+	    Symbol * getSymbol(std::string name, ast::Position * pos);
+	    void exitBlock ();
 
-      std::string toString() const;
+	    std::string toString() const;
 
-    private:
-      std::map<std::string, Symbol*> list;
-      Scope * parent_scope;
-      Scope * next_scope;
+	private:
+	    std::map<std::string, Symbol*> list;
+	    Scope * parent_scope;
+	    Scope * next_scope;
+	};
     };
-  };
 };

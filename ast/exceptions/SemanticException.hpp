@@ -10,11 +10,11 @@
 namespace nyx {
     class SemanticErrorException {
     public:
-	SemanticErrorException(ast::Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos) {}
+	SemanticErrorException(ast::Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos), msg("") {}
 	SemanticErrorException(std::string msg, ast::Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos), msg(msg) {}
 
 	virtual std::string toString() const {
-	    return "[Error] Semantic error in file " + file_name + " at " + pos->toString() + ".\n" + Global::getInstance()->getLine(pos->line);
+	    return "[Error] Semantic error in file " + file_name + " at " + pos->toString() + " : " + msg + ".\n"/* + Global::getInstance()->getLine(pos->line)*/;
 	}
 
     protected:

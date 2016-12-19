@@ -20,7 +20,7 @@ namespace nyx {
 
 	    Expression * interpretExpression();
 	    Expression * interpretPlus (Expression * e);
-	    Expression * interpretMinus (Expression * e) {}
+	    Expression * interpretMinus (Expression * e);
 	    Expression * interpretMul (Expression * e) {}
 	    Expression * interpretDiv (Expression * e) {}
 	    Expression * interpretMod (Expression * e) {}
@@ -73,6 +73,8 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
+	    Expression * interpretExpression ();
+
 	    std::vector<Expression*> * array;
 	};
 
@@ -81,6 +83,8 @@ namespace nyx {
 	    ~Range ();
 
 	    void print (std::ostream & out, int offset = 0) const;
+
+	    Expression * interpretExpression ();
 
 	    Expression * start;
 	    Expression * end;
