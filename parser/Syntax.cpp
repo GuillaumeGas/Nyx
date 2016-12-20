@@ -535,9 +535,9 @@ ast::Expression * Syntax::visitConst () {
 	return elem;
     if ((elem = visitChar ()) != NULL)
 	return elem;
-    if ((elem = visitInt ()) != NULL)
-	return elem;
     if ((elem = visitFloat ()) != NULL)
+	return elem;
+    if ((elem = visitInt ()) != NULL)
 	return elem;
     if ((elem = visitBool ()) != NULL)
 	return elem;
@@ -557,13 +557,36 @@ ast::Expression * Syntax::visitFloat () {
 	    }
 	}
 	float res = (float)stoi (val->value);
-	for (int i = 0; i < val->value.size (); i++) res /= 10;
 	return new ast::Float (res, new ast::Position (next->line, next->column));
     } else {
-	//TODO
-	rewind ();
-	return NULL;
+	for (int i = 0; i < next->value.size (); i++) {
+	    if (next->value[i] < '0' || next->value[i] > '9') {
+		rewind ();
+		return NULL;
+	    }
+	}
+	string res = next->value;
+	TokenPtr float_token = next;
+	next = pop ();
+	if (next->type != TokenType::POINT) {
+	    rewind (2);
+	    return NULL;
+	}
+	next = pop ();
+	for (int i = 0; i < next->value.size (); i++) {
+	    if (next->value[i] < '0' || next->value[i] > '9') {
+		throw SyntaxErrorException (next->value, Position (next->line, next->column));
+	    }
+	}
+	int left_part = next->value.size ();
+	res += next->value;
+	float value = (float)stoi (res);
+	for (int i = 0; i < left_part; i++)
+	    value /= 10;
+	return new ast::Float (value, new ast::Position (float_token->line, float_token->column));
     }
+    rewind ();
+    return NULL;
 }
 
 ast::Expression * Syntax::visitBool () {
