@@ -22,6 +22,8 @@ namespace nyx {
 	    Type (std::string name, bool is_basic);
 	    ~Type();
 
+	    void setType (std::string name);
+	    void setBasic (bool val);
 	    std::string toString() const;
 	    bool isBasic () const;
 

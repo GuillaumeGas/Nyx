@@ -12,8 +12,8 @@ Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
 
 Syscall::~Syscall () {
     if (params) {
-	for (int i = 0; i < params->size(); i++) {
-	    delete (*params)[i];
+	for (auto it : *params) {
+	    delete *it;
 	}
     }
 }
@@ -32,10 +32,12 @@ void Syscall::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "syscall<" << ident << "> (";
     if (params != NULL) {
-	for (int i = 0; i < params->size(); i++) {
-	    (*params)[i]->print (out);
-	    if (i < params->size()-1)
+	int i = 0;
+	for (auto it : *params) {
+	    it->print (out);
+	    if (i < params->size () - 1)
 		out << ", ";
+	    ++i;
 	}
     }
     out << ")";
@@ -44,13 +46,13 @@ void Syscall::print (ostream & out, int offset) const {
 void Syscall::_sysPrint (Expression * e) {
     switch (e->getType ()->value) {
     case TYPE::INT:
-	cout << e->getValue ()->Int;
+	cout << e->getValue ()->getInt ();
 	break;
     case TYPE::CHAR:
-	cout << e->getValue ()->Char;
+	cout << e->getValue ()->getChar ();
 	break;
     case TYPE::STRING:
-	cout << *(e->getValue ()->Str);
+	cout << *((string*)(e->getValue ()->getPtr ()));
 	break;
     default:
 	SemanticErrorException ("Unknown type !", pos);

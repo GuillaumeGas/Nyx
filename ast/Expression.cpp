@@ -3,13 +3,13 @@
 using namespace nyx;
 using namespace ast;
 
-Expression::Expression () {
-    this->value = Value::makeValue ();
-}
+Expression::Expression () {}
 
 Expression::~Expression() {
     if (type)
 	delete type;
+    if (value)
+	delete value;
 }
 
 Expression * Expression::interpretExpression () { return NULL; }

@@ -42,13 +42,13 @@ Expression * VarId::interpretPlus (Expression * e) {
 
     switch (this_type->value) {
     case TYPE::INT:
-	return new Int (symbol->value->Int + e->getValue ()->Int, new Position (*pos));
+	return new Int (symbol->value->getInt () + e->getValue ()->getInt (), new Position (*pos));
     case TYPE::FLOAT:
-	return new Float (symbol->value->Float + e->getValue ()->Float, new Position (*pos));
+	return new Float (symbol->value->getFloat () + e->getValue ()->getFloat (), new Position (*pos));
     case TYPE::CHAR:
-	return new Char (symbol->value->Char + e->getValue ()->Char, new Position (*pos));
-    case TYPE::STRING:
-	return new String (new string (*(symbol->value->Str) + *(e->getValue ()->Str)), new Position (*pos));
+	return new Char (symbol->value->getChar () + e->getValue ()->getChar (), new Position (*pos));
+    // case TYPE::STRING:
+    // 	return new String (new string (*((string*)symbol->value->getPtr ()) + *(e->getValue ()->getPtr ())), new Position (*pos));
     default:
 	throw SemanticErrorException ("Type unexpected.", pos);
     }
@@ -66,11 +66,11 @@ Expression * VarId::interpretMinus (Expression * e) {
 
     switch (this_type->value) {
     case TYPE::INT:
-	return new Int (symbol->value->Int - e->getValue ()->Int, new Position (*pos));
+	return new Int (symbol->value->getInt () - e->getValue ()->getInt (), new Position (*pos));
     case TYPE::FLOAT:
-	return new Float (symbol->value->Float - e->getValue ()->Float, new Position (*pos));
+	return new Float (symbol->value->getFloat () - e->getValue ()->getFloat (), new Position (*pos));
     case TYPE::CHAR:
-	return new Char (symbol->value->Char - e->getValue ()->Char, new Position (*pos));
+	return new Char (symbol->value->getChar () - e->getValue ()->getChar (), new Position (*pos));
     default:
 	throw SemanticErrorException ("Type unexpected.", pos);
     }

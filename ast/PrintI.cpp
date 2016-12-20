@@ -19,7 +19,7 @@ void PrintI::interpret() const {
 	Type t ("int");
 	throw TypeErrorException (&t, e->getType (), pos);
     }
-    cout << e->getValue()->Int;
+    cout << e->getValue()->getInt ();
 }
 
 void PrintI::print (ostream & out, int offset) const {

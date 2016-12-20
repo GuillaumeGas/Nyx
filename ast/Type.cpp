@@ -14,6 +14,15 @@ Type::Type (string name, bool is_basic) : name(name), is_basic(is_basic) {
 
 Type::~Type() {  }
 
+void Type::setType (string name) {
+    this->name = name;
+    this->value = getValue ();
+}
+
+void Type::setBasic (bool val) {
+    this->is_basic = val;
+}
+
 string Type::toString() const {
     return name;
 }

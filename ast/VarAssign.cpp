@@ -19,20 +19,20 @@ Expression * VarAssign::interpretExpression () {
 
     switch (symbol->getType ()->value) {
     case TYPE::INT:
-	symbol->setValue (e2->value->Int);
+	symbol->setValue (e2->value->getInt ());
 	break;
     case TYPE::FLOAT:
-	symbol->setValue (e2->value->Float);
+	symbol->setValue (e2->value->getFloat ());
 	break;
     case TYPE::CHAR:
-	symbol->setValue (e2->value->Char);
+	symbol->setValue (e2->value->getChar ());
 	break;
     case TYPE::BOOL:
-	symbol->setValue (e2->value->Bool);
+	symbol->setValue (e2->value->getBool ());
 	break;
-    case TYPE::STRING:
-	symbol->setValue (e2->value->Str);
-	break;
+    // case TYPE::STRING:
+    // 	symbol->setValue (e2->value->getPtr ());
+    // 	break;
     default:
 	throw SemanticErrorException ("Undefined Type !", pos);
     }
