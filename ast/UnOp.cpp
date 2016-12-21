@@ -18,6 +18,7 @@ UnOp::~UnOp () {
 }
 
 void UnOp::print (ostream & out, int offset) const {
-    out << op->toString();
+    out << "UnOp(" << op->toString() << ", ";
     expr->print (out, offset);
+    out << ")";
 }

@@ -14,7 +14,7 @@ Bool::Bool(bool value, Position * pos) {
 Bool::~Bool() {}
 
 void Bool::print (ostream & out, int offset) const {
-    out << (value ? "true" : "false");
+    out << "ConstBool(" << (value ? "true" : "false") << ")";
 }
 
 Char::Char(char value, Position * pos) {
@@ -35,7 +35,7 @@ Expression * Char::interpretPlus (Expression * e) {
 }
 
 void Char::print (ostream & out, int offset) const {
-    out << "'" << value->Char << "'";
+    out << "ConstChar(" << "'" << value->Char << "'" << ")";
 }
 
 Int::Int(int v, Position * pos) {
@@ -63,7 +63,7 @@ Expression * Int::interpretMinus (Expression * e) {
 }
 
 void Int::print (ostream & out, int offset) const {
-    out << value->Int;
+    out << "ConstInt(" << value->Int << ")";
 }
 
 Float::Float (float value, Position * pos) {
@@ -75,7 +75,7 @@ Float::Float (float value, Position * pos) {
 Float::~Float () {}
 
 void Float::print (ostream & out, int offset) const {
-    out << std::to_string (this->value->Float);
+    out << "ConstFloat(" << std::to_string (this->value->Float) << ")";
 }
 
 String::String (string * value, Position * pos) {

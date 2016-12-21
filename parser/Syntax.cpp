@@ -452,8 +452,9 @@ ast::Expression * Syntax::visitHigh () {
     TokenPtr next_op = pop ();
     if (find (next_op->type, {PLUS, MINUS})) {
 	ast::Expression * right = visitHHigh ();
-	if (right == NULL)
+	if (right == NULL) {
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	}
 	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitHigh (new ast::Binop (left, right, op, pos));
@@ -569,7 +570,7 @@ ast::Expression * Syntax::visitFloat () {
 	TokenPtr float_token = next;
 	next = pop ();
 	if (next->type != TokenType::POINT) {
-	    rewind (2);
+	    rewind (3);
 	    return NULL;
 	}
 	next = pop ();
@@ -585,8 +586,6 @@ ast::Expression * Syntax::visitFloat () {
 	    value /= 10;
 	return new ast::Float (value, new ast::Position (float_token->line, float_token->column));
     }
-    rewind ();
-    return NULL;
 }
 
 ast::Expression * Syntax::visitBool () {
