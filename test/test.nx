@@ -34,6 +34,7 @@ int test (int a, int b) {
 	    for:ff (a in [2, 5]) {
 		print (a);
 	    }
+	    return !a;
 	}
     }
     return 2*(2+3);
