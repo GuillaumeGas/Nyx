@@ -24,6 +24,16 @@ namespace nyx {
 	void setSkipEnabled (const std::string & skip, bool value);
 	void setCommentsEnabled (bool value);
 
+	std::string test () {
+	    std::string res = "";
+	    res += std::to_string (current_index) + " : \n";
+	    int i = 0;
+	    for (auto it : current_line) {
+		res += "  (" + std::to_string (i++) + ") " + it->toString () + "\n";
+	    }
+	    return res;
+	}
+
     private:
 	bool isSkip (TokenPtr t) const;
 	TokenPtr isCom (TokenPtr t) const;

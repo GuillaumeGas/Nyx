@@ -570,7 +570,7 @@ ast::Expression * Syntax::visitFloat () {
 	TokenPtr float_token = next;
 	next = pop ();
 	if (next->type != TokenType::POINT) {
-	    rewind (3);
+	    rewind (2);
 	    return NULL;
 	}
 	next = pop ();

@@ -85,9 +85,11 @@ TokenPtr Lexer::getWord (int index) {
 }
 
 void Lexer::rewind (int count) {
-    for (int i = 0; i < count; i++) {
-	if (this->current_index > 0)
-	    this->current_index--;
+    while (count > 0 && this->current_index > 0) {
+	this->current_index--;
+	if (!this->isSkip (this->getWord (this->current_index))) {
+	    count--;
+	}
     }
 }
 
