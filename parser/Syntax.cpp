@@ -37,6 +37,7 @@ ast::Bloc * Syntax::visitBloc () {
 	case TokenType::DOLLAR:
 	case TokenType::RETURN:
 	case TokenType::BREAK:
+	case TokenType::IMPORT:
 	    instr->push_back (visitInstruction ());
 	    break;
 	case TokenType::IF:
@@ -99,6 +100,9 @@ ast::Ast * Syntax::visitInstruction () {
     	res = visitBreak ();
     } else if (token->type == TokenType::DOLLAR) {
 	res = visitSyscall (pop ());
+    } else if (token->type == TokenType::IMPORT) {
+	rewind ();
+	res = visitImport ();
     } else {
 	throw SyntaxErrorException (token->value, Position (token->line, token->column));
     }
@@ -784,6 +788,29 @@ ast::Expression * Syntax::visitArray () {
     ast::Position * pos = new ast::Position (token_array->line, token_array->column);
     return new ast::Array (array, pos);
 }
+
+ast::Ast * Syntax::visitImport () {
+    TokenPtr token_import = pop ();
+    TokenPtr next = pop ();
+    vector<string> * path = new vector<string> ();
+    while (next->type != TokenType::SEMICOLON) {
+	path->push_back (next->value);
+	next = pop ();
+	cout << next->toString () << endl;
+	if (next->type != TokenType::POINT &&
+	    next->type != TokenType::SEMICOLON) {
+	    throw MissingErrorException (".", Position (next->line, next->column));
+	} else if (next->type == TokenType::POINT) {
+	    next = pop ();
+	}
+    }
+    if (path->size () == 0) {
+	throw SyntaxErrorException ("Path missing.", Position (token_import->line, token_import->column));
+    }
+    rewind ();
+    return new ast::Import (path, new ast::Position (token_import->line, token_import->column));
+}
+
 
 bool Syntax::find (TokenType type, vector <TokenType> list) {
     for (TokenType t : list) {

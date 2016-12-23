@@ -57,6 +57,7 @@
     LEX_TOKEN (_NULL_, "null")			\
     LEX_TOKEN (IN, "in")			\
     LEX_TOKEN (DOLLAR, "$")			\
+    LEX_TOKEN (IMPORT, "import")		\
     LEX_TOKEN (SPACE, " ")			\
     LEX_TOKEN (COM_L, "/*")			\
     LEX_TOKEN (COM_R, "*/")			\

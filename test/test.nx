@@ -1,3 +1,5 @@
+import std.Array;
+
 void main () {
 
     print ("More or Less !");
@@ -25,17 +27,17 @@ int test (int a, int b) {
     while:test (test) {
 	    foo ([1, 2, 3]);
 	    test ([1 .. 2]);
-	if (a) {
-	    for (i in [foo (.2) .. 3+5]) {
-		print (fo(2.3), 5+i);
+	    if (a) {
+		for (i in [foo (.2) .. 3+5]) {
+		    print (fo(2.3), 5+i);
+		}
+		break test;
+	    } else {
+		for:ff (a in [2, 5]) {
+			print (a);
+		    }
+		return !a;
 	    }
-	    break test;
-	} else {
-	    for:ff (a in [2, 5]) {
-		print (a);
-	    }
-	    return !a;
 	}
-    }
     return 2*(2+3);
 }

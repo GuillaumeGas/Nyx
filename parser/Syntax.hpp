@@ -47,6 +47,7 @@ namespace nyx {
 	std::vector<ast::Expression*> * visitParams ();
 	ast::Ast * visitReturn ();
 	ast::Ast * visitBreak ();
+	ast::Ast * visitImport ();
 
 	ast::Expression * visitExpression ();
 	ast::Expression * visitLow ();
