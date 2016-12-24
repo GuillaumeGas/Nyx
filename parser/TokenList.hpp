@@ -41,6 +41,7 @@
     LEX_TOKEN (COMMA, ",")			\
     LEX_TOKEN (COLON, ":")			\
     LEX_TOKEN (POINT, ".")			\
+    LEX_TOKEN (TILDE, "~")			\
     LEX_TOKEN (DOUBLE_POINT, "..")		\
     LEX_TOKEN (DOUBLE_QUOTE, "\"")		\
     LEX_TOKEN (SINGLE_QUOTE, "'")		\
@@ -58,6 +59,9 @@
     LEX_TOKEN (IN, "in")			\
     LEX_TOKEN (DOLLAR, "$")			\
     LEX_TOKEN (IMPORT, "import")		\
+    LEX_TOKEN (CLASS, "class")			\
+    LEX_TOKEN (PRIVATE, "private")		\
+    LEX_TOKEN (PUBLIC, "public")		\
     LEX_TOKEN (SPACE, " ")			\
     LEX_TOKEN (COM_L, "/*")			\
     LEX_TOKEN (COM_R, "*/")			\

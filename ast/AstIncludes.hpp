@@ -20,3 +20,4 @@
 #include "Break.hpp"
 #include "UnOp.hpp"
 #include "Import.hpp"
+#include "Class.hpp"

@@ -4,7 +4,7 @@
 
 #include "Position.hpp"
 
-#define INDENT 5
+#define INDENT 2
 
 namespace nyx {
     namespace ast {

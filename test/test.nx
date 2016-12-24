@@ -1,5 +1,33 @@
 import std.Array;
 
+class Test : A {
+    public {
+	int test = 2;
+	float avg = .3;
+
+	this () {
+	    test = 3;
+	}
+
+	string print () {
+	    return "test";
+	}
+
+	~this () {
+	    test = 0;
+	}
+    }
+
+    private {
+	string t;
+	bool c = true;
+
+	int test () {
+	    return 0;
+	}
+    }
+}
+
 void main () {
 
     print ("More or Less !");
@@ -19,8 +47,8 @@ void main () {
 }
 
 void print (int val) {
-    int a, b = 2;
-    $print_i ("test : ");
+    // int a, b = 2;
+    // $print_i ("test : ");
 }
 
 int test (int a, int b) {

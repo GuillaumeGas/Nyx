@@ -48,6 +48,7 @@ namespace nyx {
 	ast::Ast * visitReturn ();
 	ast::Ast * visitBreak ();
 	ast::Ast * visitImport ();
+	ast::Ast * visitClass ();
 
 	ast::Expression * visitExpression ();
 	ast::Expression * visitLow ();
@@ -69,6 +70,7 @@ namespace nyx {
 	ast::Expression * visitArray ();
 
 	bool find (TokenType type, std::vector <TokenType> list);
+	bool isIdent (std::string value);
 
     private:
 	Lexer & m_lex;

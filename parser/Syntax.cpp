@@ -49,6 +49,9 @@ ast::Bloc * Syntax::visitBloc () {
 	case TokenType::WHILE:
 	    instr->push_back (visitWhile ());
 	    break;
+	case TokenType::CLASS:
+	    instr->push_back (visitClass ());
+	    break;
 	default:
 	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
 	}
@@ -118,6 +121,9 @@ ast::Ast * Syntax::visitInstruction () {
    fundecl := type ident (params*) { bloc }
 */
 ast::Ast * Syntax::visitFunDecl (TokenPtr token_type, TokenPtr token_ident) {
+    if (!isIdent (token_ident->value))
+	throw MissingErrorException ("var name", Position (token_ident->line, token_ident->column));
+
     pop (); // '('
     TokenPtr next = pop ();
     vector <ast::VarDecl*> * params = NULL;
@@ -177,9 +183,9 @@ ast::Ast * Syntax::visitFunCall (TokenPtr token_ident) {
    varDecl := type (ident (= expression),)*;
 */
 ast::Bloc * Syntax::visitVarDecl (TokenPtr token_type, TokenPtr token_ident) {
-    ast::VarId * var_id = (ast::VarId*)visitIdent (token_ident);
-    if (var_id == NULL)
+    if (!isIdent (token_ident->value))
 	throw MissingErrorException ("var name", Position (token_ident->line, token_ident->column));
+    ast::VarId * var_id = (ast::VarId*) new ast::VarId (token_ident->value, new ast::Position (token_ident->line, token_ident->column));
     ast::Position * pos = new ast::Position (token_type->line, token_type->column);
     ast::Type * type = new ast::Type (token_type->value, true);
     ast::VarDecl * var_decl = new ast::VarDecl (type, var_id, pos);
@@ -671,6 +677,7 @@ ast::Expression * Syntax::visitInt () {
 ast::Expression * Syntax::visitIdent () {
     TokenPtr first = pop ();
     TokenPtr ident;
+
     if ((first->value[0] < 'A' || (first->value[0] > 'Z' && first->value[0] < 'a') || first->value[0] > 'z')
 	&& first->value[0] != '_' && first->value[0] != '$') {
 	rewind ();
@@ -683,13 +690,9 @@ ast::Expression * Syntax::visitIdent () {
 	ident = first;
     }
 
-    for (int i = 1; i < ident->value.size (); i++) {
-	if (ident->value[i] < 'A' || (ident->value[i] > 'Z' && ident->value[i] < 'a') || ident->value[i] > 'z') {
-	    if (first->type == TokenType::DOLLAR)
-		throw SyntaxErrorException ("$", Position (first->line, first->column));
-	    rewind ();
-	    return NULL;
-	}
+    if (!isIdent (ident->value)) {
+	rewind ();
+	return NULL;
     }
 
     TokenPtr next = pop ();
@@ -796,7 +799,6 @@ ast::Ast * Syntax::visitImport () {
     while (next->type != TokenType::SEMICOLON) {
 	path->push_back (next->value);
 	next = pop ();
-	cout << next->toString () << endl;
 	if (next->type != TokenType::POINT &&
 	    next->type != TokenType::SEMICOLON) {
 	    throw MissingErrorException (".", Position (next->line, next->column));
@@ -812,9 +814,127 @@ ast::Ast * Syntax::visitImport () {
 }
 
 
+ast::Ast * Syntax::visitClass () {
+    TokenPtr token_class = pop ();
+    TokenPtr next = pop ();
+
+    string class_name, inheritance;
+
+    if (!isIdent (next->value) || next->type != TokenType::OTHER)
+	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    class_name = next->value;
+
+    next = pop ();
+    if (next->type == TokenType::COLON) {
+	next = pop ();
+	if (!isIdent (next->value) || next->type != TokenType::OTHER)
+	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+	inheritance = next->value;
+	next = pop ();
+    }
+
+    if (next->type != TokenType::ACCOL_L)
+	throw MissingErrorException ("{", Position (next->line, next->column));
+
+    ast::FunDecl * constructor = NULL;
+    ast::FunDecl * destructor = NULL;
+    ast::Bloc * public_bloc = NULL;
+    ast::Bloc * private_bloc = NULL;
+    vector<ast::Ast*> * public_content = NULL;
+    vector<ast::Ast*> * private_content = NULL;
+
+    next = pop ();
+    while (next->type != TokenType::ACCOL_R) {
+	if (next->type == TokenType::PUBLIC || next->type == TokenType::PRIVATE) {
+	    TokenPtr public_private = next;
+	    next = pop ();
+	    if (next->type != TokenType::ACCOL_L)
+		throw MissingErrorException ("{", Position (next->line, next->column));
+
+	    next = pop ();
+	    while (next->type != TokenType::ACCOL_R) {
+		if (next->type == TokenType::TILDE) { //destructor
+		    next = pop ();
+		    TokenPtr this_ident = next;
+		    if (next->value != "this")
+			throw MissingErrorException ("this as destructor's name", Position (next->line, next->column));
+		    string type = "void";
+		    destructor = (ast::FunDecl*)visitFunDecl (Token::make (type, {next->line, next->column}), next);
+		} else if (next->type == TokenType::OTHER) {
+		    if (next->value == "this") {
+			string type = "void";
+			constructor = (ast::FunDecl*)visitFunDecl (Token::make (type, {next->line, next->column}), next);
+		    } else {
+			TokenPtr type = next;
+			next = pop ();
+			if (next->type != TokenType::OTHER && !isIdent (next->value))
+			    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+			TokenPtr ident = next;
+			next = pop ();
+			if (next->type == TokenType::PAR_L) {
+			    rewind ();
+			    if (public_private->type == TokenType::PUBLIC) {
+				if (!public_content)
+				    public_content = new vector<ast::Ast*> ();
+				public_content->push_back (visitFunDecl (type, ident));
+			    } else {
+				if (!private_content)
+				    private_content = new vector<ast::Ast*> ();
+				private_content->push_back (visitFunDecl (type, ident));
+			    }
+			} else if (next->type == TokenType::SEMICOLON || next->type == TokenType::ASSIGN) {
+			    rewind ();
+			    if (public_private->type == TokenType::PUBLIC) {
+				if (!public_content)
+				    public_content = new vector<ast::Ast*> ();
+				public_content->push_back (visitVarDecl (type, ident));
+			    } else {
+				if (!private_content)
+				    private_content = new vector<ast::Ast*> ();
+				private_content->push_back (visitVarDecl (type, ident));
+			    }
+			    pop ();
+			} else {
+			    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+			}
+		    }
+		} else {
+		    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+		}
+		next = pop ();
+	    }
+	} else {
+	    throw MissingErrorException ("public or private statement", Position (next->line, next->column));
+	}
+	next = pop ();
+    }
+
+    if (public_content)
+	public_bloc = new ast::Bloc (public_content);
+    if (private_content)
+	private_bloc = new ast::Bloc (private_content);
+
+    ast::Position * pos = new ast::Position (token_class->line, token_class->column);
+    if (inheritance.size () > 0)
+	return new ast::Class (class_name, inheritance, constructor, destructor, public_bloc, private_bloc, pos);
+    return new ast::Class (class_name, constructor, destructor, public_bloc, private_bloc, pos);
+}
+
+
 bool Syntax::find (TokenType type, vector <TokenType> list) {
     for (TokenType t : list) {
 	if (t == type) return true;
     }
     return false;
+}
+
+bool Syntax::isIdent (string value) {
+    if (value[0] < 'A' || value[0] > 'z' || (value[0] > 'Z' && value[0] < 'a'))
+	return false;
+    for (int i = 1; i < value.size (); i++) {
+	if ((value[i] < 'A' || (value[i] > 'Z' && value[i] < 'a') || value[i] > 'z') && (value[i] < '0' || value[i] > '9') && value[i] != '_') {
+	    return false;
+	}
+    }
+    return true;
 }
