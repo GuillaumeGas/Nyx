@@ -488,11 +488,11 @@ ast::Expression * Syntax::visitHigh (ast::Expression * left) {
 }
 
 ast::Expression * Syntax::visitHHigh () {
-    ast::Expression * left = visitLeft ();
+    ast::Expression * left = visitHHHigh ();
 
     TokenPtr next_op = pop ();
     if (find (next_op->type, {MUL, DIV, MOD})) {
-	ast::Expression * right = visitLeft ();
+	ast::Expression * right = visitHHHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
 	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
@@ -506,7 +506,7 @@ ast::Expression * Syntax::visitHHigh () {
 ast::Expression * Syntax::visitHHigh (ast::Expression * left) {
     TokenPtr next_op = pop ();
     if (find (next_op->type, {MUL, DIV, MOD})) {
-	ast::Expression * right = visitLeft ();
+	ast::Expression * right = visitHHHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
 	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
@@ -516,6 +516,37 @@ ast::Expression * Syntax::visitHHigh (ast::Expression * left) {
     rewind ();
     return left;
 }
+
+ast::Expression * Syntax::visitHHHigh () {
+    ast::Expression * left = visitLeft ();
+
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {POINT})) {
+	ast::Expression * right = visitLeft ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitHHHigh (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
+
+ast::Expression * Syntax::visitHHHigh (ast::Expression * left) {
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {POINT})) {
+	ast::Expression * right = visitLeft ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitHHHigh (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
+
 
 ast::Expression * Syntax::visitLeft () {
     ast::Expression * elem = NULL;
@@ -814,6 +845,9 @@ ast::Ast * Syntax::visitImport () {
 }
 
 
+/**
+   Class := class A ?(: B) { public { bloc } private { bloc } }
+ */
 ast::Ast * Syntax::visitClass () {
     TokenPtr token_class = pop ();
     TokenPtr next = pop ();

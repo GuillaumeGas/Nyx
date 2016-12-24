@@ -1,32 +1,4 @@
-import std.Array;
-
-class Test : A {
-    public {
-	int test = 2;
-	float avg = .3;
-
-	this () {
-	    test = 3;
-	}
-
-	string print () {
-	    return "test";
-	}
-
-	~this () {
-	    test = 0;
-	}
-    }
-
-    private {
-	string t;
-	bool c = true;
-
-	int test () {
-	    return 0;
-	}
-    }
-}
+import std.Syscalls;
 
 void main () {
 
@@ -46,14 +18,9 @@ void main () {
     return 0;
 }
 
-void print (int val) {
-    // int a, b = 2;
-    // $print_i ("test : ");
-}
-
-int test (int a, int b) {
+int test (int a, Integer b) {
     while:test (test) {
-	    foo ([1, 2, 3]);
+	    foo ([1, b.intValue (), 3]);
 	    test ([1 .. 2]);
 	    if (a) {
 		for (i in [foo (.2) .. 3+5]) {

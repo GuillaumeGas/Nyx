@@ -1,0 +1,28 @@
+class Test : A {
+    public {
+	int test = 2;
+	float avg = .3;
+
+	this () {
+	    test = 3;
+	}
+
+	string print () {
+	    return "test";
+	}
+
+	~this () {
+	    test = 0;
+	}
+    }
+
+    private {
+	string t;
+	bool c = true;
+
+	int test () {
+	    return 0;
+	}
+    }
+
+}
