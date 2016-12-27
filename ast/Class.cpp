@@ -23,10 +23,6 @@ Class::Class (string & ident, string & inheritance, FunDecl * constructor, FunDe
 }
 
 Class::~Class () {
-    if (constructor)
-	delete constructor;
-    if (destructor)
-	delete destructor;
     if (public_bloc)
 	delete public_bloc;
     if (private_bloc)

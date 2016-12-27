@@ -46,6 +46,7 @@
     LEX_TOKEN (DOUBLE_QUOTE, "\"")		\
     LEX_TOKEN (SINGLE_QUOTE, "'")		\
     LEX_TOKEN (BACK_SLASH, "\\")		\
+    LEX_TOKEN (LET, "let")			\
     LEX_TOKEN (IF, "if")			\
     LEX_TOKEN (ELSE, "else")			\
     LEX_TOKEN (WHILE, "while")			\

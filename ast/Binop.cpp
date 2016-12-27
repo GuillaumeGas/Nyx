@@ -38,6 +38,7 @@ Expression * Binop::interpretExpression () {
 }
 
 void Binop::print (ostream & out, int offset) const {
+    shift (out, offset);
     out << "Binop(";
     e1->print (out);
     out << " " << op->toString() << " ";
