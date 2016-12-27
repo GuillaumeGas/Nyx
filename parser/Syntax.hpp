@@ -52,6 +52,8 @@ namespace nyx {
 	ast::Ast * visitClass ();
 
 	ast::Expression * visitExpression ();
+	ast::Expression * visitULow ();
+	ast::Expression * visitULow (ast::Expression * left);
 	ast::Expression * visitLow ();
 	ast::Expression * visitLow (ast::Expression * left);
 	ast::Expression * visitHigh ();

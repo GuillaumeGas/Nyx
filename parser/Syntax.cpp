@@ -428,14 +428,45 @@ ast::Ast * Syntax::visitBreak () {
 }
 
 ast::Expression * Syntax::visitExpression () {
-    return visitLow ();
+    return visitULow ();
 }
+
+ast::Expression * Syntax::visitULow () {
+    ast::Expression * left = visitLow ();
+
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {ASSIGN, LE, GE, NE, PLUSEQ, MINUSEQ, MULEQ, DIVEQ, MODEQ})) {
+	ast::Expression * right = visitLow ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitULow (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
+
+ast::Expression * Syntax::visitULow (ast::Expression * left) {
+    TokenPtr next_op = pop ();
+    if (find (next_op->type, {ASSIGN, LE, GE, NE, PLUSEQ, MINUSEQ, MULEQ, DIVEQ, MODEQ})) {
+	ast::Expression * right = visitLow ();
+	if (right == NULL)
+	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
+	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	ast::Operator * op = new ast::Operator (next_op->value);
+	return visitULow (new ast::Binop (left, right, op, pos));
+    }
+    rewind ();
+    return left;
+}
+
 
 ast::Expression * Syntax::visitLow () {
     ast::Expression * left = visitHigh ();
 
     TokenPtr next_op = pop ();
-    if (find (next_op->type, {LT, LE, GT, GE, EQ, NE, AND, OR})) {
+    if (find (next_op->type, {LT, GT, EQ, AND, OR})) {
 	ast::Expression * right = visitHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
@@ -449,7 +480,7 @@ ast::Expression * Syntax::visitLow () {
 
 ast::Expression * Syntax::visitLow (ast::Expression * left) {
     TokenPtr next_op = pop ();
-    if (find (next_op->type, {LT, LE, GT, GE, EQ, AND, OR})) {
+    if (find (next_op->type, {LT, GT, AND, OR})) {
 	ast::Expression * right = visitHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
@@ -782,7 +813,7 @@ ast::Expression * Syntax::visitArray () {
 	return NULL;
     }
     TokenPtr token_array = next;
-    vector <ast::Expression*> * array = NULL;
+    vector <ast::Expression*> * array = new vector <ast::Expression*> ();
     next = pop ();
     while (next->type != TokenType::BRACKET_R) {
 	rewind ();
@@ -804,9 +835,6 @@ ast::Expression * Syntax::visitArray () {
 	    return new ast::Range (expr, end, pos);
 	}
 
-	if (array == NULL)
-	    array = new vector<ast::Expression*> ();
-
 	array->push_back (expr);
 
 	if (next->type != TokenType::COMMA) {
@@ -820,7 +848,8 @@ ast::Expression * Syntax::visitArray () {
 	}
     }
 
-    next = pop ();
+    if (array->size () != 0)
+	next = pop ();
     if (next->type != TokenType::BRACKET_R)
 	throw MissingErrorException ("]", Position (next->line, next->column));
 
