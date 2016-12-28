@@ -9,7 +9,7 @@ VarAssign::VarAssign (VarId * e1, Expression * e2, Operator * op, Position * pos
 VarAssign::~VarAssign () {}
 
 Expression * VarAssign::interpretExpression () {
-    e2 = e2->interpretExpression ();
+    Expression * res = e2->interpretExpression ();
 
     if (op->value != Op::ASSIGN)
 	throw SemanticErrorException ("An operator '=' was expected !", pos);
@@ -17,21 +17,21 @@ Expression * VarAssign::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::Symbol * symbol = table->getSymbol (((VarId*)e1)->name, pos);
 
-    switch (symbol->getType ()->value) {
+    switch (res->getType ()->value) {
     case TYPE::INT:
-	symbol->setValue (e2->value->Int);
+	symbol->setValue (res->value->Int);
 	break;
     case TYPE::FLOAT:
-	symbol->setValue (e2->value->Float);
+	symbol->setValue (res->value->Float);
 	break;
     case TYPE::CHAR:
-	symbol->setValue (e2->value->Char);
+	symbol->setValue (res->value->Char);
 	break;
     case TYPE::BOOL:
-	symbol->setValue (e2->value->Bool);
+	symbol->setValue (res->value->Bool);
 	break;
     case TYPE::STRING:
-	symbol->setValue (e2->value->Str);
+	symbol->setValue (res->value->Str);
 	break;
     default:
 	throw SemanticErrorException ("Undefined Type !", pos);

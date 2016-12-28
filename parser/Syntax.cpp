@@ -480,7 +480,7 @@ ast::Expression * Syntax::visitLow () {
 
 ast::Expression * Syntax::visitLow (ast::Expression * left) {
     TokenPtr next_op = pop ();
-    if (find (next_op->type, {LT, GT, AND, OR})) {
+    if (find (next_op->type, {LT, GT, EQ, AND, OR})) {
 	ast::Expression * right = visitHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
@@ -724,7 +724,7 @@ ast::Expression * Syntax::visitString () {
     m_lex.setSkipEnabled (" ", true);
 
     ast::Position * pos = new ast::Position (next->line, next->column);
-    return new ast::String (new string (str.str ()), pos);
+    return new ast::String (str.str (), pos);
 }
 
 ast::Expression * Syntax::visitInt () {
@@ -757,7 +757,7 @@ ast::Expression * Syntax::visitIdent () {
 	ident = first;
     }
 
-    if (!isIdent (ident->value)) {
+    if (!isIdent (ident->value) || ident->type != TokenType::OTHER) {
 	rewind ();
 	return NULL;
     }
@@ -775,22 +775,26 @@ ast::Expression * Syntax::visitIdent () {
 }
 
 ast::Expression * Syntax::visitIdent (TokenPtr token_ident) {
-    if ((token_ident->value[0] < 'A' || (token_ident->value[0] > 'Z' && token_ident->value[0] < 'a') || token_ident->value[0] > 'z') && token_ident->value[0] != '_') {
-	rewind ();
-	return NULL;
-    }
-    for (int i = 0; i < token_ident->value.size (); i++) {
-	if (token_ident->value[i] < 'A' || (token_ident->value[i] > 'Z' && token_ident->value[i] < 'a') || token_ident->value[i] > 'z') {
+    if (token_ident->type == TokenType::OTHER) {
+	if ((token_ident->value[0] < 'A' || (token_ident->value[0] > 'Z' && token_ident->value[0] < 'a') || token_ident->value[0] > 'z') && token_ident->value[0] != '_') {
 	    rewind ();
 	    return NULL;
 	}
+	for (int i = 0; i < token_ident->value.size (); i++) {
+	    if (token_ident->value[i] < 'A' || (token_ident->value[i] > 'Z' && token_ident->value[i] < 'a') || token_ident->value[i] > 'z') {
+		rewind ();
+		return NULL;
+	    }
+	}
+	return new ast::VarId (token_ident->value, new ast::Position (token_ident->line, token_ident->column));
     }
-    return new ast::VarId (token_ident->value, new ast::Position (token_ident->line, token_ident->column));
+    rewind ();
+    return NULL;
 }
 
 ast::Expression * Syntax::visitUnaryOp () {
     TokenPtr op = pop ();
-    if (!find (op->type, {NOT})) {
+    if (!find (op->type, {NOT, NEW})) {
 	rewind ();
 	return NULL;
     }

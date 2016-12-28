@@ -1,0 +1,51 @@
+import game.gmcalls; // utilisé dans pour l'api, avoir accès direct au jeu
+
+/* Exemple classe d'api */
+class Game {
+    public {
+	this () {
+	    // un script va etre associé à un id
+	    this.id = $getCurrentId ();
+	}
+
+	Player[] getPlayers () {
+	    return $getPlayers (this.id);
+	}
+
+	Player getCurrentPlayer () {
+	    return $getCurrentPlayer (0); //player num 0... exemple
+	}
+
+	Map getMap () {
+	    return $getCurrentMap ();
+	}
+    }
+
+    private {
+	int id;
+    }
+}
+
+/* Exemple de code utilisant l'api */
+import api.Game; // api utilisée par le dev
+import api.Player;
+
+void routine (Game game) {
+    int posX = game.getCurrentPlayer ().getPosX ();
+    Player player = game.getCurrentPlayer ();
+    if (posX < game.getMap ().getWidth () && posX > 0) {
+	player.goOnX ();
+    } else {
+	player.setDirection (!player.getDirection ());
+    }
+}
+
+int main (Game game) {
+    Player[] players = game.getPlayers ();
+    for (player in players) {
+	print (player.toString());
+    }
+
+    // on répète routine toutes les 100ms
+    game.addRoutine (routine, 100);
+}

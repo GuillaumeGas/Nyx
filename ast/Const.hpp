@@ -48,6 +48,9 @@ namespace nyx {
 	    ~Float ();
 
 	    void print (std::ostream & out, int offset = 0) const;
+
+
+	    Expression * interpretExpression ();
 	};
 
 	class Bool : public Expression {
@@ -58,17 +61,9 @@ namespace nyx {
 	    void print (std::ostream & out, int offset = 0) const;
 	};
 
-	struct String : public Expression {
-	    String (std::string * value, Position * pos);
-	    ~String ();
-
-	    void print (std::ostream & out, int offset = 0) const;
-
-	    Expression * interpretExpression();
-	};
-
 	struct Array : public Expression {
 	    Array (std::vector<Expression*> * array, Position * pos);
+	    Array ();
 	    ~Array ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -76,6 +71,15 @@ namespace nyx {
 	    Expression * interpretExpression ();
 
 	    std::vector<Expression*> * array;
+	};
+
+	struct String : public Array {
+	    String (std::string str, Position * pos);
+	    ~String ();
+
+	    void print (std::ostream & out, int offset = 0) const;
+
+	    Expression * interpretExpression ();
 	};
 
 	struct Range : public Expression {

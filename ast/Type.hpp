@@ -13,6 +13,7 @@ namespace nyx {
 	    STRING,
 	    ARRAY,
 	    RANGE,
+	    VOID,
 	    ERR
 	};
 

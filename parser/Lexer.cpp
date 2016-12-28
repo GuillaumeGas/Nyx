@@ -5,8 +5,8 @@ using namespace nyx;
 
 Lexer::Lexer (string file_name) {
     this->file_name = file_name;
-    this->current_loc.line = 0;
-    this->current_loc.column = 0;
+    this->current_loc.line = 1;
+    this->current_loc.column = 1;
     this->eof = false;
     this->new_line = true;
     this->file = fopen (file_name.c_str (), "r");

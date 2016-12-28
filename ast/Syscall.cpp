@@ -42,6 +42,7 @@ void Syscall::print (ostream & out, int offset) const {
 }
 
 void Syscall::_sysPrint (Expression * e) {
+    vector<Expression*> * vec;
     switch (e->getType ()->value) {
     case TYPE::INT:
 	cout << e->getValue ()->Int;
@@ -49,8 +50,15 @@ void Syscall::_sysPrint (Expression * e) {
     case TYPE::CHAR:
 	cout << e->getValue ()->Char;
 	break;
+    case TYPE::FLOAT:
+	cout << e->getValue ()->Float;
+	break;
     case TYPE::STRING:
-	cout << *(e->getValue ()->Str);
+	vec = ((String*)e)->array;
+	for (auto it : *vec) {
+	    char c = it->getValue ()->Char;
+	    cout << c;
+	}
 	break;
     default:
 	SemanticErrorException ("Unknown type !", pos);

@@ -11,7 +11,7 @@ VarId::VarId(string name, Position * pos) : name(name) {
 VarId::~VarId() {}
 
 void VarId::print (ostream & out, int offset) const {
-    out << name;
+    out << "VarId " << name;
 }
 
 Type * VarId::getType () const {
@@ -30,7 +30,7 @@ Value * VarId::getValue () const {
 
 Expression * VarId::interpretExpression () { return this; }
 
-Expression * VarId::interpretPlus (Expression * e) {
+Expression * VarId::interpretPLUS (Expression * e) {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::Symbol * symbol = table->getSymbol (name, pos);
 
@@ -42,19 +42,27 @@ Expression * VarId::interpretPlus (Expression * e) {
 
     switch (this_type->value) {
     case TYPE::INT:
-	return new Int (symbol->value->Int + e->getValue ()->Int, new Position (*pos));
+	value->Int = symbol->value->Int + e->getValue ()->Int;
+	break;
     case TYPE::FLOAT:
-	return new Float (symbol->value->Float + e->getValue ()->Float, new Position (*pos));
+	value->Float = symbol->value->Float + e->getValue ()->Float;
+	break;
     case TYPE::CHAR:
-	return new Char (symbol->value->Char + e->getValue ()->Char, new Position (*pos));
+	value->Char = symbol->value->Char + e->getValue ()->Char;
+	break;
     case TYPE::STRING:
-	return new String (new string (*(symbol->value->Str) + *(e->getValue ()->Str)), new Position (*pos));
+	TODO_SEM ("VarId + String");
+	break;
+    case TYPE::ARRAY:
+	TODO_SEM ("VarId + Array");
+	break;
     default:
 	throw SemanticErrorException ("Type unexpected.", pos);
     }
+    return this;
 }
 
-Expression * VarId::interpretMinus (Expression * e) {
+Expression * VarId::interpretMINUS (Expression * e) {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::Symbol * symbol = table->getSymbol (name, pos);
 

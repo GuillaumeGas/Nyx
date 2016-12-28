@@ -1,4 +1,3 @@
-
 #include "Const.hpp"
 
 using namespace std;
@@ -72,29 +71,12 @@ Float::Float (float value, Position * pos) {
     this->type = new Type ("float", true);
 }
 
+Expression * Float::interpretExpression () { return this; }
+
 Float::~Float () {}
 
 void Float::print (ostream & out, int offset) const {
     out << "ConstFloat(" << std::to_string (this->value->Float) << ")";
-}
-
-String::String (string * value, Position * pos) {
-    this->value->Str = value;
-    this->pos = pos;
-    this->type = new Type ("string", true);
-}
-
-String::~String () {
-    if (this->value->Str)
-	delete this->value->Str;
-}
-
-void String::print (ostream & out, int offset) const {
-    out << "\"" << *(value->Str) << "\"";
-}
-
-Expression * String::interpretExpression () {
-    return this;
 }
 
 Array::Array (vector<Expression*> * array, Position * pos) {
@@ -102,6 +84,8 @@ Array::Array (vector<Expression*> * array, Position * pos) {
     this->type = new Type ("array", false);
     this->array = array;
 }
+
+Array::Array () {}
 
 Array::~Array () {
     if (array != NULL) {
@@ -128,6 +112,36 @@ Expression * Array::interpretExpression () {
     for (auto it : *array) {
 	it->interpretExpression ();
     }
+    return this;
+}
+
+String::String (string str, Position * pos) {
+    this->array = new vector<Expression*> ();
+    for (int i = 0; i < str.size (); i++)
+	this->array->push_back (new Char (str[i], pos));
+    this->pos = pos;
+    this->type = new Type ("string", false);
+}
+
+String::~String () {
+    if (array) {
+	for (auto it : *array) {
+	    if (it)
+		delete it;
+	}
+	delete array;
+    }
+}
+
+void String::print (ostream & out, int offset) const {
+    shift (out, offset);
+    out << "\"";
+    for (auto it : *array)
+	out << it->getValue ()->Char;
+    out << "\"";
+}
+
+Expression * String::interpretExpression () {
     return this;
 }
 

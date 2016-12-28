@@ -6,6 +6,7 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 #include "exceptions/SemanticException.hpp"
+#include "Const.hpp"
 
 namespace nyx {
     namespace ast {

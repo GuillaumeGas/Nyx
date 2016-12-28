@@ -4,6 +4,10 @@
 
 #include "Position.hpp"
 
+#define TODO_SEM(p)					\
+    printf ("[!] TODO Semantic : %s\n", p);	\
+    exit (-1);
+
 #define INDENT 2
 
 namespace nyx {

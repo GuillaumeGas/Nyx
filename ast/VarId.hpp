@@ -22,12 +22,12 @@ namespace nyx {
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    Expression * interpretExpression ();
-	    Expression * interpretPlus (Expression * e);
-	    Expression * interpretMinus (Expression * e);
-	    Expression * interpretMul (Expression * e) {}
-	    Expression * interpretDiv (Expression * e) {}
-	    Expression * interpretMod (Expression * e) {}
-	    Expression * interpretAssign (Expression * e) {}
+	    Expression * interpretPLUS (Expression * e);
+	    Expression * interpretMINUS (Expression * e);
+	    Expression * interpretMUL (Expression * e) {}
+	    Expression * interpretDIV (Expression * e) {}
+	    Expression * interpretMOD (Expression * e) {}
+	    Expression * interpretASSIGN (Expression * e) {}
 
 	    Type * getType () const;
 	    Value * getValue () const;

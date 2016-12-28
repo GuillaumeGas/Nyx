@@ -63,6 +63,7 @@
     LEX_TOKEN (CLASS, "class")			\
     LEX_TOKEN (PRIVATE, "private")		\
     LEX_TOKEN (PUBLIC, "public")		\
+    LEX_TOKEN (NEW, "new")			\
     LEX_TOKEN (SPACE, " ")			\
     LEX_TOKEN (COM_L, "/*")			\
     LEX_TOKEN (COM_R, "*/")			\

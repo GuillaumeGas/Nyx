@@ -37,6 +37,8 @@ TYPE Type::getValue () const {
 	return TYPE::ARRAY;
     } else if (name == "range") {
 	return TYPE::RANGE;
+    } else if (name == "void") {
+	return TYPE::VOID;
     } else {
 	return TYPE::ERR;
     }
