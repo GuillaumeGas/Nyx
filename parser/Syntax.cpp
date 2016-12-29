@@ -794,20 +794,35 @@ ast::Expression * Syntax::visitIdent (TokenPtr token_ident) {
 
 ast::Expression * Syntax::visitUnaryOp () {
     TokenPtr op = pop ();
-    if (!find (op->type, {NOT, NEW})) {
+    if (!find (op->type, {NOT, NEW, MINUS})) {
 	rewind ();
 	return NULL;
     }
-    ast::Ast * next = NULL;
-    if ((next = visitIdent ()) != NULL) {
-	ast::Operator * ope = new ast::Operator (op->value);
-	ast::Position * pos = new ast::Position (op->line, op->column);
-	return new ast::UnOp (ope, (ast::Expression*)next, pos);
+
+    cout << op->toString() << endl;
+
+    ast::Operator * ope = new ast::Operator (op->value);
+    ast::Position * pos = new ast::Position (op->line, op->column);
+    ast::Expression * elem = NULL;
+
+    TokenPtr next = pop ();
+    if (next->type == TokenType::PAR_L) {
+	elem = visitExpression ();
+	next = pop ();
+	if (next->type != TokenType::PAR_R)
+	    throw MissingErrorException (")", Position (next->line, next->column));
+	return new ast::UnOp (ope, elem, pos);
+    } else {
+	rewind ();
     }
-    TokenPtr tok = pop ();
-    if (tok->type != TokenType::PAR_L)
-	throw SyntaxErrorException (tok->value, Position (tok->line, tok->column));
-    return visitExpression ();
+
+    if ((elem = visitIdent ()) != NULL)
+	return new ast::UnOp (ope, elem, pos);
+    if ((elem = visitConst ()) != NULL)
+	return new ast::UnOp (ope, elem, pos);
+    if ((elem = visitUnaryOp ()) != NULL)
+	return new ast::UnOp (ope, elem, pos);
+    return NULL;
 }
 
 ast::Expression * Syntax::visitArray () {

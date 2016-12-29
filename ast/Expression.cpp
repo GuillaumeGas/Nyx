@@ -49,3 +49,4 @@ Expression * Expression::interpretDIV (Expression * e) { throw TypeErrorExceptio
 Expression * Expression::interpretMOD (Expression * e) { throw TypeErrorException (this, e, pos); }
 Expression * Expression::interpretPOINT (Expression * e) { throw TypeErrorException (this, e, pos); }
 
+Expression * Expression::interpretUnaryMINUS () { throw SemanticErrorException ("Bad operand type for unary '-' : " + this->type->toString(), pos); }

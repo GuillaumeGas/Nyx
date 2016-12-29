@@ -76,6 +76,6 @@ void Syscall::sysPrintln () {
     for (auto it : *params) {
 	Expression * e = it->interpretExpression ();
 	_sysPrint (e);
-	cout << endl;
     }
+    cout << endl;
 }

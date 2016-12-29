@@ -22,3 +22,13 @@ void UnOp::print (ostream & out, int offset) const {
     expr->print (out, offset);
     out << ")";
 }
+
+Expression * UnOp::interpretExpression () {
+    expr = expr->interpretExpression ();
+    switch (op->value) {
+    case Op::MINUS:
+	return expr->interpretUnaryMINUS ();
+    default:
+	throw SemanticErrorException ("Unknown unary operator !", pos);
+    }
+}

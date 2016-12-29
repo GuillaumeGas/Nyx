@@ -4,7 +4,6 @@
 #include "Ast.hpp"
 #include "Type.hpp"
 #include "Value.hpp"
-// #include "exceptions/SemanticException.hpp"
 
 namespace nyx {
     namespace ast {
@@ -36,6 +35,8 @@ namespace nyx {
 	    virtual Expression * interpretDIV (Expression * e);
 	    virtual Expression * interpretMOD (Expression * e);
 	    virtual Expression * interpretPOINT (Expression * e);
+
+	    virtual Expression * interpretUnaryMINUS ();
 
 	    virtual Type * getType () const;
 	    virtual Value * getValue () const;

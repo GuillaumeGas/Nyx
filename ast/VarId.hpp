@@ -29,6 +29,8 @@ namespace nyx {
 	    Expression * interpretMOD (Expression * e) {}
 	    Expression * interpretASSIGN (Expression * e) {}
 
+	    Expression * interpretUnaryMINUS ();
+
 	    Type * getType () const;
 	    Value * getValue () const;
 

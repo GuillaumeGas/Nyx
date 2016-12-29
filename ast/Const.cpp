@@ -47,14 +47,14 @@ Int::~Int() {}
 
 Expression * Int::interpretExpression () { return this; }
 
-Expression * Int::interpretPlus (Expression * e) {
+Expression * Int::interpretPLUS (Expression * e) {
     if (e->getType ()->value != TYPE::INT)
 	throw TypeErrorException (this, e, pos);
     value->Int = value->Int + e->getValue ()->Int;
     return this;
 }
 
-Expression * Int::interpretMinus (Expression * e) {
+Expression * Int::interpretMINUS (Expression * e) {
     if (e->getType ()->value != TYPE::INT)
 	throw TypeErrorException (this, e, pos);
     value->Int = value->Int - e->getValue ()->Int;
@@ -63,6 +63,11 @@ Expression * Int::interpretMinus (Expression * e) {
 
 void Int::print (ostream & out, int offset) const {
     out << "ConstInt(" << value->Int << ")";
+}
+
+Expression * Int::interpretUnaryMINUS () {
+    value->Int *= -1;
+    return this;
 }
 
 Float::Float (float value, Position * pos) {

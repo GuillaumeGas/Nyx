@@ -83,3 +83,20 @@ Expression * VarId::interpretMINUS (Expression * e) {
 	throw SemanticErrorException ("Type unexpected.", pos);
     }
 }
+
+Expression * VarId::interpretUnaryMINUS () {
+    symbol::Table * table = symbol::Table::getInstance ();
+    symbol::Symbol * symbol = table->getSymbol (name, pos);
+
+    Type * this_type = symbol->getType ();
+
+    if (this_type->value != TYPE::INT && this_type->value != TYPE::FLOAT)
+	throw SemanticErrorException ("Bad operand type for unary '-' : " + this->type->toString(), pos);
+
+    if (this_type->value == TYPE::INT) {
+	value->Int *= -1;
+    } else if (this_type->value == TYPE::FLOAT) {
+	value->Float *= -1;
+    }
+    return this;
+}
