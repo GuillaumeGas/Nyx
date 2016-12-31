@@ -73,6 +73,7 @@ namespace nyx {
 	ast::Expression * visitChar ();
 	ast::Expression * visitBool ();
 	ast::Expression * visitArray ();
+	ast::Expression * visitCast ();
 
 	bool find (TokenType type, std::vector <TokenType> list);
 	bool isIdent (std::string value);

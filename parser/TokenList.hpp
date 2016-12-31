@@ -58,6 +58,7 @@
     LEX_TOKEN (FALSE, "false")			\
     LEX_TOKEN (_NULL_, "null")			\
     LEX_TOKEN (IN, "in")			\
+    LEX_TOKEN (CAST, "cast")			\
     LEX_TOKEN (DOLLAR, "$")			\
     LEX_TOKEN (IMPORT, "import")		\
     LEX_TOKEN (CLASS, "class")			\

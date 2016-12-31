@@ -604,6 +604,8 @@ ast::Expression * Syntax::visitLeft () {
 	return elem;
     if ((elem = visitUnaryOp ()) != NULL)
 	return elem;
+    if ((elem = visitCast ()) != NULL)
+	return elem;
     return NULL;
 }
 
@@ -799,8 +801,6 @@ ast::Expression * Syntax::visitUnaryOp () {
 	return NULL;
     }
 
-    cout << op->toString() << endl;
-
     ast::Operator * ope = new ast::Operator (op->value);
     ast::Position * pos = new ast::Position (op->line, op->column);
     ast::Expression * elem = NULL;
@@ -823,6 +823,44 @@ ast::Expression * Syntax::visitUnaryOp () {
     if ((elem = visitUnaryOp ()) != NULL)
 	return new ast::UnOp (ope, elem, pos);
     return NULL;
+}
+
+/**
+   cast:type (expr);
+ */
+ast::Expression * Syntax::visitCast () {
+    TokenPtr token_cast = pop ();
+    TokenPtr token_type;
+    TokenPtr next;
+    ast::Expression * expr = NULL;
+
+    if (token_cast->type != TokenType::CAST) {
+	rewind ();
+	return NULL;
+    }
+
+    next = pop ();
+    if (next->type != TokenType::COLON)
+	throw MissingErrorException (":", Position (next->line, next->column));
+
+    next = pop ();
+    if (next->type != TokenType::OTHER)
+	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    token_type = next;
+
+    next = pop ();
+    if (next->type != TokenType::PAR_L)
+	throw MissingErrorException ("(", Position (next->line, next->column));
+
+    expr = visitExpression ();
+
+    next = pop ();
+    if (next->type != TokenType::PAR_R)
+	throw MissingErrorException (")", Position (next->line, next->column));
+
+    ast::Position * pos = new ast::Position (token_cast->line, token_cast->column);
+    ast::Type * type = new ast::Type (token_type->value);
+    return new ast::Cast (type, expr, pos);
 }
 
 ast::Expression * Syntax::visitArray () {
