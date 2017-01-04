@@ -1,1 +1,1 @@
-let a = cast:float (a);
+let a = 2;
