@@ -209,7 +209,7 @@ ast::Ast * Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
     ast::VarId * e1 = new ast::VarId (token_ident->value, pos);
     ast::Expression * e2 = visitExpression ();
     ast::Operator * op = new ast::Operator (token_op->value);
-    return new ast::VarAssign (e1, e2, op, new ast::Position (token_op->line, token_op->column));
+    return new ast::Binop (e1, e2, op, new ast::Position (token_op->line, token_op->column));
 }
 
 /**
