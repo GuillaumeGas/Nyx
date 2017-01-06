@@ -25,15 +25,15 @@ For::~For () {
 }
 
 void For::interpret() {
-    TYPE expr_type = expr->getType ()->value;
+    TYPE expr_type = expr->getValue ()->getType ()->value;
     if (expr_type != TYPE::RANGE && expr_type != TYPE::ARRAY)
-	throw SemanticErrorException ("The expression in a for loop should be an array or a range type ! Found : " + expr->getType ()->toString(), pos);
+	throw SemanticErrorException ("The expression in a for loop should be an array or a range type ! Found : " + expr->getValue ()->getType ()->toString(), pos);
 
     symbol::Table * table = symbol::Table::getInstance ();
     table->enterBlock ();
 
     if (expr_type == TYPE::RANGE) {
-	Range * range = (Range*)expr->interpretExpression ();
+	Range * range = (Range*)(expr->interpretExpression ().getPtr ());
 	int start = range->start->getValue ()->getInt ();
 	int end = range->end->getValue ()->getInt ();
 
@@ -56,13 +56,13 @@ void For::interpret() {
 	    }
 	}
     } else {
-	Array * array = (Array*)expr->interpretExpression ();
+	Array * array = (Array*)(expr->interpretExpression ().getPtr ());
 
 	table->addSymbol (new symbol::Symbol (var_loop->name, 0), var_loop->pos);
 	symbol::Symbol * loop_symbol = table->getSymbol (var_loop->name, var_loop->pos);
 
 	for (auto it : *(array->array)) {
-	    loop_symbol->setType (it->getType ());
+	    loop_symbol->setType (it->getValue ()->getType ());
 	    updateSymbolValue (loop_symbol, it);
 	    bloc->interpret ();
 	}
@@ -72,7 +72,7 @@ void For::interpret() {
 }
 
 void For::updateSymbolValue (symbol::Symbol * symbol, Expression * e) {
-    switch (e->getType ()->value) {
+    switch (e->getValue ()->getType ()->value) {
     case TYPE::INT:
 	symbol->setValue (e->getValue ()->getInt ());
 	break;

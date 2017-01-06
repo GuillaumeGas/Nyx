@@ -7,7 +7,6 @@ using namespace ast;
 Bool::Bool(bool value, Position * pos) {
     this->value = new Value (value);
     this->pos = pos;
-    this->type = new Type("bool");
 }
 
 Bool::~Bool() {}
@@ -21,19 +20,18 @@ void Bool::print (ostream & out, int offset) const {
 Char::Char(char value, Position * pos) {
     this->value = new Value (value);
     this->pos = pos;
-    this->type = new Type("char");
 }
 
 Char::~Char() {}
 
-Expression * Char::interpretExpression () { return this; }
+// Expression * Char::interpretExpression () { return this; }
 
-Expression * Char::interpretPlus (Expression * e) {
-    if (e->getType ()->value != TYPE::CHAR)
-	throw TypeErrorException (this, e, pos);
-    value->set (value->getChar () + e->value->getChar ());
-    return this;
-}
+// Expression * Char::interpretPlus (Expression * e) {
+//     if (e->getType ()->value != TYPE::CHAR)
+// 	throw TypeErrorException (this, e, pos);
+//     value->set (value->getChar () + e->value->getChar ());
+//     return this;
+// }
 
 void Char::print (ostream & out, int offset) const {
     out << "'" << value->getChar () << "'";
@@ -44,25 +42,24 @@ void Char::print (ostream & out, int offset) const {
 Int::Int(int v, Position * pos) {
     this->value = new Value (v);
     this->pos = pos;
-    this->type = new Type("int");
 }
 
 Int::~Int() {}
 
-Expression * Int::interpretExpression () { return this; }
+Value Int::interpretExpression () { return *value; }
 
-Expression * Int::interpretPlus (Expression * e) {
-    if (e->getType ()->value != TYPE::INT)
+Value Int::interpretPlus (Expression * e) {
+    if (e->getValue ()->getType ()->value != TYPE::INT)
 	throw TypeErrorException (this, e, pos);
     value->set (value->getInt () + e->getValue ()->getInt ());
-    return this;
+    return *value;
 }
 
-Expression * Int::interpretMinus (Expression * e) {
-    if (e->getType ()->value != TYPE::INT)
+Value Int::interpretMinus (Expression * e) {
+    if (e->getValue ()->getType ()->value != TYPE::INT)
 	throw TypeErrorException (this, e, pos);
     value->set (value->getInt () - e->getValue ()->getInt ());
-    return this;
+    return *value;
 }
 
 void Int::print (ostream & out, int offset) const {
@@ -74,7 +71,6 @@ void Int::print (ostream & out, int offset) const {
 Float::Float (float value, Position * pos) {
     this->value = new Value (value);
     this->pos = pos;
-    this->type = new Type ("float");
 }
 
 Float::~Float () {}
@@ -88,7 +84,6 @@ void Float::print (ostream & out, int offset) const {
 String::String (string * value, Position * pos) {
     this->value = new Value ((void*)value);
     this->pos = pos;
-    this->type = new Type ("string", true);
 }
 
 String::~String () {}
@@ -97,15 +92,14 @@ void String::print (ostream & out, int offset) const {
     out << "\"" << *((string*)(value->getPtr ())) << "\"";
 }
 
-Expression * String::interpretExpression () {
-    return this;
-}
+// Expression * String::interpretExpression () {
+//     return this;
+// }
 
 // ####################################
 
 Array::Array (vector<Expression*> * array, Position * pos) {
     this->pos = pos;
-    this->type = new Type ("array", false);
     this->array = array;
 }
 
@@ -132,12 +126,12 @@ void Array::print (ostream & out, int offset) const {
     out << "]";
 }
 
-Expression * Array::interpretExpression () {
-    for (auto it : *array) {
-	it->interpretExpression ();
-    }
-    return this;
-}
+// Expression * Array::interpretExpression () {
+//     for (auto it : *array) {
+// 	it->interpretExpression ();
+//     }
+//     return this;
+// }
 
 // ####################################
 
@@ -145,7 +139,6 @@ Range::Range (Expression * start, Expression * end, Position * pos) {
     this->pos = pos;
     this->start = start;
     this->end = end;
-    this->type = new Type("range", false);
 }
 
 Range::~Range () {
@@ -163,15 +156,15 @@ void Range::print (ostream & out, int offset) const {
     out << "]";
 }
 
-Expression * Range::interpretExpression () {
-    start = start->interpretExpression ();
-    end = end->interpretExpression ();
-    if (start->getType ()->value != TYPE::INT) {
-	Type t ("int");
-	throw TypeErrorException (&t, start->getType (), start->pos);
-    } else if (end->getType ()->value != TYPE::INT) {
-	Type t ("int");
-	throw TypeErrorException (&t, end->getType (), end->pos);
-    }
-    return this;
-}
+// Expression * Range::interpretExpression () {
+//     start = start->interpretExpression ();
+//     end = end->interpretExpression ();
+//     if (start->getType ()->value != TYPE::INT) {
+// 	Type t ("int");
+// 	throw TypeErrorException (&t, start->getType (), start->pos);
+//     } else if (end->getType ()->value != TYPE::INT) {
+// 	Type t ("int");
+// 	throw TypeErrorException (&t, end->getType (), end->pos);
+//     }
+//     return this;
+// }

@@ -17,10 +17,7 @@ Binop::~Binop() {
 	delete op;
 }
 
-Expression * Binop::interpretExpression () {
-    e1 = e1->interpretExpression ();
-    e2 = e2->interpretExpression ();
-
+Value Binop::interpretExpression () {
     switch (op->value) {
     case Op::PLUS:
 	return e1->interpretPlus (e2);
@@ -32,6 +29,8 @@ Expression * Binop::interpretExpression () {
 	return e1->interpretDiv (e2);
     case Op::MOD:
 	return e1->interpretMod (e2);
+    case Op::ASSIGN:
+	return e1->interpretAssign (e2);
     default:
 	throw SemanticErrorException ("Unknown operator '" + op->toString () + "'", pos);
     }

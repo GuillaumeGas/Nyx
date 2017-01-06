@@ -7,47 +7,44 @@
 
 namespace nyx {
     namespace ast {
+	class Expression;
 	union UValue {
 	    int Int;
 	    char Char;
 	    float Float;
-	    double Double;
 	    bool Bool;
-	    void * Ptr;
+	    Expression * Ptr; //pour le moment on fou une expression...
 	};
 
 	class Value {
 	public:
+	    Value ();
+	    Value (const Value & v);
 	    Value (int val);
 	    Value (char val);
 	    Value (float val);
-	    Value (double val);
 	    Value (bool val);
-	    Value (void * ptr);
+	    Value (Expression * ptr);
 	    ~Value ();
 
 	    int getInt () const;
 	    char getChar () const;
 	    float getFloat () const;
-	    double getDouble () const;
 	    bool getBool () const;
-	    void * getPtr () const;
+	    Expression * getPtr () const;
+	    Type * getType () const;
 
 	    void set (int val);
 	    void set (char val);
 	    void set (float val);
-	    void set (double val);
 	    void set (bool val);
-	    void set (void * ptr);
+	    void set (Expression * ptr);
 
 	    std::string toString () const;
 
 	private:
 	    UValue _value;
 	    Type * _type;
-
-	    void _init ();
-	    void _checkPtr ();
 	};
     };
 };

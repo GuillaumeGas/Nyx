@@ -12,19 +12,17 @@ Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
 
 Syscall::~Syscall () {
     if (params) {
-	for (auto it : *params) {
-	    delete *it;
-	}
+    	delete params;
     }
 }
 
 void Syscall::interpret () {
     if (ident == "print") {
-	sysPrint ();
+    	sysPrint ();
     } else if (ident == "println") {
-	sysPrintln ();
+    	sysPrintln ();
     } else {
-	throw SemanticErrorException ("Unknown syscall !", pos);
+    	throw SemanticErrorException ("Unknown syscall !", pos);
     }
 }
 
@@ -43,17 +41,17 @@ void Syscall::print (ostream & out, int offset) const {
     out << ")";
 }
 
-void Syscall::_sysPrint (Expression * e) {
-    switch (e->getType ()->value) {
+void Syscall::_sysPrint (Value & v) {
+    switch (v.getType ()->value) {
     case TYPE::INT:
-	cout << e->getValue ()->getInt ();
+	cout << v.getInt ();
 	break;
     case TYPE::CHAR:
-	cout << e->getValue ()->getChar ();
+	cout << v.getChar ();
 	break;
-    case TYPE::STRING:
-	cout << *((string*)(e->getValue ()->getPtr ()));
-	break;
+    // case TYPE::STRING:
+    // 	cout << *((string*)(v.getValue ()->getPtr ()));
+    // 	break;
     default:
 	SemanticErrorException ("Unknown type !", pos);
     }
@@ -61,15 +59,15 @@ void Syscall::_sysPrint (Expression * e) {
 
 void Syscall::sysPrint () {
     for (auto it : *params) {
-	Expression * e = it->interpretExpression ();
-	_sysPrint (e);
+	Value v = it->interpretExpression ();
+	_sysPrint (v);
     }
 }
 
 void Syscall::sysPrintln () {
     for (auto it : *params) {
-	Expression * e = it->interpretExpression ();
-	_sysPrint (e);
+	Value v = it->interpretExpression ();
+	_sysPrint (v);
 	cout << endl;
     }
 }

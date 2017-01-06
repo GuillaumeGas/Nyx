@@ -18,13 +18,13 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression();
-	    Expression * interpretPlus (Expression * e);
-	    Expression * interpretMinus (Expression * e);
-	    Expression * interpretMul (Expression * e) {}
-	    Expression * interpretDiv (Expression * e) {}
-	    Expression * interpretMod (Expression * e) {}
-	    Expression * interpretAssign (Expression * e) {}
+	    Value interpretExpression();
+	    Value interpretPlus (Expression * e);
+	    Value interpretMinus (Expression * e);
+	    Value interpretMul (Expression * e) {}
+	    Value interpretDiv (Expression * e) {}
+	    Value interpretMod (Expression * e) {}
+	    Value interpretAssign (Expression * e) {}
 	};
 
 	class Char : public Expression {
@@ -33,13 +33,13 @@ namespace nyx {
 	    ~Char();
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression();
-	    Expression * interpretPlus (Expression * e);
-	    Expression * interpretMinus (Expression * e) {}
-	    Expression * interpretMul (Expression * e) {}
-	    Expression * interpretDiv (Expression * e) {}
-	    Expression * interpretMod (Expression * e) {}
-	    Expression * interpretAssign (Expression * e) {}
+	    // Expression * interpretExpression();
+	    // Expression * interpretPlus (Expression * e);
+	    // Expression * interpretMinus (Expression * e) {}
+	    // Expression * interpretMul (Expression * e) {}
+	    // Expression * interpretDiv (Expression * e) {}
+	    // Expression * interpretMod (Expression * e) {}
+	    // Expression * interpretAssign (Expression * e) {}
 
 	};
 
@@ -64,7 +64,7 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression();
+	    // Expression * interpretExpression();
 	};
 
 	struct Array : public Expression {
@@ -73,7 +73,7 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression ();
+	    // Expression * interpretExpression ();
 
 	    std::vector<Expression*> * array;
 	};
@@ -84,7 +84,7 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression ();
+	    // Expression * interpretExpression ();
 
 	    Expression * start;
 	    Expression * end;

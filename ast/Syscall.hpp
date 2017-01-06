@@ -25,7 +25,7 @@ namespace nyx {
 	    std::string ident;
 	    std::vector<Expression*> * params;
 
-	    void _sysPrint (Expression * e);
+	    void _sysPrint (Value & e);
 	};
     };
 };
