@@ -25,7 +25,7 @@ namespace nyx {
 
     class TypeErrorException : public SemanticErrorException {
     public:
-	TypeErrorException(ast::Expression * e1, ast::Expression * e2, ast::Position * pos) throw() : t1(e1->getType ()), t2(e2->getType ()), SemanticErrorException(pos) {}
+	TypeErrorException(ast::Expression * e1, ast::Expression * e2, ast::Position * pos) throw() : t1(e1->getValue ()->getType ()), t2(e2->getValue ()->getType ()), SemanticErrorException(pos) {}
 	TypeErrorException(ast::Type * t1, ast::Type * t2, ast::Position * pos) throw() : t1(t1), t2(t2), SemanticErrorException(pos) {}
 
 	std::string toString() const {

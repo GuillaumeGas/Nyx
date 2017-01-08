@@ -18,13 +18,21 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
+	    Expression * clone ();
 	    Expression * interpretExpression();
+	    Expression * interpretLE (Expression * e);
+	    Expression * interpretGE (Expression * e);
+	    Expression * interpretNE (Expression * e);
+	    Expression * interpretLT (Expression * e);
+	    Expression * interpretGT (Expression * e);
+	    Expression * interpretEQ (Expression * e);
+	    Expression * interpretAND (Expression * e);
+	    Expression * interpretOR (Expression * e);
 	    Expression * interpretPLUS (Expression * e);
 	    Expression * interpretMINUS (Expression * e);
-	    Expression * interpretMul (Expression * e) {}
-	    Expression * interpretDiv (Expression * e) {}
-	    Expression * interpretMod (Expression * e) {}
-	    Expression * interpretAssign (Expression * e) {}
+	    Expression * interpretMUL (Expression * e);
+	    Expression * interpretDIV (Expression * e);
+	    Expression * interpretMOD (Expression * e);
 
 	    Expression * interpretUnaryMINUS ();
 	};
@@ -35,14 +43,23 @@ namespace nyx {
 	    ~Char();
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression();
-	    Expression * interpretPlus (Expression * e);
-	    Expression * interpretMinus (Expression * e) {}
-	    Expression * interpretMul (Expression * e) {}
-	    Expression * interpretDiv (Expression * e) {}
-	    Expression * interpretMod (Expression * e) {}
-	    Expression * interpretAssign (Expression * e) {}
+	    Expression * clone ();
+	    Expression * interpretExpression ();
+	    Expression * interpretLE (Expression * e);
+	    Expression * interpretGE (Expression * e);
+	    Expression * interpretNE (Expression * e);
+	    Expression * interpretLT (Expression * e);
+	    Expression * interpretGT (Expression * e);
+	    Expression * interpretEQ (Expression * e);
+	    Expression * interpretAND (Expression * e);
+	    Expression * interpretOR (Expression * e);
+	    Expression * interpretPLUS (Expression * e);
+	    Expression * interpretMINUS (Expression * e);
+	    Expression * interpretMUL (Expression * e);
+	    Expression * interpretDIV (Expression * e);
+	    Expression * interpretMOD (Expression * e);
 
+	    Expression * interpretUnaryMINUS ();
 	};
 
 	struct Float : public Expression {
@@ -51,8 +68,22 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-
+	    Expression * clone ();
 	    Expression * interpretExpression ();
+	    Expression * interpretLE (Expression * e);
+	    Expression * interpretGE (Expression * e);
+	    Expression * interpretNE (Expression * e);
+	    Expression * interpretLT (Expression * e);
+	    Expression * interpretGT (Expression * e);
+	    Expression * interpretEQ (Expression * e);
+	    Expression * interpretAND (Expression * e);
+	    Expression * interpretOR (Expression * e);
+	    Expression * interpretPLUS (Expression * e);
+	    Expression * interpretMINUS (Expression * e);
+	    Expression * interpretMUL (Expression * e);
+	    Expression * interpretDIV (Expression * e);
+
+	    Expression * interpretUnaryMINUS ();
 	};
 
 	class Bool : public Expression {
@@ -61,22 +92,45 @@ namespace nyx {
 	    ~Bool();
 
 	    void print (std::ostream & out, int offset = 0) const;
+
+	    Expression * clone ();
+	    Expression * interpretExpression ();
+	    Expression * interpretLE (Expression * e);
+	    Expression * interpretGE (Expression * e);
+	    Expression * interpretNE (Expression * e);
+	    Expression * interpretLT (Expression * e);
+	    Expression * interpretGT (Expression * e);
+	    Expression * interpretEQ (Expression * e);
+	    Expression * interpretAND (Expression * e);
+	    Expression * interpretOR (Expression * e);
+	    Expression * interpretPLUS (Expression * e);
+	    Expression * interpretMINUS (Expression * e);
+	    Expression * interpretMUL (Expression * e);
+	    Expression * interpretDIV (Expression * e);
+	    Expression * interpretMOD (Expression * e);
+
+	    Expression * interpretUnaryMINUS ();
 	};
 
 	struct Array : public Expression {
-	    Array (std::vector<Expression*> * array, Position * pos);
 	    Array ();
+	    Array (std::vector<Expression*> * array, Position * pos);
 	    ~Array ();
 
+	    Expression * clone ();
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    Expression * interpretExpression ();
+	    // Expression * interpretAND (Expression * e);
+	    // Expression * interpretOR (Expression * e);
+	    Expression * interpretPLUS (Expression * e);
 
 	    std::vector<Expression*> * array;
 	};
 
 	struct String : public Array {
 	    String (std::string str, Position * pos);
+	    String (const String & str, Position * pos);
 	    ~String ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -90,6 +144,7 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
+	    Expression * clone ();
 	    Expression * interpretExpression ();
 
 	    Expression * start;

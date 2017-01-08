@@ -9,12 +9,12 @@ namespace nyx {
     namespace symbol {
 	class Symbol {
 	public:
-	    Symbol (std::string & name, ast::Type * type);
+	    Symbol (std::string & name);
 	    Symbol (std::string & name, int value);
 	    Symbol (std::string & name, float value);
 	    Symbol (std::string & name, bool value);
 	    Symbol (std::string & name, char value);
-	    Symbol (std::string & name, std::string * value);
+	    Symbol (std::string & name, ast::Expression * value);
 	    ~Symbol ();
 
 	    void setValue (int value);

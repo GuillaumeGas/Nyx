@@ -13,16 +13,20 @@ namespace nyx {
 	    STRING,
 	    ARRAY,
 	    RANGE,
+	    PTR,
 	    VOID,
 	    ERR
 	};
 
 	class Type {
 	public:
+	    Type (const Type & type);
 	    Type (std::string name);
 	    Type (std::string name, bool is_basic);
 	    ~Type();
 
+	    void setType (std::string name);
+	    void setBasic (bool val);
 	    std::string toString() const;
 	    bool isBasic () const;
 

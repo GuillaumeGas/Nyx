@@ -13,8 +13,9 @@ namespace nyx {
 	    virtual ~Expression();
 	    virtual void print (std::ostream & out, int offset = 0) const = 0;
 	    void interpret ();
-	    virtual Expression * interpretExpression();
 
+	    virtual Expression * clone ();
+	    virtual Expression * interpretExpression();
 	    virtual Expression * interpretASSIGN (Expression * e);
 	    virtual Expression * interpretLE (Expression * e);
 	    virtual Expression * interpretGE (Expression * e);
@@ -38,10 +39,8 @@ namespace nyx {
 
 	    virtual Expression * interpretUnaryMINUS ();
 
-	    virtual Type * getType () const;
 	    virtual Value * getValue () const;
 
-	    Type * type;
 	    Value * value;
 	};
     };

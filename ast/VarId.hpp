@@ -23,16 +23,16 @@ namespace nyx {
 
 	    Expression * interpretExpression ();
 	    Expression * interpretPLUS (Expression * e);
-	    Expression * interpretMINUS (Expression * e);
-	    Expression * interpretMUL (Expression * e) {}
-	    Expression * interpretDIV (Expression * e) {}
-	    Expression * interpretMOD (Expression * e) {}
-	    Expression * interpretASSIGN (Expression * e) {}
+	    // Expression * interpretMINUS (Expression * e);
+	    // Expression * interpretMUL (Expression * e) {}
+	    // Expression * interpretDIV (Expression * e) {}
+	    // Expression * interpretMOD (Expression * e) {}
+	    Expression * interpretASSIGN (Expression * e);
 
 	    Expression * interpretUnaryMINUS ();
 
-	    Type * getType () const;
-	    Value * getValue () const;
+	    // Type * getType () const;
+	    // Value * getValue () const;
 
 	    std::string name;
 	};

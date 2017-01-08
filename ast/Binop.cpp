@@ -6,6 +6,7 @@ using namespace ast;
 
 Binop::Binop(Expression * e1, Expression * e2, Operator * op, Position * pos) : e1(e1), e2(e2), op(op) {
     this->pos = pos;
+    this->value = new Value (this);
 }
 
 Binop::~Binop() {
@@ -18,50 +19,50 @@ Binop::~Binop() {
 }
 
 Expression * Binop::interpretExpression () {
-    e1 = e1->interpretExpression ();
-    e2 = e2->interpretExpression ();
+    Expression * left = e1->interpretExpression ();
+    Expression * right = e2->interpretExpression ();
 
     switch (op->value) {
     case Op::ASSIGN:
-	return e1->interpretASSIGN (e2);
+	return left->interpretASSIGN (right);
     case Op::LE:
-	return e1->interpretLE (e2);
+	return left->interpretLE (right);
     case Op::GE:
-	return e1->interpretGE (e2);
+	return left->interpretGE (right);
     case Op::NE:
-	return e1->interpretNE (e2);
+	return left->interpretNE (right);
     case Op::PLUSEQ:
-	return e1->interpretPLUSEQ (e2);
+	return left->interpretPLUSEQ (right);
     case Op::MINUSEQ:
-	return e1->interpretMINUSEQ (e2);
+	return left->interpretMINUSEQ (right);
     case Op::MULEQ:
-	return e1->interpretMULEQ (e2);
+	return left->interpretMULEQ (right);
     case Op::DIVEQ:
-	return e1->interpretDIVEQ (e2);
+	return left->interpretDIVEQ (right);
     case Op::MODEQ:
-	return e1->interpretMODEQ (e2);
+	return left->interpretMODEQ (right);
     case Op::LT:
-	return e1->interpretLT (e2);
+	return left->interpretLT (right);
     case Op::GT:
-	return e1->interpretGT (e2);
+	return left->interpretGT (right);
     case Op::EQ:
-	return e1->interpretEQ (e2);
+	return left->interpretEQ (right);
     case Op::AND:
-	return e1->interpretAND (e2);
+	return left->interpretAND (right);
     case Op::OR:
-	return e1->interpretOR (e2);
+	return left->interpretOR (right);
     case Op::PLUS:
-	return e1->interpretPLUS (e2);
+	return left->interpretPLUS (right);
     case Op::MINUS:
-	return e1->interpretMINUS (e2);
+	return left->interpretMINUS (right);
     case Op::MUL:
-	return e1->interpretMUL (e2);
+	return left->interpretMUL (right);
     case Op::DIV:
-	return e1->interpretDIV (e2);
+	return left->interpretDIV (right);
     case Op::MOD:
-	return e1->interpretMOD (e2);
+	return left->interpretMOD (right);
     case Op::POINT:
-	return e1->interpretPOINT (e2);
+	return left->interpretPOINT (right);
     default:
 	throw SemanticErrorException ("Unknown operator '" + op->toString () + "'", pos);
     }

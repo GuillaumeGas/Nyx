@@ -12,19 +12,17 @@ Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
 
 Syscall::~Syscall () {
     if (params) {
-	for (int i = 0; i < params->size(); i++) {
-	    delete (*params)[i];
-	}
+    	delete params;
     }
 }
 
 void Syscall::interpret () {
     if (ident == "print") {
-	sysPrint ();
+    	sysPrint ();
     } else if (ident == "println") {
-	sysPrintln ();
+    	sysPrintln ();
     } else {
-	throw SemanticErrorException ("Unknown syscall !", pos);
+    	throw SemanticErrorException ("Unknown syscall !", pos);
     }
 }
 
@@ -32,50 +30,75 @@ void Syscall::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "syscall<" << ident << "> (";
     if (params != NULL) {
-	for (int i = 0; i < params->size(); i++) {
-	    (*params)[i]->print (out);
-	    if (i < params->size()-1)
+	int i = 0;
+	for (auto it : *params) {
+	    it->print (out);
+	    if (i < params->size () - 1)
 		out << ", ";
+	    ++i;
 	}
     }
     out << ")";
 }
 
 void Syscall::_sysPrint (Expression * e) {
-    vector<Expression*> * vec;
-    switch (e->getType ()->value) {
+    vector<Expression*> * vec = NULL;
+    Range * range = NULL;
+
+    Value * v = e->getValue ();
+
+    if (v->getType ()->value == TYPE::ARRAY || v->getType ()->value == TYPE::RANGE)
+	cout << "[";
+
+    switch (v->getType ()->value) {
     case TYPE::INT:
-	cout << e->getValue ()->Int;
+	cout << v->getInt ();
 	break;
     case TYPE::CHAR:
-	cout << e->getValue ()->Char;
+	cout << v->getChar ();
 	break;
     case TYPE::FLOAT:
-	cout << e->getValue ()->Float;
+	cout << v->getFloat ();
 	break;
     case TYPE::STRING:
-	vec = ((String*)e)->array;
+	vec = ((String*)(v->getPtr ()))->array;
 	for (auto it : *vec) {
-	    char c = it->getValue ()->Char;
+	    char c = it->getValue ()->getChar ();
 	    cout << c;
 	}
+	break;
+    case TYPE::ARRAY:
+	vec = ((Array*)(v->getPtr ()))->array;
+	for (int i = 0; i < vec->size (); i++) {
+	    _sysPrint ((*vec)[i]);
+	    if (i < vec->size () - 1)
+		cout << ", ";
+	}
+	break;
+    case TYPE::RANGE:
+	range = (Range*) v->getPtr ();
+	cout << range->start->getValue ()->getInt ();
+	cout << " .. ";
+	cout << range->end->getValue ()->getInt ();
 	break;
     default:
 	SemanticErrorException ("Unknown type !", pos);
     }
+
+    if (v->getType ()->value == TYPE::ARRAY || v->getType ()->value == TYPE::RANGE)
+	cout << "]";
 }
 
 void Syscall::sysPrint () {
     for (auto it : *params) {
-	Expression * e = it->interpretExpression ();
-	_sysPrint (e);
+	_sysPrint (it->interpretExpression ());
     }
 }
 
 void Syscall::sysPrintln () {
     for (auto it : *params) {
-	Expression * e = it->interpretExpression ();
-	_sysPrint (e);
+	_sysPrint (it->interpretExpression ());
+	cout << endl;
     }
     cout << endl;
 }

@@ -1,33 +1,28 @@
 #include "Expression.hpp"
 #include "exceptions/SemanticException.hpp"
 
+using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Expression::Expression () {
-    this->value = Value::makeValue ();
-}
+Expression::Expression () {}
 
 Expression::~Expression() {
-    if (type)
-	delete type;
+    if (value)
+	delete value;
 }
-
-Expression * Expression::interpretExpression () { return NULL; }
 
 void Expression::interpret() {
     interpretExpression ();
-}
-
-Type * Expression::getType() const {
-    return type;
 }
 
 Value * Expression::getValue () const {
     return value;
 }
 
+Expression * Expression::clone () { return NULL; }
 
+Expression * Expression::interpretExpression () { return NULL; }
 Expression * Expression::interpretASSIGN (Expression * e) { throw TypeErrorException (this, e, pos); }
 Expression * Expression::interpretLE (Expression * e) { throw TypeErrorException (this, e, pos); }
 Expression * Expression::interpretGE (Expression * e) { throw TypeErrorException (this, e, pos); }
@@ -49,4 +44,4 @@ Expression * Expression::interpretDIV (Expression * e) { throw TypeErrorExceptio
 Expression * Expression::interpretMOD (Expression * e) { throw TypeErrorException (this, e, pos); }
 Expression * Expression::interpretPOINT (Expression * e) { throw TypeErrorException (this, e, pos); }
 
-Expression * Expression::interpretUnaryMINUS () { throw SemanticErrorException ("Bad operand type for unary '-' : " + this->type->toString(), pos); }
+Expression * Expression::interpretUnaryMINUS () { throw SemanticErrorException ("Bad operand type for unary '-' : " + this->value->getType ()->toString(), pos); }

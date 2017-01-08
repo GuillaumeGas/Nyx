@@ -1,0 +1,1 @@
+int a = tab[0] + tab[i + 1] - tab[foo()];

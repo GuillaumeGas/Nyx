@@ -4,6 +4,10 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
+Type::Type (const Type & type) : name (type.name), is_basic (type.is_basic) {
+    value = getValue ();
+}
+
 Type::Type (string name) : name (name), is_basic (true) {
     value = getValue ();
 }
@@ -13,6 +17,15 @@ Type::Type (string name, bool is_basic) : name(name), is_basic(is_basic) {
 }
 
 Type::~Type() {  }
+
+void Type::setType (string name) {
+    this->name = name;
+    this->value = getValue ();
+}
+
+void Type::setBasic (bool val) {
+    this->is_basic = val;
+}
 
 string Type::toString() const {
     return name;
