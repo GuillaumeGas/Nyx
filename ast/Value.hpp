@@ -40,6 +40,7 @@ namespace nyx {
 	    void set (float val);
 	    void set (bool val);
 	    void set (Expression * ptr);
+	    void set (Expression * ptr, const std::string type);
 
 	    std::string toString () const;
 

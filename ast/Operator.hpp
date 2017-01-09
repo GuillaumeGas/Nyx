@@ -38,10 +38,10 @@ namespace nyx {
 	    Op value;
 
 	    std::string toString() const;
+	    static Op getValue(std::string s);
 
 	private:
 	    std::string str;
-	    Op getValue(std::string s);
 	};
 
     };

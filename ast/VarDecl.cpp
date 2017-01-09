@@ -20,7 +20,7 @@ VarDecl::~VarDecl() {
 
 void VarDecl::interpret() {
     symbol::Table * table = symbol::Table::getInstance();
-    table->addSymbol(new symbol::Symbol(var_id->name, type), pos);
+    table->addSymbol(new symbol::Symbol(var_id->name), pos);
 }
 
 void VarDecl::print (ostream & out, int offset) const {

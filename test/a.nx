@@ -1,1 +1,8 @@
-$println ([1, 2, 3] + "test" + [[5]] + 2);
+let a = 0;
+let b = [];
+for (i in [0 .. 5]) {
+    $println (a);
+    a = a + 1;
+    b = b + a;
+ }
+$println (b);

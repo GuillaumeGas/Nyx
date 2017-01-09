@@ -57,14 +57,16 @@ void Syscall::_sysPrint (Expression * e) {
     case TYPE::CHAR:
 	cout << v->getChar ();
 	break;
+    case TYPE::BOOL:
+	cout << v->getBool ();
+	break;
     case TYPE::FLOAT:
 	cout << v->getFloat ();
 	break;
     case TYPE::STRING:
 	vec = ((String*)(v->getPtr ()))->array;
 	for (auto it : *vec) {
-	    char c = it->getValue ()->getChar ();
-	    cout << c;
+	    _sysPrint (it);
 	}
 	break;
     case TYPE::ARRAY:
@@ -82,7 +84,7 @@ void Syscall::_sysPrint (Expression * e) {
 	cout << range->end->getValue ()->getInt ();
 	break;
     default:
-	SemanticErrorException ("Unknown type !", pos);
+	SemanticErrorException ("Unknown type " + v->getType ()->toString () + "!", pos);
     }
 
     if (v->getType ()->value == TYPE::ARRAY || v->getType ()->value == TYPE::RANGE)
@@ -98,7 +100,6 @@ void Syscall::sysPrint () {
 void Syscall::sysPrintln () {
     for (auto it : *params) {
 	_sysPrint (it->interpretExpression ());
-	cout << endl;
     }
     cout << endl;
 }

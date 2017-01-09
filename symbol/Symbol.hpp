@@ -21,7 +21,8 @@ namespace nyx {
 	    void setValue (float value);
 	    void setValue (char value);
 	    void setValue (bool value);
-	    void setValue (std::string * value);
+	    void setValue (ast::Expression * value);
+	    void setValue (ast::Expression * value, const std::string type);
 	    void setType (ast::Type * type);
 
 	    ast::Type * getType() const;

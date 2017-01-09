@@ -78,7 +78,12 @@ void Value::set (bool val) {
 }
 
 void Value::set (Expression * val) {
-    _type->setType ("ptr");
+    _type->setType ("ptr", false);
+    _value.Ptr = val;
+}
+
+void Value::set (Expression * val, const string type) {
+    _type->setType (type, false);
     _value.Ptr = val;
 }
 

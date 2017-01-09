@@ -18,9 +18,10 @@ Type::Type (string name, bool is_basic) : name(name), is_basic(is_basic) {
 
 Type::~Type() {  }
 
-void Type::setType (string name) {
+void Type::setType (string name, bool is_basic) {
     this->name = name;
     this->value = getValue ();
+    this->is_basic = is_basic;
 }
 
 void Type::setBasic (bool val) {

@@ -6,6 +6,9 @@
 #include "Expression.hpp"
 #include "Bloc.hpp"
 #include "Position.hpp"
+#include "exceptions/SemanticException.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 namespace nyx {
     namespace ast {

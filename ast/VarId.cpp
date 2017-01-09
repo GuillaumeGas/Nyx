@@ -14,19 +14,12 @@ void VarId::print (ostream & out, int offset) const {
     out << "VarId " << name;
 }
 
-// Type * VarId::getType () const {
-//     symbol::Table * table = symbol::Table::getInstance();
-
-//     symbol::Symbol * s = table->getSymbol (name, pos);
-//     return s->getType ();
-// }
-
-// Value * VarId::getValue () const {
-//     symbol::Table * table = symbol::Table::getInstance ();
-
-//     symbol::Symbol * s = table->getSymbol (name, pos);
-//     return s->getValue ();
-// }
+Expression * VarId::clone () {
+    Position * new_pos = new Position (pos->line, pos->column);
+    interpretExpression ();
+    VarId * new_varId = new VarId (name, new_pos);
+    new_varId->interpretExpression ();
+}
 
 Expression * VarId::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();
@@ -37,53 +30,6 @@ Expression * VarId::interpretExpression () {
 
     return this;
 }
-
-Expression * VarId::interpretPLUS (Expression * e) {
-    Type * this_type = value->getType ();
-    Type * e_type = e->getValue ()->getType ();
-
-    if (this_type->value != e_type->value)
-	throw TypeErrorException (this, e, pos);
-
-    switch (this_type->value) {
-    case TYPE::INT:
-	value->set (value->getInt () + e->getValue ()->getInt ());
-	break;
-    case TYPE::FLOAT:
-	value->set (value->getFloat () + e->getValue ()->getFloat ());
-	break;
-    case TYPE::CHAR:
-	value->set (value->getChar () + e->getValue ()->getChar ());
-	break;
-    default:
-	throw SemanticErrorException ("Type unexpected.", pos);
-    }
-
-    return this;
-}
-
-// Expression * VarId::interpretMINUS (Expression * e) {
-//     symbol::Table * table = symbol::Table::getInstance ();
-//     symbol::Symbol * symbol = table->getSymbol (name, pos);
-
-//     Type * this_type = getType ();
-//     Type * e_type = e->getValue ()->getType ();
-
-//     if (this_type->value != e_type->value)
-// 	throw TypeErrorException (this, e, pos);
-
-//     switch (this_type->value) {
-//     case TYPE::INT:
-// 	return Value (value->getInt () - e->getValue ()->getInt ());
-//     case TYPE::FLOAT:
-// 	return Value (value->getFloat () - e->getValue ()->getFloat ());
-//     case TYPE::CHAR:
-// 	return Value (value->getChar () - e->getValue ()->getChar ());
-//     default:
-// 	throw SemanticErrorException ("Type unexpected.", pos);
-//     }
-// }
-
 
 Expression * VarId::interpretASSIGN (Expression * e) {
     symbol::Table * table = symbol::Table::getInstance ();
@@ -108,12 +54,71 @@ Expression * VarId::interpretASSIGN (Expression * e) {
 	symbol->setValue (res->getBool ());
 	value->set (res->getBool ());
 	break;
+    case TYPE::PTR:
+	symbol->setValue (res->getPtr ());
+	value->set (res->getPtr ());
+	break;
+    case TYPE::ARRAY:
+	symbol->setValue (res->getPtr (), "array");
+	value->set (res->getPtr (), "array");
+	break;
+    case TYPE::STRING:
+	symbol->setValue (res->getPtr (), "string");
+	value->set (res->getPtr (), "string");
+	break;
+    case TYPE::RANGE:
+	symbol->setValue (res->getPtr (), "range");
+	value->set (res->getPtr (), "range");
+	break;
     default:
 	throw SemanticErrorException ("Undefined Type ! " + res->getType ()->toString(), pos);
     }
 
     return this;
 }
+
+Expression * VarId::interpretLE (Expression * e) {
+    return _interpretBinop (Operator::getValue ("<="), e);
+}
+
+Expression * VarId::interpretGE (Expression * e) {
+    return _interpretBinop (Operator::getValue (">="), e);
+}
+Expression * VarId::interpretNE (Expression * e) {
+    return _interpretBinop (Operator::getValue ("!="), e);
+}
+Expression * VarId::interpretLT (Expression * e) {
+    return _interpretBinop (Operator::getValue ("<"), e);
+}
+Expression * VarId::interpretGT (Expression * e) {
+    return _interpretBinop (Operator::getValue (">"), e);
+}
+Expression * VarId::interpretEQ (Expression * e) {
+    return _interpretBinop (Operator::getValue ("=="), e);
+}
+Expression * VarId::interpretAND (Expression * e) {
+    return _interpretBinop (Operator::getValue ("&&"), e);
+}
+Expression * VarId::interpretOR (Expression * e) {
+    return _interpretBinop (Operator::getValue ("||"), e);
+}
+Expression * VarId::interpretPLUS (Expression * e) {
+    return _interpretBinop (Operator::getValue ("+"), e);
+}
+
+Expression * VarId::interpretMINUS (Expression * e) {
+    return _interpretBinop (Operator::getValue ("-"), e);
+}
+Expression * VarId::interpretMUL (Expression * e) {
+    return _interpretBinop (Operator::getValue ("*"), e);
+}
+Expression * VarId::interpretDIV (Expression * e) {
+    return _interpretBinop (Operator::getValue ("/"), e);
+}
+Expression * VarId::interpretMOD (Expression * e) {
+    return _interpretBinop (Operator::getValue ("%"), e);
+}
+
 
 Expression * VarId::interpretUnaryMINUS () {
     Type * this_type = value->getType ();
@@ -130,4 +135,74 @@ Expression * VarId::interpretUnaryMINUS () {
     }
 
     return this;
+}
+
+Expression * VarId::_interpretBinop (Op op, Expression * e) {
+    Type * type = value->getType ();
+
+    Expression * expr;
+    if (type->isBasic ()) {
+	switch (type->value) {
+	case TYPE::INT:
+	    expr = new Int (value->getInt (), pos);
+	    break;
+	case TYPE::FLOAT:
+	    expr = new Float (value->getFloat (), pos);
+	    break;
+	case TYPE::CHAR:
+	    expr = new Char (value->getChar (), pos);
+	    break;
+	case TYPE::BOOL:
+	    expr = new Bool (value->getBool (), pos);
+	    break;
+	default:
+	    throw SemanticErrorException ("Your var must be initialized !", pos);
+	}
+
+	_interpretOp (op, expr, e);
+	if (value)
+	    delete value;
+	value = new Value (*(expr->getValue ()));
+	delete expr;
+    } else {
+	expr = value->getPtr ();
+	_interpretOp (op, expr, e);
+	if (value)
+	    delete value;
+	value = new Value (*(expr->getValue ()));
+    }
+    return this;
+}
+
+Expression * VarId::_interpretOp (Op op, Expression * e1, Expression * e2) {
+    switch (op) {
+    case Op::PLUS:
+	return e1->interpretPLUS (e2);
+    case Op::MINUS:
+	return e1->interpretMINUS (e2);
+    case Op::MUL:
+	return e1->interpretMUL (e2);
+    case Op::DIV:
+	return e1->interpretDIV (e2);
+    case Op::MOD:
+	return e1->interpretMOD (e2);
+    case Op::LT:
+	return e1->interpretLT (e2);
+    case Op::LE:
+	return e1->interpretLE (e2);
+    case Op::GT:
+	return e1->interpretGT (e2);
+    case Op::GE:
+	return e1->interpretGE (e2);
+    case Op::EQ:
+	return e1->interpretEQ (e2);
+    case Op::NE:
+	return e1->interpretNE (e2);
+    case Op::AND:
+	return e1->interpretAND (e2);
+    case Op::OR:
+	return e1->interpretOR (e2);
+    default:
+	throw SemanticErrorException ("Unknown Operator !", pos);
+    }
 }

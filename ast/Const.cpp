@@ -1106,7 +1106,7 @@ String::String (string str, Position * pos) {
     for (int i = 0; i < str.size (); i++)
 	this->array->push_back (new Char (str[i], pos));
     this->pos = pos;
-    this->value = new Value (this, "array");
+    this->value = new Value (this, "string");
 }
 
 String::~String () {

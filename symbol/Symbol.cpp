@@ -60,21 +60,23 @@ void Symbol::setValue(char value) {
     ast::Type t ("char");
     this->setType (&t);
 }
-// void Symbol::setValue (string * value) {
-//     if (this->value->Str)
-// 	delete this->value->Str;
-//     this->value->Str = new string (*value);
-// }
+
+void Symbol::setValue (ast::Expression * value) {
+    this->value->set (value);
+    ast::Type t("ptr", false);
+    this->setType (&t);
+}
+void Symbol::setValue (ast::Expression * value, const string type) {
+    this->value->set (value, type);
+    ast::Type t(type, false);
+    this->setType (&t);
+}
 
 void Symbol::setType (ast::Type * type) {
     if (!this->type)
 	this->type = new ast::Type (*type);
     this->type->value = type->value;
     this->type->name = type->name;
-}
-
-ast::Type * Symbol::getType() const {
-    return type;
 }
 
 ast::Value * Symbol::getValue () const {
@@ -84,7 +86,8 @@ ast::Value * Symbol::getValue () const {
 string Symbol::toString() const {
     stringstream ss;
     ss << "[" << name << ", ";
-    switch (type->value) {
+
+    switch (value->getType ()->value) {
     case ast::TYPE::INT:
 	ss << value->getInt ();
 	break;
@@ -100,8 +103,13 @@ string Symbol::toString() const {
     case ast::TYPE::VOID:
 	ss << "void";
 	break;
+    case ast::TYPE::ARRAY:
+    case ast::TYPE::STRING:
+    case ast::TYPE::RANGE:
+	ss << "ptr";
+	break;
     default:
-	cout << "Error toString" << endl;
+	cout << "Unknown type" << endl;
     }
     ss << "] " << value->getType ()->toString () << endl;
     return ss.str ();
