@@ -63,6 +63,7 @@ namespace nyx {
 	ast::Expression * visitHHHigh ();
 	ast::Expression * visitHHHigh (ast::Expression * left);
 	ast::Expression * visitLeft ();
+	ast::Expression * visitIndex ();
 	ast::Expression * visitConst ();
 	ast::Expression * visitIdent ();
 	ast::Expression * visitIdent (TokenPtr token_ident);

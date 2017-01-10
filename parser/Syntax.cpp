@@ -557,13 +557,22 @@ ast::Expression * Syntax::visitHHHigh () {
     ast::Expression * left = visitLeft ();
 
     TokenPtr next_op = pop ();
-    if (find (next_op->type, {POINT})) {
-	ast::Expression * right = visitLeft ();
+    if (find (next_op->type, {POINT, BRACKET_L})) {
+	ast::Expression * right = NULL;
+	if (next_op->type == TokenType::POINT) {
+	    right = visitLeft ();
+	} else {
+	    right = visitIndex ();
+	}
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
 	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
-	ast::Operator * op = new ast::Operator (next_op->value);
-	return visitHHHigh (new ast::Binop (left, right, op, pos));
+	if (next_op->type == TokenType::POINT) {
+	    ast::Operator * op = new ast::Operator (next_op->value);
+	    return visitHHHigh (new ast::Binop (left, right, op, pos));
+	} else {
+	    return visitHHHigh (new ast::Index (left, right, pos));
+	}
     }
     rewind ();
     return left;
@@ -571,13 +580,22 @@ ast::Expression * Syntax::visitHHHigh () {
 
 ast::Expression * Syntax::visitHHHigh (ast::Expression * left) {
     TokenPtr next_op = pop ();
-    if (find (next_op->type, {POINT})) {
-	ast::Expression * right = visitLeft ();
+    if (find (next_op->type, {POINT, BRACKET_L})) {
+	ast::Expression * right = NULL;
+	if (next_op->type == TokenType::POINT) {
+	    right = visitLeft ();
+	} else {
+	    right = visitIndex ();
+	}
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
 	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
-	ast::Operator * op = new ast::Operator (next_op->value);
-	return visitHHHigh (new ast::Binop (left, right, op, pos));
+	if (next_op->type == TokenType::POINT) {
+	    ast::Operator * op = new ast::Operator (next_op->value);
+	    return visitHHHigh (new ast::Binop (left, right, op, pos));
+	} else {
+	    return visitHHHigh (new ast::Index (left, right, pos));
+	}
     }
     rewind ();
     return left;
@@ -607,6 +625,14 @@ ast::Expression * Syntax::visitLeft () {
     if ((elem = visitCast ()) != NULL)
 	return elem;
     return NULL;
+}
+
+ast::Expression * Syntax::visitIndex () {
+    ast::Expression * expr = visitExpression ();
+    TokenPtr next = pop ();
+    if (next->type != TokenType::BRACKET_R)
+	throw MissingErrorException ("]", Position (next->line, next->column));
+    return expr;
 }
 
 ast::Expression * Syntax::visitConst () {

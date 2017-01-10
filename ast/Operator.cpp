@@ -63,6 +63,8 @@ Op Operator::getValue(string s) {
 	return Op::OR;
     } else if (s == "!") {
 	return Op::NOT;
+    } else if (s == "[") {
+	return Op::INDEX;
     } else {
 	return Op::UNKNOWN;
     }

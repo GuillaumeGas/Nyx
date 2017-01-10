@@ -28,6 +28,7 @@ namespace nyx {
 	    NE,
 	    AND,
 	    OR,
+	    INDEX,
 	    UNKNOWN
 	};
 

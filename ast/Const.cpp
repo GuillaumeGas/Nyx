@@ -1042,13 +1042,13 @@ Array::Array (vector<Expression*> * array, Position * pos) {
 }
 
 Expression * Array::clone () {
-    Position * pos = new Position (pos->line, pos->column);
+    Position * new_pos = new Position (pos->line, pos->column);
     vector<Expression*> * vec = new vector<Expression*> ();
 
     for (auto it : *(array)) {
 	vec->push_back (it->clone ());
     }
-    return new Array (vec, pos);
+    return new Array (vec, new_pos);
 }
 
 Array::Array () {}
@@ -1091,8 +1091,8 @@ Expression * Array::interpretPLUS (Expression * e) {
 	array->push_back (e->clone ());
     } else {
 	Array * e_array = (Array*) e_value->getPtr ();
-
 	for (auto it : *(e_array->array)) {
+	    cout << "test :" << it << endl;
 	    array->push_back (it->clone ());
 	}
     }

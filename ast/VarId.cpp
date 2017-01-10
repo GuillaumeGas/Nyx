@@ -119,7 +119,6 @@ Expression * VarId::interpretMOD (Expression * e) {
     return _interpretBinop (Operator::getValue ("%"), e);
 }
 
-
 Expression * VarId::interpretUnaryMINUS () {
     Type * this_type = value->getType ();
 

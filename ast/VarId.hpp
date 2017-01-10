@@ -39,6 +39,7 @@ namespace nyx {
 	    Expression * interpretMUL (Expression * e);
 	    Expression * interpretDIV (Expression * e);
 	    Expression * interpretMOD (Expression * e);
+	    Expression * interpretINDEX (Expression * e);
 
 	    Expression * interpretUnaryMINUS ();
 
