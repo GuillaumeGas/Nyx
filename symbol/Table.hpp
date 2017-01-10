@@ -10,6 +10,7 @@ namespace nyx {
 	class Table {
 	public:
 	    static Table * getInstance();
+	    ~Table();
 
 	    void enterBlock();
 	    void exitBlock();
@@ -20,7 +21,6 @@ namespace nyx {
 
 	private:
 	    Table();
-	    ~Table();
 
 	    static Table * instance;
 

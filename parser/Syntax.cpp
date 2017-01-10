@@ -9,7 +9,11 @@ Syntax::Syntax(Lexer & lex) : m_lex(lex) {
     m_program = visitBloc ();
 }
 
-Syntax::~Syntax() {}
+Syntax::~Syntax() {
+    if (m_program) {
+	delete m_program;
+    }
+}
 
 TokenPtr Syntax::pop() const {
     return m_lex.next ();
@@ -29,38 +33,38 @@ ast::Bloc * Syntax::visitBloc () {
     TokenPtr next = pop ();
     TokenPtr begin = next;
     if (begin->type == TokenType::ACCOL_L)
-	next = pop();
+    	next = pop();
     while (next->type != TokenType::_EOF_ && next->type != TokenType::ACCOL_R) {
-	rewind ();
-	switch (next->type) {
-	case TokenType::LET:
-	case TokenType::OTHER:
-	case TokenType::DOLLAR:
-	case TokenType::RETURN:
-	case TokenType::BREAK:
-	case TokenType::IMPORT:
-	    instr->push_back (visitInstruction ());
-	    break;
-	case TokenType::IF:
-	    instr->push_back (visitIfElse ());
-	    break;
-	case TokenType::FOR:
-	    instr->push_back (visitFor ());
-	    break;
-	case TokenType::WHILE:
-	    instr->push_back (visitWhile ());
-	    break;
-	case TokenType::CLASS:
-	    instr->push_back (visitClass ());
-	    break;
-	default:
-	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
-	}
-	next = pop ();
+    	rewind ();
+    	switch (next->type) {
+    	case TokenType::LET:
+    	case TokenType::OTHER:
+    	case TokenType::DOLLAR:
+    	case TokenType::RETURN:
+    	case TokenType::BREAK:
+    	case TokenType::IMPORT:
+    	    instr->push_back (visitInstruction ());
+    	    break;
+    	case TokenType::IF:
+    	    instr->push_back (visitIfElse ());
+    	    break;
+    	case TokenType::FOR:
+    	    instr->push_back (visitFor ());
+    	    break;
+    	case TokenType::WHILE:
+    	    instr->push_back (visitWhile ());
+    	    break;
+    	case TokenType::CLASS:
+    	    instr->push_back (visitClass ());
+    	    break;
+    	default:
+    	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    	}
+    	next = pop ();
     }
 
     if (begin->type == TokenType::ACCOL_L && next->type != TokenType::ACCOL_R)
-	throw MissingErrorException ("}", Position (next->line, next->column));
+    	throw MissingErrorException ("}", Position (next->line, next->column));
 
     return new ast::Bloc (instr);
 }
@@ -870,7 +874,7 @@ ast::Expression * Syntax::visitArray () {
 	return NULL;
     }
     TokenPtr token_array = next;
-    vector <ast::Expression*> * array = new vector <ast::Expression*> ();
+    vector <ast::Expression*> * array = new vector<ast::Expression*> ();
     next = pop ();
     while (next->type != TokenType::BRACKET_R) {
 	rewind ();
@@ -881,6 +885,7 @@ ast::Expression * Syntax::visitArray () {
 	}
 
 	next = pop ();
+	//TODO : possible syntax error
 	if (next->type == TokenType::DOUBLE_POINT) {
 	    ast::Expression * end = visitExpression ();
 	    if (end == NULL)
@@ -889,6 +894,7 @@ ast::Expression * Syntax::visitArray () {
 	    if (next->type != TokenType::BRACKET_R)
 		throw MissingErrorException ("]", Position (next->line, next->column));
 	    ast::Position * pos = new ast::Position (token_array->line, token_array->column);
+	    delete array;
 	    return new ast::Range (expr, end, pos);
 	}
 

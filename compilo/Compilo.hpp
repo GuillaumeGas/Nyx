@@ -12,6 +12,7 @@
 #include "../ast/Ast.hpp"
 #include "../symbol/Table.hpp"
 #include "../symbol/exceptions/SymbolException.hpp"
+#include "../global/Global.hpp"
 
 namespace nyx {
     class Compilo {

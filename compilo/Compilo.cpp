@@ -15,6 +15,11 @@ Compilo::~Compilo() {
 	delete m_lex;
     if (m_syn)
 	delete m_syn;
+
+    // we don't forget to free the global data...
+    delete Global::getInstance ();
+    // and the symbols table
+    delete symbol::Table::getInstance ();
 }
 
 void Compilo::compile() {
@@ -35,27 +40,27 @@ void Compilo::compile() {
     try {
     	m_syn = new Syntax(*m_lex);
     	m_ast = m_syn->getAst();
-	printAst ();
-	cout << endl;
+    	printAst ();
+    	cout << endl;
     } catch(SyntaxException const& e) {
     	cout << e.toString() << endl;
     	exit(-1);
     }
 
-    cout << "/---------------- Execution -----------------\\" << endl << endl;
-    try {
-      m_ast->interpret();
-      cout << endl;
-    } catch(SymbolException const& e) {
-      cout << e.toString () << endl;
-      exit(-1);
-    } catch(SemanticErrorException const& e) {
-      cout << e.toString () << endl;
-      exit(-1);
-    }
+    // cout << "/---------------- Execution -----------------\\" << endl << endl;
+    // try {
+    //   m_ast->interpret();
+    //   cout << endl;
+    // } catch(SymbolException const& e) {
+    //   cout << e.toString () << endl;
+    //   exit(-1);
+    // } catch(SemanticErrorException const& e) {
+    //   cout << e.toString () << endl;
+    //   exit(-1);
+    // }
 
-    cout << "/------------ Final symbols table ------------\\" << endl << endl;
-    cout << symbol::Table::getInstance()->toString() << endl;
+    // cout << "/------------ Final symbols table ------------\\" << endl << endl;
+    // cout << symbol::Table::getInstance()->toString() << endl;
 }
 
 void Compilo::printAst() const {

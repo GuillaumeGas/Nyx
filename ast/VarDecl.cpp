@@ -16,6 +16,8 @@ VarDecl::~VarDecl() {
     if (type) {
 	delete type;
     }
+    if (var_id)
+	delete var_id;
 }
 
 void VarDecl::interpret() {
