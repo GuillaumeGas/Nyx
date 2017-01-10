@@ -18,6 +18,28 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * 
     this->pos = pos;
 }
 
+void IfElse::interpret () {
+    cond = cond->interpretExpression ();
+
+    symbol::Table * table = symbol::Table::getInstance ();
+
+    Value * cond_value = cond->getValue ();
+    TYPE cond_type = cond_value->getType ()->value;
+
+    if (cond_type != TYPE::BOOL)
+	throw SemanticErrorException ("Boolean expression expected !", cond->pos);
+
+    if (cond_value->getBool () && bloc_if) {
+	table->enterBlock ();
+	bloc_if->interpret ();
+	table->exitBlock ();
+    } else if (bloc_else) {
+	table->enterBlock ();
+	bloc_else->interpret ();
+	table->exitBlock ();
+    }
+}
+
 void IfElse::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "if ";
@@ -31,10 +53,4 @@ void IfElse::print (ostream & out, int offset) const {
     }
     shift (out, offset);
     out << "}" << endl;;
-}
-
-void IfElse::interpret () {
-    /*
-      interpret la cond, si c'est true on interpret bloc_id, sinon, si bloc_else != NULL, l'interpreter
-     */
 }

@@ -5,6 +5,8 @@
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Bloc.hpp"
+#include "exceptions/SemanticException.hpp"
+#include "../symbol/Table.hpp"
 
 namespace nyx {
     namespace ast {
