@@ -131,7 +131,6 @@ namespace nyx {
 	struct String : public Array {
 	    String (std::string str, Position * pos);
 	    String (const String & str, Position * pos);
-	    ~String ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 

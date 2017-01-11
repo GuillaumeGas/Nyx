@@ -18,6 +18,12 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * 
     this->pos = pos;
 }
 
+IfElse::~IfElse () {
+    if (cond) delete cond;
+    if (bloc_if) delete bloc_if;
+    if (bloc_else) delete bloc_else;
+}
+
 void IfElse::interpret () {
     cond = cond->interpretExpression ();
 

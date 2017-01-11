@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "compilo/Compilo.hpp"
+#include "global/Global.hpp"
 
 using namespace std;
 

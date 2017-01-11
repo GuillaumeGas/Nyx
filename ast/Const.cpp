@@ -1059,6 +1059,7 @@ Array::~Array () {
 	    if (it)
 		delete it;
 	}
+	delete array;
     }
 }
 
@@ -1104,19 +1105,9 @@ Expression * Array::interpretPLUS (Expression * e) {
 String::String (string str, Position * pos) {
     this->array = new vector<Expression*> ();
     for (int i = 0; i < str.size (); i++)
-	this->array->push_back (new Char (str[i], pos));
+	this->array->push_back (new Char (str[i], new Position (pos->line, pos->column)));
     this->pos = pos;
     this->value = new Value (this, "string");
-}
-
-String::~String () {
-    if (array) {
-	for (auto it : *array) {
-	    if (it)
-		delete it;
-	}
-	delete array;
-    }
 }
 
 void String::print (ostream & out, int offset) const {

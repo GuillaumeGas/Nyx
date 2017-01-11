@@ -168,18 +168,25 @@ TokenPtr Lexer::getWord () {
 
 void Lexer::getLine (string & line) {
     unsigned int size = 256;
+    line = "";
+    char * buffer = NULL;
     while (1) {
-	char * buffer = new char[size];
-	fgets (buffer, size, this->file);
-	if (!buffer) {
-	    line = "";
-	    break;
+	buffer = new char[size]; buffer[0] = '\0'; // Valgrind needs this fucking initialisation...
+	if (buffer) {
+	    fgets (buffer, size, this->file);
+	    if (!buffer) {
+		line = "";
+		break;
+	    }
+	    line += string (buffer);
+	    if (line.size() < size || line[line.size()-1] != '\n')
+		break;
+	    delete[] buffer;
+	    buffer = NULL;
 	}
-	line += string (buffer);
-	if (line.size() < size || line[line.size()-1] != '\n')
-	    break;
-	delete buffer;
     }
+    if (buffer)
+	delete[] buffer;
 }
 
 void Lexer::mfseek (const string & tok, unsigned int offset) {

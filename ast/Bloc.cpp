@@ -15,6 +15,7 @@ Bloc::~Bloc() {
 	    delete a;
 	}
     }
+    delete content;
 }
 
 void Bloc::interpret() {

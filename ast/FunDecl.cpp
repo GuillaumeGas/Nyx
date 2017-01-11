@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-FunDecl::FunDecl (Type * type, string ident, vector<VarDecl*> * params, Bloc * content, Position * pos) {
+FunDecl::FunDecl (Type * type, const string & ident, vector<VarDecl*> * params, Bloc * content, Position * pos) {
     this->type = type;
     this->name = ident;
     this->params = params;
@@ -16,8 +16,9 @@ FunDecl::~FunDecl () {
     if (type)
 	delete type;
     if (params) {
-	for (int i = 0; i < params->size(); i++)
-	    delete (*params)[i];
+	for (auto it : *params)
+	    if (it) delete it;
+	delete params;
     }
     if (content)
 	delete content;

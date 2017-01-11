@@ -5,7 +5,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Expression::Expression () {}
+Expression::Expression () { value = NULL; }
 
 Expression::~Expression() {
     if (value)
