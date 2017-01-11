@@ -12,6 +12,7 @@ namespace nyx {
 	public:
 	    IfElse (Expression * cond, Bloc * bloc_if, Position * pos);
 	    IfElse (Expression * cond, Bloc * bloc_id, Bloc * bloc_else, Position * pos);
+	    ~IfElse ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 	    void interpret ();

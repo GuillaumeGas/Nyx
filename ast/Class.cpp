@@ -11,6 +11,7 @@ Class::Class (string & ident, FunDecl * constructor, FunDecl * destructor, Bloc 
     this->destructor = destructor;
     this->public_bloc = public_bloc;
     this->private_bloc = private_bloc;
+    this->pos = pos;
 }
 
 Class::Class (string & ident, string & inheritance, FunDecl * constructor, FunDecl * destructor, Bloc * public_bloc, Bloc * private_bloc, Position * pos) {
@@ -20,13 +21,12 @@ Class::Class (string & ident, string & inheritance, FunDecl * constructor, FunDe
     this->destructor = destructor;
     this->public_bloc = public_bloc;
     this->private_bloc = private_bloc;
+    this->pos = pos;
 }
 
 Class::~Class () {
-    if (public_bloc)
-	delete public_bloc;
-    if (private_bloc)
-	delete private_bloc;
+    if (public_bloc) delete public_bloc;
+    if (private_bloc) delete private_bloc;
 }
 
 void Class::interpret () {}

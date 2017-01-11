@@ -41,7 +41,6 @@ namespace nyx {
 	ast::Bloc * visitVarDecl (TokenPtr token_ident);
 	ast::Ast * visitVarAssign (TokenPtr token_ident, TokenPtr token_op);
 	ast::Ast * visitIfElse ();
-	ast::Ast * visitPrintI ();
 	ast::Ast * visitFor ();
 	ast::Ast * visitWhile ();
 	ast::Ast * visitSyscall (TokenPtr token_ident);

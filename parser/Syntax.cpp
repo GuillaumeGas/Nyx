@@ -249,7 +249,7 @@ ast::Ast * Syntax::visitIfElse () {
 	throw MissingErrorException (")", Position (next->line, next->column));
 
     next = pop ();
-    if (next->type != ACCOL_L) {
+    if (next->type != TokenType::ACCOL_L) {
 	throw MissingErrorException ("{", Position (next->line, next->column));
     }
 
@@ -263,6 +263,9 @@ ast::Ast * Syntax::visitIfElse () {
 	    bloc_else = visitBloc ();
 	} else if (next->type == TokenType::IF) {
 	    rewind ();
+	    // ast::Ast * elseif = visitIfElse ();
+	    // vector<ast::Ast*> * vec_bloc = new vector<ast::Ast*> (elseif);
+	    // bloc_else = new ast::Bloc (vec_bloc);
 	    bloc_else = (ast::Bloc*) visitIfElse ();
 	} else {
 	    throw MissingErrorException ("{", Position (next->line, next->column));

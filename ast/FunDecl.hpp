@@ -12,7 +12,7 @@ namespace nyx {
     namespace ast {
 	class FunDecl : public Ast {
 	public:
-	    FunDecl (Type * type, std::string ident, std::vector<VarDecl*> * params, Bloc * content, Position * pos);
+	    FunDecl (Type * type, const std::string & ident, std::vector<VarDecl*> * params, Bloc * content, Position * pos);
 	    ~FunDecl ();
 
 	    void interpret ();

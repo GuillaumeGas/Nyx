@@ -12,9 +12,9 @@ FunCall::FunCall (string name, vector<Expression*> * params, Position * pos) {
 
 FunCall::~FunCall () {
     if (params) {
-	for (int i = 0; i < params->size(); i++) {
-	    delete (*params)[i];
-	}
+	for (auto it : *params)
+	    if (it) delete it;
+	delete params;
     }
 }
 
