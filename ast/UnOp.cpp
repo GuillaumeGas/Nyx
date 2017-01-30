@@ -8,7 +8,6 @@ UnOp::UnOp (Operator * op, Expression * expr, Position * pos) {
     this->pos = pos;
     this->op = op;
     this->expr = expr;
-    this->value = new Value ();
 }
 
 UnOp::~UnOp () {
@@ -24,22 +23,20 @@ void UnOp::print (ostream & out, int offset) const {
     out << ")";
 }
 
-Expression * UnOp::interpretExpression () {
+AbstractObject * UnOp::interpretExpression () {
+    AbstractObject * e = expr->interpretExpression ();
+    AbstractObject * res = NULL;
+
+    Position * new_pos = new Position (pos->line, pos->column);
+
     switch (op->value) {
     case Op::MINUS:
-	return expr->interpretUnaryMINUS ();
+	res = e->interpretUnaryMINUS ();
+	break;
     default:
 	throw SemanticErrorException ("Unknown unary operator !", pos);
     }
-}
 
-Expression * UnOp::interpretUnaryMINUS () {
-    Value * v = expr->getValue ();
-    switch (v->getType ()->value) {
-    case TYPE::INT:
-	value->set (v->getInt () * -1);
-	return this;
-    default:
-	TODO_SEM ("interpretUnaryMINUS");
-    }
+    res->pos = new_pos;
+    return res;
 }

@@ -6,7 +6,7 @@ using namespace syntax;
 
 Syntax::Syntax(Lexer & lex) : m_lex(lex) {
     m_table = symbol::Table::getInstance();
-    m_program = visitBloc ();
+    m_program = visitBloc (true);
 }
 
 Syntax::~Syntax() {
@@ -28,7 +28,7 @@ ast::Ast * Syntax::getAst () const { return m_program; }
 /**
    bloc := '{'? instruction* '}'?
 */
-ast::Bloc * Syntax::visitBloc () {
+ast::Bloc * Syntax::visitBloc (bool global) {
     vector<ast::Ast*> * instr = new vector<ast::Ast*> ();
     TokenPtr next = pop ();
     TokenPtr begin = next;
@@ -66,6 +66,8 @@ ast::Bloc * Syntax::visitBloc () {
     if (begin->type == TokenType::ACCOL_L && next->type != TokenType::ACCOL_R)
     	throw MissingErrorException ("}", Position (next->line, next->column));
 
+    if (global)
+	return new ast::Bloc (instr, true);
     return new ast::Bloc (instr);
 }
 

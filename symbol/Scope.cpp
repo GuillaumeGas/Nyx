@@ -5,61 +5,54 @@ using namespace nyx;
 using namespace symbol;
 
 Scope::Scope(Scope * parent) {
-    parent_scope = parent;
-    next_scope = NULL;
+    _parent_scope = parent;
+    _next_scope = NULL;
 }
 
 Scope::~Scope() {
-    if (next_scope)
-	delete next_scope;
+    if (_next_scope)
+	delete _next_scope;
 
-    for (auto it = list.begin(); it != list.end(); it++)
+    for (auto it = _list.begin(); it != _list.end(); it++)
 	delete it->second;
 }
 
 Scope * Scope::newScope() {
-    if (next_scope) {
+    if (_next_scope) {
 	cout << "[Error] Next scope already exist." << endl;
 	exit(-1);
     }
-    next_scope = new Scope(this);
-    return next_scope;
+    _next_scope = new Scope(this);
+    return _next_scope;
 }
 
 Scope * Scope::getParent() {
-    return parent_scope;
+    return _parent_scope;
 }
 
 void Scope::addSymbol(Symbol * s, ast::Position * pos) {
-    if (list.find(s->name) != list.end()) {
-	throw MultipleDefException(Global::getInstance()->file_name, pos, s->name);
+    if (_list.find(s->getName ()) != _list.end()) {
+	throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName ());
 	exit(-1);
     }
-    list[s->name] = s;
+    _list[s->getName()] = s;
 }
 
 Symbol * Scope::getSymbol(string name, ast::Position * pos) {
-    auto it = list.find(name);
-    if (it != list.end())
+    auto it = _list.find(name);
+    if (it != _list.end())
 	return it->second;
-    if (parent_scope)
-	return parent_scope->getSymbol (name, pos);
+    if (_parent_scope)
+	return _parent_scope->getSymbol (name, pos);
     throw SymbolNotFoundException(Global::getInstance()->file_name, pos, name);
     exit(-1);
 }
 
-void Scope::exitBlock () {
-    if (next_scope) {
-	delete next_scope;
-	next_scope = NULL;
-    }
-}
-
 string Scope::toString() const {
     stringstream ss;
-    for (auto it = list.begin(); it != list.end(); it++)
+    for (auto it = _list.begin(); it != _list.end(); it++)
 	ss << it->second->toString() << endl;;
-    if (next_scope)
-	ss << next_scope->toString();
+    if (_next_scope)
+	ss << _next_scope->toString();
     return ss.str ();
 }

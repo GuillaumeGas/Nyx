@@ -23,3 +23,7 @@ void Cast::print (ostream & out, int offset) const {
     expr->print (out);
     out << ")";
 }
+
+AbstractObject * Cast::interpretExpression () {
+    return NULL;
+}

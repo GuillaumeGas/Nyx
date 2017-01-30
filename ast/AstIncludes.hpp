@@ -7,7 +7,7 @@
 #include "Operator.hpp"
 #include "Binop.hpp"
 #include "VarId.hpp"
-#include "Const.hpp"
+#include "Object.hpp"
 #include "IfElse.hpp"
 #include "FunDecl.hpp"
 #include "For.hpp"

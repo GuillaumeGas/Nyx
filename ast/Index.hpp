@@ -4,7 +4,7 @@
 
 #include "Expression.hpp"
 #include "Position.hpp"
-#include "Const.hpp"
+#include "Object.hpp"
 #include "exceptions/SemanticException.hpp"
 
 namespace nyx {
@@ -16,8 +16,8 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression ();
-	    Expression * interpretASSIGN (Expression * e);
+	    AbstractObject * interpretExpression ();
+	    AbstractObject * interpretASSIGN (AbstractObject * e);
 
 	    Expression * e1;
 	    Expression * e2;

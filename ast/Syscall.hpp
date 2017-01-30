@@ -6,7 +6,7 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 #include "exceptions/SemanticException.hpp"
-#include "Const.hpp"
+#include "Object.hpp"
 
 namespace nyx {
     namespace ast {
@@ -26,7 +26,7 @@ namespace nyx {
 	    std::string ident;
 	    std::vector<Expression*> * params;
 
-	    void _sysPrint (Expression * e);
+	    void _sysPrint (AbstractObject * e);
 	};
     };
 };

@@ -5,6 +5,7 @@
 #include "Position.hpp"
 #include "Type.hpp"
 #include "Expression.hpp"
+#include "Object.hpp"
 
 namespace nyx {
     namespace ast {
@@ -14,7 +15,7 @@ namespace nyx {
 	    ~Cast ();
 
 	    void print (std::ostream & out, int offset = 0) const;
-
+	    AbstractObject * interpretExpression ();
 
 
 	private:

@@ -4,9 +4,9 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Type::Type (const Type & type) : name (type.name), is_basic (type.is_basic) {
-    value = getValue ();
-}
+// Type::Type (const Type & type) : name (type.name), is_basic (type.is_basic) {
+//     value = getValue ();
+// }
 
 Type::Type (string name) : name (name), is_basic (true) {
     value = getValue ();
@@ -53,6 +53,8 @@ TYPE Type::getValue () const {
 	return TYPE::RANGE;
     } else if (name == "void") {
 	return TYPE::VOID;
+    } else if (name == "undef") {
+	return TYPE::UNDEF;
     } else {
 	return TYPE::ERR;
     }

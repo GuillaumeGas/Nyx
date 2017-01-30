@@ -9,6 +9,9 @@
 #include "../global/Global.hpp"
 #include "../ast/Position.hpp"
 
+/**
+   Scope class : contains symbols, may have a parent and a child.
+ */
 namespace nyx {
     namespace symbol {
 	class Scope {
@@ -16,18 +19,32 @@ namespace nyx {
 	    Scope(Scope * parent = NULL);
 	    ~Scope();
 
+	    /**
+	       Creates a new scope and returns it
+	     */
 	    Scope * newScope();
+
+	    /**
+	       Returns the parent's scope
+	     */
 	    Scope * getParent();
+
+	    /**
+	       Add the symbol in the current scope
+	     */
 	    void addSymbol(Symbol * s, ast::Position * pos);
+
+	    /**
+	       Returns the symbol according a name
+	     */
 	    Symbol * getSymbol(std::string name, ast::Position * pos);
-	    void exitBlock ();
 
 	    std::string toString() const;
 
 	private:
-	    std::map<std::string, Symbol*> list;
-	    Scope * parent_scope;
-	    Scope * next_scope;
+	    std::map<std::string, Symbol*> _list;
+	    Scope * _parent_scope;
+	    Scope * _next_scope;
 	};
     };
 };

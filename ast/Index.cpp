@@ -25,14 +25,11 @@ void Index::print (ostream & out, int offset) const {
     out << "]";
 }
 
-Expression * Index::interpretExpression () {
-    e1 = e1->interpretExpression ();
-    e2 = e2->interpretExpression ();
+AbstractObject * Index::interpretExpression () {
+    AbstractObject * left_value = e1->interpretExpression ();
+    AbstractObject * right_value = e2->interpretExpression ();
 
-    Value * left_value = e1->getValue ();
     TYPE left_type = left_value->getType ()->value;
-
-    Value * right_value = e2->getValue ();
     TYPE right_type = right_value->getType ()->value;
 
     if (left_type != TYPE::ARRAY && left_type != TYPE::STRING)
@@ -40,32 +37,27 @@ Expression * Index::interpretExpression () {
     if (right_type != TYPE::INT)
 	throw SemanticErrorException ("An index must be an integer !", e2->pos);
 
-    Array * left_array = (Array*) left_value->getPtr ();
-    vector<Expression*> * vec = left_array->array;
+    vector<Expression*> * vec = left_value->getArray ();
     int index = right_value->getInt ();
 
     if (index < vec->size ()) {
-	Expression * ret = (*vec)[index];
-	value = new Value (*(ret->getValue ()));
+	AbstractObject * ret = (*vec)[index]->interpretExpression ();
+	return (AbstractObject*) ret->clone ();
     } else {
 	throw SemanticErrorException ("Index out of bounds !", e2->pos);
     }
-    return this;
 }
 
-Expression * Index::interpretASSIGN (Expression * e) {
-    Value * array_value = e1->getValue ();
-    Value * index_value = e2->getValue ();
+// TODO !
+AbstractObject * Index::interpretASSIGN (AbstractObject * e) {
+    // vector<Expression*> * vec = left_array->array;
 
-    Array * left_array = (Array*) array_value->getPtr ();
-    vector<Expression*> * vec = left_array->array;
+    // delete (*vec)[index_value->getInt ()];
+    // (*vec)[index_value->getInt ()] = e->clone ();
 
-    delete (*vec)[index_value->getInt ()];
-    (*vec)[index_value->getInt ()] = e->clone ();
+    // if (value)
+    // 	delete value;
+    // value = new Value (*e->getValue ());
 
-    if (value)
-	delete value;
-    value = new Value (*e->getValue ());
-
-    return this;
+    return NULL;
 }

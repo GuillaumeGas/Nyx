@@ -6,9 +6,17 @@ using namespace symbol;
 
 Table * Table::instance = NULL;
 
-Table::Table() { current_scope = &main_scope; }
-Table::~Table() {}
+Table::Table() {
+    current_scope = NULL;
+    global_scope = new Scope ();
+}
 
+Table::~Table() {
+    if (global_scope) {
+    	GarbageCollector::getInstance ()->free (true);
+    	// delete global_scope;
+    }
+}
 Table * Table::getInstance() {
     if (instance == NULL)
 	instance = new Table;
@@ -16,14 +24,19 @@ Table * Table::getInstance() {
 }
 
 void Table::enterBlock() {
-    current_scope = current_scope->newScope();
+    if (current_scope) {
+	current_scope = current_scope->newScope();
+    } else {
+	current_scope = global_scope;
+    }
 }
 
 void Table::exitBlock() {
-    Scope * tmp = current_scope->getParent();
-    if (tmp) {
+    if (current_scope) {
+	Scope * tmp = current_scope->getParent();
+	delete current_scope;
 	current_scope = tmp;
-	current_scope->exitBlock ();
+	GarbageCollector::getInstance ()->free ();
     } else {
 	cout << "[Error] Cannot exit block." << endl;
 	exit(-1);

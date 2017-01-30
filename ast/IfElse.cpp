@@ -24,18 +24,18 @@ IfElse::~IfElse () {
     if (bloc_else) delete bloc_else;
 }
 
+// TODO : add garbagecollector
 void IfElse::interpret () {
-    cond = cond->interpretExpression ();
+    AbstractObject * res = (AbstractObject*) cond->interpretExpression ();
 
     symbol::Table * table = symbol::Table::getInstance ();
 
-    Value * cond_value = cond->getValue ();
-    TYPE cond_type = cond_value->getType ()->value;
+    TYPE res_type = res->getType ()->value;
 
-    if (cond_type != TYPE::BOOL)
+    if (res_type != TYPE::BOOL)
 	throw SemanticErrorException ("Boolean expression expected !", cond->pos);
 
-    if (cond_value->getBool () && bloc_if) {
+    if (res->getBool () && bloc_if) {
 	table->enterBlock ();
 	bloc_if->interpret ();
 	table->exitBlock ();

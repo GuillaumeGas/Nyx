@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "Operator.hpp"
 #include "Expression.hpp"
+#include "Object.hpp"
 #include "Position.hpp"
 #include "exceptions/SemanticException.hpp"
 #include "../symbol/Table.hpp"
@@ -15,8 +16,8 @@ namespace nyx {
 	    Binop(Expression * e1, Expression * e2, Operator * op, Position * pos);
 	    ~Binop();
 
-	    Expression * interpretExpression ();
-
+	    AbstractObject * interpretExpression ();
+	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    Expression * e1;

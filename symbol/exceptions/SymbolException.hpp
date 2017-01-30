@@ -20,7 +20,7 @@ namespace nyx {
 
   class MultipleDefException : public SymbolException {
   public:
-    MultipleDefException(const std::string& file_name, ast::Position * pos, std::string& msg) throw () : SymbolException (file_name, pos, msg) {}
+    MultipleDefException(const std::string& file_name, ast::Position * pos, std::string msg) throw () : SymbolException (file_name, pos, msg) {}
 
     std::string toString() const {
       return "[Error] Multiple definitions of " + msg + " at " + pos->toString() + ".\n" + Global::getInstance()->getLine(pos->line);
@@ -29,7 +29,7 @@ namespace nyx {
 
   class SymbolNotFoundException : public SymbolException {
   public:
-    SymbolNotFoundException(const std::string& file_name, ast::Position * pos, std::string& msg) throw () : SymbolException (file_name, pos, msg) {}
+    SymbolNotFoundException(const std::string& file_name, ast::Position * pos, std::string msg) throw () : SymbolException (file_name, pos, msg) {}
 
     std::string toString() const {
       return "[Error] Symbol " + msg + " not found at " + pos->toString() + "." + "\n" + Global::getInstance()->getLine(pos->line);

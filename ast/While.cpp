@@ -21,36 +21,36 @@ While::~While () {
 }
 
 void While::interpret () {
-    Expression * expr_cond = expr->interpretExpression ();
-    Value * expr_value = expr_cond->getValue ();
-    TYPE expr_type = expr_value->getType ()->value;
-    symbol::Table * table = symbol::Table::getInstance ();
+    // Expression * expr_cond = expr->interpretExpression ();
+    // Value * expr_value = expr_cond->getValue ();
+    // TYPE expr_type = expr_value->getType ()->value;
+    // symbol::Table * table = symbol::Table::getInstance ();
 
-    table->enterBlock ();
-    bool keep_going = true;
-    while (keep_going) {
-	expr = expr->interpretExpression ();
-	Value * expr_value = expr->getValue ();
-	TYPE expr_type = expr_value->getType ()->value;
+    // table->enterBlock ();
+    // bool keep_going = true;
+    // while (keep_going) {
+    // 	expr = expr->interpretExpression ();
+    // 	Value * expr_value = expr->getValue ();
+    // 	TYPE expr_type = expr_value->getType ()->value;
 
-	if (expr_type == TYPE::INT) {
-	    keep_going = expr_value->getInt ();
-	} else if (expr_type == TYPE::FLOAT) {
-	    keep_going = expr_value->getFloat ();
-	} else if (expr_type == TYPE::CHAR) {
-	    keep_going = expr_value->getChar ();
-	} else if (expr_type == TYPE::BOOL) {
-	    keep_going = expr_value->getBool ();
-	} else {
-	    throw SemanticErrorException ("Expected boolean expression.", pos);
-	}
+    // 	if (expr_type == TYPE::INT) {
+    // 	    keep_going = expr_value->getInt ();
+    // 	} else if (expr_type == TYPE::FLOAT) {
+    // 	    keep_going = expr_value->getFloat ();
+    // 	} else if (expr_type == TYPE::CHAR) {
+    // 	    keep_going = expr_value->getChar ();
+    // 	} else if (expr_type == TYPE::BOOL) {
+    // 	    keep_going = expr_value->getBool ();
+    // 	} else {
+    // 	    throw SemanticErrorException ("Expected boolean expression.", pos);
+    // 	}
 
-	if (!keep_going)
-	    break;
+    // 	if (!keep_going)
+    // 	    break;
 
-	bloc->interpret ();
-    }
-    table->exitBlock ();
+    // 	bloc->interpret ();
+    // }
+    // table->exitBlock ();
 }
 
 void While::print (ostream & out, int offset) const {

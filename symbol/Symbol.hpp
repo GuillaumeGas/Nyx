@@ -3,35 +3,51 @@
 #include <iostream>
 #include <sstream>
 #include "../ast/Type.hpp"
-#include "../ast/Value.hpp"
+#include "../ast/Object.hpp"
 
+/**
+   Symbol class : represents a symbol.
+
+   It has a name and can have a value (an pointer on an AbstractObject)
+   It can be defined or undefined (ex : let a; its type is undefined)
+ */
 namespace nyx {
     namespace symbol {
 	class Symbol {
 	public:
 	    Symbol (std::string & name);
-	    Symbol (std::string & name, int value);
-	    Symbol (std::string & name, float value);
-	    Symbol (std::string & name, bool value);
-	    Symbol (std::string & name, char value);
-	    Symbol (std::string & name, ast::Expression * value);
+	    Symbol (std::string & name, ast::AbstractObject * ptr);
 	    ~Symbol ();
 
-	    void setValue (int value);
-	    void setValue (float value);
-	    void setValue (char value);
-	    void setValue (bool value);
-	    void setValue (ast::Expression * value);
-	    void setValue (ast::Expression * value, const std::string type);
-	    void setType (ast::Type * type);
+	    /**
+	       Returns the value, a pointer on an abstract object
+	     */
+	    ast::AbstractObject * getValue () const;
 
-	    ast::Type * getType() const;
-	    ast::Value * getValue () const;
+	    /**
+	       Returns the symbol's name
+	     */
+	    std::string getName () const;
+
+	    /**
+	       Returns
+	        - true if the symbol is defined
+		- false if not (ex : let a; its type is undefined)
+	     */
+	    bool isDef () const;
+
+	    /**
+	       Set the symbol's value
+	       The symbol becomes 'defined'
+	     */
+	    void setValue (ast::AbstractObject * v);
+
 	    std::string toString() const;
 
-	    std::string name;
-	    ast::Type * type;
-	    ast::Value * value;
+	private:
+	    std::string _name;
+	    ast::AbstractObject * _ptr;
+	    bool _is_def;
 	};
     };
 };

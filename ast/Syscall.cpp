@@ -12,9 +12,9 @@ Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
 
 Syscall::~Syscall () {
     if (params) {
-	for (auto it : *params)
-	    if (it) delete it;
-	delete params;
+    	for (auto it : *params)
+    	    if (it) delete it;
+    	delete params;
     }
 }
 
@@ -43,53 +43,51 @@ void Syscall::print (ostream & out, int offset) const {
     out << ")";
 }
 
-void Syscall::_sysPrint (Expression * e) {
+void Syscall::_sysPrint (AbstractObject * e) {
     vector<Expression*> * vec = NULL;
     Range * range = NULL;
 
-    Value * v = e->getValue ();
-
-    if (v->getType ()->value == TYPE::ARRAY || v->getType ()->value == TYPE::RANGE)
+    if (e->getType ()->value == TYPE::ARRAY || e->getType ()->value == TYPE::RANGE)
 	cout << "[";
 
-    switch (v->getType ()->value) {
+    switch (e->getType ()->value) {
     case TYPE::INT:
-	cout << v->getInt ();
+	cout << e->getInt ();
 	break;
     case TYPE::CHAR:
-	cout << v->getChar ();
+	cout << e->getChar ();
 	break;
     case TYPE::BOOL:
-	cout << v->getBool ();
+	cout << e->getBool ();
 	break;
     case TYPE::FLOAT:
-	cout << v->getFloat ();
+	cout << e->getFloat ();
 	break;
     case TYPE::STRING:
-	vec = ((String*)(v->getPtr ()))->array;
+	vec = e->getArray ();
 	for (auto it : *vec) {
-	    _sysPrint (it);
+	    _sysPrint ((AbstractObject*) it);
 	}
 	break;
     case TYPE::ARRAY:
-	vec = ((Array*)(v->getPtr ()))->array;
+	vec = e->getArray ();
 	for (int i = 0; i < vec->size (); i++) {
-	    _sysPrint ((*vec)[i]);
+	    AbstractObject * obj = (*vec)[i]->interpretExpression ();
+	    _sysPrint (obj);
 	    if (i < vec->size () - 1)
 		cout << ", ";
 	}
 	break;
     case TYPE::RANGE:
-	range = (Range*) v->getPtr ();
-	cout << range->start->getValue ()->getInt ();
+	cout << e->getRangeStart ()->getInt ();
 	cout << " .. ";
-	cout << range->end->getValue ()->getInt ();
+	cout << e->getRangeEnd ()->getInt ();
 	break;
     default:
-	SemanticErrorException ("Unknown type " + v->getType ()->toString () + "!", pos);
+	SemanticErrorException ("Unknown type " + e->getType ()->toString () + "!", pos);
     }
 
-    if (v->getType ()->value == TYPE::ARRAY || v->getType ()->value == TYPE::RANGE)
+    if (e->getType ()->value == TYPE::ARRAY || e->getType ()->value == TYPE::RANGE)
 	cout << "]";
 }
 

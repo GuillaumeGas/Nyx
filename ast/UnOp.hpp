@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Operator.hpp"
 #include "Expression.hpp"
+#include "Object.hpp"
 #include "Position.hpp"
 #include "exceptions/SemanticException.hpp"
 
@@ -14,8 +15,7 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * interpretExpression();
-	    Expression * interpretUnaryMINUS ();
+	    AbstractObject * interpretExpression();
 
 	    Operator * op;
 	    Expression * expr;

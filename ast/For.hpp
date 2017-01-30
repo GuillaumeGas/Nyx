@@ -23,7 +23,7 @@ namespace nyx {
 	    Expression * expr;
 	    Bloc * bloc;
 
-	    void updateSymbolValue (symbol::Symbol * symbol, Expression * e);
+	    void updateSymbolValue (symbol::Symbol * symbol, AbstractObject * e);
 	};
     };
 };

@@ -32,7 +32,7 @@ namespace nyx {
 	void rewind (int count = 1);
 
 	/* Visitor */
-	ast::Bloc * visitBloc ();
+	ast::Bloc * visitBloc (bool global = false);
 	ast::Ast * visitInstruction ();
 	ast::Ast * visitFunDecl (TokenPtr token_type, TokenPtr token_ident);
 	ast::Ast * visitFunCall (TokenPtr token_ident);

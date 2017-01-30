@@ -13,8 +13,10 @@ namespace nyx {
 	    FunCall (std::string ident, std::vector<Expression*> * params, Position * pos);
 	    ~FunCall ();
 
-	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
+
+	    void interpret ();
+	    AbstractObject * interpretExpression ();
 
 	private:
 	    std::string name;

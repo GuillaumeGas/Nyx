@@ -6,66 +6,95 @@ using namespace ast;
 
 Binop::Binop(Expression * e1, Expression * e2, Operator * op, Position * pos) : e1(e1), e2(e2), op(op) {
     this->pos = pos;
-    this->value = new Value (this);
 }
 
 Binop::~Binop() {
-    if (e1)
-	delete e1;
-    if (e2)
-	delete e2;
+    // if (e1)
+    // 	delete e1;
+    // if (e2)
+    // 	delete e2;
     if (op)
 	delete op;
 }
 
-Expression * Binop::interpretExpression () {
-    Expression * left = e1->interpretExpression ();
-    Expression * right = e2->interpretExpression ();
+void Binop::interpret () {
+    interpretExpression ();
+}
+
+AbstractObject * Binop::interpretExpression () {
+    AbstractObject * left = e1->interpretExpression ();
+    AbstractObject * right = e2->interpretExpression ();
+
+    Position * pos_res = new Position (pos->line, pos->column);
+    AbstractObject * res = NULL;
 
     switch (op->value) {
     case Op::ASSIGN:
-	return left->interpretASSIGN (right);
+	res = left->interpretASSIGN (right);
+	break;
     case Op::LE:
-	return left->interpretLE (right);
+	res = left->interpretLE (right);
+	break;
     case Op::GE:
-	return left->interpretGE (right);
+	res = left->interpretGE (right);
+	break;
     case Op::NE:
-	return left->interpretNE (right);
+	res = left->interpretNE (right);
+	break;
     case Op::PLUSEQ:
-	return left->interpretPLUSEQ (right);
+	res = left->interpretPLUSEQ (right);
+	break;
     case Op::MINUSEQ:
-	return left->interpretMINUSEQ (right);
+	res = left->interpretMINUSEQ (right);
+	break;
     case Op::MULEQ:
-	return left->interpretMULEQ (right);
+	res = left->interpretMULEQ (right);
+	break;
     case Op::DIVEQ:
-	return left->interpretDIVEQ (right);
+	res = left->interpretDIVEQ (right);
+	break;
     case Op::MODEQ:
-	return left->interpretMODEQ (right);
+	res = left->interpretMODEQ (right);
+	break;
     case Op::LT:
-	return left->interpretLT (right);
+	res = left->interpretLT (right);
+	break;
     case Op::GT:
-	return left->interpretGT (right);
+	res = left->interpretGT (right);
+	break;
     case Op::EQ:
-	return left->interpretEQ (right);
+	res = left->interpretEQ (right);
+	break;
     case Op::AND:
-	return left->interpretAND (right);
+	res = left->interpretAND (right);
+	break;
     case Op::OR:
-	return left->interpretOR (right);
+	res = left->interpretOR (right);
+	break;
     case Op::PLUS:
-	return left->interpretPLUS (right);
+	res = left->interpretPLUS (right);
+	break;
     case Op::MINUS:
-	return left->interpretMINUS (right);
+	res = left->interpretMINUS (right);
+	break;
     case Op::MUL:
-	return left->interpretMUL (right);
+	res = left->interpretMUL (right);
+	break;
     case Op::DIV:
-	return left->interpretDIV (right);
+	res = left->interpretDIV (right);
+	break;
     case Op::MOD:
-	return left->interpretMOD (right);
+	res = left->interpretMOD (right);
+	break;
     case Op::POINT:
-	return left->interpretPOINT (right);
+	res = left->interpretPOINT (right);
+	break;
     default:
 	throw SemanticErrorException ("Unknown operator '" + op->toString () + "'", pos);
     }
+
+    res->pos = pos_res;
+    return res;
 }
 
 void Binop::print (ostream & out, int offset) const {

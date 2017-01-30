@@ -47,20 +47,17 @@ void Compilo::compile() {
     	exit(-1);
     }
 
-    // cout << "/---------------- Execution -----------------\\" << endl << endl;
-    // try {
-    //   m_ast->interpret();
-    //   cout << endl;
-    // } catch(SymbolException const& e) {
-    //   cout << e.toString () << endl;
-    //   exit(-1);
-    // } catch(SemanticErrorException const& e) {
-    //   cout << e.toString () << endl;
-    //   exit(-1);
-    // }
-
-    // cout << "/------------ Final symbols table ------------\\" << endl << endl;
-    // cout << symbol::Table::getInstance()->toString() << endl;
+    cout << "/---------------- Execution -----------------\\" << endl << endl;
+    try {
+      m_ast->interpret();
+      cout << endl;
+    } catch(SymbolException const& e) {
+      cout << e.toString () << endl;
+      exit(-1);
+    } catch(SemanticErrorException const& e) {
+      cout << e.toString () << endl;
+      exit(-1);
+    }
 }
 
 void Compilo::printAst() const {

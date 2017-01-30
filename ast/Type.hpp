@@ -15,12 +15,13 @@ namespace nyx {
 	    RANGE,
 	    PTR,
 	    VOID,
+	    UNDEF,
 	    ERR
 	};
 
 	class Type {
 	public:
-	    Type (const Type & type);
+	    // Type (const Type & type);
 	    Type (std::string name);
 	    Type (std::string name, bool is_basic);
 	    ~Type();

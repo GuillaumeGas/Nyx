@@ -18,7 +18,9 @@ FunCall::~FunCall () {
     }
 }
 
-void FunCall::interpret () {}
+void FunCall::interpret () { interpretExpression (); }
+
+AbstractObject * FunCall::interpretExpression () { return NULL; }
 
 void FunCall::print (ostream & out, int offset) const {
     shift (out, offset);

@@ -1,8 +1,4 @@
-class Test {
-    public {
-	this (int a) {
-	    a = 2;
-	    $print ("test");
-	}
-    }
-}
+let a = 2;
+let b = 1 + 2;
+// $println (-a);
+// $println (b);
