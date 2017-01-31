@@ -19,7 +19,7 @@ namespace nyx {
 	    int getNbRef () const;
 	    void setNbRef (const int nb);
 	    Type * getType () const;
-	    AbstractObject * getPtr ();
+	    virtual AbstractObject * getPtr ();
 
 	    virtual bool getBool () const;
 	    virtual int getInt () const;

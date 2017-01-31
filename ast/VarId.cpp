@@ -6,10 +6,12 @@ using namespace ast;
 
 VarId::VarId(string name, Position * pos) : name(name) {
     this->pos = pos;
+    this->type = NULL;
 }
 
 VarId::VarId (string name, AbstractObject * ptr, Position * pos) : name (name), value (ptr) {
     this->pos = pos;
+    this->type = NULL;
 }
 
 VarId::~VarId() {}
@@ -59,7 +61,6 @@ AbstractObject * VarId::interpretASSIGN (AbstractObject * e) {
     }
 
     // This object is referenced one more time by the current var...
-    // e = e->interpretExpression ();
     AbstractObject * new_value = e->getPtr ();
     new_value->setNbRef (new_value->getNbRef () + 1);
 
