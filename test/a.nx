@@ -1,6 +1,5 @@
 let a = 2;
-let b = a;
-// a = 3;
-// $println (-a);
-// $println (b);
- 
+if (1 <= 2) {
+    $println ("test");
+ }
+    $println ("test2");

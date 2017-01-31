@@ -593,13 +593,13 @@ AbstractObject * Int::interpretLE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value <= e->getFloat (), NULL);
+	return new Bool ((float) value <= e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value <= e->getInt (), NULL);
+	return new Bool (value <= e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value <= e->getChar (), NULL);
+	return new Bool (value <= e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }

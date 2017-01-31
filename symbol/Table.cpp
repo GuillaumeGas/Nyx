@@ -31,13 +31,10 @@ void Table::exitBlock() {
     if (current_scope) {
 	// if the current scope and the main scope are the same, that means the end of the program, we delete all the objects
 	if (current_scope == global_scope) {
-	    cout << "ici" << endl;
-	    GarbageCollector::getInstance ()->free ();
 	    GarbageCollector::getInstance ()->freeAll ();
 	    delete global_scope;
 	    global_scope = current_scope = NULL;
 	} else {
-	    cout << "et pas là" << endl;
 	    // the current scope becomes the last current scope's parent
 	    Scope * tmp = current_scope->getParent();
 	    delete current_scope;

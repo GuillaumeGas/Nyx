@@ -13,6 +13,9 @@ Scope::~Scope() {
     if (_next_scope)
 	delete _next_scope;
 
+    if (_parent_scope)
+	_parent_scope->_next_scope = NULL;
+
     for (auto it = _list.begin(); it != _list.end(); it++)
 	delete it->second;
 }

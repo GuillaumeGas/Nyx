@@ -24,7 +24,6 @@ IfElse::~IfElse () {
     if (bloc_else) delete bloc_else;
 }
 
-// TODO : add garbagecollector
 void IfElse::interpret () {
     AbstractObject * res = (AbstractObject*) cond->interpretExpression ();
 
