@@ -14,7 +14,7 @@ namespace nyx {
 	class VarDecl : public Ast {
 	public:
 	    VarDecl (VarId * var_id, Position * pos);
-	    VarDecl(Type * type, VarId * var_id, Position * pos);
+	    VarDecl (Type * type, VarId * var_id, Position * pos);
 	    ~VarDecl();
 
 	    void interpret();

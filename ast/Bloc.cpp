@@ -34,9 +34,6 @@ void Bloc::interpret() {
 	a->interpret();
 
     if (_is_global)
-	cout << endl << "** Table de symboles **" << endl << table->toString() << endl;
-
-    if (_is_global)
 	table->exitBlock ();
 }
 

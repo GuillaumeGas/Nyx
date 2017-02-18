@@ -30,6 +30,14 @@ AbstractObject * AbstractObject::getRangeStart () const { throw -1; }
 AbstractObject * AbstractObject::getRangeEnd () const { throw -1; }
 // Object * AbstractObject::getObject () const { throw -1; }
 
+void AbstractObject::setBool (bool v) { throw -1; }
+void AbstractObject::setInt (int v) { throw -1; }
+void AbstractObject::setChar (char v) { throw -1; }
+void AbstractObject::setFloat (float v) { throw -1; }
+void AbstractObject::setArray (std::vector<Expression*> * v) { throw -1; }
+void AbstractObject::setRangeStart (AbstractObject * v) { throw -1; }
+void AbstractObject::setRangeEnd (AbstractObject * v) { throw -1; }
+// virtual void AbstractObject::setObject (Object * v) { throw -1; }
 
 AbstractObject * AbstractObject::interpretASSIGN (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
 AbstractObject * AbstractObject::interpretLE (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
@@ -72,11 +80,11 @@ void Bool::print (ostream & out, int offset) const {
 
 Expression * Bool::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return new Bool (value, new_pos);
+    return (new Bool (value, new_pos))->interpretExpression ();
 }
 
 AbstractObject * Bool::interpretExpression () { 
-    symbol::GarbageCollector::getInstance ()->addObject (this);
+    
     return this;
 }
 
@@ -101,13 +109,13 @@ AbstractObject * Bool::interpretGE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value >= e->getFloat (), NULL);
+	return new Bool (value >= e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value >= e->getInt (), NULL);
+	return new Bool (value >= e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value >= e->getChar (), NULL);
+	return new Bool (value >= e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -118,13 +126,13 @@ AbstractObject * Bool::interpretNE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value != e->getFloat (), NULL);
+	return new Bool (value != e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value != e->getInt (), NULL);
+	return new Bool (value != e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value != e->getChar (), NULL);
+	return new Bool (value != e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -135,13 +143,13 @@ AbstractObject * Bool::interpretLT (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value < e->getFloat (), NULL);
+	return new Bool (value < e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value < e->getInt (), NULL);
+	return new Bool (value < e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value < e->getChar (), NULL);
+	return new Bool (value < e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -152,13 +160,13 @@ AbstractObject * Bool::interpretGT (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value > e->getFloat (), NULL);
+	return new Bool (value > e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value > e->getInt (), NULL);
+	return new Bool (value > e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value > e->getChar (), NULL);
+	return new Bool (value > e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -169,13 +177,13 @@ AbstractObject * Bool::interpretEQ (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value == e->getFloat (), NULL);
+	return new Bool (value == e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value == e->getInt (), NULL);
+	return new Bool (value == e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value == e->getChar (), NULL);
+	return new Bool (value == e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -186,13 +194,13 @@ AbstractObject * Bool::interpretAND (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value && e->getFloat (), NULL);
+	return new Bool (value && e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value && e->getInt (), NULL);
+	return new Bool (value && e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value && e->getChar (), NULL);
+	return new Bool (value && e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -203,13 +211,13 @@ AbstractObject * Bool::interpretOR (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value || e->getFloat (), NULL);
+	return new Bool (value || e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value || e->getInt (), NULL);
+	return new Bool (value || e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value || e->getChar (), NULL);
+	return new Bool (value || e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -220,13 +228,13 @@ AbstractObject * Bool::interpretPLUS (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value + e->getFloat (), NULL);
+	return new Bool (value + e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value + e->getInt (), NULL);
+	return new Bool (value + e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value + e->getChar (), NULL);
+	return new Bool (value + e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -238,13 +246,13 @@ AbstractObject * Bool::interpretMINUS (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value - e->getFloat (), NULL);
+	return new Bool (value - e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value - e->getInt (), NULL);
+	return new Bool (value - e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value - e->getChar (), NULL);
+	return new Bool (value - e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -256,13 +264,13 @@ AbstractObject * Bool::interpretMUL (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value * e->getFloat (), NULL);
+	return new Bool (value * e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value * e->getInt (), NULL);
+	return new Bool (value * e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value * e->getChar (), NULL);
+	return new Bool (value * e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -274,13 +282,13 @@ AbstractObject * Bool::interpretDIV (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	new Bool (value / e->getFloat (), NULL);
+	return new Bool (value / e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	new Bool (value / e->getInt (), NULL);
+	return new Bool (value / e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value / e->getChar (), NULL);
+	return new Bool (value / e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	new Bool (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -292,9 +300,9 @@ AbstractObject * Bool::interpretMOD (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::INT) {
-	new Bool (value % e->getInt (), NULL);
+	return new Bool (value % e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	new Bool (value % e->getChar (), NULL);
+	return new Bool (value % e->getChar (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -304,7 +312,7 @@ AbstractObject * Bool::interpretMOD (AbstractObject * e) {
 
 
 AbstractObject * Bool::interpretUnaryMINUS () {
-    new Bool (value * -1, NULL);
+    return new Bool (value * -1, NULL);
 }
 
 
@@ -326,11 +334,11 @@ void Char::print (ostream & out, int offset) const {
 
 Expression * Char::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return new Char (value, new_pos);
+    return (new Char (value, new_pos))->interpretExpression ();
 }
 
 AbstractObject * Char::interpretExpression () { 
-    symbol::GarbageCollector::getInstance ()->addObject (this);
+    
     return this;
 }
 
@@ -571,9 +579,11 @@ Int::Int(int v, Position * pos) {
     this->type = new Type ("int");
 }
 
-Int::~Int() {}
+Int::~Int() { }
 
 int Int::getInt () const { return value; }
+
+void Int::setInt (int v) { value = v; }
 
 void Int::print (ostream & out, int offset) const {
     out << "ConstInt(" << value << ")";
@@ -581,11 +591,10 @@ void Int::print (ostream & out, int offset) const {
 
 Expression * Int::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return new Int (value, new_pos);
+    return (new Int (value, new_pos))->interpretExpression ();
 }
 
 AbstractObject * Int::interpretExpression () { 
-    symbol::GarbageCollector::getInstance ()->addObject (this);
     return this;
 }
 
@@ -610,13 +619,13 @@ AbstractObject * Int::interpretGE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value >= e->getFloat (), NULL);
+	return new Bool ((float) value >= e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value >= e->getInt (), NULL);
+	return new Bool (value >= e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value >= e->getChar (), NULL);
+	return new Bool (value >= e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -627,13 +636,13 @@ AbstractObject * Int::interpretNE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value != e->getFloat (), NULL);
+	return new Bool ((float) value != e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value != e->getInt (), NULL);
+	return new Bool (value != e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value != e->getChar (), NULL);
+	return new Bool (value != e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -644,13 +653,13 @@ AbstractObject * Int::interpretLT (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value < e->getFloat (), NULL);
+	return new Bool ((float) value < e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value < e->getInt (), NULL);
+	return new Bool (value < e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value < e->getChar (), NULL);
+	return new Bool (value < e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -661,13 +670,13 @@ AbstractObject * Int::interpretGT (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value > e->getFloat (), NULL);
+	return new Bool ((float) value > e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value > e->getInt (), NULL);
+	return new Bool (value > e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value > e->getChar (), NULL);
+	return new Bool (value > e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -678,13 +687,13 @@ AbstractObject * Int::interpretEQ (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value == e->getFloat (), NULL);
+	return new Bool ((float) value == e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value == e->getInt (), NULL);
+	return new Bool (value == e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value == e->getChar (), NULL);
+	return new Bool (value == e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -695,13 +704,13 @@ AbstractObject * Int::interpretAND (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value && e->getFloat (), NULL);
+	return new Bool ((float) value && e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value && e->getInt (), NULL);
+	return new Bool (value && e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value && e->getChar (), NULL);
+	return new Bool (value && e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -712,13 +721,13 @@ AbstractObject * Int::interpretOR (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value || e->getFloat (), NULL);
+	return new Bool ((float) value || e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Int (value || e->getInt (), NULL);
+	return new Bool (value || e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value || e->getChar (), NULL);
+	return new Bool (value || e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -834,11 +843,11 @@ void Float::print (ostream & out, int offset) const {
 
 Expression * Float::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return new Float (value, new_pos);
+    return (new Float (value, new_pos))->interpretExpression ();
 }
 
 AbstractObject * Float::interpretExpression () { 
-    symbol::GarbageCollector::getInstance ()->addObject (this);
+    
     return this;
 }
 
@@ -846,13 +855,13 @@ AbstractObject * Float::interpretLE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float ( value <= e->getFloat (), NULL);
+	return new Bool ( value <= e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value <= e->getInt (), NULL);
+	return new Bool (value <= e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value <= e->getChar (), NULL);
+	return new Bool (value <= e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -863,13 +872,13 @@ AbstractObject * Float::interpretGE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value >= e->getFloat (), NULL);
+	return new Bool (value >= e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value >= e->getInt (), NULL);
+	return new Bool (value >= e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value >= e->getChar (), NULL);
+	return new Bool (value >= e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -880,13 +889,13 @@ AbstractObject * Float::interpretNE (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value != e->getFloat (), NULL);
+	return new Bool (value != e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value != e->getInt (), NULL);
+	return new Bool (value != e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value != e->getChar (), NULL);
+	return new Bool (value != e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -897,13 +906,13 @@ AbstractObject * Float::interpretLT (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value < e->getFloat (), NULL);
+	return new Bool (value < e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value < e->getInt (), NULL);
+	return new Bool (value < e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value < e->getChar (), NULL);
+	return new Bool (value < e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -914,13 +923,13 @@ AbstractObject * Float::interpretGT (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value > e->getFloat (), NULL);
+	return new Bool (value > e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value > e->getInt (), NULL);
+	return new Bool (value > e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value > e->getChar (), NULL);
+	return new Bool (value > e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -931,13 +940,13 @@ AbstractObject * Float::interpretEQ (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value == e->getFloat (), NULL);
+	return new Bool (value == e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value == e->getInt (), NULL);
+	return new Bool (value == e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value == e->getChar (), NULL);
+	return new Bool (value == e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -948,13 +957,13 @@ AbstractObject * Float::interpretAND (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value && e->getFloat (), NULL);
+	return new Bool (value && e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value && e->getInt (), NULL);
+	return new Bool (value && e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value && e->getChar (), NULL);
+	return new Bool (value && e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -965,13 +974,13 @@ AbstractObject * Float::interpretOR (AbstractObject * e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value || e->getFloat (), NULL);
+	return new Bool (value || e->getFloat (), NULL);
     } else if (e_type == TYPE::INT) {
-	return new Float (value || e->getInt (), NULL);
+	return new Bool (value || e->getInt (), NULL);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value || e->getChar (), NULL);
+	return new Bool (value || e->getChar (), NULL);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return new Bool (value <= e->getBool (), NULL);
     } else {
 	throw TypeErrorException (this, e, pos);
     }
@@ -1070,7 +1079,7 @@ Expression * Array::clone () {
 	AbstractObject * obj = (AbstractObject *)it;
 	vec->push_back (obj->clone ());
     }
-    return new Array (vec, new_pos);
+    return (new Array (vec, new_pos))->interpretExpression ();
 }
 
 Array::Array () {}
@@ -1104,7 +1113,7 @@ void Array::print (ostream & out, int offset) const {
 AbstractObject * Array::interpretExpression () {
     for (auto & it : *array)
 	it = it->interpretExpression ();
-    symbol::GarbageCollector::getInstance ()->addObject (this);
+    
     return this;
 }
 
@@ -1143,7 +1152,7 @@ void String::print (ostream & out, int offset) const {
 }
 
 AbstractObject * String::interpretExpression () {
-    symbol::GarbageCollector::getInstance ()->addObject (this);
+    
     return this;
 }
 
@@ -1158,14 +1167,14 @@ Range::Range (Expression * start, Expression * end, Position * pos) {
 
 Expression * Range::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return new Range (((AbstractObject*)start)->clone (), ((AbstractObject*)end)->clone (), new_pos);
+    return (new Range (((AbstractObject*)start)->clone (), ((AbstractObject*)end)->clone (), new_pos))->interpretExpression ();;
 }
 
 Range::~Range () {
     if (start)
-	delete start;
+    	delete start;
     if (end)
-	delete end;
+    	delete end;
 }
 
 AbstractObject * Range::getRangeStart () const { return (AbstractObject*) start; }
@@ -1180,7 +1189,7 @@ void Range::print (ostream & out, int offset) const {
 }
 
 AbstractObject * Range::interpretExpression () {
-    symbol::GarbageCollector::getInstance ()->addObject (this);
+    
     AbstractObject * first = (AbstractObject*) start->interpretExpression ();
     AbstractObject * second = (AbstractObject*) end->interpretExpression ();
     if (first->getType ()->value != TYPE::INT) {

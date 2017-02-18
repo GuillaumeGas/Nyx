@@ -22,8 +22,6 @@ namespace nyx {
 	    VarId * var_loop;
 	    Expression * expr;
 	    Bloc * bloc;
-
-	    void updateSymbolValue (symbol::Symbol * symbol, AbstractObject * e);
 	};
     };
 };

@@ -9,10 +9,10 @@ Binop::Binop(Expression * e1, Expression * e2, Operator * op, Position * pos) : 
 }
 
 Binop::~Binop() {
-    // if (e1)
-    // 	delete e1;
-    // if (e2)
-    // 	delete e2;
+    if (e1)
+	delete e1;
+    if (e2)
+	delete e2;
     if (op)
 	delete op;
 }
@@ -25,7 +25,6 @@ AbstractObject * Binop::interpretExpression () {
     AbstractObject * left = e1->interpretExpression ();
     AbstractObject * right = e2->interpretExpression ();
 
-    Position * pos_res = new Position (pos->line, pos->column);
     AbstractObject * res = NULL;
 
     switch (op->value) {
@@ -93,7 +92,9 @@ AbstractObject * Binop::interpretExpression () {
 	throw SemanticErrorException ("Unknown operator '" + op->toString () + "'", pos);
     }
 
-    res->pos = pos_res;
+    if (res->pos == NULL)
+	res->pos = new Position (pos->line, pos->column);;
+
     return res;
 }
 

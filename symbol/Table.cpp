@@ -29,9 +29,8 @@ void Table::enterBlock() {
 
 void Table::exitBlock() {
     if (current_scope) {
-	// if the current scope and the main scope are the same, that means the end of the program, we delete all the objects
+	// if the current scope and the main scope are the same, that means the end of the program, we delete the global scope
 	if (current_scope == global_scope) {
-	    GarbageCollector::getInstance ()->freeAll ();
 	    delete global_scope;
 	    global_scope = current_scope = NULL;
 	} else {
@@ -39,8 +38,6 @@ void Table::exitBlock() {
 	    Scope * tmp = current_scope->getParent();
 	    delete current_scope;
 	    current_scope = tmp;
-	    // we quit a bloc, so we delete all the objects that are no longer referenced
-	    GarbageCollector::getInstance ()->free ();
 	}
     } else {
 	cout << "[Error] Cannot exit block." << endl;
@@ -48,14 +45,19 @@ void Table::exitBlock() {
     }
 }
 
-void Table::addSymbol(Symbol * s, ast::Position * pos) {
+void Table::addSymbol (Symbol * s, ast::Position * pos) {
+    if (current_scope->getSymbol (s->getName (), pos) != NULL)
+	throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName ());
     current_scope->addSymbol(s, pos);
 }
 
 Symbol * Table::getSymbol(string name, ast::Position * pos) {
-    return current_scope->getSymbol(name, pos);
+    Symbol * res = current_scope->getSymbol(name, pos);
+    if (res == NULL)
+	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
+    return res;
 }
 
 string Table::toString() const {
-    return current_scope->toString();
+    return current_scope->toString ();
 }

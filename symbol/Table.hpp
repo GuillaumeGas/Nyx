@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <list>
+#include <sstream>
 
-#include "GarbageCollector.hpp"
 #include "Symbol.hpp"
 #include "Scope.hpp"
 #include "../ast/Position.hpp"
@@ -12,8 +12,7 @@
 /**
    Symbol table
 
-   Keep a pointer on the global scope, the current scope and a list of objects.
-   When we quit a scope, we check if an object needs to be destroyed (its ref is <= 0)
+   Keep a pointer on the global scope and the current scope.
  */
 namespace nyx {
     namespace symbol {

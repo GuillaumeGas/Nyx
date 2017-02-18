@@ -42,12 +42,24 @@ namespace nyx {
 	     */
 	    void setValue (ast::AbstractObject * v);
 
+	    /**
+	       Set the symbol's const state
+	     */
+	    void setConst (bool is_const);
+
 	    std::string toString() const;
 
-	private:
+	protected:
 	    std::string _name;
 	    ast::AbstractObject * _ptr;
 	    bool _is_def;
+	    bool _is_const;
+	};
+
+	class ConstSymbol : public Symbol {
+	public:
+	    ConstSymbol (std::string & name, ast::AbstractObject * ptr);
+	    ConstSymbol (std::string & name);
 	};
     };
 };

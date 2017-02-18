@@ -12,6 +12,10 @@ Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
 
 Syscall::~Syscall () {
     if (params) {
+	for (auto it : *params)
+	    if (it) {
+		delete it;
+	    }
     	delete params;
     }
 }

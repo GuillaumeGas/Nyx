@@ -38,6 +38,7 @@ ast::Bloc * Syntax::visitBloc (bool global) {
     	rewind ();
     	switch (next->type) {
     	case TokenType::LET:
+	case TokenType::CONST:
     	case TokenType::OTHER:
     	case TokenType::DOLLAR:
     	case TokenType::RETURN:

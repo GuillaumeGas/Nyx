@@ -29,8 +29,9 @@ void VarId::print (ostream & out, int offset) const {
 }
 
 Expression * VarId::clone () {
-    Position * new_pos = new Position (pos->line, pos->column);
-    return new VarId (name, value, new_pos);
+    // Position * new_pos = new Position (pos->line, pos->column);
+    // return new VarId (name, value, new_pos);
+    return value->clone ();
 }
 
 AbstractObject * VarId::getPtr () {

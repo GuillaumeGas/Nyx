@@ -34,10 +34,6 @@ Scope * Scope::getParent() {
 }
 
 void Scope::addSymbol(Symbol * s, ast::Position * pos) {
-    if (_list.find(s->getName ()) != _list.end()) {
-	throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName ());
-	exit(-1);
-    }
     _list[s->getName()] = s;
 }
 
@@ -47,8 +43,7 @@ Symbol * Scope::getSymbol(string name, ast::Position * pos) {
 	return it->second;
     if (_parent_scope)
 	return _parent_scope->getSymbol (name, pos);
-    throw SymbolNotFoundException(Global::getInstance()->file_name, pos, name);
-    exit(-1);
+    return NULL;
 }
 
 string Scope::toString() const {

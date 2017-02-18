@@ -35,7 +35,8 @@ namespace nyx {
 	    void addSymbol(Symbol * s, ast::Position * pos);
 
 	    /**
-	       Returns the symbol according a name
+	       Return the symbol according a name
+	       Return NULL if the symbol was not found
 	     */
 	    Symbol * getSymbol(std::string name, ast::Position * pos);
 

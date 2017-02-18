@@ -1,5 +1,14 @@
-let a = 2;
-if (1 <= 2) {
-    $println ("test");
+let res = 0;
+let tab_res = [];
+
+while (res < 10) {
+    if (res == 0) {
+	$println ("start !");
+    } else {
+	$println ("keep going..");
+    }
+    tab_res = tab_res + res;
+    res = res + 1;
  }
-    $println ("test2");
+
+$println ("fin : ", tab_res);

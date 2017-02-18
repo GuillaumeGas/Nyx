@@ -5,9 +5,8 @@ using namespace nyx;
 using namespace ast;
 
 Ast::~Ast() {
-  if (pos) {
-    delete pos;
-  }
+    if (pos)
+	delete pos;
 }
 
 void Ast::print (ostream & out, int offset) const { out << "ROOT"; }

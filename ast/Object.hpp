@@ -6,8 +6,20 @@
 #include "Expression.hpp"
 #include "Position.hpp"
 #include "Type.hpp"
-#include "../symbol/GarbageCollector.hpp"
 
+/**
+   Object file
+
+   I use AbstractObject to describe the members of an expression. Thus, a const int will be an Int object, that inherits from AbstractObject.
+
+   Each object inherits the interpret virtual methods declared in the AbstractObject class :
+     - interpretExpression
+     - interpretASSIGN...
+
+   An object has a number of references on it, in order to know if we have to delete it at the end of bloc.
+
+   An object has a type, it is determined in the constructor of AbstractObject's child classes.
+ */
 namespace nyx {
     namespace ast {
 	class AbstractObject : public Expression {
@@ -16,11 +28,31 @@ namespace nyx {
 	    virtual void print (std::ostream & out, int offset = 0) const = 0;
 	    virtual ~AbstractObject ();
 
+	    /**
+	       Return the number of elements that references this object
+	     */
 	    int getNbRef () const;
+
+	    /**
+	       Set the number of references of the object
+	     */
 	    void setNbRef (const int nb);
+
+	    /**
+	       Return a pointer to a type of the object
+	     */
 	    Type * getType () const;
+
+	    /**
+	       Virtual method that return a pointer on the object
+
+	       Note : overrided in VarId to return its value and not itself
+	     */
 	    virtual AbstractObject * getPtr ();
 
+	    /**
+	       The following virtual methods are used to get the value of the object according to its type 
+	     */
 	    virtual bool getBool () const;
 	    virtual int getInt () const;
 	    virtual char getChar () const;
@@ -30,7 +62,21 @@ namespace nyx {
 	    virtual AbstractObject * getRangeEnd () const;
 	    // virtual Object * getObject () const;
 
+	    virtual void setBool (bool v);
+	    virtual void setInt (int v);
+	    virtual void setChar (char v);
+	    virtual void setFloat (float v);
+	    virtual void setArray (std::vector<Expression*> * v);
+	    virtual void setRangeStart (AbstractObject * v);
+	    virtual void setRangeEnd (AbstractObject * v);
+	    // virtual void setObject (Object * v);
+
+	    /**
+	       The clone method clone the current object, and call the interpretExpression method on the result before returning it
+	       to be sure that the object will be collected by the garbage collector
+	     */
 	    virtual Expression * clone () = 0;
+
 	    virtual AbstractObject * interpretExpression() = 0;
 	    virtual AbstractObject * interpretASSIGN (AbstractObject * e);
 	    virtual AbstractObject * interpretLE (AbstractObject * e);
@@ -66,6 +112,8 @@ namespace nyx {
 	    ~Int();
 
 	    int getInt () const;
+	    void setInt (int v);
+
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    Expression * clone ();

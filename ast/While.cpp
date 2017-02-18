@@ -21,36 +21,40 @@ While::~While () {
 }
 
 void While::interpret () {
-    // Expression * expr_cond = expr->interpretExpression ();
-    // Value * expr_value = expr_cond->getValue ();
-    // TYPE expr_type = expr_value->getType ()->value;
-    // symbol::Table * table = symbol::Table::getInstance ();
+    symbol::Table * table = symbol::Table::getInstance ();
+    table->enterBlock ();
 
-    // table->enterBlock ();
-    // bool keep_going = true;
-    // while (keep_going) {
-    // 	expr = expr->interpretExpression ();
-    // 	Value * expr_value = expr->getValue ();
-    // 	TYPE expr_type = expr_value->getType ()->value;
+    AbstractObject * expr_cond;
+    TYPE expr_type;
 
-    // 	if (expr_type == TYPE::INT) {
-    // 	    keep_going = expr_value->getInt ();
-    // 	} else if (expr_type == TYPE::FLOAT) {
-    // 	    keep_going = expr_value->getFloat ();
-    // 	} else if (expr_type == TYPE::CHAR) {
-    // 	    keep_going = expr_value->getChar ();
-    // 	} else if (expr_type == TYPE::BOOL) {
-    // 	    keep_going = expr_value->getBool ();
-    // 	} else {
-    // 	    throw SemanticErrorException ("Expected boolean expression.", pos);
-    // 	}
+    bool keep_going = true;
+    while (keep_going) {
+	expr_cond = expr->interpretExpression ();
+	expr_type = expr_cond->getType ()->value;
 
-    // 	if (!keep_going)
-    // 	    break;
+    	if (expr_type == TYPE::INT) {
+    	    keep_going = expr_cond->getInt ();
+    	} else if (expr_type == TYPE::FLOAT) {
+    	    keep_going = expr_cond->getFloat ();
+    	} else if (expr_type == TYPE::CHAR) {
+    	    keep_going = expr_cond->getChar ();
+    	} else if (expr_type == TYPE::BOOL) {
+    	    keep_going = expr_cond->getBool ();
+    	} else {
+    	    throw SemanticErrorException ("Expected boolean expression.", pos);
+    	}
 
-    // 	bloc->interpret ();
-    // }
-    // table->exitBlock ();
+    	if (keep_going) {
+	    table->enterBlock ();
+	    bloc->interpret ();
+	    table->enterBlock ();
+	}
+    }
+    
+    if (expr_cond->getNbRef () <= 0)
+	delete expr_cond;
+
+    table->exitBlock ();
 }
 
 void While::print (ostream & out, int offset) const {
