@@ -2,7 +2,6 @@
 
 using namespace std;
 using namespace nyx;
-using namespace syntax;
 
 Syntax::Syntax(Lexer & lex) : m_lex(lex) {
     m_table = symbol::Table::getInstance();
@@ -148,7 +147,7 @@ ast::Ast * Syntax::visitFunDecl (TokenPtr token_type, TokenPtr token_ident) {
     ast::Bloc * content = visitBloc ();
     ast::Type * type = new ast::Type (token_type->value, true);
     string ident = token_ident->value;
-    ast::Position * pos = new ast::Position (token_type->line, token_type->column);
+    Position * pos = new Position (token_type->line, token_type->column);
 
     return new ast::FunDecl (type, ident, params, content, pos);
 }
@@ -172,7 +171,7 @@ vector <ast::VarDecl*> * Syntax::visitParamsDecl () {
 	    throw MissingErrorException (")", Position (next->line, next->column));
 
 	ast::Type * ast_type = new ast::Type (type->value, true);
-	ast::Position * pos = new ast::Position (type->line, type->column);
+	Position * pos = new Position (type->line, type->column);
 	params->push_back (new ast::VarDecl (ast_type, var_id, pos));
     } while (next->type == TokenType::COMMA);
     return params;
@@ -183,7 +182,7 @@ vector <ast::VarDecl*> * Syntax::visitParamsDecl () {
 */
 ast::Ast * Syntax::visitFunCall (TokenPtr token_ident) {
     vector<ast::Expression*> * params = visitParams ();
-    ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
+    Position * pos = new Position (token_ident->line, token_ident->column);
     return new ast::FunCall (token_ident->value, params, pos);
 }
 
@@ -198,8 +197,8 @@ ast::Bloc * Syntax::visitLet () {
 ast::Bloc * Syntax::visitVarDecl (TokenPtr token_ident) {
     if (!isIdent (token_ident->value))
 	throw MissingErrorException ("var name", Position (token_ident->line, token_ident->column));
-    ast::VarId * var_id = (ast::VarId*) new ast::VarId (token_ident->value, new ast::Position (token_ident->line, token_ident->column));
-    ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
+    ast::VarId * var_id = (ast::VarId*) new ast::VarId (token_ident->value, new Position (token_ident->line, token_ident->column));
+    Position * pos = new Position (token_ident->line, token_ident->column);
     ast::VarDecl * var_decl = new ast::VarDecl (var_id, pos);
 
     /* A vector to get multiple var declare */
@@ -227,11 +226,11 @@ ast::Bloc * Syntax::visitVarDecl (TokenPtr token_ident) {
    varAssign := ident = expression;
 */
 ast::Ast * Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
-    ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
+    Position * pos = new Position (token_ident->line, token_ident->column);
     ast::VarId * e1 = new ast::VarId (token_ident->value, pos);
     ast::Expression * e2 = visitExpression ();
     ast::Operator * op = new ast::Operator (token_op->value);
-    return new ast::Binop (e1, e2, op, new ast::Position (token_op->line, token_op->column));
+    return new ast::Binop (e1, e2, op, new Position (token_op->line, token_op->column));
 }
 
 /**
@@ -245,7 +244,7 @@ ast::Ast * Syntax::visitIfElse () {
 	throw MissingErrorException ("(", Position (next->line, next->column));
 
     ast::Expression * expr_condition = visitExpression ();
-    ast::Position * pos = new ast::Position (token_if->line, token_if->column);
+    Position * pos = new Position (token_if->line, token_if->column);
 
     next = pop ();
     if (next->type != TokenType::PAR_R)
@@ -317,7 +316,7 @@ ast::Ast * Syntax::visitFor () {
 
     rewind ();
     ast::Bloc * for_bloc = visitBloc ();
-    ast::Position * pos = new ast::Position (token_for->line, token_for->column);
+    Position * pos = new Position (token_for->line, token_for->column);
     string * id = ident ? new string (ident->value) : NULL;
 
     return new ast::For (id, var_loop, expr, for_bloc, pos);
@@ -352,7 +351,7 @@ ast::Ast * Syntax::visitWhile () {
     rewind ();
 
     ast::Bloc * bloc = visitBloc ();
-    ast::Position * pos = new ast::Position (token_while->line, token_while->column);
+    Position * pos = new Position (token_while->line, token_while->column);
     string * id = ident ? new string (ident->value) : NULL;
 
     return new ast::While (id, expr, bloc, pos);
@@ -363,7 +362,7 @@ ast::Ast * Syntax::visitWhile () {
 */
 ast::Ast * Syntax::visitSyscall (TokenPtr token_ident) {
     vector<ast::Expression*> * params = visitParams ();
-    ast::Position * pos = new ast::Position (token_ident->line, token_ident->column);
+    Position * pos = new Position (token_ident->line, token_ident->column);
     return new ast::Syscall (token_ident->value, params, pos);
 }
 
@@ -410,7 +409,7 @@ vector<ast::Expression*> * Syntax::visitParams () {
 */
 ast::Ast * Syntax::visitReturn () {
     TokenPtr token_return = pop ();
-    ast::Position * pos = new ast::Position (token_return->line, token_return->column);
+    Position * pos = new Position (token_return->line, token_return->column);
     ast::Expression * expr = NULL;
     if (pop()->type != TokenType::SEMICOLON) {
 	rewind ();
@@ -426,7 +425,7 @@ ast::Ast * Syntax::visitReturn () {
 */
 ast::Ast * Syntax::visitBreak () {
     TokenPtr token_break = pop ();
-    ast::Position * pos = new ast::Position (token_break->line, token_break->column);
+    Position * pos = new Position (token_break->line, token_break->column);
     string * ident = NULL;
     TokenPtr next = pop ();
     if (next->type == TokenType::OTHER) {
@@ -449,7 +448,7 @@ ast::Expression * Syntax::visitULow () {
 	ast::Expression * right = visitLow ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitULow (new ast::Binop (left, right, op, pos));
     }
@@ -463,7 +462,7 @@ ast::Expression * Syntax::visitULow (ast::Expression * left) {
 	ast::Expression * right = visitLow ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitULow (new ast::Binop (left, right, op, pos));
     }
@@ -480,7 +479,7 @@ ast::Expression * Syntax::visitLow () {
 	ast::Expression * right = visitHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitLow (new ast::Binop (left, right, op, pos));
     }
@@ -494,7 +493,7 @@ ast::Expression * Syntax::visitLow (ast::Expression * left) {
 	ast::Expression * right = visitHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitLow (new ast::Binop (left, right, op, pos));
     }
@@ -511,7 +510,7 @@ ast::Expression * Syntax::visitHigh () {
 	if (right == NULL) {
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
 	}
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitHigh (new ast::Binop (left, right, op, pos));
     }
@@ -525,7 +524,7 @@ ast::Expression * Syntax::visitHigh (ast::Expression * left) {
 	ast::Expression * right = visitHHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitHigh (new ast::Binop (left, right, op, pos));
     }
@@ -541,7 +540,7 @@ ast::Expression * Syntax::visitHHigh () {
 	ast::Expression * right = visitHHHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitHHigh (new ast::Binop (left, right, op, pos));
     }
@@ -555,7 +554,7 @@ ast::Expression * Syntax::visitHHigh (ast::Expression * left) {
 	ast::Expression * right = visitHHHigh ();
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	ast::Operator * op = new ast::Operator (next_op->value);
 	return visitHHigh (new ast::Binop (left, right, op, pos));
     }
@@ -576,7 +575,7 @@ ast::Expression * Syntax::visitHHHigh () {
 	}
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	if (next_op->type == TokenType::POINT) {
 	    ast::Operator * op = new ast::Operator (next_op->value);
 	    return visitHHHigh (new ast::Binop (left, right, op, pos));
@@ -599,7 +598,7 @@ ast::Expression * Syntax::visitHHHigh (ast::Expression * left) {
 	}
 	if (right == NULL)
 	    throw MissingErrorException ("expression", Position (next_op->line, next_op->column));
-	ast::Position * pos = new ast::Position (next_op->line, next_op->column);
+	Position * pos = new Position (next_op->line, next_op->column);
 	if (next_op->type == TokenType::POINT) {
 	    ast::Operator * op = new ast::Operator (next_op->value);
 	    return visitHHHigh (new ast::Binop (left, right, op, pos));
@@ -673,7 +672,7 @@ ast::Expression * Syntax::visitFloat () {
 	    }
 	}
 	float res = (float)stoi (val->value);
-	return new ast::Float (res, new ast::Position (next->line, next->column));
+	return new ast::Float (res, new Position (next->line, next->column));
     } else {
 	for (int i = 0; i < next->value.size (); i++) {
 	    if (next->value[i] < '0' || next->value[i] > '9') {
@@ -699,16 +698,16 @@ ast::Expression * Syntax::visitFloat () {
 	float value = (float)stoi (res);
 	for (int i = 0; i < left_part; i++)
 	    value /= 10;
-	return new ast::Float (value, new ast::Position (float_token->line, float_token->column));
+	return new ast::Float (value, new Position (float_token->line, float_token->column));
     }
 }
 
 ast::Expression * Syntax::visitBool () {
     TokenPtr next = pop ();
     if (next->type == TokenType::TRUE)
-	return new ast::Bool (true, new ast::Position (next->line, next->column));
+	return new ast::Bool (true, new Position (next->line, next->column));
     if (next->type == TokenType::FALSE)
-	return new ast::Bool (false, new ast::Position (next->line, next->column));
+	return new ast::Bool (false, new Position (next->line, next->column));
     rewind ();
     return NULL;
 }
@@ -727,7 +726,7 @@ ast::Expression * Syntax::visitChar () {
     next = pop ();
     if (next->type != TokenType::SINGLE_QUOTE)
 	throw MissingErrorException ("'", Position (next->line, next->column));
-    return new ast::Char (res, new ast::Position (first->line, first->column));
+    return new ast::Char (res, new Position (first->line, first->column));
 }
 
 ast::Expression * Syntax::visitString () {
@@ -761,7 +760,7 @@ ast::Expression * Syntax::visitString () {
     m_lex.setCommentsEnabled (true);
     m_lex.setSkipEnabled (" ", true);
 
-    ast::Position * pos = new ast::Position (next->line, next->column);
+    Position * pos = new Position (next->line, next->column);
     return new ast::String (str.str (), pos);
 }
 
@@ -773,7 +772,7 @@ ast::Expression * Syntax::visitInt () {
 	    return NULL;
 	}
     }
-    return new ast::Int (stoi (next->value), new ast::Position (next->line, next->column));
+    return new ast::Int (stoi (next->value), new Position (next->line, next->column));
 }
 
 /**
@@ -809,7 +808,7 @@ ast::Expression * Syntax::visitIdent () {
 	return (ast::Expression*)visitFunCall (ident);
     }
     rewind ();
-    return new ast::VarId (ident->value, new ast::Position (ident->line, ident->column));
+    return new ast::VarId (ident->value, new Position (ident->line, ident->column));
 }
 
 ast::Expression * Syntax::visitIdent (TokenPtr token_ident) {
@@ -824,7 +823,7 @@ ast::Expression * Syntax::visitIdent (TokenPtr token_ident) {
 		return NULL;
 	    }
 	}
-	return new ast::VarId (token_ident->value, new ast::Position (token_ident->line, token_ident->column));
+	return new ast::VarId (token_ident->value, new Position (token_ident->line, token_ident->column));
     }
     rewind ();
     return NULL;
@@ -838,7 +837,7 @@ ast::Expression * Syntax::visitUnaryOp () {
     }
 
     ast::Operator * ope = new ast::Operator (op->value);
-    ast::Position * pos = new ast::Position (op->line, op->column);
+    Position * pos = new Position (op->line, op->column);
     ast::Expression * elem = NULL;
 
     TokenPtr next = pop ();
@@ -894,7 +893,7 @@ ast::Expression * Syntax::visitCast () {
     if (next->type != TokenType::PAR_R)
 	throw MissingErrorException (")", Position (next->line, next->column));
 
-    ast::Position * pos = new ast::Position (token_cast->line, token_cast->column);
+    Position * pos = new Position (token_cast->line, token_cast->column);
     ast::Type * type = new ast::Type (token_type->value);
     return new ast::Cast (type, expr, pos);
 }
@@ -925,7 +924,7 @@ ast::Expression * Syntax::visitArray () {
 	    next = pop ();
 	    if (next->type != TokenType::BRACKET_R)
 		throw MissingErrorException ("]", Position (next->line, next->column));
-	    ast::Position * pos = new ast::Position (token_array->line, token_array->column);
+	    Position * pos = new Position (token_array->line, token_array->column);
 	    delete array;
 	    return new ast::Range (expr, end, pos);
 	}
@@ -948,7 +947,7 @@ ast::Expression * Syntax::visitArray () {
     if (next->type != TokenType::BRACKET_R)
 	throw MissingErrorException ("]", Position (next->line, next->column));
 
-    ast::Position * pos = new ast::Position (token_array->line, token_array->column);
+    Position * pos = new Position (token_array->line, token_array->column);
     return new ast::Array (array, pos);
 }
 
@@ -970,7 +969,7 @@ ast::Ast * Syntax::visitImport () {
 	throw SyntaxErrorException ("Path missing.", Position (token_import->line, token_import->column));
     }
     rewind ();
-    return new ast::Import (path, new ast::Position (token_import->line, token_import->column));
+    return new ast::Import (path, new Position (token_import->line, token_import->column));
 }
 
 
@@ -1095,7 +1094,7 @@ ast::Ast * Syntax::visitClass () {
     if (private_content)
 	private_bloc = new ast::Bloc (private_content);
 
-    ast::Position * pos = new ast::Position (token_class->line, token_class->column);
+    Position * pos = new Position (token_class->line, token_class->column);
     if (inheritance.size () > 0)
 	return new ast::Class (class_name, inheritance, constructor, destructor, public_bloc, private_bloc, pos);
     return new ast::Class (class_name, constructor, destructor, public_bloc, private_bloc, pos);

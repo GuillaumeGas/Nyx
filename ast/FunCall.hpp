@@ -15,7 +15,7 @@ namespace nyx {
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    void interpret ();
+	    void secondPass ();
 	    AbstractObject * interpretExpression ();
 
 	private:

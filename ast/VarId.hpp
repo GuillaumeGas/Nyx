@@ -10,8 +10,6 @@
 #include "Object.hpp"
 #include "Operator.hpp"
 #include "exceptions/SemanticException.hpp"
-#include "../symbol/Table.hpp"
-#include "../symbol/Symbol.hpp"
 
 namespace nyx {
     namespace ast {

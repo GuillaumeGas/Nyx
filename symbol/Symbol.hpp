@@ -1,9 +1,11 @@
+
 #pragma once
 
 #include <iostream>
 #include <sstream>
 #include "../ast/Type.hpp"
 #include "../ast/Object.hpp"
+#include "../ast/FunDecl.hpp"
 
 /**
    Symbol class : represents a symbol.
@@ -60,6 +62,18 @@ namespace nyx {
 	public:
 	    ConstSymbol (std::string & name, ast::AbstractObject * ptr);
 	    ConstSymbol (std::string & name);
+	};
+
+	class FunSymbol {
+	public:
+	    FunSymbol (std::string & name, ast::FunDecl * ptr);
+	    std::string getName () const;
+	    ast::FunDecl * getPtr () const;
+
+	    std::string toString () const;
+	private:
+	    ast::FunDecl * _ptr;
+	    std::string _name;
 	};
     };
 };

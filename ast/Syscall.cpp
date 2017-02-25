@@ -20,7 +20,7 @@ Syscall::~Syscall () {
     }
 }
 
-void Syscall::interpret () {
+void Syscall::secondPass () {
     if (ident == "print") {
     	sysPrint ();
     } else if (ident == "println") {

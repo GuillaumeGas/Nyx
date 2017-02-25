@@ -37,9 +37,19 @@ namespace nyx {
 	    void addSymbol (Symbol * s, Position * pos);
 
 	    /**
+	       Add a function symbol in the current scope, raise an exception if the symbol already exist with the same parameters
+	     */
+	    void addFunSymbol (FunSymbol * s, Position * pos);
+
+	    /**
 	       Return a symbol depending on its name, raise an exception if the symbol is not found in the table
 	     */
 	    Symbol * getSymbol (std::string name, Position * pos);
+
+	    /**
+	       Returns a symbol depending on its name, raise an exception if the symbol is not found in the table
+	     */
+	    FunSymbol * getFunSymbol (std::string name, Position * pos);
 
 	    std::string toString() const;
 

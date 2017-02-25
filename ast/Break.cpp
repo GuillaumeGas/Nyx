@@ -14,7 +14,7 @@ Break::~Break () {
     delete ident;
 }
 
-void Break::interpret () {}
+void Break::secondPass () {}
 
 void Break::print (ostream & out, int offset) const {
   shift (out, offset);

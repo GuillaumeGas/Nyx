@@ -25,13 +25,16 @@ Bloc::~Bloc() {
     delete content;
 }
 
-void Bloc::interpret() {
+void Bloc::secondPass () {
     symbol::Table * table = symbol::Table::getInstance ();
     if (_is_global)
 	table->enterBlock ();
 
     for (Ast * a : *content)
-	a->interpret();
+	a->firstPass ();
+
+    for (Ast * a : *content)
+	a->secondPass ();
 
     if (_is_global)
 	table->exitBlock ();

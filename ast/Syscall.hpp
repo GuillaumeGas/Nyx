@@ -16,7 +16,7 @@ namespace nyx {
 	    ~Syscall ();
 
 	    void print (std::ostream & out, int offset = 0) const;
-	    void interpret ();
+	    void secondPass ();
 
 	    //syscalls list
 	    void sysPrint ();

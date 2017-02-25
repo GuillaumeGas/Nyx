@@ -88,3 +88,20 @@ ConstSymbol::ConstSymbol (string & name, ast::AbstractObject * ptr) : Symbol (na
 ConstSymbol::ConstSymbol (string & name) : Symbol (name) {
     _is_const = true;
 }
+
+FunSymbol::FunSymbol (string & name, ast::FunDecl * ptr) {
+    _name = name;
+    _ptr = ptr;
+}
+
+string FunSymbol::getName () const {
+    return _name;
+}
+
+ast::FunDecl * FunSymbol::getPtr () const {
+    return _ptr;
+}
+
+string FunSymbol::toString () const {
+    return _name;
+}

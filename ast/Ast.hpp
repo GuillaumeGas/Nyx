@@ -17,7 +17,9 @@ namespace nyx {
 	public:
 	    virtual ~Ast();
 	    virtual void print(std::ostream & out, int offset = 0) const;
-	    virtual void interpret();
+	    virtual void firstPass ();
+	    virtual void secondPass ();
+
 	    Position * pos;
 
 	protected:

@@ -1,3 +1,5 @@
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 #include "VarId.hpp"
 
 using namespace std;

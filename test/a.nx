@@ -1,14 +1,20 @@
-let res = 0;
-let tab_res = [];
+print ("test");
+println ("hello");
 
-while (res < 10) {
-    if (res == 0) {
-	$println ("start !");
-    } else {
-	$println ("keep going..");
-    }
-    tab_res = tab_res + res;
-    res = res + 1;
- }
+void print (string str) {
+    $print (str);
+}
 
-$println ("fin : ", tab_res);
+void println (string str) {
+    $println (str);
+}
+
+int foo (int a) {
+    $println("a = ", a);
+}
+
+void add (int a, int b) {
+    $println (a + b);
+}
+
+

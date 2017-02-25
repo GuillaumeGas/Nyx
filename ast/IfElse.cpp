@@ -24,7 +24,7 @@ IfElse::~IfElse () {
     if (bloc_else) delete bloc_else;
 }
 
-void IfElse::interpret () {
+void IfElse::secondPass () {
     AbstractObject * res = (AbstractObject*) cond->interpretExpression ();
 
     symbol::Table * table = symbol::Table::getInstance ();
@@ -36,11 +36,11 @@ void IfElse::interpret () {
 
     if (res->getBool () && bloc_if) {
 	table->enterBlock ();
-	bloc_if->interpret ();
+	bloc_if->secondPass ();
 	table->exitBlock ();
     } else if (bloc_else) {
 	table->enterBlock ();
-	bloc_else->interpret ();
+	bloc_else->secondPass ();
 	table->exitBlock ();
     }
 }

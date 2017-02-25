@@ -24,8 +24,7 @@ For::~For () {
 	delete bloc;
 }
 
-// TODO : add new scope in each loop
-void For::interpret() {
+void For::secondPass () {
     AbstractObject * obj_expr = (AbstractObject*) expr;
     TYPE expr_type = obj_expr->getType ()->value;
 
@@ -48,14 +47,14 @@ void For::interpret() {
     	if (start < end) {
     	    for (; start <= end; start++) {
 		table->enterBlock ();
-		bloc->interpret ();
+		bloc->secondPass ();
 		loop_symbol->getValue ()->setInt (start + 1);
 		table->exitBlock ();
     	    }
     	} else {
     	    for (; start >= end; start--) {
 		table->enterBlock ();
-    		bloc->interpret ();
+    		bloc->secondPass ();
 		loop_symbol->getValue ()->setInt (start - 1);
 		table->exitBlock ();
     	    }
@@ -74,7 +73,7 @@ void For::interpret() {
 	    loop_symbol->setConst (false);
 	    loop_symbol->setValue ((AbstractObject*)it);
 	    loop_symbol->setConst (true);
-    	    bloc->interpret ();
+    	    bloc->secondPass ();
 	    table->exitBlock ();
     	}
     }

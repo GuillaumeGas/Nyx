@@ -15,7 +15,7 @@ namespace nyx {
 	    Bloc (std::vector<Ast*> * content, bool is_global);
 	    ~Bloc ();
 
-	    void interpret();
+	    void secondPass ();
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    std::vector<Ast*> * content;

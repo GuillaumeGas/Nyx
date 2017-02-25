@@ -6,16 +6,19 @@
 #include "../global/Position.hpp"
 #include "Type.hpp"
 #include "VarDecl.hpp"
-#include "Bloc.hpp"
 
 namespace nyx {
     namespace ast {
+	class Bloc;
+
 	class FunDecl : public Ast {
 	public:
 	    FunDecl (Type * type, const std::string & ident, std::vector<VarDecl*> * params, Bloc * content, Position * pos);
 	    ~FunDecl ();
 
-	    void interpret ();
+	    void firstPass ();
+	    void execute (std::vector<Expression*> * params);
+
 	    void print (std::ostream & out, int offset = 0) const;
 
 	private:

@@ -16,7 +16,7 @@ Scope::~Scope() {
     if (_parent_scope)
 	_parent_scope->_next_scope = NULL;
 
-    for (auto it = _list.begin(); it != _list.end(); it++)
+    for (auto it = _symbolsList.begin(); it != _symbolsList.end(); it++)
 	delete it->second;
 }
 
@@ -34,22 +34,37 @@ Scope * Scope::getParent() {
 }
 
 void Scope::addSymbol(Symbol * s, Position * pos) {
-    _list[s->getName()] = s;
+    _symbolsList[s->getName()] = s;
+}
+
+void Scope::addFunSymbol (FunSymbol * s, Position * pos) {
+    _funSymbolsList[s->getName ()] = s;
 }
 
 Symbol * Scope::getSymbol(string name, Position * pos) {
-    auto it = _list.find(name);
-    if (it != _list.end())
+    auto it = _symbolsList.find(name);
+    if (it != _symbolsList.end())
 	return it->second;
     if (_parent_scope)
 	return _parent_scope->getSymbol (name, pos);
     return NULL;
 }
 
+FunSymbol * Scope::getFunSymbol (string name, Position * pos) {
+    auto it = _funSymbolsList.find (name);
+    if (it != _funSymbolsList.end ())
+	return it->second;
+    if (_parent_scope)
+	return _parent_scope->getFunSymbol (name, pos);
+    return NULL;
+}
+
 string Scope::toString() const {
     stringstream ss;
-    for (auto it = _list.begin(); it != _list.end(); it++)
-	ss << it->second->toString() << endl;;
+    for (auto it = _symbolsList.begin(); it != _symbolsList.end(); it++)
+	ss << it->second->toString() << endl;
+    for (auto it = _funSymbolsList.begin (); it != _funSymbolsList.end (); it++)
+	ss << it->second->toString () << endl;
     if (_next_scope)
 	ss << _next_scope->toString();
     return ss.str ();

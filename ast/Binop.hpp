@@ -17,7 +17,7 @@ namespace nyx {
 	    ~Binop();
 
 	    AbstractObject * interpretExpression ();
-	    void interpret ();
+	    void secondPass ();
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    Expression * e1;

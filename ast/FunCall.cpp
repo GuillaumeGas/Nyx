@@ -1,3 +1,5 @@
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 #include "FunCall.hpp"
 
 using namespace std;
@@ -18,9 +20,18 @@ FunCall::~FunCall () {
     }
 }
 
-void FunCall::interpret () { interpretExpression (); }
+void FunCall::secondPass () { interpretExpression (); }
 
-AbstractObject * FunCall::interpretExpression () { return NULL; }
+AbstractObject * FunCall::interpretExpression () {
+    symbol::Table * table = symbol::Table::getInstance ();
+    symbol::FunSymbol * s = table->getFunSymbol (name, pos);
+    if (s != NULL) {
+	s->getPtr ()->execute (params);
+    } else {
+	cout << "Unknown function ! " << endl;
+    }
+    return NULL;
+}
 
 void FunCall::print (ostream & out, int offset) const {
     shift (out, offset);

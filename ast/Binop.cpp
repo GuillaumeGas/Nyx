@@ -17,7 +17,7 @@ Binop::~Binop() {
 	delete op;
 }
 
-void Binop::interpret () {
+void Binop::secondPass () {
     interpretExpression ();
 }
 

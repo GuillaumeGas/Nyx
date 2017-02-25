@@ -1,3 +1,5 @@
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 #include "VarDecl.hpp"
 
 using namespace std;
@@ -20,7 +22,7 @@ VarDecl::~VarDecl() {
 	delete var_id;
 }
 
-void VarDecl::interpret() {
+void VarDecl::secondPass () {
     symbol::Table * table = symbol::Table::getInstance();
     table->addSymbol(new symbol::Symbol(var_id->name), pos);
 }
