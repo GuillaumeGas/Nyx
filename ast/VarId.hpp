@@ -5,7 +5,7 @@
 
 #include "Ast.hpp"
 #include "Expression.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 #include "Type.hpp"
 #include "Object.hpp"
 #include "Operator.hpp"

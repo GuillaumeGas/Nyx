@@ -1,22 +1,22 @@
 #pragma once
 
 #include <iostream>
-#include "../Position.hpp"
+#include "../../global/Position.hpp"
 
 namespace nyx {
   class SyntaxException {
   public:
-    SyntaxException(syntax::Position& pos) throw() : pos(pos) {}
+    SyntaxException(Position& pos) throw() : pos(pos) {}
     virtual std::string toString() const {
       return "[!] Syntax error " + pos.toString();
     }
   protected:
-    nyx::syntax::Position pos;
+    Position pos;
   };
 
   class SyntaxErrorException : public SyntaxException {
   public:
-    SyntaxErrorException(const std::string& msg, nyx::syntax::Position pos) throw() : msg(msg), SyntaxException(pos) {}
+    SyntaxErrorException(const std::string& msg, Position pos) throw() : msg(msg), SyntaxException(pos) {}
     std::string toString() const throw() {
       return "[!] Syntax error, unexpected '" + msg +"' on " + pos.toString();
     }
@@ -26,7 +26,7 @@ namespace nyx {
 
   class MissingErrorException : public SyntaxException {
   public:
-    MissingErrorException(const std::string& msg, nyx::syntax::Position pos) throw() : SyntaxException(pos), msg(msg) {}
+    MissingErrorException(const std::string& msg, Position pos) throw() : SyntaxException(pos), msg(msg) {}
     std::string toString() const throw() {
       return "[!] Syntax error, expected '" + msg +"' on " + pos.toString();
     }

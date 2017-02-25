@@ -45,13 +45,13 @@ void Table::exitBlock() {
     }
 }
 
-void Table::addSymbol (Symbol * s, ast::Position * pos) {
+void Table::addSymbol (Symbol * s, Position * pos) {
     if (current_scope->getSymbol (s->getName (), pos) != NULL)
 	throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName ());
     current_scope->addSymbol(s, pos);
 }
 
-Symbol * Table::getSymbol(string name, ast::Position * pos) {
+Symbol * Table::getSymbol(string name, Position * pos) {
     Symbol * res = current_scope->getSymbol(name, pos);
     if (res == NULL)
 	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);

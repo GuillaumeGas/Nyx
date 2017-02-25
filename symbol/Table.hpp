@@ -6,7 +6,7 @@
 
 #include "Symbol.hpp"
 #include "Scope.hpp"
-#include "../ast/Position.hpp"
+#include "../global/Position.hpp"
 #include "../ast/Object.hpp"
 
 /**
@@ -34,12 +34,12 @@ namespace nyx {
 	    /**
 	       Add a symbol in the current scope, raise an exception if the symbol already exist in the table
 	     */
-	    void addSymbol (Symbol * s, ast::Position * pos);
+	    void addSymbol (Symbol * s, Position * pos);
 
 	    /**
 	       Return a symbol depending on its name, raise an exception if the symbol is not found in the table
 	     */
-	    Symbol * getSymbol (std::string name, ast::Position * pos);
+	    Symbol * getSymbol (std::string name, Position * pos);
 
 	    std::string toString() const;
 

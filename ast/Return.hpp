@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "Ast.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 #include "Expression.hpp"
 
 namespace nyx {

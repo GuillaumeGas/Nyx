@@ -4,7 +4,7 @@
 #include <iomanip>
 #include "Ast.hpp"
 #include "Type.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 #include "VarId.hpp"
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"

@@ -1,8 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 
-#include "Position.hpp"
+#include "../global/Position.hpp"
 
 #define TODO_SEM(p)					\
     printf ("[!] TODO Semantic : %s\n", p);	\

@@ -4,7 +4,7 @@
 #include <vector>
 #include "Ast.hpp"
 #include "Expression.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 #include "exceptions/SemanticException.hpp"
 #include "Object.hpp"
 

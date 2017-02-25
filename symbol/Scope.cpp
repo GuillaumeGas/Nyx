@@ -33,11 +33,11 @@ Scope * Scope::getParent() {
     return _parent_scope;
 }
 
-void Scope::addSymbol(Symbol * s, ast::Position * pos) {
+void Scope::addSymbol(Symbol * s, Position * pos) {
     _list[s->getName()] = s;
 }
 
-Symbol * Scope::getSymbol(string name, ast::Position * pos) {
+Symbol * Scope::getSymbol(string name, Position * pos) {
     auto it = _list.find(name);
     if (it != _list.end())
 	return it->second;

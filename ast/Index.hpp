@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "Expression.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 #include "Object.hpp"
 #include "exceptions/SemanticException.hpp"
 

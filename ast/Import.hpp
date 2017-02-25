@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "Ast.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 
 namespace nyx {
     namespace ast {

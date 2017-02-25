@@ -5,7 +5,7 @@
 #include "Ast.hpp"
 #include "Bloc.hpp"
 #include "VarId.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 
 namespace nyx {
     namespace ast {

@@ -5,7 +5,7 @@
 #include "Ast.hpp"
 #include "Expression.hpp"
 #include "Bloc.hpp"
-#include "Position.hpp"
+#include "../global/Position.hpp"
 #include "exceptions/SemanticException.hpp"
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"

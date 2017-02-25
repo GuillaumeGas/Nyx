@@ -7,7 +7,7 @@
 #include "Symbol.hpp"
 #include "exceptions/SymbolException.hpp"
 #include "../global/Global.hpp"
-#include "../ast/Position.hpp"
+#include "../global/Position.hpp"
 
 /**
    Scope class : contains symbols, may have a parent and a child.
@@ -32,13 +32,13 @@ namespace nyx {
 	    /**
 	       Add the symbol in the current scope
 	     */
-	    void addSymbol(Symbol * s, ast::Position * pos);
+	    void addSymbol(Symbol * s, Position * pos);
 
 	    /**
 	       Return the symbol according a name
 	       Return NULL if the symbol was not found
 	     */
-	    Symbol * getSymbol(std::string name, ast::Position * pos);
+	    Symbol * getSymbol(std::string name, Position * pos);
 
 	    std::string toString() const;
 
