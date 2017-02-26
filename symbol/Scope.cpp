@@ -1,4 +1,5 @@
 #include "Scope.hpp"
+#include "Table.hpp"
 
 using namespace std;
 using namespace nyx;
@@ -26,6 +27,15 @@ Scope * Scope::newScope() {
 	exit(-1);
     }
     _next_scope = new Scope(this);
+    return _next_scope;
+}
+
+Scope * Scope::newFunScope () {
+    if (_next_scope) {
+	cout << "[Error] Next scope already exist." << endl;
+	exit (-1);
+    }
+    _next_scope = new FunScope (this);
     return _next_scope;
 }
 
@@ -68,4 +78,20 @@ string Scope::toString() const {
     if (_next_scope)
 	ss << _next_scope->toString();
     return ss.str ();
+}
+
+FunScope::FunScope (Scope * parent) : Scope (parent) {}
+
+Symbol * FunScope::getSymbol(string name, Position * pos) {
+    auto it = _symbolsList.find(name);
+    if (it != _symbolsList.end())
+	return it->second;
+    return Table::getInstance ()->getGlobalSymbol (name, pos);
+}
+
+FunSymbol * FunScope::getFunSymbol (string name, Position * pos) {
+    auto it = _funSymbolsList.find(name);
+    if (it != _funSymbolsList.end())
+	return it->second;
+    return Table::getInstance ()->getGlobalFunSymbol (name, pos);
 }

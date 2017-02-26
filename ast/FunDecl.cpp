@@ -33,34 +33,29 @@ void FunDecl::registerFunctions () {
 }
 
 void FunDecl::execute (vector<Expression*> * params) {
-    symbol::Table * table = symbol::Table::getInstance ();
+	symbol::Table * table = symbol::Table::getInstance ();
+	table->enterFunBlock ();
 
     if (this->params != NULL) {
-	if (params == NULL || (params->size () != this->params->size ())) {
-	    cout << "[!] Invalid parameters" << endl;
-	    throw -1;
-	}
+		if (params == NULL || (params->size () != this->params->size ())) {
+			cout << "[!] Invalid parameters" << endl;
+			throw -1;
+		}
 
-	vector<AbstractObject*> obj_params;
-	for (auto it : *params)
-	    obj_params.push_back (it->interpretExpression ());
-
-	table->enterBlock ();
-				  
-	for (int i = 0; i < params->size (); i++) {
-	    VarDecl * param = (VarDecl*)(*(this->params))[i];
-	    if (obj_params[i]->getType ()->value != param->type->value) {
-		cout << "[!] Invalid param type !" << endl;
-		throw -1;
-	    }
-	    table->addSymbol (new symbol::Symbol (param->var_id->name, obj_params[i]), param->pos);
-	}
+		for (int i = 0; i < params->size (); i++) {
+			VarDecl * param = (VarDecl*)(*(this->params))[i];
+			AbstractObject * value = (AbstractObject*) (*params)[i];
+			if (value->getType ()->value != param->type->value) {
+				cout << "[!] Invalid param type !" << endl;
+				throw -1;
+			}
+			table->addSymbol (new symbol::Symbol (param->var_id->name, value), param->pos);
+		}
     } else {
-	if (params != NULL) {
-	    cout << "[!] Invalid parameter." << endl;
-	    throw -1;
-	}
-	table->enterBlock ();
+		if (params != NULL) {
+			cout << "[!] Invalid parameter." << endl;
+			throw -1;
+		}
     }
 	
     content->interpret ();

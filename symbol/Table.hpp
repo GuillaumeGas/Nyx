@@ -29,9 +29,15 @@ namespace nyx {
 	    void enterBlock ();
 
 	    /**
+	       The current_scope pointer point on a new function scope (its behavior is different than a classic scope
+	     */
+	    void enterFunBlock ();
+
+	    /**
 	       Quit the current block : call freeGarbage, destroy the current_scope and set it to its parent
 	     */
 	    void exitBlock ();
+	    void exitFunBlock ();
 
 	    /**
 	       Add a symbol in the current scope, raise an exception if the symbol already exist in the table
@@ -47,11 +53,13 @@ namespace nyx {
 	       Return a symbol depending on its name, raise an exception if the symbol is not found in the table
 	     */
 	    Symbol * getSymbol (std::string name, Position * pos);
+	    Symbol * getGlobalSymbol (std::string name, Position * pos);
 
 	    /**
 	       Returns a symbol depending on its name, raise an exception if the symbol is not found in the table
 	     */
 	    FunSymbol * getFunSymbol (std::string name, Position * pos);
+	    FunSymbol * getGlobalFunSymbol (std::string name, Position * pos);
 
 	    std::string toString() const;
 

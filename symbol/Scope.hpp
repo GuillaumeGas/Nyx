@@ -25,6 +25,11 @@ namespace nyx {
 	    Scope * newScope();
 
 	    /**
+	       Creates a new function scope and returns it
+	     */
+	    Scope * newFunScope ();
+
+	    /**
 	       Returns the parent's scope
 	     */
 	    Scope * getParent();
@@ -43,21 +48,37 @@ namespace nyx {
 	       Return the symbol according a name
 	       Return NULL if the symbol was not found
 	     */
+	    virtual Symbol * getSymbol(std::string name, Position * pos);
+
+	    /**
+	       Returns the function symbol according to a name
+	       Returns NULL if the symbol was not found
+	     */
+	    virtual FunSymbol * getFunSymbol (std::string name, Position * pos);
+
+	    std::string toString() const;
+
+	protected:
+	    std::map<std::string, Symbol*> _symbolsList;
+	    std::map<std::string, FunSymbol*> _funSymbolsList;
+	    Scope * _parent_scope;
+	    Scope * _next_scope;
+	};
+
+	class FunScope : public Scope {
+	public:
+		FunScope (Scope * parent);
+	    /**
+	       Return the symbol according a name
+	       Return NULL if the symbol was not found
+	     */
 	    Symbol * getSymbol(std::string name, Position * pos);
 
 	    /**
 	       Returns the function symbol according to a name
 	       Returns NULL if the symbol was not found
 	     */
-	    FunSymbol * getFunSymbol (std::string name, Position * pos);
-
-	    std::string toString() const;
-
-	private:
-	    std::map<std::string, Symbol*> _symbolsList;
-	    std::map<std::string, FunSymbol*> _funSymbolsList;
-	    Scope * _parent_scope;
-	    Scope * _next_scope;
+	    FunSymbol * getFunSymbol (std::string name, Position * pos);	    
 	};
     };
 };

@@ -1,7 +1,7 @@
 void main () {
     $println ("test");
     printStr ("le test");
-    printInt (1 + 2);
+    printInt (1 + 1);
     printAdd (4, 4);
 }
 
@@ -13,13 +13,12 @@ void printInt (int a) {
     $println (a);
 }
 
-void printAdd (int c, int d) {
-    printInt (c + d);
+void printAdd (int a, int b) {
+    printInt (a + b);
 }
 
-/*
-faild because of the types
-void printAdd (int a, int b) {
-printInt (a + b);
-}
- */
+/* Multiple definitions !
+void printAdd () {
+
+    
+}*/

@@ -26,9 +26,12 @@ AbstractObject * FunCall::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::FunSymbol * s = table->getFunSymbol (name, pos);
     if (s != NULL) {
-	s->getPtr ()->execute (params);
+        for (auto & it : *params)
+            it = it->interpretExpression ();
+        
+	    s->getPtr ()->execute (params);
     } else {
-	cout << "Unknown function ! " << endl;
+	    cout << "Unknown function ! " << endl;
     }
     return NULL;
 }

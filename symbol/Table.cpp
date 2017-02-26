@@ -27,6 +27,10 @@ void Table::enterBlock() {
     }
 }
 
+void Table::enterFunBlock () {
+    current_scope = current_scope->newFunScope ();
+}
+
 void Table::exitBlock() {
     if (current_scope) {
 	// if the current scope and the main scope are the same, that means the end of the program, we delete the global scope
@@ -45,23 +49,30 @@ void Table::exitBlock() {
     }
 }
 
+void Table::exitFunBlock () {
+    Scope * tmp = current_scope->getParent ();
+    delete current_scope;
+    current_scope = tmp;
+}
+
 void Table::addSymbol (Symbol * s, Position * pos) {
     if (current_scope->getSymbol (s->getName (), pos) != NULL)
-	throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName ());
+	    throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName ());
     current_scope->addSymbol(s, pos);
 }
 
 void Table::addFunSymbol (FunSymbol * s, Position * pos) {
-    if (current_scope->getSymbol (s->getName (), pos) != NULL)
-	throw MultipleDefException (Global::getInstance ()->file_name, pos, s->getName ());
+    if (current_scope->getFunSymbol (s->getName (), pos) != NULL)
+	    throw MultipleDefException (Global::getInstance ()->file_name, pos, s->getName ());
     current_scope->addFunSymbol (s, pos);
 }
 
 Symbol * Table::getSymbol(string name, Position * pos) {
-    Symbol * res = current_scope->getSymbol(name, pos);
-    if (res == NULL)
-	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
-    return res;
+    return current_scope->getSymbol(name, pos);
+}
+
+Symbol * Table::getGlobalSymbol (string name, Position * pos) {
+    return global_scope->getSymbol (name, pos);
 }
 
 FunSymbol * Table::getFunSymbol (string name, Position * pos) {
@@ -69,6 +80,13 @@ FunSymbol * Table::getFunSymbol (string name, Position * pos) {
     if (res == NULL)
 	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
     return res;
+}
+
+FunSymbol * Table::getGlobalFunSymbol (string name, Position * pos) {
+    FunSymbol * res = global_scope->getFunSymbol (name, pos);
+    if (res == NULL)
+	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
+    return res;    
 }
 
 string Table::toString() const {
