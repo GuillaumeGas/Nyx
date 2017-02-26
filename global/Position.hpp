@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#define DEFAULT_LINE 1
+#define DEFAULT_COLUMN 0
+
 namespace nyx {
     class Position {
     public:
@@ -11,5 +14,10 @@ namespace nyx {
 	std::string toString() const;
 	unsigned int line;
 	unsigned int column;
+    };
+
+    class DefaultPosition : public Position {
+    public:
+	DefaultPosition ();
     };
 };

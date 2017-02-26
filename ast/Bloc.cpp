@@ -5,13 +5,13 @@ using namespace nyx;
 using namespace ast;
 
 Bloc::Bloc(vector<Ast*> * content) {
-    pos = new Position(0, 0);
+    pos = new DefaultPosition ();
     this->content = content;
     this->_is_global = false;
 }
 
 Bloc::Bloc (vector<Ast*> * content, bool is_global) {
-    pos = new Position (0, 0);
+    pos = new DefaultPosition ();
     this->content = content;
     this->_is_global = is_global;
 }

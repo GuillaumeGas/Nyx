@@ -12,3 +12,5 @@ Position::~Position() {  }
 string Position::toString() const {
     return "Line " + std::to_string(line) + ", column " + std::to_string(column);
 }
+
+DefaultPosition::DefaultPosition () : Position (DEFAULT_LINE, DEFAULT_COLUMN) {}
