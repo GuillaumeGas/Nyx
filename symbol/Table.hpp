@@ -9,6 +9,8 @@
 #include "../global/Position.hpp"
 #include "../ast/Object.hpp"
 
+#define MAIN_FUN_NAME "main"
+
 /**
    Symbol table
 

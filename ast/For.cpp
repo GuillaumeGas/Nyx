@@ -24,7 +24,7 @@ For::~For () {
 	delete bloc;
 }
 
-void For::secondPass () {
+void For::interpret () {
     AbstractObject * obj_expr = (AbstractObject*) expr;
     TYPE expr_type = obj_expr->getType ()->value;
 
@@ -47,14 +47,14 @@ void For::secondPass () {
     	if (start < end) {
     	    for (; start <= end; start++) {
 		table->enterBlock ();
-		bloc->secondPass ();
+		bloc->interpret ();
 		loop_symbol->getValue ()->setInt (start + 1);
 		table->exitBlock ();
     	    }
     	} else {
     	    for (; start >= end; start--) {
 		table->enterBlock ();
-    		bloc->secondPass ();
+    		bloc->interpret ();
 		loop_symbol->getValue ()->setInt (start - 1);
 		table->exitBlock ();
     	    }
@@ -73,7 +73,7 @@ void For::secondPass () {
 	    loop_symbol->setConst (false);
 	    loop_symbol->setValue ((AbstractObject*)it);
 	    loop_symbol->setConst (true);
-    	    bloc->secondPass ();
+    	    bloc->interpret ();
 	    table->exitBlock ();
     	}
     }

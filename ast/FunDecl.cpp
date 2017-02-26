@@ -27,7 +27,7 @@ FunDecl::~FunDecl () {
 	delete content;
 }
 
-void FunDecl::firstPass () {
+void FunDecl::registerFunctions () {
     symbol::Table * table = symbol::Table::getInstance ();
     table->addFunSymbol (new symbol::FunSymbol (name, this), pos);
 }
@@ -63,7 +63,7 @@ void FunDecl::execute (vector<Expression*> * params) {
 	table->enterBlock ();
     }
 	
-    content->secondPass ();
+    content->interpret ();
 
     table->exitBlock ();
 }

@@ -18,7 +18,7 @@ namespace nyx {
 	    ~While ();
 
 	    void print (std::ostream & out, int offset = 0) const;
-	    void secondPass ();
+	    void interpret ();
 
 	private:
 	    std::string * ident;

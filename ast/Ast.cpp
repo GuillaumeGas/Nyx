@@ -17,5 +17,5 @@ void Ast::shift (ostream & out, int offset) const {
     }
 }
 
-void Ast::firstPass() { }
-void Ast::secondPass () { }
+void Ast::registerFunctions () { }
+void Ast::interpret () { }

@@ -20,7 +20,7 @@ FunCall::~FunCall () {
     }
 }
 
-void FunCall::secondPass () { interpretExpression (); }
+void FunCall::interpret () { interpretExpression (); }
 
 AbstractObject * FunCall::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();

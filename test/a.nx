@@ -1,20 +1,25 @@
-print ("test");
-println ("hello");
-
-void print (string str) {
-    $print (str);
+void main () {
+    $println ("test");
+    printStr ("le test");
+    printInt (1 + 2);
+    printAdd (4, 4);
 }
 
-void println (string str) {
+void printStr (string str) {
     $println (str);
 }
 
-int foo (int a) {
-    $println("a = ", a);
+void printInt (int a) {
+    $println (a);
 }
 
-void add (int a, int b) {
-    $println (a + b);
+void printAdd (int c, int d) {
+    printInt (c + d);
 }
 
-
+/*
+faild because of the types
+void printAdd (int a, int b) {
+printInt (a + b);
+}
+ */

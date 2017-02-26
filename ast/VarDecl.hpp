@@ -15,7 +15,7 @@ namespace nyx {
 	    VarDecl (Type * type, VarId * var_id, Position * pos);
 	    ~VarDecl();
 
-	    void secondPass ();
+	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
 	    Type * type;

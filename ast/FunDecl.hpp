@@ -16,7 +16,7 @@ namespace nyx {
 	    FunDecl (Type * type, const std::string & ident, std::vector<VarDecl*> * params, Bloc * content, Position * pos);
 	    ~FunDecl ();
 
-	    void firstPass ();
+	    void registerFunctions ();
 	    void execute (std::vector<Expression*> * params);
 
 	    void print (std::ostream & out, int offset = 0) const;

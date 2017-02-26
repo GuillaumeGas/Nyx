@@ -49,7 +49,7 @@ void Compilo::compile() {
 
     cout << "/---------------- Execution -----------------\\" << endl << endl;
     try {
-      m_ast->secondPass ();
+      m_ast->interpret ();
       cout << endl;
     } catch(SymbolException const& e) {
       cout << e.toString () << endl;

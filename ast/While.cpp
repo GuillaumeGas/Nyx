@@ -20,7 +20,7 @@ While::~While () {
 	delete bloc;
 }
 
-void While::secondPass () {
+void While::interpret () {
     symbol::Table * table = symbol::Table::getInstance ();
     table->enterBlock ();
 
@@ -46,7 +46,7 @@ void While::secondPass () {
 
     	if (keep_going) {
 	    table->enterBlock ();
-	    bloc->secondPass ();
+	    bloc->interpret ();
 	    table->enterBlock ();
 	}
     }

@@ -17,7 +17,7 @@ namespace nyx {
 	    ~IfElse ();
 
 	    void print (std::ostream & out, int offset = 0) const;
-	    void secondPass ();
+	    void interpret ();
 
 	private:
 	    Expression * cond;

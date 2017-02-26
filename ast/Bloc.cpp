@@ -25,16 +25,25 @@ Bloc::~Bloc() {
     delete content;
 }
 
-void Bloc::secondPass () {
+void Bloc::interpret() {
     symbol::Table * table = symbol::Table::getInstance ();
     if (_is_global)
 	table->enterBlock ();
 
     for (Ast * a : *content)
-	a->firstPass ();
+	a->registerFunctions ();
 
-    for (Ast * a : *content)
-	a->secondPass ();
+    if (_is_global) {
+	symbol::FunSymbol * main_symbol = table->getFunSymbol (MAIN_FUN_NAME, pos);
+	if (main_symbol == NULL) {
+	    cout << "[!] Main function not found !" << endl;
+	    throw -1;
+	}
+	main_symbol->getPtr ()->execute (NULL);
+    } else {
+	for (Ast * a : *content)
+	    a->interpret ();
+    }
 
     if (_is_global)
 	table->exitBlock ();

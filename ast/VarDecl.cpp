@@ -22,7 +22,7 @@ VarDecl::~VarDecl() {
 	delete var_id;
 }
 
-void VarDecl::secondPass () {
+void VarDecl::interpret () {
     symbol::Table * table = symbol::Table::getInstance();
     table->addSymbol(new symbol::Symbol(var_id->name), pos);
 }
