@@ -4,20 +4,15 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Syscall::Syscall (string ident, vector<Expression*> * params, Position * pos) {
+Syscall::Syscall (string ident, vector<ExpressionPtr> * params, Position * pos) {
     this->ident = ident;
     this->params = params;
     this->pos = pos;
 }
 
 Syscall::~Syscall () {
-    if (params) {
-	for (auto it : *params)
-	    if (it) {
-		delete it;
-	    }
+    if (params)
     	delete params;
-    }
 }
 
 void Syscall::interpret () {
@@ -45,63 +40,63 @@ void Syscall::print (ostream & out, int offset) const {
     out << ")";
 }
 
-void Syscall::_sysPrint (AbstractObject * e) {
-    vector<Expression*> * vec = NULL;
-    Range * range = NULL;
+void Syscall::_sysPrint (ExpressionPtr e) {
+    vector<ExpressionPtr> * vec = NULL;
+    RangePtr range;
 
     if (e->getType ()->value == TYPE::ARRAY || e->getType ()->value == TYPE::RANGE)
-	cout << "[";
+    	cout << "[";
 
     switch (e->getType ()->value) {
     case TYPE::INT:
-	cout << e->getInt ();
-	break;
+    	cout << e->getInt ();
+    	break;
     case TYPE::CHAR:
-	cout << e->getChar ();
-	break;
+    	cout << e->getChar ();
+    	break;
     case TYPE::BOOL:
-	cout << e->getBool ();
-	break;
+    	cout << e->getBool ();
+    	break;
     case TYPE::FLOAT:
-	cout << e->getFloat ();
-	break;
+    	cout << e->getFloat ();
+    	break;
     case TYPE::STRING:
-	vec = e->getArray ();
-	for (auto it : *vec) {
-	    _sysPrint ((AbstractObject*) it);
-	}
-	break;
+    	vec = e->getArray ();
+    	for (auto it : *vec) {
+    	    _sysPrint (it);
+    	}
+    	break;
     case TYPE::ARRAY:
-	vec = e->getArray ();
-	for (int i = 0; i < vec->size (); i++) {
-	    AbstractObject * obj = (*vec)[i]->interpretExpression ();
-	    _sysPrint (obj);
-	    if (i < vec->size () - 1)
-		cout << ", ";
-	}
-	break;
+    	vec = e->getArray ();
+    	for (int i = 0; i < vec->size (); i++) {
+    	    ExpressionPtr obj = (*vec)[i]->interpretExpression ();
+    	    _sysPrint (obj);
+    	    if (i < vec->size () - 1)
+    		cout << ", ";
+    	}
+    	break;
     case TYPE::RANGE:
-	cout << e->getRangeStart ()->getInt ();
-	cout << " .. ";
-	cout << e->getRangeEnd ()->getInt ();
-	break;
+    	cout << e->getRangeBegin ()->getInt ();
+    	cout << " .. ";
+    	cout << e->getRangeEnd ()->getInt ();
+    	break;
     default:
-	SemanticErrorException ("Unknown type " + e->getType ()->toString () + "!", pos);
+    	SemanticErrorException ("Unknown type " + e->getType ()->toString () + "!", pos);
     }
 
     if (e->getType ()->value == TYPE::ARRAY || e->getType ()->value == TYPE::RANGE)
-	cout << "]";
+    	cout << "]";
 }
 
 void Syscall::sysPrint () {
     for (auto it : *params) {
-	_sysPrint (it->interpretExpression ());
+    	_sysPrint (it->interpretExpression ());
     }
 }
 
 void Syscall::sysPrintln () {
     for (auto it : *params) {
-	_sysPrint (it->interpretExpression ());
+    	_sysPrint (it->interpretExpression ());
     }
     cout << endl;
 }

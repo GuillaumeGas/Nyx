@@ -12,16 +12,18 @@
 
 namespace nyx {
     namespace ast {
+	typedef ExpressionPtr BinopPtr;
+	
 	struct Binop : public Expression {
-	    Binop(Expression * e1, Expression * e2, Operator * op, Position * pos);
+	    Binop(ExpressionPtr e1, ExpressionPtr e2, Operator * op, Position * pos);
 	    ~Binop();
 
-	    AbstractObject * interpretExpression ();
+	    ExpressionPtr interpretExpression ();
 	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Expression * e1;
-	    Expression * e2;
+	    ExpressionPtr e1;
+	    ExpressionPtr e2;
 	    Operator * op;
 	};
     };

@@ -4,14 +4,14 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-IfElse::IfElse (Expression * cond, Bloc * bloc_if, Position * pos) {
+IfElse::IfElse (ExpressionPtr cond, BlocPtr bloc_if, Position * pos) {
     this->cond = cond;
     this->bloc_if = bloc_if;
     this->bloc_else = NULL;
     this->pos = pos;
 }
 
-IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * pos) {
+IfElse::IfElse (ExpressionPtr cond, BlocPtr bloc_if, BlocPtr bloc_else, Position * pos) {
     this->cond = cond;
     this->bloc_if = bloc_if;
     this->bloc_else = bloc_else;
@@ -19,29 +19,26 @@ IfElse::IfElse (Expression * cond, Bloc * bloc_if, Bloc * bloc_else, Position * 
 }
 
 IfElse::~IfElse () {
-    if (cond) delete cond;
-    if (bloc_if) delete bloc_if;
-    if (bloc_else) delete bloc_else;
 }
 
 void IfElse::interpret () {
-    AbstractObject * res = (AbstractObject*) cond->interpretExpression ();
+    cond = cond->interpretExpression ();
 
     symbol::Table * table = symbol::Table::getInstance ();
 
-    TYPE res_type = res->getType ()->value;
+    TYPE cond_type = cond->getType ()->value;
 
-    if (res_type != TYPE::BOOL)
-	throw SemanticErrorException ("Boolean expression expected !", cond->pos);
+    if (cond_type != TYPE::BOOL)
+    	throw SemanticErrorException ("Boolean expression expected !", cond->pos);
 
-    if (res->getBool () && bloc_if) {
-	table->enterBlock ();
-	bloc_if->interpret ();
-	table->exitBlock ();
+    if (cond->getBool () && bloc_if) {
+    	table->enterBlock ();
+    	bloc_if->interpret ();
+    	table->exitBlock ();
     } else if (bloc_else) {
-	table->enterBlock ();
-	bloc_else->interpret ();
-	table->exitBlock ();
+    	table->enterBlock ();
+    	bloc_else->interpret ();
+    	table->exitBlock ();
     }
 }
 

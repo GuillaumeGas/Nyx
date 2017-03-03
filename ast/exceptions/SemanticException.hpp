@@ -1,11 +1,14 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
+
 #include "../../global/Position.hpp"
 #include "../Object.hpp"
 #include "../Operator.hpp"
 #include "../Type.hpp"
 #include "../../global/Global.hpp"
+#include "../Expression.hpp"
 
 namespace nyx {
     class SemanticErrorException {
@@ -25,15 +28,15 @@ namespace nyx {
 
     class TypeErrorException : public SemanticErrorException {
     public:
-	TypeErrorException(ast::AbstractObject * e1, ast::AbstractObject * e2, Position * pos) throw() : t1(e1->getType ()), t2(e2->getType ()), SemanticErrorException(pos) {}
-	TypeErrorException(ast::Type * t1, ast::Type * t2, Position * pos) throw() : t1(t1), t2(t2), SemanticErrorException(pos) {}
+    	TypeErrorException(ast::ExpressionPtr e1, ast::ExpressionPtr e2, Position * pos) throw() : t1(e1->getType ()), t2(e2->getType ()), SemanticErrorException(pos) {}
+    	TypeErrorException(ast::Type * t1, ast::Type * t2, Position * pos) throw() : t1(t1), t2(t2), SemanticErrorException(pos) {}
 
-	std::string toString() const {
-	    return "[Error] Incompatible types in file " + file_name + " at " + pos->toString() + " : " + t1->toString() + " with " + t2->toString() + ".\n    " + Global::getInstance()->getLine(pos->line);
-	}
+    	std::string toString() const {
+    	    return "[Error] Incompatible types in file " + file_name + " at " + pos->toString() + " : " + t1->toString() + " with " + t2->toString() + ".\n    " + Global::getInstance()->getLine(pos->line);
+    	}
 
     protected:
-	ast::Type * t1;
-	ast::Type * t2;
+    	ast::Type * t1;
+    	ast::Type * t2;
     };
 };

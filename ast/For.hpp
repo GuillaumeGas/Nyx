@@ -9,9 +9,11 @@
 
 namespace nyx {
     namespace ast {
-	class For : public Ast {
+	typedef InstructionPtr ForPtr;
+
+	class For : public Instruction {
 	public:
-	    For (std::string * ident, VarId * var_loop, Expression * expr, Bloc * bloc, Position * pos);
+	    For (std::string * ident, VarIdPtr var_loop, ExpressionPtr expr, BlocPtr bloc, Position * pos);
 	    ~For ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -19,9 +21,9 @@ namespace nyx {
 
 	private:
 	    std::string  * ident;
-	    VarId * var_loop;
-	    Expression * expr;
-	    Bloc * bloc;
+	    VarIdPtr var_loop;
+	    ExpressionPtr expr;
+	    BlocPtr bloc;
 	};
     };
 };

@@ -5,65 +5,6 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-AbstractObject::AbstractObject () {
-    nb_ref = 0;
-}
-
-AbstractObject::~AbstractObject () {
-    if (type) {
-	delete type;
-    }
-}
-
-int AbstractObject::getNbRef () const { return nb_ref; }
-void AbstractObject::setNbRef (const int nb) { nb_ref = nb; }
-
-Type * AbstractObject::getType () const { return type; }
-AbstractObject * AbstractObject::getPtr () { return this; }
-
-bool AbstractObject::getBool () const { throw -1; }
-int AbstractObject::getInt () const { throw -1; }
-char AbstractObject::getChar () const { throw -1; }
-float AbstractObject::getFloat () const { throw -1; }
-vector<Expression*> * AbstractObject::getArray () const { throw -1; }
-AbstractObject * AbstractObject::getRangeStart () const { throw -1; }
-AbstractObject * AbstractObject::getRangeEnd () const { throw -1; }
-// Object * AbstractObject::getObject () const { throw -1; }
-
-void AbstractObject::setBool (bool v) { throw -1; }
-void AbstractObject::setInt (int v) { throw -1; }
-void AbstractObject::setChar (char v) { throw -1; }
-void AbstractObject::setFloat (float v) { throw -1; }
-void AbstractObject::setArray (std::vector<Expression*> * v) { throw -1; }
-void AbstractObject::setRangeStart (AbstractObject * v) { throw -1; }
-void AbstractObject::setRangeEnd (AbstractObject * v) { throw -1; }
-// virtual void AbstractObject::setObject (Object * v) { throw -1; }
-
-AbstractObject * AbstractObject::interpretASSIGN (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretLE (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretGE (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretNE (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretPLUSEQ (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretMINUSEQ (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretMULEQ (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretDIVEQ (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretMODEQ (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretLT (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretGT (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretEQ (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretAND (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretOR (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretPLUS (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretMINUS (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretMUL (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretDIV (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretMOD (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-AbstractObject * AbstractObject::interpretPOINT (AbstractObject * e) { throw TypeErrorException (this, e, pos); }
-
-AbstractObject * AbstractObject::interpretUnaryMINUS () { throw SemanticErrorException ("Bad operand type for unary '-' : " + type->toString (), pos); }
-
-// #########################################""
-
 Bool::Bool(bool value, Position * pos) {
     this->pos = pos;
     this->type = new Type ("bool");
@@ -78,241 +19,218 @@ void Bool::print (ostream & out, int offset) const {
     out << "ConstBool(" << (value ? "true" : "false") << ")";
 }
 
-Expression * Bool::clone () {
+ExpressionPtr Bool::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return (new Bool (value, new_pos))->interpretExpression ();
+    return Expression::New<Bool> (value, new_pos);
 }
 
-AbstractObject * Bool::interpretExpression () { 
+ExpressionPtr Bool::interpretLE (ExpressionPtr e) {
+    TYPE e_type = e->getType ()->value;
+
+    if (e_type == TYPE::FLOAT) {
+	return Expression::New<Bool> (value <= e->getFloat (), NULL_POSITION);
+    } else if (e_type == TYPE::INT) {
+	return Expression::New<Bool> (value <= e->getInt (), NULL_POSITION);
+    } else if (e_type == TYPE::CHAR) {
+	return Expression::New<Bool> (value <= e->getChar (), NULL_POSITION);
+    } else if (e_type == TYPE::BOOL) {
+	return Expression::New<Bool> (value <= e->getBool (), NULL_POSITION);
+    } else {
+	throw TypeErrorException (shared_from_this (), e, pos);
+    }
+}
+
+ExpressionPtr Bool::interpretGE (ExpressionPtr e) {
+    TYPE e_type = e->getType ()->value;
     
-    return this;
+    if (e_type == TYPE::FLOAT) {
+	return Expression::New<Bool> (value >= e->getFloat (), NULL_POSITION);
+    } else if (e_type == TYPE::INT) {
+	return Expression::New<Bool> (value >= e->getInt (), NULL_POSITION);
+    } else if (e_type == TYPE::CHAR) {
+	return Expression::New<Bool> (value >= e->getChar (), NULL_POSITION);
+    } else if (e_type == TYPE::BOOL) {
+	return Expression::New<Bool> (value >= e->getBool (), NULL_POSITION);
+    } else {
+	throw TypeErrorException (shared_from_this (), e, pos);
+    }
 }
 
-AbstractObject * Bool::interpretLE (AbstractObject * e) {
+ExpressionPtr Bool::interpretNE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value <= e->getFloat (), NULL);
+	return Expression::New<Bool> (value != e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value <= e->getInt (), NULL);
+	return Expression::New<Bool> (value != e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value <= e->getChar (), NULL);
+	return Expression::New<Bool> (value != e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value != e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretGE (AbstractObject * e) {
+ExpressionPtr Bool::interpretLT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value >= e->getFloat (), NULL);
+	return Expression::New<Bool> (value < e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value >= e->getInt (), NULL);
+	return Expression::New<Bool> (value < e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value >= e->getChar (), NULL);
+	return Expression::New<Bool> (value < e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value < e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretNE (AbstractObject * e) {
+ExpressionPtr Bool::interpretGT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value != e->getFloat (), NULL);
+	return Expression::New<Bool> (value > e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value != e->getInt (), NULL);
+	return Expression::New<Bool> (value > e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value != e->getChar (), NULL);
+	return Expression::New<Bool> (value > e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value > e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretLT (AbstractObject * e) {
+ExpressionPtr Bool::interpretEQ (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value < e->getFloat (), NULL);
+	return Expression::New<Bool> (value == e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value < e->getInt (), NULL);
+	return Expression::New<Bool> (value == e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value < e->getChar (), NULL);
+	return Expression::New<Bool> (value == e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value == e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretGT (AbstractObject * e) {
+ExpressionPtr Bool::interpretAND (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value > e->getFloat (), NULL);
+	return Expression::New<Bool> (value && e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value > e->getInt (), NULL);
+	return Expression::New<Bool> (value && e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value > e->getChar (), NULL);
+	return Expression::New<Bool> (value && e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value && e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretEQ (AbstractObject * e) {
+ExpressionPtr Bool::interpretOR (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value == e->getFloat (), NULL);
+	return Expression::New<Bool> (value || e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value == e->getInt (), NULL);
+	return Expression::New<Bool> (value || e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value == e->getChar (), NULL);
+	return Expression::New<Bool> (value || e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value || e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretAND (AbstractObject * e) {
+ExpressionPtr Bool::interpretPLUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value && e->getFloat (), NULL);
+	return Expression::New<Bool> (value + e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value && e->getInt (), NULL);
+	return Expression::New<Bool> (value + e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value && e->getChar (), NULL);
+	return Expression::New<Bool> (value + e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value + e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretOR (AbstractObject * e) {
+ExpressionPtr Bool::interpretMINUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value || e->getFloat (), NULL);
+	return Expression::New<Bool> (value - e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value || e->getInt (), NULL);
+	return Expression::New<Bool> (value - e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value || e->getChar (), NULL);
+	return Expression::New<Bool> (value - e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value - e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Bool::interpretPLUS (AbstractObject * e) {
+ExpressionPtr Bool::interpretMUL (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value + e->getFloat (), NULL);
+	return Expression::New<Bool> (value * e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value + e->getInt (), NULL);
+	return Expression::New<Bool> (value * e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value + e->getChar (), NULL);
+	return Expression::New<Bool> (value * e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value * e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Bool::interpretMINUS (AbstractObject * e) {
+ExpressionPtr Bool::interpretDIV (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value - e->getFloat (), NULL);
+	return Expression::New<Bool> (value / e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value - e->getInt (), NULL);
+	return Expression::New<Bool> (value / e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value - e->getChar (), NULL);
+	return Expression::New<Bool> (value / e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value / e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Bool::interpretMUL (AbstractObject * e) {
-    TYPE e_type = e->getType ()->value;
-
-    if (e_type == TYPE::FLOAT) {
-	return new Bool (value * e->getFloat (), NULL);
-    } else if (e_type == TYPE::INT) {
-	return new Bool (value * e->getInt (), NULL);
-    } else if (e_type == TYPE::CHAR) {
-	return new Bool (value * e->getChar (), NULL);
-    } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
-    } else {
-	throw TypeErrorException (this, e, pos);
-    }
-
-    return this;
-}
-
-AbstractObject * Bool::interpretDIV (AbstractObject * e) {
-    TYPE e_type = e->getType ()->value;
-
-    if (e_type == TYPE::FLOAT) {
-	return new Bool (value / e->getFloat (), NULL);
-    } else if (e_type == TYPE::INT) {
-	return new Bool (value / e->getInt (), NULL);
-    } else if (e_type == TYPE::CHAR) {
-	return new Bool (value / e->getChar (), NULL);
-    } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
-    } else {
-	throw TypeErrorException (this, e, pos);
-    }
-
-    return this;
-}
-
-AbstractObject * Bool::interpretMOD (AbstractObject * e) {
+ExpressionPtr Bool::interpretMOD (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::INT) {
-	return new Bool (value % e->getInt (), NULL);
+	return Expression::New<Bool> (value / e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value % e->getChar (), NULL);
+	return Expression::New<Bool> (value / e->getChar (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
 
-AbstractObject * Bool::interpretUnaryMINUS () {
-    return new Bool (value * -1, NULL);
+ExpressionPtr Bool::interpretUnaryMINUS () {
+    return Expression::New<Bool> (value * -1, NULL_POSITION);
 }
 
 
@@ -332,243 +250,218 @@ void Char::print (ostream & out, int offset) const {
     out << "ConstChar(" << "'" << value << "'" << ")";
 }
 
-Expression * Char::clone () {
+ExpressionPtr Char::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return (new Char (value, new_pos))->interpretExpression ();
+    return Expression::New<Char> (value, new_pos);
 }
 
-AbstractObject * Char::interpretExpression () { 
-    
-    return this;
-}
-
-AbstractObject * Char::interpretLE (AbstractObject * e) {
+ExpressionPtr Char::interpretLE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value <= e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value <= e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value <= e->getInt (), NULL);
+	return Expression::New<Bool> (value <= e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value <= e->getChar (), NULL);
+	return Expression::New<Bool> (value <= e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value <= e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretGE (AbstractObject * e) {
+ExpressionPtr Char::interpretGE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value >= e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value >= e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value >= e->getInt (), NULL);
+	return Expression::New<Bool> (value >= e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value >= e->getChar (), NULL);
+	return Expression::New<Bool> (value >= e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value >= e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretNE (AbstractObject * e) {
+ExpressionPtr Char::interpretNE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value != e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value != e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value != e->getInt (), NULL);
+	return Expression::New<Bool> (value != e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value != e->getChar (), NULL);
+	return Expression::New<Bool> (value != e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value != e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretLT (AbstractObject * e) {
+ExpressionPtr Char::interpretLT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value < e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value < e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value < e->getInt (), NULL);
+	return Expression::New<Bool> (value < e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value < e->getChar (), NULL);
+	return Expression::New<Bool> (value < e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value < e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretGT (AbstractObject * e) {
+ExpressionPtr Char::interpretGT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value > e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value > e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value > e->getInt (), NULL);
+	return Expression::New<Bool> (value > e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value > e->getChar (), NULL);
+	return Expression::New<Bool> (value > e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value > e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretEQ (AbstractObject * e) {
+ExpressionPtr Char::interpretEQ (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value == e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value == e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value == e->getInt (), NULL);
+	return Expression::New<Bool> (value == e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value == e->getChar (), NULL);
+	return Expression::New<Bool> (value == e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value == e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretAND (AbstractObject * e) {
+ExpressionPtr Char::interpretAND (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value && e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value && e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value && e->getInt (), NULL);
+	return Expression::New<Bool> (value && e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value && e->getChar (), NULL);
+	return Expression::New<Bool> (value && e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value && e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretOR (AbstractObject * e) {
+ExpressionPtr Char::interpretOR (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value || e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value || e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value || e->getInt (), NULL);
+	return Expression::New<Bool> (value || e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value || e->getChar (), NULL);
+	return Expression::New<Bool> (value || e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value || e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Char::interpretPLUS (AbstractObject * e) {
+ExpressionPtr Char::interpretPLUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value + e->getFloat (), NULL);
+	return Expression::New<Char> ((float) value + e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value + e->getInt (), NULL);
+	return Expression::New<Char> (value + e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value + e->getChar (), NULL);
+	return Expression::New<Char> (value + e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Char> (value + e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Char::interpretMINUS (AbstractObject * e) {
+ExpressionPtr Char::interpretMINUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value - e->getFloat (), NULL);
+	return Expression::New<Char> ((float) value - e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value - e->getInt (), NULL);
+	return Expression::New<Char> (value - e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value - e->getChar (), NULL);
+	return Expression::New<Char> (value - e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Char> (value - e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Char::interpretMUL (AbstractObject * e) {
+ExpressionPtr Char::interpretMUL (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char ((float) value * e->getFloat (), NULL);
+	return Expression::New<Char> ((float) value * e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value * e->getInt (), NULL);
+	return Expression::New<Char> (value * e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value * e->getChar (), NULL);
+	return Expression::New<Char> (value * e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Char> (value * e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Char::interpretDIV (AbstractObject * e) {
+ExpressionPtr Char::interpretDIV (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Char (value / e->getFloat (), NULL);
+	return Expression::New<Char> ((float) value / e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Char (value / e->getInt (), NULL);
+	return Expression::New<Char> (value / e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value / e->getChar (), NULL);
+	return Expression::New<Char> (value / e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Char> (value / e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Char::interpretMOD (AbstractObject * e) {
+ExpressionPtr Char::interpretMOD (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::INT) {
-	return new Char (value % e->getInt (), NULL);
+	return Expression::New<Char> (value % e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Char (value % e->getChar (), NULL);
-    } else if (e_type == TYPE::BOOL) {
-	return new Char (value <= e->getBool (), NULL);
+	return Expression::New<Char> (value % e->getChar (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
 
-AbstractObject * Char::interpretUnaryMINUS () {
-    return new Char (value * -1, NULL);
+ExpressionPtr Char::interpretUnaryMINUS () {
+    return Expression::New<Char> (value * -1, NULL_POSITION);
 }
 
 // ####################################
@@ -589,240 +482,218 @@ void Int::print (ostream & out, int offset) const {
     out << "ConstInt(" << value << ")";
 }
 
-Expression * Int::clone () {
+ExpressionPtr Int::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return (new Int (value, new_pos))->interpretExpression ();
+    return Expression::New<Int> (value, new_pos);
 }
 
-AbstractObject * Int::interpretExpression () { 
-    return this;
-}
-
-AbstractObject * Int::interpretLE (AbstractObject * e) {
+ExpressionPtr Int::interpretLE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value <= e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value <= e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value <= e->getInt (), NULL);
+	return Expression::New<Bool> (value <= e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value <= e->getChar (), NULL);
+	return Expression::New<Bool> (value <= e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value <= e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretGE (AbstractObject * e) {
+ExpressionPtr Int::interpretGE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value >= e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value >= e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value >= e->getInt (), NULL);
+	return Expression::New<Bool> (value >= e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value >= e->getChar (), NULL);
+	return Expression::New<Bool> (value >= e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value >= e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretNE (AbstractObject * e) {
+ExpressionPtr Int::interpretNE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value != e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value != e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value != e->getInt (), NULL);
+	return Expression::New<Bool> (value != e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value != e->getChar (), NULL);
+	return Expression::New<Bool> (value != e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value != e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretLT (AbstractObject * e) {
+ExpressionPtr Int::interpretLT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value < e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value < e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value < e->getInt (), NULL);
+	return Expression::New<Bool> (value < e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value < e->getChar (), NULL);
+	return Expression::New<Bool> (value < e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value < e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretGT (AbstractObject * e) {
+ExpressionPtr Int::interpretGT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value > e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value > e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value > e->getInt (), NULL);
+	return Expression::New<Bool> (value > e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value > e->getChar (), NULL);
+	return Expression::New<Bool> (value > e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value > e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretEQ (AbstractObject * e) {
+ExpressionPtr Int::interpretEQ (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value == e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value == e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value == e->getInt (), NULL);
+	return Expression::New<Bool> (value == e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value == e->getChar (), NULL);
+	return Expression::New<Bool> (value == e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value == e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretAND (AbstractObject * e) {
+ExpressionPtr Int::interpretAND (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value && e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value && e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value && e->getInt (), NULL);
+	return Expression::New<Bool> (value && e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value && e->getChar (), NULL);
+	return Expression::New<Bool> (value && e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value && e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretOR (AbstractObject * e) {
+ExpressionPtr Int::interpretOR (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ((float) value || e->getFloat (), NULL);
+	return Expression::New<Bool> ((float) value || e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value || e->getInt (), NULL);
+	return Expression::New<Bool> (value || e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value || e->getChar (), NULL);
+	return Expression::New<Bool> (value || e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value || e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Int::interpretPLUS (AbstractObject * e) {
+ExpressionPtr Int::interpretPLUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value + e->getFloat (), NULL);
+	return Expression::New<Int> ((float) value + e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Int (value + e->getInt (), NULL);
+	return Expression::New<Int> (value + e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value + e->getChar (), NULL);
+	return Expression::New<Int> (value + e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return Expression::New<Int> (value + e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Int::interpretMINUS (AbstractObject * e) {
+ExpressionPtr Int::interpretMINUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value - e->getFloat (), NULL);
+	return Expression::New<Int> ((float) value - e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Int (value - e->getInt (), NULL);
+	return Expression::New<Int> (value - e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value - e->getChar (), NULL);
+	return Expression::New<Int> (value - e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return Expression::New<Int> (value - e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Int::interpretMUL (AbstractObject * e) {
+ExpressionPtr Int::interpretMUL (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value * e->getFloat (), NULL);
+	return Expression::New<Int> ((float) value * e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Int (value * e->getInt (), NULL);
+	return Expression::New<Int> (value * e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value * e->getChar (), NULL);
+	return Expression::New<Int> (value * e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return Expression::New<Int> (value * e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Int::interpretDIV (AbstractObject * e) {
+ExpressionPtr Int::interpretDIV (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Int ((float) value / e->getFloat (), NULL);
+	return Expression::New<Int> ((float) value / e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Int ((float) value / e->getInt (), NULL);
+	return Expression::New<Int> (value / e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Int ((float) value / e->getChar (), NULL);
+	return Expression::New<Int> (value / e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Int (value <= e->getBool (), NULL);
+	return Expression::New<Int> (value / e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Int::interpretMOD (AbstractObject * e) {
+ExpressionPtr Int::interpretMOD (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::INT) {
-	return new Int (value % e->getInt (), NULL);
+	return Expression::New<Int> (value % e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Int (value % e->getChar (), NULL);
+	return Expression::New<Int> (value % e->getChar (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
 
-AbstractObject * Int::interpretUnaryMINUS () {
-    return new Int (value * -1, NULL);
+ExpressionPtr Int::interpretUnaryMINUS () {
+    return Expression::New<Int> (value * -1, NULL_POSITION);
 }
 
 // ####################################
@@ -841,260 +712,233 @@ void Float::print (ostream & out, int offset) const {
     out << "ConstFloat(" << std::to_string (this->value) << ")";
 }
 
-Expression * Float::clone () {
+ExpressionPtr Float::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return (new Float (value, new_pos))->interpretExpression ();
+    return Expression::New<Float> (value, new_pos);
 }
 
-AbstractObject * Float::interpretExpression () { 
-    
-    return this;
-}
-
-AbstractObject * Float::interpretLE (AbstractObject * e) {
+ExpressionPtr Float::interpretLE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool ( value <= e->getFloat (), NULL);
+	return Expression::New<Bool> (value <= e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value <= e->getInt (), NULL);
+	return Expression::New<Bool> (value <= e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value <= e->getChar (), NULL);
+	return Expression::New<Bool> (value <= e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value <= e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretGE (AbstractObject * e) {
+ExpressionPtr Float::interpretGE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value >= e->getFloat (), NULL);
+	return Expression::New<Bool> (value >= e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value >= e->getInt (), NULL);
+	return Expression::New<Bool> (value >= e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value >= e->getChar (), NULL);
+	return Expression::New<Bool> (value >= e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value >= e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretNE (AbstractObject * e) {
+ExpressionPtr Float::interpretNE (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value != e->getFloat (), NULL);
+	return Expression::New<Bool> (value != e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value != e->getInt (), NULL);
+	return Expression::New<Bool> (value != e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value != e->getChar (), NULL);
+	return Expression::New<Bool> (value != e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value != e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretLT (AbstractObject * e) {
+ExpressionPtr Float::interpretLT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value < e->getFloat (), NULL);
+	return Expression::New<Bool> (value < e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value < e->getInt (), NULL);
+	return Expression::New<Bool> (value < e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value < e->getChar (), NULL);
+	return Expression::New<Bool> (value < e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value < e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretGT (AbstractObject * e) {
+ExpressionPtr Float::interpretGT (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value > e->getFloat (), NULL);
+	return Expression::New<Bool> (value > e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value > e->getInt (), NULL);
+	return Expression::New<Bool> (value > e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value > e->getChar (), NULL);
+	return Expression::New<Bool> (value > e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value > e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretEQ (AbstractObject * e) {
+ExpressionPtr Float::interpretEQ (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value == e->getFloat (), NULL);
+	return Expression::New<Bool> (value == e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value == e->getInt (), NULL);
+	return Expression::New<Bool> (value == e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value == e->getChar (), NULL);
+	return Expression::New<Bool> (value == e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value == e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretAND (AbstractObject * e) {
+ExpressionPtr Float::interpretAND (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value && e->getFloat (), NULL);
+	return Expression::New<Bool> (value && e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value && e->getInt (), NULL);
+	return Expression::New<Bool> (value && e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value && e->getChar (), NULL);
+	return Expression::New<Bool> (value && e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value && e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretOR (AbstractObject * e) {
+ExpressionPtr Float::interpretOR (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Bool (value || e->getFloat (), NULL);
+	return Expression::New<Bool> (value || e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Bool (value || e->getInt (), NULL);
+	return Expression::New<Bool> (value || e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Bool (value || e->getChar (), NULL);
+	return Expression::New<Bool> (value || e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Bool (value <= e->getBool (), NULL);
+	return Expression::New<Bool> (value || e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-    return this;
 }
 
-AbstractObject * Float::interpretPLUS (AbstractObject * e) {
+ExpressionPtr Float::interpretPLUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value + e->getFloat (), NULL);
+	return Expression::New<Float> (value + e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Float (value + e->getInt (), NULL);
+	return Expression::New<Float> (value + e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value + e->getChar (), NULL);
+	return Expression::New<Float> (value + e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return Expression::New<Float> (value + e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Float::interpretMINUS (AbstractObject * e) {
+ExpressionPtr Float::interpretMINUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value - e->getFloat (), NULL);
+	return Expression::New<Float> (value - e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Float (value - e->getInt (), NULL);
+	return Expression::New<Float> (value - e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value - e->getChar (), NULL);
+	return Expression::New<Float> (value - e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return Expression::New<Float> (value - e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Float::interpretMUL (AbstractObject * e) {
+ExpressionPtr Float::interpretMUL (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value * e->getFloat (), NULL);
+	return Expression::New<Float> (value * e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Float (value * e->getInt (), NULL);
+	return Expression::New<Float> (value * e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value * e->getChar (), NULL);
+	return Expression::New<Float> (value * e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return Expression::New<Float> (value * e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Float::interpretDIV (AbstractObject * e) {
+ExpressionPtr Float::interpretDIV (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     if (e_type == TYPE::FLOAT) {
-	return new Float (value / e->getFloat (), NULL);
+	return Expression::New<Float> (value / e->getFloat (), NULL_POSITION);
     } else if (e_type == TYPE::INT) {
-	return new Float (value / e->getInt (), NULL);
+	return Expression::New<Float> (value / e->getInt (), NULL_POSITION);
     } else if (e_type == TYPE::CHAR) {
-	return new Float (value / e->getChar (), NULL);
+	return Expression::New<Float> (value / e->getChar (), NULL_POSITION);
     } else if (e_type == TYPE::BOOL) {
-	return new Float (value <= e->getBool (), NULL);
+	return Expression::New<Float> (value / e->getBool (), NULL_POSITION);
     } else {
-	throw TypeErrorException (this, e, pos);
+	throw TypeErrorException (shared_from_this (), e, pos);
     }
-
-    return this;
 }
 
-AbstractObject * Float::interpretUnaryMINUS () {
-    return new Float (value * -1, NULL);
+ExpressionPtr Float::interpretUnaryMINUS () {
+    return Expression::New<Float> (value * -1, NULL_POSITION);
 }
 
 // ####################################
 
-Array::Array (vector<Expression*> * array, Position * pos) {
+Array::Array (vector<ExpressionPtr> * array, Position * pos) {
     this->pos = pos;
     this->array = array;
     this->type = new Type ("array");
 }
 
-Expression * Array::clone () {
+ExpressionPtr Array::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    vector<Expression*> * vec = new vector<Expression*> ();
+    vector<ExpressionPtr> * vec = new vector<ExpressionPtr> ();
 
     for (auto it : *(array)) {
-	AbstractObject * obj = (AbstractObject *)it;
-	vec->push_back (obj->clone ());
+	vec->push_back (it->clone ());
     }
-    return (new Array (vec, new_pos))->interpretExpression ();
+    return Expression::New<Array> (vec, new_pos);
 }
 
 Array::Array () {}
 
 Array::~Array () {
-    if (array != NULL) {
-	for (auto it : *array) {
-	    if (it)
-		delete it;
-	}
+    if (array != NULL)
 	delete array;
-    }
 }
 
-vector<Expression*> * Array::getArray () const { return array; }
+vector<ExpressionPtr> * Array::getArray () const { return array; }
 
 void Array::print (ostream & out, int offset) const {
     out << "<array>[";
@@ -1110,35 +954,34 @@ void Array::print (ostream & out, int offset) const {
     out << "]";
 }
 
-AbstractObject * Array::interpretExpression () {
+ExpressionPtr Array::interpretExpression () {
     for (auto & it : *array)
 	it = it->interpretExpression ();
     
-    return this;
+    return shared_from_this ();
 }
 
-AbstractObject * Array::interpretPLUS (AbstractObject * e) {
+ExpressionPtr Array::interpretPLUS (ExpressionPtr e) {
     TYPE e_type = e->getType ()->value;
 
     // if e is not an array, we add it at the end of the array
     if (e_type != TYPE::ARRAY && e_type != TYPE::STRING) {
 	array->push_back (e->clone ());
     } else {
-	vector<Expression*> * e_array = e->getArray ();
+	vector<ExpressionPtr> * e_array = e->getArray ();
 	for (auto it : *(e_array)) {
-	    AbstractObject * obj = (AbstractObject*) it;
-	    array->push_back (obj->clone ());
+	    array->push_back (it->clone ());
 	}
     }
-    return this;
+    return shared_from_this ();
 }
 
 // ####################################
 
 String::String (string str, Position * pos) {
-    this->array = new vector<Expression*> ();
+    this->array = new vector<ExpressionPtr> ();
     for (int i = 0; i < str.size (); i++)
-	this->array->push_back (new Char (str[i], new Position (pos->line, pos->column)));
+	this->array->push_back (Expression::New<Char> (str[i], new Position (pos->line, pos->column)));
     this->pos = pos;
     this->type = new Type ("string");
 }
@@ -1147,51 +990,41 @@ void String::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "\"";
     for (auto it : *array)
-	out << ((Char*)it)->getChar ();
+	out << it->getChar ();
     out << "\"";
-}
-
-AbstractObject * String::interpretExpression () {
-    
-    return this;
 }
 
 // ####################################
 
-Range::Range (Expression * start, Expression * end, Position * pos) {
+Range::Range (ExpressionPtr begin, ExpressionPtr end, Position * pos) {
     this->pos = pos;
-    this->start = start;
+    this->begin = begin;
     this->end = end;
     this->type = new Type ("range");
 }
 
-Expression * Range::clone () {
+ExpressionPtr Range::clone () {
     Position * new_pos = new Position (pos->line, pos->column);
-    return (new Range (((AbstractObject*)start)->clone (), ((AbstractObject*)end)->clone (), new_pos))->interpretExpression ();;
+    return Expression::New<Range> (begin->clone (), end->clone (), new_pos);
 }
 
 Range::~Range () {
-    if (start)
-    	delete start;
-    if (end)
-    	delete end;
 }
 
-AbstractObject * Range::getRangeStart () const { return (AbstractObject*) start; }
-AbstractObject * Range::getRangeEnd () const { return (AbstractObject*) end; }
+ExpressionPtr Range::getRangeBegin () const { return begin; }
+ExpressionPtr Range::getRangeEnd () const { return end; }
 
 void Range::print (ostream & out, int offset) const {
     out << "<range>[";
-    start->print (out);
+    begin->print (out);
     out << " .. ";
     end->print (out);
     out << "]";
 }
 
-AbstractObject * Range::interpretExpression () {
-    
-    AbstractObject * first = (AbstractObject*) start->interpretExpression ();
-    AbstractObject * second = (AbstractObject*) end->interpretExpression ();
+ExpressionPtr Range::interpretExpression () {
+    ExpressionPtr first = begin->interpretExpression ();
+    ExpressionPtr second = end->interpretExpression ();
     if (first->getType ()->value != TYPE::INT) {
 	Type t ("int");
 	throw TypeErrorException (&t, first->getType (), first->pos);
@@ -1199,5 +1032,7 @@ AbstractObject * Range::interpretExpression () {
 	Type t ("int");
 	throw TypeErrorException (&t, second->getType (), second->pos);
     }
-    return this;
+    begin = first;
+    end = second;
+    return shared_from_this ();
 }

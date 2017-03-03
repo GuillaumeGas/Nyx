@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iostream>
@@ -13,10 +14,12 @@
 
 namespace nyx {
     namespace ast {
-	class VarId : public AbstractObject {
+	typedef ExpressionPtr VarIdPtr;
+
+	class VarId : public Expression {
 	public:
 	    VarId (std::string name, Position * pos);
-	    VarId (std::string name, AbstractObject * ptr, Position * pos);
+	    VarId (std::string name, ExpressionPtr ptr, Position * pos);
 	    ~VarId ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -25,36 +28,35 @@ namespace nyx {
 	    int getInt () const;
 	    char getChar () const;
 	    float getFloat () const;
-	    std::vector<Expression*> * getArray () const;
-	    AbstractObject * getRangeStart () const;
-	    AbstractObject * getRangeEnd () const;
+	    std::vector<ExpressionPtr> * getArray () const;
+	    ExpressionPtr getRangeBegin () const;
+	    ExpressionPtr getRangeEnd () const;
 	    // Object * getObject () const;
-	    AbstractObject * getPtr ();
 
-	    Expression * clone ();
-	    AbstractObject * interpretExpression ();
-	    AbstractObject * interpretASSIGN (AbstractObject * e);
-	    AbstractObject * interpretLE (AbstractObject * e);
-	    AbstractObject * interpretGE (AbstractObject * e);
-	    AbstractObject * interpretNE (AbstractObject * e);
-	    AbstractObject * interpretLT (AbstractObject * e);
-	    AbstractObject * interpretGT (AbstractObject * e);
-	    AbstractObject * interpretEQ (AbstractObject * e);
-	    AbstractObject * interpretAND (AbstractObject * e);
-	    AbstractObject * interpretOR (AbstractObject * e);
-	    AbstractObject * interpretPLUS (AbstractObject * e);
-	    AbstractObject * interpretMINUS (AbstractObject * e);
-	    AbstractObject * interpretMUL (AbstractObject * e);
-	    AbstractObject * interpretDIV (AbstractObject * e);
-	    AbstractObject * interpretMOD (AbstractObject * e);
+	    ExpressionPtr clone ();
+	    ExpressionPtr interpretExpression ();
+	    ExpressionPtr interpretASSIGN (ExpressionPtr e);
+	    ExpressionPtr interpretLE (ExpressionPtr e);
+	    ExpressionPtr interpretGE (ExpressionPtr e);
+	    ExpressionPtr interpretNE (ExpressionPtr e);
+	    ExpressionPtr interpretLT (ExpressionPtr e);
+	    ExpressionPtr interpretGT (ExpressionPtr e);
+	    ExpressionPtr interpretEQ (ExpressionPtr e);
+	    ExpressionPtr interpretAND (ExpressionPtr e);
+	    ExpressionPtr interpretOR (ExpressionPtr e);
+	    ExpressionPtr interpretPLUS (ExpressionPtr e);
+	    ExpressionPtr interpretMINUS (ExpressionPtr e);
+	    ExpressionPtr interpretMUL (ExpressionPtr e);
+	    ExpressionPtr interpretDIV (ExpressionPtr e);
+	    ExpressionPtr interpretMOD (ExpressionPtr e);
 
-	    AbstractObject * interpretUnaryMINUS ();
+	    ExpressionPtr interpretUnaryMINUS ();
 
 	    std::string name;
 	private:
-	    AbstractObject * value;
+	    ExpressionPtr value;
 
-	    AbstractObject * _interpretBinop (Op op, AbstractObject * e);
+	    ExpressionPtr _interpretBinop (Op op, ExpressionPtr e);
 	};
     };
 };

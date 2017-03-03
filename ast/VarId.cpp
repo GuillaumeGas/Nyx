@@ -11,7 +11,7 @@ VarId::VarId(string name, Position * pos) : name(name) {
     this->type = NULL;
 }
 
-VarId::VarId (string name, AbstractObject * ptr, Position * pos) : name (name), value (ptr) {
+VarId::VarId (string name, ExpressionPtr ptr, Position * pos) : name (name), value (ptr) {
     this->pos = pos;
     this->type = NULL;
 }
@@ -22,25 +22,19 @@ bool VarId::getBool () const { return value->getBool (); }
 int VarId::getInt () const { return value->getInt (); }
 char VarId::getChar () const { return value->getChar (); }
 float VarId::getFloat () const { return value->getFloat (); }
-vector<Expression*> * VarId::getArray () const { return value->getArray (); }
-AbstractObject * VarId::getRangeStart () const { return value->getRangeStart (); }
-AbstractObject * VarId::getRangeEnd () const { return value->getRangeEnd (); }
+vector<ExpressionPtr> * VarId::getArray () const { return value->getArray (); }
+ExpressionPtr VarId::getRangeBegin () const { return value->getRangeBegin (); }
+ExpressionPtr VarId::getRangeEnd () const { return value->getRangeEnd (); }
 
 void VarId::print (ostream & out, int offset) const {
     out << "VarId " << name;
 }
 
-Expression * VarId::clone () {
-    // Position * new_pos = new Position (pos->line, pos->column);
-    // return new VarId (name, value, new_pos);
+ExpressionPtr VarId::clone () {
     return value->clone ();
 }
 
-AbstractObject * VarId::getPtr () {
-    return value;
-}
-
-AbstractObject * VarId::interpretExpression () {
+ExpressionPtr VarId::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::Symbol * symbol = table->getSymbol (name, pos);
 
@@ -49,86 +43,73 @@ AbstractObject * VarId::interpretExpression () {
 	type = new Type (*(value->getType ()));
     }
 
-    return this;
+    return shared_from_this ();
 }
 
-AbstractObject * VarId::interpretASSIGN (AbstractObject * e) {
+ExpressionPtr VarId::interpretASSIGN (ExpressionPtr e) {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::Symbol * symbol = table->getSymbol (name, pos);
 
-    // if is not undef, we update the number of ref on the referenced object,
-    // and we check if the value referenced by this var needs to be destroyed
-    if (symbol->isDef ()) {
-	AbstractObject * object = symbol->getValue ();
-	object->setNbRef (object->getNbRef () - 1);
-    }
+    symbol->setValue (e->interpretExpression ());
 
-    // This object is referenced one more time by the current var...
-    AbstractObject * new_value = e->getPtr ();
-    new_value->setNbRef (new_value->getNbRef () + 1);
-
-    // The var now references to the new object !
-    symbol->setValue (new_value);
-
-    return new_value;
+    return shared_from_this ();
 }
 
-AbstractObject * VarId::interpretLE (AbstractObject * e) {
+ExpressionPtr VarId::interpretLE (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("<="), e);
 }
 
-AbstractObject * VarId::interpretGE (AbstractObject * e) {
+ExpressionPtr VarId::interpretGE (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue (">="), e);
 }
-AbstractObject * VarId::interpretNE (AbstractObject * e) {
+ExpressionPtr VarId::interpretNE (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("!="), e);
 }
-AbstractObject * VarId::interpretLT (AbstractObject * e) {
+ExpressionPtr VarId::interpretLT (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("<"), e);
 }
-AbstractObject * VarId::interpretGT (AbstractObject * e) {
+ExpressionPtr VarId::interpretGT (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue (">"), e);
 }
-AbstractObject * VarId::interpretEQ (AbstractObject * e) {
+ExpressionPtr VarId::interpretEQ (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("=="), e);
 }
-AbstractObject * VarId::interpretAND (AbstractObject * e) {
+ExpressionPtr VarId::interpretAND (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("&&"), e);
 }
-AbstractObject * VarId::interpretOR (AbstractObject * e) {
+ExpressionPtr VarId::interpretOR (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("||"), e);
 }
-AbstractObject * VarId::interpretPLUS (AbstractObject * e) {
+ExpressionPtr VarId::interpretPLUS (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("+"), e);
 }
-
-AbstractObject * VarId::interpretMINUS (AbstractObject * e) {
+ExpressionPtr VarId::interpretMINUS (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("-"), e);
 }
-AbstractObject * VarId::interpretMUL (AbstractObject * e) {
+ExpressionPtr VarId::interpretMUL (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("*"), e);
 }
-AbstractObject * VarId::interpretDIV (AbstractObject * e) {
+ExpressionPtr VarId::interpretDIV (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("/"), e);
 }
-AbstractObject * VarId::interpretMOD (AbstractObject * e) {
+ExpressionPtr VarId::interpretMOD (ExpressionPtr e) {
     return _interpretBinop (Operator::getValue ("%"), e);
 }
 
-AbstractObject * VarId::interpretUnaryMINUS () {
+ExpressionPtr VarId::interpretUnaryMINUS () {
     if (value->getType ()->value != TYPE::INT && value->getType ()->value != TYPE::FLOAT)
 	throw SemanticErrorException ("Bad operand type for unary '-' : " + value->getType ()->toString(), pos);
 
     if (value->getType ()->value == TYPE::INT) {
-	return new Int (value->getInt () * -1, NULL);
+	return Expression::New<Int> (value->getInt () * -1, NULL_POSITION);
     } else if (value->getType ()->value == TYPE::FLOAT) {
-	return new Float (value->getFloat () * -1, NULL);
+	return Expression::New<Float> (value->getFloat () * -1, NULL_POSITION);
     } else {
 	TODO_SEM ("UnOp VarId type");
     }
 }
 
-AbstractObject * VarId::_interpretBinop (Op op, AbstractObject * e) {
+ExpressionPtr VarId::_interpretBinop (Op op, ExpressionPtr e) {
     switch (op) {
     case Op::PLUS:
 	return value->interpretPLUS (e);

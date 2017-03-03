@@ -2,21 +2,27 @@
 
 #include <iostream>
 #include "Ast.hpp"
-#include "../global/Position.hpp"
 #include "Expression.hpp"
+#include "Instruction.hpp"
+#include "Object.hpp"
+#include "Function.hpp"
+#include "../global/Position.hpp"
+#include "../symbol/Table.hpp"
 
 namespace nyx {
-  namespace ast {
-    class Return : public Ast {
-    public:
-      Return (Expression * expr, Position * pos);
-      ~Return ();
+    namespace ast {
+	typedef InstructionPtr ReturnPtr;
 
-      void print (std::ostream & out, int offset = 0) const;
-      void interpret ();
+	class Return : public Instruction {
+	public:
+	    Return (ExpressionPtr expr, Position * pos);
+	    ~Return ();
 
-    private:
-      Expression * expr;
+	    void print (std::ostream & out, int offset = 0) const;
+	    void interpret ();
+
+	private:
+	    ExpressionPtr expr;
+	};
     };
-  };
 };

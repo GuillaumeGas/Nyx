@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Class::Class (string & ident, FunDecl * constructor, FunDecl * destructor, Bloc * public_bloc, Bloc * private_bloc, Position * pos) {
+Class::Class (string & ident, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position * pos) {
     this->ident = ident;
     this->inheritance = "";
     this->constructor = constructor;
@@ -14,7 +14,7 @@ Class::Class (string & ident, FunDecl * constructor, FunDecl * destructor, Bloc 
     this->pos = pos;
 }
 
-Class::Class (string & ident, string & inheritance, FunDecl * constructor, FunDecl * destructor, Bloc * public_bloc, Bloc * private_bloc, Position * pos) {
+Class::Class (string & ident, string & inheritance, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position * pos) {
     this->ident = ident;
     this->inheritance = inheritance;
     this->constructor = constructor;
@@ -24,10 +24,7 @@ Class::Class (string & ident, string & inheritance, FunDecl * constructor, FunDe
     this->pos = pos;
 }
 
-Class::~Class () {
-    if (public_bloc) delete public_bloc;
-    if (private_bloc) delete private_bloc;
-}
+Class::~Class () {}
 
 void Class::interpret () {}
 

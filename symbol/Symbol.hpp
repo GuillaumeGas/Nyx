@@ -5,7 +5,7 @@
 #include <sstream>
 #include "../ast/Type.hpp"
 #include "../ast/Object.hpp"
-#include "../ast/FunDecl.hpp"
+#include "../ast/Function.hpp"
 
 /**
    Symbol class : represents a symbol.
@@ -18,13 +18,13 @@ namespace nyx {
 	class Symbol {
 	public:
 	    Symbol (std::string & name);
-	    Symbol (std::string & name, ast::AbstractObject * ptr);
+	    Symbol (std::string & name, ast::ExpressionPtr ptr);
 	    ~Symbol ();
 
 	    /**
 	       Returns the value, a pointer on an abstract object
 	     */
-	    ast::AbstractObject * getValue () const;
+	    ast::ExpressionPtr getValue () const;
 
 	    /**
 	       Returns the symbol's name
@@ -42,7 +42,7 @@ namespace nyx {
 	       Set the symbol's value
 	       The symbol becomes 'defined'
 	     */
-	    void setValue (ast::AbstractObject * v);
+	    void setValue (ast::ExpressionPtr v);
 
 	    /**
 	       Set the symbol's const state
@@ -53,26 +53,26 @@ namespace nyx {
 
 	protected:
 	    std::string _name;
-	    ast::AbstractObject * _ptr;
+	    ast::ExpressionPtr _ptr;
 	    bool _is_def;
 	    bool _is_const;
 	};
 
 	class ConstSymbol : public Symbol {
 	public:
-	    ConstSymbol (std::string & name, ast::AbstractObject * ptr);
+	    ConstSymbol (std::string & name, ast::ExpressionPtr ptr);
 	    ConstSymbol (std::string & name);
 	};
 
 	class FunSymbol {
 	public:
-	    FunSymbol (std::string & name, ast::FunDecl * ptr);
+	    FunSymbol (std::string & name, ast::Function * ptr);
 	    std::string getName () const;
-	    ast::FunDecl * getPtr () const;
+	    ast::Function * getPtr () const;
 
 	    std::string toString () const;
 	private:
-	    ast::FunDecl * _ptr;
+	    ast::Function * _ptr;
 	    std::string _name;
 	};
     };

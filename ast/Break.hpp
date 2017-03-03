@@ -2,20 +2,23 @@
 
 #include <iostream>
 #include "Ast.hpp"
+#include "Instruction.hpp"
 #include "../global/Position.hpp"
 
 namespace nyx {
-  namespace ast {
-    class Break : public Ast {
-    public:
-      Break (std::string * ident, Position * pos);
-      ~Break ();
+    namespace ast {
+	typedef Instruction BreakPtr;
 
-      void secondPass ();
-      void print (std::ostream & out, int offset = 0) const;
+	class Break : public Instruction {
+	public:
+	    Break (std::string * ident, Position * pos);
+	    ~Break ();
 
-    private:
-      std::string * ident;
+	    void secondPass ();
+	    void print (std::ostream & out, int offset = 0) const;
+
+	private:
+	    std::string * ident;
+	};
     };
-  };
 };

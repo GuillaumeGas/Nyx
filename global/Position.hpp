@@ -5,6 +5,9 @@
 #define DEFAULT_LINE 1
 #define DEFAULT_COLUMN 0
 
+#define NULL_POSITION				\
+    (Position *) NULL
+
 namespace nyx {
     class Position {
     public:

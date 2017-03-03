@@ -27,8 +27,9 @@ void Table::enterBlock() {
     }
 }
 
-void Table::enterFunBlock () {
+void Table::enterFunBlock (ast::Function * fun) {
     current_scope = current_scope->newFunScope ();
+    funcalls_stack.push (fun);
 }
 
 void Table::exitBlock() {
@@ -53,6 +54,7 @@ void Table::exitFunBlock () {
     Scope * tmp = current_scope->getParent ();
     delete current_scope;
     current_scope = tmp;
+    funcalls_stack.pop ();
 }
 
 void Table::addSymbol (Symbol * s, Position * pos) {
@@ -87,6 +89,10 @@ FunSymbol * Table::getGlobalFunSymbol (string name, Position * pos) {
     if (res == NULL)
 	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
     return res;    
+}
+
+ast::Function * Table::getCurrentFunction () {
+    return funcalls_stack.top ();
 }
 
 string Table::toString() const {

@@ -3,11 +3,13 @@
 #include <iostream>
 #include <list>
 #include <sstream>
+#include <stack>
 
 #include "Symbol.hpp"
 #include "Scope.hpp"
 #include "../global/Position.hpp"
 #include "../ast/Object.hpp"
+#include "../ast/Function.hpp"
 
 #define MAIN_FUN_NAME "main"
 
@@ -31,7 +33,7 @@ namespace nyx {
 	    /**
 	       The current_scope pointer point on a new function scope (its behavior is different than a classic scope
 	     */
-	    void enterFunBlock ();
+	    void enterFunBlock (ast::Function * fun);
 
 	    /**
 	       Quit the current block : call freeGarbage, destroy the current_scope and set it to its parent
@@ -61,6 +63,11 @@ namespace nyx {
 	    FunSymbol * getFunSymbol (std::string name, Position * pos);
 	    FunSymbol * getGlobalFunSymbol (std::string name, Position * pos);
 
+	    /**
+	       Returns a pointer on the current function in which we are
+	     */
+	    ast::Function * getCurrentFunction ();
+
 	    std::string toString() const;
 
 	private:
@@ -70,6 +77,7 @@ namespace nyx {
 
 	    Scope * global_scope;
 	    Scope * current_scope;
+	    std::stack<ast::Function*> funcalls_stack;
 	};
     };
 };

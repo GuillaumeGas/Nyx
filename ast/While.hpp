@@ -12,9 +12,11 @@
 
 namespace nyx {
     namespace ast {
-	class While : public Ast {
+	typedef InstructionPtr WhilePtr;
+
+	class While : public Instruction {
 	public:
-	    While (std::string * ident, Expression * expr, Bloc * bloc, Position * pos);
+	    While (std::string * ident, ExpressionPtr expr, BlocPtr bloc, Position * pos);
 	    ~While ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -22,8 +24,8 @@ namespace nyx {
 
 	private:
 	    std::string * ident;
-	    Expression * expr;
-	    Bloc * bloc;
+	    ExpressionPtr expr;
+	    BlocPtr bloc;
 	};
     };
 };

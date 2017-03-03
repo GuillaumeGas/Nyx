@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-While::While (string * ident, Expression * expr, Bloc * bloc, Position * pos) {
+While::While (string * ident, ExpressionPtr expr, BlocPtr bloc, Position * pos) {
     this->ident = ident;
     this->expr = expr;
     this->bloc = bloc;
@@ -14,45 +14,38 @@ While::While (string * ident, Expression * expr, Bloc * bloc, Position * pos) {
 While::~While () {
     if (ident)
 	delete ident;
-    if (expr)
-	delete expr;
-    if (bloc)
-	delete bloc;
 }
 
 void While::interpret () {
     symbol::Table * table = symbol::Table::getInstance ();
     table->enterBlock ();
 
-    AbstractObject * expr_cond;
     TYPE expr_type;
 
     bool keep_going = true;
     while (keep_going) {
-	expr_cond = expr->interpretExpression ();
-	expr_type = expr_cond->getType ()->value;
+    	expr = expr->interpretExpression ();
+    	expr_type = expr->getType ()->value;
 
     	if (expr_type == TYPE::INT) {
-    	    keep_going = expr_cond->getInt ();
+    	    keep_going = expr->getInt ();
     	} else if (expr_type == TYPE::FLOAT) {
-    	    keep_going = expr_cond->getFloat ();
+    	    keep_going = expr->getFloat ();
     	} else if (expr_type == TYPE::CHAR) {
-    	    keep_going = expr_cond->getChar ();
+    	    keep_going = expr->getChar ();
     	} else if (expr_type == TYPE::BOOL) {
-    	    keep_going = expr_cond->getBool ();
+    	    keep_going = expr->getBool ();
     	} else {
     	    throw SemanticErrorException ("Expected boolean expression.", pos);
     	}
 
     	if (keep_going) {
-	    table->enterBlock ();
-	    bloc->interpret ();
-	    table->enterBlock ();
-	}
+    	    table->enterBlock ();
+    	    bloc->interpret ();
+    	    table->enterBlock ();
+    	}
     }
     
-    if (expr_cond->getNbRef () <= 0)
-	delete expr_cond;
 
     table->exitBlock ();
 }

@@ -9,18 +9,20 @@
 
 namespace nyx {
     namespace ast {
+	typedef ExpressionPtr IndexPtr;
+
 	class Index : public Expression {
 	public:
-	    Index (Expression * e1, Expression * e2, Position * pos);
+	    Index (ExpressionPtr e1, ExpressionPtr e2, Position * pos);
 	    ~Index ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    AbstractObject * interpretExpression ();
-	    AbstractObject * interpretASSIGN (AbstractObject * e);
+	    ExpressionPtr interpretExpression ();
+	    ExpressionPtr interpretASSIGN (ExpressionPtr e);
 
-	    Expression * e1;
-	    Expression * e2;
+	    ExpressionPtr e1;
+	    ExpressionPtr e2;
 	};
     };
 };

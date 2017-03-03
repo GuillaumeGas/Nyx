@@ -6,34 +6,34 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-FunCall::FunCall (string name, vector<Expression*> * params, Position * pos) {
+FunCall::FunCall (string name, vector<ExpressionPtr> * params, Position * pos) {
     this->name = name;
     this->params = params;
     this->pos = pos;
 }
 
 FunCall::~FunCall () {
-    if (params) {
-	for (auto it : *params)
-	    if (it) delete it;
+    if (params)
 	delete params;
-    }
 }
 
-void FunCall::interpret () { interpretExpression (); }
+void FunCall::interpret () { 
+    interpretExpression ();
+}
 
-AbstractObject * FunCall::interpretExpression () {
+ExpressionPtr FunCall::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();
     symbol::FunSymbol * s = table->getFunSymbol (name, pos);
     if (s != NULL) {
-        for (auto & it : *params)
-            it = it->interpretExpression ();
-        
-	    s->getPtr ()->execute (params);
+	if (params != NULL)
+	    for (auto & it : *params)
+		it = it->interpretExpression ();
+	return s->getPtr ()->execute (params);
     } else {
-	    cout << "Unknown function ! " << endl;
+	// TODO exception
+	cout << "Unknown function ! " << endl;
     }
-    return NULL;
+    return NullExpression ();
 }
 
 void FunCall::print (ostream & out, int offset) const {

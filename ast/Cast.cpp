@@ -1,10 +1,11 @@
 #include "Cast.hpp"
+#include "Expression.hpp"
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Cast::Cast (Type * type, Expression * expr, Position * pos) {
+Cast::Cast (Type * type, ExpressionPtr expr, Position * pos) {
     this->type = type;
     this->expr = expr;
     this->pos = pos;
@@ -13,8 +14,6 @@ Cast::Cast (Type * type, Expression * expr, Position * pos) {
 Cast::~Cast () {
     if (type)
 	delete type;
-    if (expr)
-	delete expr;
 }
 
 void Cast::print (ostream & out, int offset) const {
@@ -24,6 +23,6 @@ void Cast::print (ostream & out, int offset) const {
     out << ")";
 }
 
-AbstractObject * Cast::interpretExpression () {
-    return NULL;
+ExpressionPtr Cast::interpretExpression () {
+    return NullExpression ();
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "Ast.hpp"
+#include "Instruction.hpp"
 #include "Expression.hpp"
 #include "../global/Position.hpp"
 #include "exceptions/SemanticException.hpp"
@@ -10,9 +11,11 @@
 
 namespace nyx {
     namespace ast {
-	class Syscall : public Ast {
+	typedef Instruction SyscallPtr;
+
+	class Syscall : public Instruction {
 	public:
-	    Syscall (std::string ident, std::vector<Expression*> * params, Position * pos);
+	    Syscall (std::string ident, std::vector<ExpressionPtr> * params, Position * pos);
 	    ~Syscall ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -24,9 +27,9 @@ namespace nyx {
 
 	private:
 	    std::string ident;
-	    std::vector<Expression*> * params;
+	    std::vector<ExpressionPtr> * params;
 
-	    void _sysPrint (AbstractObject * e);
+	    void _sysPrint (ExpressionPtr e);
 	};
     };
 };

@@ -29,6 +29,6 @@ namespace nyx {
 
 	std::string m_file_name;
 	std::queue<Token*> * m_tokens;
-	ast::Ast * m_ast;
+	ast::AstPtr m_ast;
     };
 };

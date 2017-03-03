@@ -1,10 +1,12 @@
 #include "UnOp.hpp"
 
+#include "Expression.hpp"
+
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-UnOp::UnOp (Operator * op, Expression * expr, Position * pos) {
+UnOp::UnOp (Operator * op, ExpressionPtr expr, Position * pos) {
     this->pos = pos;
     this->op = op;
     this->expr = expr;
@@ -13,8 +15,6 @@ UnOp::UnOp (Operator * op, Expression * expr, Position * pos) {
 UnOp::~UnOp () {
     if (op)
 	delete op;
-    if (expr)
-	delete expr;
 }
 
 void UnOp::print (ostream & out, int offset) const {
@@ -23,18 +23,18 @@ void UnOp::print (ostream & out, int offset) const {
     out << ")";
 }
 
-AbstractObject * UnOp::interpretExpression () {
-    AbstractObject * e = expr->interpretExpression ();
-    AbstractObject * res = NULL;
+ExpressionPtr UnOp::interpretExpression () {
+    ExpressionPtr e = expr->interpretExpression ();
+    ExpressionPtr res;
 
     Position * new_pos = new Position (pos->line, pos->column);
 
     switch (op->value) {
     case Op::MINUS:
-	res = e->interpretUnaryMINUS ();
-	break;
+    	res = e->interpretUnaryMINUS ();
+    	break;
     default:
-	throw SemanticErrorException ("Unknown unary operator !", pos);
+    	throw SemanticErrorException ("Unknown unary operator !", pos);
     }
 
     res->pos = new_pos;

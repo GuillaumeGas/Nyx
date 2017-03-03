@@ -1,8 +1,44 @@
 void main () {
-    $println ("test");
+    /*$println ("test");
     printStr ("le test");
     printInt (1 + 1);
-    printAdd (4, 4);
+    printAdd (4, 4);*/
+    // facto (5);
+    let i = 5;
+    // $println ("facto (", i, ") = ", facto (i));
+    // $println ("tab : ", generateTab (i));
+    // $println ("factoRec (", 2, ") = ", factoRec (2));
+    printInt (test (2));
+}
+
+int test (int n) {
+    if (n > 0) {
+	return test (n - 1);
+    }
+    return 10;
+}
+
+void generateTab (int n) {
+    let tab = [];
+    for (i in [0 .. n]) {
+	tab = tab + i;
+    }
+    return tab;
+}
+
+int facto (int a) {
+    let res = 1;
+    for (i in [1 .. a]) {
+        res = res * i;
+    }
+    return res;
+}
+
+int factoRec (int a) {
+    if (a == 0) {
+	return 1;
+    }
+    return a * factoRec (a - 1);
 }
 
 void printStr (string str) {
