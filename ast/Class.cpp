@@ -4,24 +4,22 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Class::Class (string & ident, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position * pos) {
+Class::Class (string & ident, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position * pos) : Declaration (pos) {
     this->ident = ident;
     this->inheritance = "";
     this->constructor = constructor;
     this->destructor = destructor;
     this->public_bloc = public_bloc;
     this->private_bloc = private_bloc;
-    this->pos = pos;
 }
 
-Class::Class (string & ident, string & inheritance, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position * pos) {
+Class::Class (string & ident, string & inheritance, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position * pos) : Declaration (pos) {
     this->ident = ident;
     this->inheritance = inheritance;
     this->constructor = constructor;
     this->destructor = destructor;
     this->public_bloc = public_bloc;
     this->private_bloc = private_bloc;
-    this->pos = pos;
 }
 
 Class::~Class () {}

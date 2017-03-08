@@ -7,10 +7,14 @@
 
 namespace nyx {
     namespace ast {
-	typedef AstPtr InstructionPtr;
+	struct Instruction;
+	typedef std::shared_ptr<Instruction> InstructionPtr;
 
-	class Instruction : public Ast {
-	public:
+	struct Instruction : public Ast {
+	    Instruction (Position * pos);
+
+	    virtual void interpret () = 0;
+
 	    template <class T, class... Args>
 	    static InstructionPtr New (Args&&... args) {
 		return std::make_shared<T> (args...);

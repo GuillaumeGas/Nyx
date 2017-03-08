@@ -7,8 +7,6 @@
 #include "Bloc.hpp"
 #include "../global/Position.hpp"
 #include "exceptions/SemanticException.hpp"
-#include "../symbol/Table.hpp"
-#include "../symbol/Symbol.hpp"
 
 namespace nyx {
     namespace ast {
@@ -22,10 +20,17 @@ namespace nyx {
 	    void print (std::ostream & out, int offset = 0) const;
 	    void interpret ();
 
+	    std::string * getIdent () const;
+	    void setIdent (const std::string * ident);
+	    ExpressionPtr getExpr () const;
+	    void setExpr (ExpressionPtr expr);
+	    BlocPtr getBloc () const;
+	    void setBloc (BlocPtr bloc);
+
 	private:
-	    std::string * ident;
-	    ExpressionPtr expr;
-	    BlocPtr bloc;
+	    std::string * _ident;
+	    ExpressionPtr _expr;
+	    BlocPtr _bloc;
 	};
     };
 };

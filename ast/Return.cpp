@@ -1,28 +1,33 @@
 #include "Return.hpp"
+#include "../symbol/Table.hpp"
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Return::Return (ExpressionPtr expr, Position * pos) {
-    this->expr = expr;
-    this->pos = pos;
-}
-
-Return::~Return () {
+Return::Return (ExpressionPtr expr, Position * pos) : Instruction (pos) {
+    _expr = expr;
 }
 
 void Return::interpret () {
     symbol::Table * table = symbol::Table::getInstance ();
-    Function * function = table->getCurrentFunction ();
-    function->setRet (expr->interpretExpression ());
+    FunctionPtr function = table->getCurrentFunction ();
+    function->setRet (_expr->interpretExpression ());
 }
 
 void Return::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "Return";
-    if (expr) {
+    if (_expr != NULL) {
 	out << " ";
-	expr->print (out);
+	_expr->print (out);
     }
+}
+
+ExpressionPtr Return::getExpr () const {
+    return _expr;
+}
+
+void Return::setExpr (ExpressionPtr expr) {
+    _expr = expr;
 }

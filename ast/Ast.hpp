@@ -13,26 +13,25 @@
 
 namespace nyx {
     namespace ast {
-
-	class Ast;
-	typedef std::shared_ptr<Ast> AstPtr;
-
 	class Ast {
 	public:
+	    Ast (Position * pos);
 	    virtual ~Ast();
-	    virtual void print(std::ostream & out, int offset = 0) const;
+	    virtual void print(std::ostream & out, int offset = 0) const = 0;
+	    virtual void interpret () = 0;
 
-	    virtual void registerFunctions ();
-	    virtual void interpret ();
-
-	    template<class T, class... Args>
-	    static AstPtr New (Args&&... args) {
-		return std::make_shared<T> (args...);
+	    template<class A, class B>
+	    static std::shared_ptr<A> PointerCast (B sharedPtr) {
+		return std::static_pointer_cast<A> (sharedPtr);
 	    }
 
-	    Position * pos;
+	    Position * getPos () const;
+	    void setPos (Position * pos);
+
 	protected:
 	    void shift (std::ostream & out, int offset) const;
+
+	    Position * _pos;
 	};
     };
 };

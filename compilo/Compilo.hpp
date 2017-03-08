@@ -9,7 +9,9 @@
 #include "../parser/Syntax.hpp"
 #include "../parser/exceptions/LexerException.hpp"
 #include "../parser/exceptions/SyntaxException.hpp"
-#include "../ast/Ast.hpp"
+
+#include "../ast/Program.hpp"
+
 #include "../symbol/Table.hpp"
 #include "../symbol/exceptions/SymbolException.hpp"
 #include "../global/Global.hpp"
@@ -24,11 +26,10 @@ namespace nyx {
 	void printAst() const;
 
     private:
-	Lexer * m_lex;
-	Syntax * m_syn;
+	Lexer * _lex;
+	Syntax * _syn;
 
-	std::string m_file_name;
-	std::queue<Token*> * m_tokens;
-	ast::AstPtr m_ast;
+	std::string _file_name;
+	ast::Program * _program;
     };
 };

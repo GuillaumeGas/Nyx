@@ -6,41 +6,64 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-VarId::VarId(string name, Position * pos) : name(name) {
-    this->pos = pos;
-    this->type = NULL;
+VarId::VarId(string name, Position * pos) : Expression (pos) {
+    _type = NULL;
+    _name = name;
 }
 
-VarId::VarId (string name, ExpressionPtr ptr, Position * pos) : name (name), value (ptr) {
-    this->pos = pos;
-    this->type = NULL;
+VarId::VarId (string name, Position * pos, ExpressionPtr value) : Expression (pos) {
+    _type = NULL;
+    _name = name;
+    _value = value;
 }
 
-VarId::~VarId() {}
+VarIdPtr VarId::New (string name, Position * pos) {
+    return std::make_shared<VarId> (name, pos);
+}
 
-bool VarId::getBool () const { return value->getBool (); }
-int VarId::getInt () const { return value->getInt (); }
-char VarId::getChar () const { return value->getChar (); }
-float VarId::getFloat () const { return value->getFloat (); }
-vector<ExpressionPtr> * VarId::getArray () const { return value->getArray (); }
-ExpressionPtr VarId::getRangeBegin () const { return value->getRangeBegin (); }
-ExpressionPtr VarId::getRangeEnd () const { return value->getRangeEnd (); }
+VarIdPtr VarId::New (string name, Position * pos, ExpressionPtr value) {
+    return std::make_shared<VarId> (name, pos, value);
+}
+
+string VarId::getName () const {
+    return _name;
+}
+
+void VarId::setName (const string name) {
+    _name = name;
+}
+
+ExpressionPtr VarId::getValue () const {
+    return _value;
+}
+
+void VarId::setValue (ExpressionPtr value) {
+    _value = value;
+}
+
+bool VarId::getBool () const { return _value->getBool (); }
+int VarId::getInt () const { return _value->getInt (); }
+char VarId::getChar () const { return _value->getChar (); }
+float VarId::getFloat () const { return _value->getFloat (); }
+vector<ExpressionPtr> * VarId::getArray () const { return _value->getArray (); }
+ExpressionPtr VarId::getRangeBegin () const { return _value->getRangeBegin (); }
+ExpressionPtr VarId::getRangeEnd () const { return _value->getRangeEnd (); }
 
 void VarId::print (ostream & out, int offset) const {
-    out << "VarId " << name;
+    out << "VarId " << _name;
 }
 
 ExpressionPtr VarId::clone () {
-    return value->clone ();
+    return _value->clone ();
 }
 
 ExpressionPtr VarId::interpretExpression () {
     symbol::Table * table = symbol::Table::getInstance ();
-    symbol::Symbol * symbol = table->getSymbol (name, pos);
+    symbol::Symbol * symbol = table->getSymbol (_name, _pos);
 
     if (symbol->isDef ()) {
-	value = symbol->getValue ();
-	type = new Type (*(value->getType ()));
+	_value = symbol->getValue ();
+	_type = new Type (*(_value->getType ()));
     }
 
     return shared_from_this ();
@@ -48,7 +71,7 @@ ExpressionPtr VarId::interpretExpression () {
 
 ExpressionPtr VarId::interpretASSIGN (ExpressionPtr e) {
     symbol::Table * table = symbol::Table::getInstance ();
-    symbol::Symbol * symbol = table->getSymbol (name, pos);
+    symbol::Symbol * symbol = table->getSymbol (_name, _pos);
 
     symbol->setValue (e->interpretExpression ());
 
@@ -97,13 +120,13 @@ ExpressionPtr VarId::interpretMOD (ExpressionPtr e) {
 }
 
 ExpressionPtr VarId::interpretUnaryMINUS () {
-    if (value->getType ()->value != TYPE::INT && value->getType ()->value != TYPE::FLOAT)
-	throw SemanticErrorException ("Bad operand type for unary '-' : " + value->getType ()->toString(), pos);
+    if (_value->getType ()->value != TYPE::INT && _value->getType ()->value != TYPE::FLOAT)
+	throw SemanticErrorException ("Bad operand type for unary '-' : " + _value->getType ()->toString(), _pos);
 
-    if (value->getType ()->value == TYPE::INT) {
-	return Expression::New<Int> (value->getInt () * -1, NULL_POSITION);
-    } else if (value->getType ()->value == TYPE::FLOAT) {
-	return Expression::New<Float> (value->getFloat () * -1, NULL_POSITION);
+    if (_value->getType ()->value == TYPE::INT) {
+	return Expression::New<Int> (_value->getInt () * -1, NULL_POSITION_PTR);
+    } else if (_value->getType ()->value == TYPE::FLOAT) {
+	return Expression::New<Float> (_value->getFloat () * -1, NULL_POSITION_PTR);
     } else {
 	TODO_SEM ("UnOp VarId type");
     }
@@ -112,32 +135,32 @@ ExpressionPtr VarId::interpretUnaryMINUS () {
 ExpressionPtr VarId::_interpretBinop (Op op, ExpressionPtr e) {
     switch (op) {
     case Op::PLUS:
-	return value->interpretPLUS (e);
+	return _value->interpretPLUS (e);
     case Op::MINUS:
-	return value->interpretMINUS (e);
+	return _value->interpretMINUS (e);
     case Op::MUL:
-	return value->interpretMUL (e);
+	return _value->interpretMUL (e);
     case Op::DIV:
-	return value->interpretDIV (e);
+	return _value->interpretDIV (e);
     case Op::MOD:
-	return value->interpretMOD (e);
+	return _value->interpretMOD (e);
     case Op::LT:
-	return value->interpretLT (e);
+	return _value->interpretLT (e);
     case Op::LE:
-	return value->interpretLE (e);
+	return _value->interpretLE (e);
     case Op::GT:
-	return value->interpretGT (e);
+	return _value->interpretGT (e);
     case Op::GE:
-	return value->interpretGE (e);
+	return _value->interpretGE (e);
     case Op::EQ:
-	return value->interpretEQ (e);
+	return _value->interpretEQ (e);
     case Op::NE:
-	return value->interpretNE (e);
+	return _value->interpretNE (e);
     case Op::AND:
-	return value->interpretAND (e);
+	return _value->interpretAND (e);
     case Op::OR:
-	return value->interpretOR (e);
+	return _value->interpretOR (e);
     default:
-	throw SemanticErrorException ("Unknown Operator !", pos);
+	throw SemanticErrorException ("Unknown Operator !", _pos);
     }
 }

@@ -3,14 +3,14 @@
 #include <iostream>
 #include <vector>
 #include "Ast.hpp"
-#include "Instruction.hpp"
+#include "Declaration.hpp"
 #include "../global/Position.hpp"
 
 namespace nyx {
     namespace ast {
-	typedef InstructionPtr ImportPtr;
+	typedef DeclarationPtr ImportPtr;
 
-	class Import : public Instruction {
+	class Import : public Declaration {
 	public:
 	    Import (std::vector<std::string> * path, Position * pos);
 	    ~Import ();

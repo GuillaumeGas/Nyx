@@ -4,13 +4,13 @@ using namespace std;
 using namespace nyx;
 using namespace symbol;
 
-Symbol::Symbol (string & name) {
+Symbol::Symbol (string name) {
     _name = name;
     _is_def = false;
     _is_const = false;
 }
 
-Symbol::Symbol (string & name, ast::ExpressionPtr ptr) {
+Symbol::Symbol (string name, ast::ExpressionPtr ptr) {
     _name = name;
     _is_def = true;
     _is_const = false;
@@ -46,51 +46,50 @@ bool Symbol::isDef () const {
 }
 
 string Symbol::toString() const {
-    // stringstream ss;
-    // ss << "[" << _name << ", ";
+    stringstream ss;
+    ss << "[" << _name << ", ";
 
-    // if (_is_def) {
-    // 	switch (_ptr->getType ()->value) {
-    // 	case ast::TYPE::INT:
-    // 	    ss << _ptr->getInt ();
-    // 	    break;
-    // 	case ast::TYPE::FLOAT:
-    // 	    ss << _ptr->getFloat ();
-    // 	    break;
-    // 	case ast::TYPE::BOOL:
-    // 	    ss << _ptr->getBool ();
-    // 	    break;
-    // 	case ast::TYPE::CHAR:
-    // 	    ss << _ptr->getChar ();
-    // 	    break;
-    // 	case ast::TYPE::VOID:
-    // 	    ss << "void";
-    // 	    break;
-    // 	case ast::TYPE::ARRAY:
-    // 	case ast::TYPE::STRING:
-    // 	case ast::TYPE::RANGE:
-    // 	    ss << "ptr";
-    // 	    break;
-    // 	default:
-    // 	    cout << "Unknown type" << endl;
-    // 	}
-    // 	ss << "] " << _ptr->getType ()->toString () << endl;
-    // } else {
-    // 	ss << "undef" << "]";
-    // }
-    // return ss.str (); 
-    return "";
+    if (_is_def) {
+    	switch (_ptr->getType ()->value) {
+    	case ast::TYPE::INT:
+    	    ss << _ptr->getInt ();
+    	    break;
+    	case ast::TYPE::FLOAT:
+    	    ss << _ptr->getFloat ();
+    	    break;
+    	case ast::TYPE::BOOL:
+    	    ss << _ptr->getBool ();
+    	    break;
+    	case ast::TYPE::CHAR:
+    	    ss << _ptr->getChar ();
+    	    break;
+    	case ast::TYPE::VOID:
+    	    ss << "void";
+    	    break;
+    	case ast::TYPE::ARRAY:
+    	case ast::TYPE::STRING:
+    	case ast::TYPE::RANGE:
+    	    ss << "ptr";
+    	    break;
+    	default:
+    	    cout << "Unknown type" << endl;
+    	}
+    	ss << "] " << _ptr->getType ()->toString () << endl;
+    } else {
+    	ss << "undef" << "]";
+    }
+    return ss.str (); 
 }
 
-ConstSymbol::ConstSymbol (string & name, ast::ExpressionPtr ptr) : Symbol (name, ptr){
+ConstSymbol::ConstSymbol (string name, ast::ExpressionPtr ptr) : Symbol (name, ptr){
     _is_const = true;
 }
 
-ConstSymbol::ConstSymbol (string & name) : Symbol (name) {
+ConstSymbol::ConstSymbol (string name) : Symbol (name) {
     _is_const = true;
 }
 
-FunSymbol::FunSymbol (string & name, ast::Function * ptr) {
+FunSymbol::FunSymbol (string name, ast::FunctionPtr ptr) {
     _name = name;
     _ptr = ptr;
 }
@@ -99,7 +98,7 @@ string FunSymbol::getName () const {
     return _name;
 }
 
-ast::Function * FunSymbol::getPtr () const {
+ast::FunctionPtr FunSymbol::getPtr () const {
     return _ptr;
 }
 

@@ -33,7 +33,7 @@ namespace nyx {
 	    /**
 	       The current_scope pointer point on a new function scope (its behavior is different than a classic scope
 	     */
-	    void enterFunBlock (ast::Function * fun);
+	    void enterFunBlock (ast::FunctionPtr fun);
 
 	    /**
 	       Quit the current block : call freeGarbage, destroy the current_scope and set it to its parent
@@ -66,7 +66,7 @@ namespace nyx {
 	    /**
 	       Returns a pointer on the current function in which we are
 	     */
-	    ast::Function * getCurrentFunction ();
+	    ast::FunctionPtr getCurrentFunction ();
 
 	    std::string toString() const;
 
@@ -77,7 +77,7 @@ namespace nyx {
 
 	    Scope * global_scope;
 	    Scope * current_scope;
-	    std::stack<ast::Function*> funcalls_stack;
+	    std::stack<ast::FunctionPtr> funcalls_stack;
 	};
     };
 };

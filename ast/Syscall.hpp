@@ -25,9 +25,14 @@ namespace nyx {
 	    void sysPrint ();
 	    void sysPrintln ();
 
+	    std::string getIdent () const;
+	    void setIdent (const std::string & ident);
+	    std::vector<ExpressionPtr> * getParams () const;
+	    void setParams (std::vector<ExpressionPtr> * params);
+
 	private:
-	    std::string ident;
-	    std::vector<ExpressionPtr> * params;
+	    std::string _ident;
+	    std::vector<ExpressionPtr> * _params;
 
 	    void _sysPrint (ExpressionPtr e);
 	};

@@ -4,29 +4,48 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Syntax::Syntax(Lexer & lex) : m_lex(lex) {
-    m_table = symbol::Table::getInstance();
-    m_program = visitBloc (true);
-}
-
-Syntax::~Syntax() {
+Syntax::Syntax(Lexer * lex, ast::Program * program) : _lex(lex) {
+    _table = symbol::Table::getInstance();
+    _program = program;
+    visitProgram ();
 }
 
 TokenPtr Syntax::pop() const {
-    return m_lex.next ();
+    return _lex->next ();
 }
 
 void Syntax::rewind (int count) {
-    m_lex.rewind (count);
+    _lex->rewind (count);
 }
 
-AstPtr Syntax::getAst () const { return m_program; }
+ast::Program * Syntax::getAst () const { 
+    return _program; 
+}
+
+void Syntax::visitProgram () {
+    TokenPtr next = pop ();
+    do {
+	rewind ();
+	switch (next->type) {
+	case TokenType::IMPORT:
+	    _program->addDeclaration (visitImport ());
+	    break;
+	case TokenType::CLASS:
+	    _program->addDeclaration (visitClass ());
+	    break;
+	case TokenType::OTHER:
+	    _program->addDeclaration (visitFunDecl ());
+	    break;
+	}
+	next = pop ();
+    } while (next->type != TokenType::_EOF_);
+}
 
 /**
    bloc := '{'? instruction* '}'?
 */
-AstPtr Syntax::visitBloc (bool global) {
-    vector<AstPtr> * instr = new vector<AstPtr> ();
+BlocPtr Syntax::visitBloc () {
+    vector<InstructionPtr> * instr = new vector<InstructionPtr> ();
     TokenPtr next = pop ();
     TokenPtr begin = next;
     if (begin->type == TokenType::ACCOL_L)
@@ -40,7 +59,6 @@ AstPtr Syntax::visitBloc (bool global) {
     	case TokenType::DOLLAR:
     	case TokenType::RETURN:
     	case TokenType::BREAK:
-    	case TokenType::IMPORT:
     	    instr->push_back (visitInstruction ());
     	    break;
     	case TokenType::IF:
@@ -52,9 +70,6 @@ AstPtr Syntax::visitBloc (bool global) {
     	case TokenType::WHILE:
     	    instr->push_back (visitWhile ());
     	    break;
-    	case TokenType::CLASS:
-    	    instr->push_back (visitClass ());
-    	    break;
     	default:
     	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
     	}
@@ -64,29 +79,20 @@ AstPtr Syntax::visitBloc (bool global) {
     if (begin->type == TokenType::ACCOL_L && next->type != TokenType::ACCOL_R)
     	throw MissingErrorException ("}", Position (next->line, next->column));
 
-    if (global)
-	return Ast::New<Bloc> (instr, true);
-    return Ast::New<Bloc> (instr);
+    return Bloc::New (instr);
 }
 
 /**
    instruction := (FunDecl | VarDecl | FunCall | VarAssign | Syscall);
 */
-AstPtr Syntax::visitInstruction () {
-    AstPtr res = NULL;
+InstructionPtr Syntax::visitInstruction () {
+    InstructionPtr res;
     TokenPtr token = pop ();
     TokenPtr next;
     if (token->type == TokenType::OTHER) {
 	TokenPtr type = token;
 	next = pop ();
-	if (next->type == TokenType::OTHER) {
-	    TokenPtr ident = next;
-	    next = pop ();
-	    rewind ();
-	    if (next->type == TokenType::PAR_L) {
-		return visitFunDecl (type, ident);
-	    }
-	} else if (next->type == TokenType::PAR_L) {
+	if (next->type == TokenType::PAR_L) {
 	    rewind ();
 	    TokenPtr ident = type;
 	    res = visitFunCall (ident);
@@ -95,7 +101,8 @@ AstPtr Syntax::visitInstruction () {
 	    res = visitVarAssign (ident, next);
 	} else {
 	    rewind (2);
-	    res = visitExpression ();
+	    ExpressionPtr expr = visitExpression ();
+	    res = Ast::PointerCast<Instruction> (expr);
 	}
     } else if (token->type == TokenType::LET) {
 	rewind ();
@@ -108,9 +115,6 @@ AstPtr Syntax::visitInstruction () {
     	res = visitBreak ();
     } else if (token->type == TokenType::DOLLAR) {
 	res = visitSyscall (pop ());
-    } else if (token->type == TokenType::IMPORT) {
-	rewind ();
-	res = visitImport ();
     } else {
 	throw SyntaxErrorException (token->value, Position (token->line, token->column));
     }
@@ -125,13 +129,16 @@ AstPtr Syntax::visitInstruction () {
 /**
    fundecl := type ident (params*) { bloc }
 */
-AstPtr Syntax::visitFunDecl (TokenPtr token_type, TokenPtr token_ident) {
+DeclarationPtr Syntax::visitFunDecl () {
+    TokenPtr token_type = pop ();
+    TokenPtr token_ident = pop ();
+
     if (!isIdent (token_ident->value))
 	throw MissingErrorException ("var name", Position (token_ident->line, token_ident->column));
 
     pop (); // '('
     TokenPtr next = pop ();
-    vector <VarDeclPtr> * params = NULL;
+    vector <ParamPtr> * params = NULL;
     if (next->type != TokenType::PAR_R) {
 	rewind ();
 	params = visitParamsDecl ();
@@ -147,20 +154,20 @@ AstPtr Syntax::visitFunDecl (TokenPtr token_type, TokenPtr token_ident) {
     string ident = token_ident->value;
     Position * pos = new Position (token_type->line, token_type->column);
 
-    return Ast::New<Function> (type, ident, params, content, pos);
+    return Declaration::New<Function> (ident, pos, type, params, content);
 }
 
 /**
    params := (type ident*))
 */
-vector <VarDeclPtr> * Syntax::visitParamsDecl () {
-    vector <VarDeclPtr> * params = new vector <VarDeclPtr> ();
+vector <ParamPtr> * Syntax::visitParamsDecl () {
+    vector <ParamPtr> * params = new vector <ParamPtr> ();
     TokenPtr next;
     do {
 	TokenPtr type = pop ();
 	if (type->type != TokenType::OTHER)
 	    throw SyntaxErrorException (type->value, Position (type->line, type->column));
-	VarIdPtr var_id = visitIdent ();
+	VarIdPtr var_id = Ast::PointerCast<VarId> (visitIdent ());
 	next = pop ();
 	if (var_id == NULL) {
 	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
@@ -170,7 +177,7 @@ vector <VarDeclPtr> * Syntax::visitParamsDecl () {
 
 	Type * ast_type = new Type (type->value, true);
 	Position * pos = new Position (type->line, type->column);
-	params->push_back (Instruction::New<VarDecl> (ast_type, var_id, pos));
+	params->push_back (VarDecl::New (ast_type, var_id, pos));
     } while (next->type == TokenType::COMMA);
     return params;
 }
@@ -178,7 +185,7 @@ vector <VarDeclPtr> * Syntax::visitParamsDecl () {
 /**
    funcall := ident ( params* )
 */
-AstPtr Syntax::visitFunCall (TokenPtr token_ident) {
+InstructionPtr Syntax::visitFunCall (TokenPtr token_ident) {
     vector<ExpressionPtr> * params = visitParams ();
     Position * pos = new Position (token_ident->line, token_ident->column);
     return Instruction::New<FunCall> (token_ident->value, params, pos);
@@ -193,20 +200,20 @@ ExpressionPtr Syntax::visitExprFunCall (TokenPtr token_ident) {
 /**
    varDecl := let (ident (= expression),)+;
 */
-AstPtr Syntax::visitLet () {
+InstructionPtr Syntax::visitLet () {
     pop (); // let
     return visitVarDecl (pop ());
 }
 
-AstPtr Syntax::visitVarDecl (TokenPtr token_ident) {
+InstructionPtr Syntax::visitVarDecl (TokenPtr token_ident) {
     if (!isIdent (token_ident->value))
 	throw MissingErrorException ("var name", Position (token_ident->line, token_ident->column));
-    VarIdPtr var_id = Expression::New<VarId> (token_ident->value, new Position (token_ident->line, token_ident->column));
+    VarIdPtr var_id = VarId::New (token_ident->value, new Position (token_ident->line, token_ident->column));
     Position * pos = new Position (token_ident->line, token_ident->column);
     VarDeclPtr var_decl = Instruction::New<VarDecl> (var_id, pos);
 
     /* A vector to get multiple var declare */
-    vector<AstPtr> * instr = new vector<AstPtr> ();
+    vector<InstructionPtr> * instr = new vector<InstructionPtr> ();
     instr->push_back (var_decl);
 
     TokenPtr next = pop ();
@@ -223,24 +230,24 @@ AstPtr Syntax::visitVarDecl (TokenPtr token_ident) {
     } else {
 	rewind ();
     }
-    return Ast::New<Bloc> (instr);
+    return Instruction::New<Bloc> (instr);
 }
 
 /**
    varAssign := ident = expression;
 */
-AstPtr Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
+InstructionPtr Syntax::visitVarAssign (TokenPtr token_ident, TokenPtr token_op) {
     Position * pos = new Position (token_ident->line, token_ident->column);
     ExpressionPtr e1 = Expression::New<VarId> (token_ident->value, pos);
     ExpressionPtr e2 = visitExpression ();
     Operator * op = new Operator (token_op->value);
-    return Expression::New<Binop> (e1, e2, op, new Position (token_op->line, token_op->column));
+    return Instruction::New<Binop> (e1, e2, op, new Position (token_op->line, token_op->column));
 }
 
 /**
    ifElse := if (expression) { bloc } (else (if (expression))? { bloc })*
 */
-AstPtr Syntax::visitIfElse () {
+InstructionPtr Syntax::visitIfElse () {
     TokenPtr token_if = pop ();
     TokenPtr next = pop ();
 
@@ -259,21 +266,19 @@ AstPtr Syntax::visitIfElse () {
 	throw MissingErrorException ("{", Position (next->line, next->column));
     }
 
-    AstPtr bloc_if = visitBloc ();
+    BlocPtr bloc_if = visitBloc ();
 
     next = pop ();
     if (next->type == TokenType::ELSE) {
 	next = pop();
-	AstPtr bloc_else;
 	if (next->type == TokenType::ACCOL_L) {
-	    bloc_else = visitBloc ();
+	    return Instruction::New<IfElse> (expr_condition, bloc_if, visitBloc (), pos);
 	} else if (next->type == TokenType::IF) {
 	    rewind ();
-	    bloc_else = visitIfElse ();
+	    return Instruction::New<IfElse> (expr_condition, bloc_if, visitIfElse (), pos);
 	} else {
 	    throw MissingErrorException ("{", Position (next->line, next->column));
 	}
-	return Instruction::New<IfElse> (expr_condition, bloc_if, bloc_else, pos);
     } else {
 	rewind ();
 	return Instruction::New<IfElse> (expr_condition, bloc_if, pos);
@@ -282,7 +287,7 @@ AstPtr Syntax::visitIfElse () {
 
 /**
    For := for (i in 0 .. 10) { bloc }*/
-AstPtr Syntax::visitFor () {
+InstructionPtr Syntax::visitFor () {
     TokenPtr token_for = pop ();
     TokenPtr next = pop();
     TokenPtr ident = NULL;
@@ -298,7 +303,7 @@ AstPtr Syntax::visitFor () {
     if (next->type != TokenType::PAR_L)
 	throw MissingErrorException ("(", Position (next->line, next->column));
 
-    var_loop = visitIdent ();
+    var_loop = Ast::PointerCast<VarId> (visitIdent ());
     if (var_loop == NULL) {
 	next = pop ();
 	throw SyntaxErrorException (next->value, Position (next->line, next->column));
@@ -326,7 +331,7 @@ AstPtr Syntax::visitFor () {
 /**
    While := While ( expr ) { bloc }
 */
-AstPtr Syntax::visitWhile () {
+InstructionPtr Syntax::visitWhile () {
     TokenPtr token_while = pop ();
     TokenPtr ident = NULL;
     TokenPtr next = pop ();
@@ -361,7 +366,7 @@ AstPtr Syntax::visitWhile () {
 /**
    syscall := $ident ( params* );
 */
-AstPtr Syntax::visitSyscall (TokenPtr token_ident) {
+InstructionPtr Syntax::visitSyscall (TokenPtr token_ident) {
     vector<ExpressionPtr> * params = visitParams ();
     Position * pos = new Position (token_ident->line, token_ident->column);
     return Instruction::New<Syscall> (token_ident->value, params, pos);
@@ -413,7 +418,7 @@ vector<ExpressionPtr> * Syntax::visitParams () {
 /**
    Return := return expression*;
 */
-AstPtr Syntax::visitReturn () {
+InstructionPtr Syntax::visitReturn () {
     TokenPtr token_return = pop ();
     Position * pos = new Position (token_return->line, token_return->column);
     ExpressionPtr expr;
@@ -429,7 +434,7 @@ AstPtr Syntax::visitReturn () {
 /**
    Break := break ident?;
 */
-AstPtr Syntax::visitBreak () {
+InstructionPtr Syntax::visitBreak () {
     TokenPtr token_break = pop ();
     Position * pos = new Position (token_break->line, token_break->column);
     string * ident = NULL;
@@ -742,8 +747,8 @@ ExpressionPtr Syntax::visitString () {
 	return NullExpression ();
     }
 
-    m_lex.setSkipEnabled (" ", false);
-    m_lex.setCommentsEnabled (false);
+    _lex->setSkipEnabled (" ", false);
+    _lex->setCommentsEnabled (false);
 
     stringstream str;
     while (next->type != TokenType::_EOF_) {
@@ -762,8 +767,8 @@ ExpressionPtr Syntax::visitString () {
 	throw MissingErrorException ("\"", Position (next->line, next->column));
     }
 
-    m_lex.setCommentsEnabled (true);
-    m_lex.setSkipEnabled (" ", true);
+    _lex->setCommentsEnabled (true);
+    _lex->setSkipEnabled (" ", true);
 
     Position * pos = new Position (next->line, next->column);
     return Expression::New<String> (str.str (), pos);
@@ -956,7 +961,7 @@ ExpressionPtr Syntax::visitArray () {
     return Expression::New<Array> (array, pos);
 }
 
-AstPtr Syntax::visitImport () {
+DeclarationPtr Syntax::visitImport () {
     TokenPtr token_import = pop ();
     TokenPtr next = pop ();
     vector<string> * path = new vector<string> ();
@@ -974,137 +979,136 @@ AstPtr Syntax::visitImport () {
 	throw SyntaxErrorException ("Path missing.", Position (token_import->line, token_import->column));
     }
     rewind ();
-    return Instruction::New<Import> (path, new Position (token_import->line, token_import->column));
+    return Declaration::New<Import> (path, new Position (token_import->line, token_import->column));
 }
 
 
 /**
    Class := class A ?(: B) { public { bloc } private { bloc } }
  */
-AstPtr Syntax::visitClass () {
-    TokenPtr token_class = pop ();
-    TokenPtr next = pop ();
+DeclarationPtr Syntax::visitClass () {
+    // TokenPtr token_class = pop ();
+    // TokenPtr next = pop ();
 
-    string class_name, inheritance;
+    // string class_name, inheritance;
 
-    if (!isIdent (next->value) || next->type != TokenType::OTHER)
-	throw SyntaxErrorException (next->value, Position (next->line, next->column));
-    class_name = next->value;
+    // if (!isIdent (next->value) || next->type != TokenType::OTHER)
+    // 	throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    // class_name = next->value;
 
-    next = pop ();
-    if (next->type == TokenType::COLON) {
-	next = pop ();
-	if (!isIdent (next->value) || next->type != TokenType::OTHER)
-	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
-	inheritance = next->value;
-	next = pop ();
-    }
+    // next = pop ();
+    // if (next->type == TokenType::COLON) {
+    // 	next = pop ();
+    // 	if (!isIdent (next->value) || next->type != TokenType::OTHER)
+    // 	    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    // 	inheritance = next->value;
+    // 	next = pop ();
+    // }
 
-    if (next->type != TokenType::ACCOL_L)
-	throw MissingErrorException ("{", Position (next->line, next->column));
+    // if (next->type != TokenType::ACCOL_L)
+    // 	throw MissingErrorException ("{", Position (next->line, next->column));
 
-    FunctionPtr constructor = NULL;
-    FunctionPtr destructor = NULL;
-    BlocPtr public_bloc = NULL;
-    BlocPtr private_bloc = NULL;
-    vector<AstPtr> * public_content = NULL;
-    vector<AstPtr> * private_content = NULL;
+    // FunctionPtr constructor = NULL;
+    // FunctionPtr destructor = NULL;
+    // BlocPtr public_bloc = NULL;
+    // BlocPtr private_bloc = NULL;
+    // vector<DeclarationPtr> * public_content = NULL;
+    // vector<DeclarationPtr> * private_content = NULL;
 
-    next = pop ();
-    while (next->type != TokenType::ACCOL_R) {
-	if (next->type == TokenType::PUBLIC || next->type == TokenType::PRIVATE) {
-	    TokenPtr public_private = next;
-	    next = pop ();
-	    if (next->type != TokenType::ACCOL_L)
-		throw MissingErrorException ("{", Position (next->line, next->column));
+    // next = pop ();
+    // while (next->type != TokenType::ACCOL_R) {
+    // 	if (next->type == TokenType::PUBLIC || next->type == TokenType::PRIVATE) {
+    // 	    TokenPtr public_private = next;
+    // 	    next = pop ();
+    // 	    if (next->type != TokenType::ACCOL_L)
+    // 		throw MissingErrorException ("{", Position (next->line, next->column));
 
-	    next = pop ();
-	    while (next->type != TokenType::ACCOL_R) {
-		if (next->type == TokenType::TILDE) { //destructor
-		    next = pop ();
-		    TokenPtr this_ident = next;
-		    if (next->value != "this")
-			throw MissingErrorException ("this as destructor's name", Position (next->line, next->column));
-		    string type = "void";
-		    destructor = visitFunDecl (Token::make (type, {next->line, next->column}), next);
-		    if (public_private->type == TokenType::PUBLIC) {
-			if (!public_content)
-			    public_content = new vector<AstPtr> ();
-			public_content->push_back (destructor);
-		    } else {
-			if (!private_content)
-			    private_content = new vector<AstPtr> ();
-			private_content->push_back (destructor);
-		    }
-		} else if (next->type == TokenType::OTHER) {
-		    if (next->value == "this") {
-			string type = "void";
-			constructor = visitFunDecl (Token::make (type, {next->line, next->column}), next);
-			if (public_private->type == TokenType::PUBLIC) {
-			    if (!public_content)
-				public_content = new vector<AstPtr> ();
-			    public_content->push_back (constructor);
-			} else {
-			    if (!private_content)
-				private_content = new vector<AstPtr> ();
-			    private_content->push_back (constructor);
-			}
-		    } else {
-			TokenPtr type = next;
-			next = pop ();
-			if (next->type != TokenType::OTHER && !isIdent (next->value))
-			    throw SyntaxErrorException (next->value, Position (next->line, next->column));
-			TokenPtr ident = next;
-			next = pop ();
-			if (next->type == TokenType::PAR_L) {
-			    rewind ();
-			    if (public_private->type == TokenType::PUBLIC) {
-				if (!public_content)
-				    public_content = new vector<AstPtr> ();
-				public_content->push_back (visitFunDecl (type, ident));
-			    } else {
-				if (!private_content)
-				    private_content = new vector<AstPtr> ();
-				private_content->push_back (visitFunDecl (type, ident));
-			    }
-			// } else if (next->type == TokenType::SEMICOLON || next->type == TokenType::ASSIGN) {
-			//     rewind ();
-			//     if (public_private->type == TokenType::PUBLIC) {
-			// 	if (!public_content)
-			// 	    public_content = new vector<AstPtr> ();
-			// 	public_content->push_back (visitVarDecl (ident));
-			//     } else {
-			// 	if (!private_content)
-			// 	    private_content = new vector<AstPtr> ();
-			// 	private_content->push_back (visitVarDecl (type, ident));
-			//     }
-			//     pop ();
-			} else {
-			    throw SyntaxErrorException (next->value, Position (next->line, next->column));
-			}
-		    }
-		} else {
-		    throw SyntaxErrorException (next->value, Position (next->line, next->column));
-		}
-		next = pop ();
-	    }
-	} else {
-	    throw MissingErrorException ("public or private statement", Position (next->line, next->column));
-	}
-	next = pop ();
-    }
+    // 	    next = pop ();
+    // 	    while (next->type != TokenType::ACCOL_R) {
+    // 		if (next->type == TokenType::TILDE) { //destructor
+    // 		    next = pop ();
+    // 		    TokenPtr this_ident = next;
+    // 		    if (next->value != "this")
+    // 			throw MissingErrorException ("this as destructor's name", Position (next->line, next->column));
+    // 		    string type = "void";
+    // 		    destructor = visitFunDecl (Token::make (type, {next->line, next->column}), next);
+    // 		    if (public_private->type == TokenType::PUBLIC) {
+    // 			if (!public_content)
+    // 			    public_content = new vector<DeclarationPtr> ();
+    // 			public_content->push_back (destructor);
+    // 		    } else {
+    // 			if (!private_content)
+    // 			    private_content = new vector<DeclarationPtr> ();
+    // 			private_content->push_back (destructor);
+    // 		    }
+    // 		} else if (next->type == TokenType::OTHER) {
+    // 		    if (next->value == "this") {
+    // 			string type = "void";
+    // 			constructor = visitFunDecl (Token::make (type, {next->line, next->column}), next);
+    // 			if (public_private->type == TokenType::PUBLIC) {
+    // 			    if (!public_content)
+    // 				public_content = new vector<DeclarationPtr> ();
+    // 			    public_content->push_back (constructor);
+    // 			} else {
+    // 			    if (!private_content)
+    // 				private_content = new vector<DeclarationPtr> ();
+    // 			    private_content->push_back (constructor);
+    // 			}
+    // 		    } else {
+    // 			TokenPtr type = next;
+    // 			next = pop ();
+    // 			if (next->type != TokenType::OTHER && !isIdent (next->value))
+    // 			    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    // 			TokenPtr ident = next;
+    // 			next = pop ();
+    // 			if (next->type == TokenType::PAR_L) {
+    // 			    rewind ();
+    // 			    if (public_private->type == TokenType::PUBLIC) {
+    // 				if (!public_content)
+    // 				    public_content = new vector<AstPtr> ();
+    // 				public_content->push_back (visitFunDecl (type, ident));
+    // 			    } else {
+    // 				if (!private_content)
+    // 				    private_content = new vector<AstPtr> ();
+    // 				private_content->push_back (visitFunDecl (type, ident));
+    // 			    }
+    // 			// } else if (next->type == TokenType::SEMICOLON || next->type == TokenType::ASSIGN) {
+    // 			//     rewind ();
+    // 			//     if (public_private->type == TokenType::PUBLIC) {
+    // 			// 	if (!public_content)
+    // 			// 	    public_content = new vector<AstPtr> ();
+    // 			// 	public_content->push_back (visitVarDecl (ident));
+    // 			//     } else {
+    // 			// 	if (!private_content)
+    // 			// 	    private_content = new vector<AstPtr> ();
+    // 			// 	private_content->push_back (visitVarDecl (type, ident));
+    // 			//     }
+    // 			//     pop ();
+    // 			} else {
+    // 			    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    // 			}
+    // 		    }
+    // 		} else {
+    // 		    throw SyntaxErrorException (next->value, Position (next->line, next->column));
+    // 		}
+    // 		next = pop ();
+    // 	    }
+    // 	} else {
+    // 	    throw MissingErrorException ("public or private statement", Position (next->line, next->column));
+    // 	}
+    // 	next = pop ();
+    // }
 
-    if (public_content)
-	public_bloc = Ast::New<Bloc> (public_content);
-    if (private_content)
-	private_bloc = Ast::New<Bloc> (private_content);
+    // if (public_content)
+    // 	public_bloc = Ast::New<Bloc> (public_content);
+    // if (private_content)
+    // 	private_bloc = Ast::New<Bloc> (private_content);
 
-    Position * pos = new Position (token_class->line, token_class->column);
-    if (inheritance.size () > 0)
-	return Ast::New<Class> (class_name, inheritance, constructor, destructor, public_bloc, private_bloc, pos);
-    return Ast::New<Class> (class_name, constructor, destructor, public_bloc, private_bloc, pos);
+    // Position * pos = new Position (token_class->line, token_class->column);
+    // if (inheritance.size () > 0)
+    // 	return Ast::New<Class> (class_name, inheritance, constructor, destructor, public_bloc, private_bloc, pos);
+    // return Ast::New<Class> (class_name, constructor, destructor, public_bloc, private_bloc, pos);
 }
-
 
 bool Syntax::find (TokenType type, vector <TokenType> list) {
     for (TokenType t : list) {

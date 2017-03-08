@@ -1,16 +1,20 @@
 #include "Binop.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Binop::Binop(ExpressionPtr e1, ExpressionPtr e2, Operator * op, Position * pos) : e1(e1), e2(e2), op(op) {
-    this->pos = pos;
+Binop::Binop(ExpressionPtr left, ExpressionPtr right, Operator * op, Position * pos) : Expression (pos) {
+    _left = left;
+    _right = right;
+    _op = op;
 }
 
 Binop::~Binop() {
-    if (op)
-	delete op;
+    if (_op)
+	delete _op;
 }
 
 void Binop::interpret () {
@@ -18,12 +22,12 @@ void Binop::interpret () {
 }
 
 ExpressionPtr Binop::interpretExpression () {
-    ExpressionPtr left = e1->interpretExpression ();
-    ExpressionPtr right = e2->interpretExpression ();
+    ExpressionPtr left = _left->interpretExpression ();
+    ExpressionPtr right = _right->interpretExpression ();
 
     ExpressionPtr res;
 
-    switch (op->value) {
+    switch (_op->value) {
     case Op::ASSIGN:
     	res = left->interpretASSIGN (right);
     	break;
@@ -85,11 +89,11 @@ ExpressionPtr Binop::interpretExpression () {
     	res = left->interpretPOINT (right);
     	break;
     default:
-    	throw SemanticErrorException ("Unknown operator '" + op->toString () + "'", pos);
+    	throw SemanticErrorException ("Unknown operator '" + _op->toString () + "'", _pos);
     }
 
-    if (res->pos == NULL)
-    	res->pos = new Position (pos->line, pos->column);;
+    if (res->getPos () == NULL)
+    	res->setPos (new Position (_pos->line, _pos->column));
 
     return res;
 }
@@ -97,8 +101,34 @@ ExpressionPtr Binop::interpretExpression () {
 void Binop::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "Binop(";
-    e1->print (out);
-    out << ", " << op->toString() << " , ";
-    e2->print (out);
+    _left->print (out);
+    out << ", " << _op->toString() << " , ";
+    _right->print (out);
     out << ")";
+}
+
+ExpressionPtr Binop::getLeft () const {
+    return _left;
+}
+
+void Binop::setLeft (ExpressionPtr left) {
+    _left = left;
+}
+
+ExpressionPtr Binop::getRight ()  const {
+    return _right;
+}
+
+void Binop::setRight (ExpressionPtr right) {
+    _right = right;
+}
+
+Operator * Binop::getOp () const {
+    return _op;
+}
+
+void Binop::setOp (Operator * op) {
+    if (_op)
+	delete _op;
+    _op = op;
 }

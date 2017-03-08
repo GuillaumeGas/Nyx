@@ -6,37 +6,36 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-UnOp::UnOp (Operator * op, ExpressionPtr expr, Position * pos) {
-    this->pos = pos;
-    this->op = op;
-    this->expr = expr;
+UnOp::UnOp (Operator * op, ExpressionPtr expr, Position * pos) : Expression (pos) {
+    _op = op;
+    _expr = expr;
 }
 
 UnOp::~UnOp () {
-    if (op)
-	delete op;
+    if (_op)
+	delete _op;
 }
 
 void UnOp::print (ostream & out, int offset) const {
-    out << "UnOp(" << op->toString() << ", ";
-    expr->print (out, offset);
+    out << "UnOp(" << _op->toString() << ", ";
+    _expr->print (out, offset);
     out << ")";
 }
 
 ExpressionPtr UnOp::interpretExpression () {
-    ExpressionPtr e = expr->interpretExpression ();
+    _expr = _expr->interpretExpression ();
     ExpressionPtr res;
 
-    Position * new_pos = new Position (pos->line, pos->column);
+    Position * new_pos = new Position (_pos->line, _pos->column);
 
-    switch (op->value) {
+    switch (_op->value) {
     case Op::MINUS:
-    	res = e->interpretUnaryMINUS ();
+    	res = _expr->interpretUnaryMINUS ();
     	break;
     default:
-    	throw SemanticErrorException ("Unknown unary operator !", pos);
+    	throw SemanticErrorException ("Unknown unary operator !", _pos);
     }
 
-    res->pos = new_pos;
+    res->setPos (new_pos);
     return res;
 }

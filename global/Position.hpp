@@ -5,7 +5,7 @@
 #define DEFAULT_LINE 1
 #define DEFAULT_COLUMN 0
 
-#define NULL_POSITION				\
+#define NULL_POSITION_PTR				\
     (Position *) NULL
 
 namespace nyx {

@@ -13,7 +13,7 @@ namespace nyx {
 
 	class FunCall : public Expression {
 	public:
-	    FunCall (std::string ident, std::vector<ExpressionPtr> * params, Position * pos);
+	    FunCall (std::string name, std::vector<ExpressionPtr> * params, Position * pos);
 	    ~FunCall ();
 
 	    void print (std::ostream & out, int offset = 0) const;
@@ -22,8 +22,8 @@ namespace nyx {
 	    ExpressionPtr interpretExpression ();
 
 	private:
-	    std::string name;
-	    std::vector<ExpressionPtr> * params;
+	    std::string _name;
+	    std::vector<ExpressionPtr> * _params;
 	};
     };
 };

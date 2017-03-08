@@ -4,18 +4,24 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Ast::~Ast() {
-    if (pos)
-	delete pos;
-}
+Ast::Ast (Position * pos) : _pos (pos) {}
 
-void Ast::print (ostream & out, int offset) const { out << "ROOT"; }
+Ast::~Ast() {
+    if (_pos)
+	delete _pos;
+}
 
 void Ast::shift (ostream & out, int offset) const {
-    for (int i = 0; i < offset; i++) {
+    for (int i = 0; i < offset; i++)
 	out << " ";
-    }
 }
 
-void Ast::registerFunctions () { }
-void Ast::interpret () { }
+Position * Ast::getPos () const {
+    return _pos;
+}
+
+void Ast::setPos (Position * pos) {
+    if (_pos)
+	delete _pos;
+    _pos = pos;
+}

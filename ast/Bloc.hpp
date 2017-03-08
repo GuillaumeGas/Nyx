@@ -3,27 +3,30 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <memory>
 
 #include "Ast.hpp"
 #include "Instruction.hpp"
-#include "../symbol/Table.hpp"
 
 namespace nyx {
     namespace ast {
-	typedef AstPtr BlocPtr;
+	class Bloc;
+	typedef std::shared_ptr<Bloc> BlocPtr;
 
-	class Bloc : public Ast {
+	class Bloc : public Instruction {
 	public:
 	    Bloc (std::vector<InstructionPtr> * content);
-	    Bloc (std::vector<InstructionPtr> * content, bool is_global);
 	    ~Bloc ();
 
 	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    std::vector<InstructionPtr> * content;
+	    std::vector<InstructionPtr> * getContent () const;
+
+	    static BlocPtr New (std::vector<InstructionPtr> * content);
+
 	private:
-	    bool _is_global;
+	    std::vector<InstructionPtr> * _content;
 	};
     };
 };

@@ -19,10 +19,14 @@ namespace nyx {
 	    void print (std::ostream & out, int offset = 0) const;
 	    ExpressionPtr interpretExpression ();
 
+	    Type * getType () const;
+	    void setType (Type * type);
+	    ExpressionPtr getExpr () const;
+	    void setExpr (ExpressionPtr expr);
 
 	private:
-	    Type * type;
-	    ExpressionPtr expr;
+	    Type * _type;
+	    ExpressionPtr _expr;
 	};
     };
 };

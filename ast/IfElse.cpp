@@ -1,58 +1,100 @@
 #include "IfElse.hpp"
+#include "../symbol/Table.hpp"
+
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-IfElse::IfElse (ExpressionPtr cond, BlocPtr bloc_if, Position * pos) {
-    this->cond = cond;
-    this->bloc_if = bloc_if;
-    this->bloc_else = NULL;
-    this->pos = pos;
+IfElse::IfElse (ExpressionPtr cond, BlocPtr blocIf, Position * pos) : Instruction (pos) {
+    _cond = cond;
+    _blocIf = blocIf;
 }
 
-IfElse::IfElse (ExpressionPtr cond, BlocPtr bloc_if, BlocPtr bloc_else, Position * pos) {
-    this->cond = cond;
-    this->bloc_if = bloc_if;
-    this->bloc_else = bloc_else;
-    this->pos = pos;
+IfElse::IfElse (ExpressionPtr cond, BlocPtr blocIf, BlocPtr blocElse, Position * pos) : Instruction (pos) {
+    _cond = cond;
+    _blocIf = blocIf;
+    _blocElse = blocElse;
 }
 
-IfElse::~IfElse () {
+IfElse::IfElse (ExpressionPtr cond, BlocPtr blocIf, InstructionPtr elseIf, Position * pos) : Instruction (pos) {
+    _cond = cond;
+    _blocIf = blocIf;
+    _blocElseIf = elseIf;
 }
 
 void IfElse::interpret () {
-    cond = cond->interpretExpression ();
+    _cond = _cond->interpretExpression ();
 
     symbol::Table * table = symbol::Table::getInstance ();
 
-    TYPE cond_type = cond->getType ()->value;
+    TYPE condType = _cond->getType ()->value;
 
-    if (cond_type != TYPE::BOOL)
-    	throw SemanticErrorException ("Boolean expression expected !", cond->pos);
+    if (condType != TYPE::BOOL)
+    	throw SemanticErrorException ("Boolean expression expected !", _cond->getPos ());
 
-    if (cond->getBool () && bloc_if) {
+    if (_cond->getBool () && _blocIf) {
     	table->enterBlock ();
-    	bloc_if->interpret ();
+    	_blocIf->interpret ();
     	table->exitBlock ();
-    } else if (bloc_else) {
-    	table->enterBlock ();
-    	bloc_else->interpret ();
-    	table->exitBlock ();
+    } else {
+	if (_blocElse) {
+	    table->enterBlock ();
+	    _blocElse->interpret ();
+	    table->exitBlock ();
+	} else if (_blocElseIf) {
+	    _blocElseIf->interpret ();
+	}
     }
 }
 
 void IfElse::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "if ";
-    cond->print (out);
+    _cond->print (out);
     out << " {" << endl;
-    bloc_if->print (out, offset+INDENT);
-    if (bloc_else != NULL) {
+    _blocIf->print (out, offset+INDENT);
+    if (_blocElse) {
 	shift (out, offset);
 	out << "} else {" << endl;
-	bloc_else->print (out, offset+INDENT);
+	_blocElse->print (out, offset+INDENT);
+    } else if (_blocElseIf) {
+	shift (out, offset);
+	out << "} else ";
+	_blocElseIf->print (out, offset + INDENT);
     }
     shift (out, offset);
     out << "}" << endl;;
+}
+
+ExpressionPtr IfElse::getCond () const {
+    return _cond;
+}
+
+void IfElse::setCond (ExpressionPtr cond) {
+    _cond = cond;
+}
+
+BlocPtr IfElse::getBlocIf () const {
+    return _blocIf;
+}
+
+void IfElse::setBlocIf (BlocPtr blocIf) {
+    _blocIf = blocIf;
+}
+
+BlocPtr IfElse::getBlocElse () const {
+    return _blocElse;
+}
+
+void IfElse::setBlocElse (BlocPtr blocElse) {
+    _blocElse = blocElse;
+}
+
+InstructionPtr IfElse::getElseIf () const {
+    return _blocElseIf;
+}
+
+void IfElse::setElseIf (InstructionPtr elseIf) {
+    _blocElseIf = elseIf;
 }

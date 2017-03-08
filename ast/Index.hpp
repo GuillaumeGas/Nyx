@@ -14,7 +14,6 @@ namespace nyx {
 	class Index : public Expression {
 	public:
 	    Index (ExpressionPtr e1, ExpressionPtr e2, Position * pos);
-	    ~Index ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 

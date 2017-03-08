@@ -1,84 +1,119 @@
 #include "For.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-For::For (string * ident, VarIdPtr var_loop, ExpressionPtr expr, BlocPtr bloc, Position * pos) {
-    this->ident = ident;
-    this->var_loop = var_loop;
-    this->expr = expr;
-    this->bloc = bloc;
-    this->pos = pos;
+For::For (string * ident, VarIdPtr varLoop, ExpressionPtr expr, BlocPtr bloc, Position * pos) : Instruction (pos) {
+    _ident = ident;
+    _varLoop = varLoop;
+    _expr = expr;
+    _bloc = bloc;
 }
 
 
 For::~For () {
-    if (ident)
-	delete ident;
+    if (_ident)
+	delete _ident;
 }
 
 void For::interpret () {
-    // expr->interpretExpression ();
-    // TYPE expr_type = expr->getType ()->value;
+    _expr = _expr->interpretExpression ();
+    TYPE exprType = _expr->getType ()->value;
 
-    // if (expr_type != TYPE::RANGE && expr_type != TYPE::ARRAY)
-    // 	throw SemanticErrorException ("The expression in a for loop should be an array or a range type ! Found : " + expr->getType ()->toString(), pos);
+    if (exprType != TYPE::RANGE && exprType != TYPE::ARRAY)
+    	throw SemanticErrorException ("The expression in a for loop should be an array or a range type ! Found : " + _expr->getType ()->toString(), _pos);
 
-    // symbol::Table * table = symbol::Table::getInstance ();
-    // table->enterBlock ();
+    symbol::Table * table = symbol::Table::getInstance ();
+    table->enterBlock ();
 
-    // if (expr_type == TYPE::RANGE) {
-    // 	IntPtr range_begin = expr->getRangeBegin ();
-    // 	IntPtr range_end = expr->getRangeEnd ();
-    // 	int begin = range_begin->getInt ();
-    // 	int end = range_end->getInt ();
+    if (exprType == TYPE::RANGE) {
+    	IntPtr rangeBegin = _expr->getRangeBegin ();
+    	IntPtr rangeEnd = _expr->getRangeEnd ();
+    	int begin = rangeBegin->getInt ();
+    	int end = rangeEnd->getInt ();
 
-    // 	symbol::ConstSymbol * loop_symbol = new symbol::ConstSymbol (var_loop->name, range_start->clone ());
-    // 	table->addSymbol (loop_symbol, var_loop->pos);
+    	symbol::ConstSymbol * loopSymbol = new symbol::ConstSymbol (_varLoop->getName (), rangeBegin->clone ());
+    	table->addSymbol (loopSymbol, _varLoop->getPos ());
 
-    // 	if (start < end) {
-    // 	    for (; start <= end; start++) {
-    // 		table->enterBlock ();
-    // 		bloc->interpret ();
-    // 		loop_symbol->getValue ()->setInt (start + 1);
-    // 		table->exitBlock ();
-    // 	    }
-    // 	} else {
-    // 	    for (; start >= end; start--) {
-    // 		table->enterBlock ();
-    // 		bloc->interpret ();
-    // 		loop_symbol->getValue ()->setInt (start - 1);
-    // 		table->exitBlock ();
-    // 	    }
-    // 	}
-    // } else {
-    // 	symbol::ConstSymbol * loop_symbol = new symbol::ConstSymbol (var_loop->name);
-    // 	table->addSymbol (loop_symbol, var_loop->pos);
+    	if (begin < end) {
+    	    for (; begin <= end; begin++) {
+    		table->enterBlock ();
+    		_bloc->interpret ();
+    		loopSymbol->getValue ()->setInt (begin + 1);
+    		table->exitBlock ();
+    	    }
+    	} else {
+    	    for (; begin >= end; begin--) {
+    		table->enterBlock ();
+    		_bloc->interpret ();
+    		loopSymbol->getValue ()->setInt (begin - 1);
+    		table->exitBlock ();
+    	    }
+    	}
+    } else {
+    	symbol::ConstSymbol * loopSymbol = new symbol::ConstSymbol (_varLoop->getName ());
+    	table->addSymbol (loopSymbol, _varLoop->getPos ());
 
-    // 	for (auto it : *(expr->getArray ())) {
-    // 	    table->enterBlock ();
-    // 	    loop_symbol->setConst (false);
-    // 	    loop_symbol->setValue (it);
-    // 	    loop_symbol->setConst (true);
-    // 	    bloc->interpret ();
-    // 	    table->exitBlock ();
-    // 	}
-    // }
-    // table->exitBlock ();
+    	for (auto it : *(_expr->getArray ())) {
+    	    table->enterBlock ();
+    	    loopSymbol->setConst (false);
+    	    loopSymbol->setValue (it);
+    	    loopSymbol->setConst (true);
+    	    _bloc->interpret ();
+    	    table->exitBlock ();
+    	}
+    }
+    table->exitBlock ();
 }
 
 void For::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "For";
-    if (ident)
-	out << ":" << *ident;
+    if (_ident)
+	out << ":" << *_ident;
     out << " (";
-    var_loop->print (out);
+    _varLoop->print (out);
     out << " in ";
-    expr->print (out);
+    _expr->print (out);
     out << ") {" << endl;
-    bloc->print (out, offset+INDENT);
+    _bloc->print (out, offset+INDENT);
     shift (out, offset);
     out << "}";
+}
+
+std::string * For::getIdent () const {
+    return _ident;
+}
+
+void For::setIdent (std::string * ident) {
+    if (_ident)
+	delete _ident;
+    _ident = ident;
+}
+
+VarIdPtr For::getVarLoop () const {
+    return _varLoop;
+}
+
+void For::setVarLoop (VarIdPtr varLoop) {
+    _varLoop = varLoop;
+}
+
+ExpressionPtr For::getExpr () const {
+    return _expr;
+}
+
+void For::setExpr (ExpressionPtr expr) {
+    _expr = expr;
+}
+
+BlocPtr For::getBloc () const {
+    return _bloc;
+}
+
+void For::setBloc (BlocPtr bloc) {
+    _bloc = bloc;
 }

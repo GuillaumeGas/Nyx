@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Ast.hpp"
+#include "Instruction.hpp"
 #include "Type.hpp"
 
 namespace nyx {
@@ -14,10 +15,13 @@ namespace nyx {
 	typedef std::shared_ptr<Expression> ExpressionPtr;
 	typedef ExpressionPtr NullExpression;
 	
-	class Expression : public Ast, public std::enable_shared_from_this<Expression> {
+	class Expression : public Instruction,
+			   public std::enable_shared_from_this<Expression> {
 	public:
+	    Expression (Position * pos);
 	    virtual ~Expression ();
 
+	    void interpret ();
 	    virtual void print (std::ostream & out, int offset = 0) const = 0;
 
 	    template <class T, class... Args>
@@ -71,7 +75,8 @@ namespace nyx {
 
 	    virtual ExpressionPtr interpretUnaryMINUS ();
 
-	    Type * type;
+	protected:
+	    Type * _type;
 	};
     };
 };

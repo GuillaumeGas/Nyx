@@ -1,20 +1,22 @@
-
 #include "Compilo.hpp"
 
 using namespace std;
 using namespace nyx;
 
 Compilo::Compilo(string file_name) {
-    m_file_name = file_name;
-    m_lex = NULL;
-    m_syn = NULL;
+    _file_name = file_name;
+    _lex = NULL;
+    _syn = NULL;
+    _program = new ast::Program;
 }
 
 Compilo::~Compilo() {
-    if (m_lex)
-	delete m_lex;
-    if (m_syn)
-	delete m_syn;
+    if (_lex)
+	delete _lex;
+    if (_syn)
+	delete _syn;
+    if (_program)
+	delete _program;
 
     // we don't forget to free the global data...
     delete Global::getInstance ();
@@ -24,13 +26,13 @@ Compilo::~Compilo() {
 
 void Compilo::compile() {
     try {
-	m_lex = new Lexer(m_file_name);
-	m_lex->setKeys ({"+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=", "!",
+	_lex = new Lexer(_file_name);
+	_lex->setKeys ({"+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=", "!",
 		    "==", "!=", "(", ")", "=", "+=", "-=", "*=", "/=", "{", "}", "[", "]", ";", ",", ":",
 		    ".", "..", "$", "~", "\"", "\\", "'",
 		    " ", "/*", "*/", "//", "\n", "\r", "\t"});
-	m_lex->setSkips ({" ", "\n", "\r", "\t"});
-	m_lex->setComs ({make_pair ("/*", "*/"), make_pair ("//", "\n")});
+	_lex->setSkips ({" ", "\n", "\r", "\t"});
+	_lex->setComs ({make_pair ("/*", "*/"), make_pair ("//", "\n")});
     } catch(LexerException const& e) {
 	cout << e.toString() << endl;
 	exit(-1);
@@ -38,8 +40,8 @@ void Compilo::compile() {
 
     cout << "/------------------- AST -------------------\\" << endl << endl;
     try {
-    	m_syn = new Syntax(*m_lex);
-    	m_ast = m_syn->getAst();
+    	_syn = new Syntax(_lex, _program);
+    	_program = _syn->getAst();
     	printAst ();
     	cout << endl;
     } catch(SyntaxException const& e) {
@@ -49,7 +51,7 @@ void Compilo::compile() {
 
     cout << "/---------------- Execution -----------------\\" << endl << endl;
     try {
-      m_ast->interpret ();
+      _program->execute ();
       cout << endl;
     } catch(SymbolException const& e) {
       cout << e.toString () << endl;
@@ -61,8 +63,7 @@ void Compilo::compile() {
 }
 
 void Compilo::printAst() const {
-    m_ast->print (cout);
-    cout.flush ();
+    _program->print ();
 }
 
 

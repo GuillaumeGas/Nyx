@@ -1,18 +1,18 @@
 void main () {
-    /*$println ("test");
-    printStr ("le test");
-    printInt (1 + 1);
-    printAdd (4, 4);*/
-    // facto (5);
-    let i = 5;
+    // $println ("test");
+    // printStr ("le test");
+    // printInt (1 + 1);
+    // printAdd (4, 4);
+    // printInt (facto (5));
+    // let i = 5;
     // $println ("facto (", i, ") = ", facto (i));
     // $println ("tab : ", generateTab (i));
     // $println ("factoRec (", 2, ") = ", factoRec (2));
-    printInt (test (2));
+    // printInt (test (2));
 }
 
 int test (int n) {
-    if (n > 0) {
+    if (n > 1) {
 	return test (n - 1);
     }
     return 10;

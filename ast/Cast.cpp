@@ -5,24 +5,41 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Cast::Cast (Type * type, ExpressionPtr expr, Position * pos) {
-    this->type = type;
-    this->expr = expr;
-    this->pos = pos;
+Cast::Cast (Type * type, ExpressionPtr expr, Position * pos) : Expression (pos) {
+    _type = type;
+    _expr = expr;
 }
 
 Cast::~Cast () {
-    if (type)
-	delete type;
+    if (_type)
+	delete _type;
 }
 
 void Cast::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "cast:" << type->toString () << "(";
-    expr->print (out);
+    out << "cast:" << _type->toString () << "(";
+    _expr->print (out);
     out << ")";
 }
 
 ExpressionPtr Cast::interpretExpression () {
     return NullExpression ();
+}
+
+Type * Cast::getType () const {
+    return _type;
+}
+
+void Cast::setType (Type * type) {
+    if (_type)
+	delete _type;
+    _type = type;
+}
+
+ExpressionPtr Cast::getExpr () const {
+    return _expr;
+}
+
+void Cast::setExpr (ExpressionPtr expr) {
+    _expr = expr;
 }

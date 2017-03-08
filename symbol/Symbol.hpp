@@ -17,8 +17,8 @@ namespace nyx {
     namespace symbol {
 	class Symbol {
 	public:
-	    Symbol (std::string & name);
-	    Symbol (std::string & name, ast::ExpressionPtr ptr);
+	    Symbol (std::string name);
+	    Symbol (std::string name, ast::ExpressionPtr ptr);
 	    ~Symbol ();
 
 	    /**
@@ -60,19 +60,19 @@ namespace nyx {
 
 	class ConstSymbol : public Symbol {
 	public:
-	    ConstSymbol (std::string & name, ast::ExpressionPtr ptr);
-	    ConstSymbol (std::string & name);
+	    ConstSymbol (std::string name, ast::ExpressionPtr ptr);
+	    ConstSymbol (std::string name);
 	};
 
 	class FunSymbol {
 	public:
-	    FunSymbol (std::string & name, ast::Function * ptr);
+	    FunSymbol (std::string name, ast::FunctionPtr ptr);
 	    std::string getName () const;
-	    ast::Function * getPtr () const;
+	    ast::FunctionPtr getPtr () const;
 
 	    std::string toString () const;
 	private:
-	    ast::Function * _ptr;
+	    ast::FunctionPtr _ptr;
 	    std::string _name;
 	};
     };

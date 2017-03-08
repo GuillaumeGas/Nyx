@@ -13,11 +13,14 @@
 namespace nyx {
     class SemanticErrorException {
     public:
-	SemanticErrorException(Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos), msg("") {}
-	SemanticErrorException(std::string msg, Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos), msg(msg) {}
+	SemanticErrorException (std::string msg) throw  () : file_name(Global::getInstance()->file_name), msg (msg), pos (NULL) {}
+	SemanticErrorException (Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos), msg("") {}
+	SemanticErrorException (std::string msg, Position * pos) throw() : file_name(Global::getInstance()->file_name), pos(pos), msg(msg) {}
 
 	virtual std::string toString() const {
-	    return "[Error] Semantic error in file " + file_name + " at " + pos->toString() + " : " + msg + ".\n"/* + Global::getInstance()->getLine(pos->line)*/;
+	    if (pos)
+		return "[Error] Semantic error in file " + file_name + " at " + pos->toString() + " : " + msg + ".\n"/* + Global::getInstance()->getLine(pos->line)*/;
+	    return "[Error] Semantic error in file " + file_name + " : " + msg + ".\n";
 	}
 
     protected:
@@ -38,5 +41,10 @@ namespace nyx {
     protected:
     	ast::Type * t1;
     	ast::Type * t2;
+    };
+
+    class MainMissingErrorException : public SemanticErrorException {
+    public:
+	MainMissingErrorException () throw () : SemanticErrorException ("Main missing !") {}
     };
 };

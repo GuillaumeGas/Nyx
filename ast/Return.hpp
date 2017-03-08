@@ -7,7 +7,6 @@
 #include "Object.hpp"
 #include "Function.hpp"
 #include "../global/Position.hpp"
-#include "../symbol/Table.hpp"
 
 namespace nyx {
     namespace ast {
@@ -16,13 +15,15 @@ namespace nyx {
 	class Return : public Instruction {
 	public:
 	    Return (ExpressionPtr expr, Position * pos);
-	    ~Return ();
 
 	    void print (std::ostream & out, int offset = 0) const;
 	    void interpret ();
 
+	    ExpressionPtr getExpr () const;
+	    void setExpr (ExpressionPtr expr);
+
 	private:
-	    ExpressionPtr expr;
+	    ExpressionPtr _expr;
 	};
     };
 };

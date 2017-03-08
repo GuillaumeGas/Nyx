@@ -7,24 +7,31 @@
 #include "Object.hpp"
 #include "../global/Position.hpp"
 #include "exceptions/SemanticException.hpp"
-#include "../symbol/Table.hpp"
-#include "../symbol/Symbol.hpp"
 
 namespace nyx {
     namespace ast {
 	typedef ExpressionPtr BinopPtr;
 	
-	struct Binop : public Expression {
-	    Binop(ExpressionPtr e1, ExpressionPtr e2, Operator * op, Position * pos);
+	class Binop : public Expression {
+	public:
+	    Binop(ExpressionPtr left, ExpressionPtr right, Operator * op, Position * pos);
 	    ~Binop();
 
 	    ExpressionPtr interpretExpression ();
 	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    ExpressionPtr e1;
-	    ExpressionPtr e2;
-	    Operator * op;
+	    ExpressionPtr getLeft () const;
+	    void setLeft (ExpressionPtr left);
+	    ExpressionPtr getRight () const;
+	    void setRight (ExpressionPtr right);
+	    Operator * getOp () const;
+	    void setOp (Operator * op);
+
+	private:
+	    ExpressionPtr _left;
+	    ExpressionPtr _right;
+	    Operator * _op;
 	};
     };
 };

@@ -136,7 +136,6 @@ namespace nyx {
 
 	class Array : public Expression {
 	public:
-	    Array ();
 	    Array (std::vector<ExpressionPtr> * array, Position * pos);
 	    ~Array ();
 
@@ -150,6 +149,7 @@ namespace nyx {
 	    ExpressionPtr interpretPLUS (ExpressionPtr e);
 
 	protected:
+	    Array (Position * pos);
 	    std::vector<ExpressionPtr> * array;
 	};
 

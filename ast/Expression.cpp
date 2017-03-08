@@ -5,9 +5,15 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
+Expression::Expression (Position * pos) : Instruction (pos) {}
+
 Expression::~Expression () {
-    if (type)
-	delete type;
+    if (_type)
+	delete _type;
+}
+
+void Expression::interpret () {
+    interpretExpression ();
 }
 
 ExpressionPtr Expression::interpretExpression () {
@@ -15,11 +21,13 @@ ExpressionPtr Expression::interpretExpression () {
 }
 
 Type * Expression::getType () const {
-    return type;
+    return _type;
 }
 
 void Expression::setType (Type * type) {
-    type = type;
+    if (_type)
+	delete _type;
+    _type = _type;
 }
 
 bool Expression::getBool () const { throw -1; }
@@ -42,25 +50,25 @@ void Expression::setRangeEnd (ExpressionPtr v) { throw -1; }
 
 ExpressionPtr Expression::clone () { return shared_from_this (); }
 
-ExpressionPtr Expression::interpretASSIGN (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretLE (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretGE (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretNE (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretPLUSEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretMINUSEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretMULEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretDIVEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretMODEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretLT (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretGT (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretAND (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretOR (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretPLUS (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretMINUS (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretMUL (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretDIV (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretMOD (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
-ExpressionPtr Expression::interpretPOINT (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, pos); }
+ExpressionPtr Expression::interpretASSIGN (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretLE (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretGE (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretNE (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretPLUSEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretMINUSEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretMULEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretDIVEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretMODEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretLT (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretGT (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretEQ (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretAND (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretOR (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretPLUS (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretMINUS (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretMUL (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretDIV (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretMOD (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
+ExpressionPtr Expression::interpretPOINT (ExpressionPtr e) { throw TypeErrorException (shared_from_this (), e, _pos); }
 
-ExpressionPtr Expression::interpretUnaryMINUS () { throw SemanticErrorException ("Bad operand type for unary '-' : " + type->toString (), pos); }
+ExpressionPtr Expression::interpretUnaryMINUS () { throw SemanticErrorException ("Bad operand type for unary '-' : " + _type->toString (), _pos); }

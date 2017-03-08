@@ -23,35 +23,35 @@
 namespace nyx {
     class Syntax {
     public:
-	Syntax(Lexer & lex);
-	~Syntax();
+	Syntax(Lexer * lex, ast::Program * program);
 
-	ast::AstPtr getAst() const;
+	ast::Program * getAst() const;
 
 	TokenPtr pop() const;
 	void rewind (int count = 1);
 
 	/* Visitor */
-	ast::AstPtr visitBloc (bool global = false);
-	ast::AstPtr visitInstruction ();
-	ast::AstPtr visitFunDecl (TokenPtr token_type, TokenPtr token_ident);
-	ast::AstPtr visitFunCall (TokenPtr token_ident);
-	ast::ExpressionPtr visitExprFunCall (TokenPtr token_ident);
-	std::vector <ast::VarDeclPtr> * visitParamsDecl ();
-	ast::AstPtr visitLet ();
-	ast::AstPtr visitVarDecl (TokenPtr token_ident);
-	ast::AstPtr visitVarAssign (TokenPtr token_ident, TokenPtr token_op);
-	ast::AstPtr visitIfElse ();
-	ast::AstPtr visitFor ();
-	ast::AstPtr visitWhile ();
-	ast::AstPtr visitSyscall (TokenPtr token_ident);
-	ast::AstPtr visitExprSyscall (TokenPtr token_ident);
-	std::vector<ast::ExpressionPtr> * visitParams ();
-	ast::AstPtr visitReturn ();
-	ast::AstPtr visitBreak ();
-	ast::AstPtr visitImport ();
-	ast::AstPtr visitClass ();
+	void visitProgram ();
+	ast::DeclarationPtr visitFunDecl ();
+	ast::DeclarationPtr visitImport ();
+	ast::DeclarationPtr visitClass ();
 
+	ast::BlocPtr visitBloc ();
+	ast::InstructionPtr visitInstruction ();
+	ast::InstructionPtr visitFunCall (TokenPtr token_ident);
+	ast::ExpressionPtr visitExprFunCall (TokenPtr token_ident);
+	std::vector <ast::ParamPtr> * visitParamsDecl ();
+	ast::InstructionPtr visitLet ();
+	ast::InstructionPtr visitVarDecl (TokenPtr token_ident);
+	ast::InstructionPtr visitVarAssign (TokenPtr token_ident, TokenPtr token_op);
+	ast::InstructionPtr visitIfElse ();
+	ast::InstructionPtr visitFor ();
+	ast::InstructionPtr visitWhile ();
+	ast::InstructionPtr visitSyscall (TokenPtr token_ident);
+	ast::ExpressionPtr visitExprSyscall (TokenPtr token_ident);
+	std::vector<ast::ExpressionPtr> * visitParams ();
+	ast::InstructionPtr visitReturn ();
+	ast::InstructionPtr visitBreak ();
 
 	ast::ExpressionPtr visitExpression ();
 	ast::ExpressionPtr visitULow ();
@@ -82,9 +82,9 @@ namespace nyx {
 	bool isIdent (std::string value);
 
     private:
-	Lexer & m_lex;
-	ast::AstPtr m_program;
+	Lexer * _lex;
+	ast::Program * _program;
 
-	symbol::Table * m_table;
+	symbol::Table * _table;
     };
 };

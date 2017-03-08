@@ -14,11 +14,14 @@ namespace nyx {
 	    Break (std::string * ident, Position * pos);
 	    ~Break ();
 
-	    void secondPass ();
+	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
+	    std::string * getIdent () const;
+	    void setIdent (std::string * ident);
+
 	private:
-	    std::string * ident;
+	    std::string * _ident;
 	};
     };
 };

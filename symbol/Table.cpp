@@ -7,8 +7,8 @@ using namespace symbol;
 Table * Table::instance = NULL;
 
 Table::Table() {
-    current_scope = NULL;
     global_scope = new Scope ();
+    current_scope = global_scope;
 }
 
 Table::~Table() {}
@@ -27,7 +27,7 @@ void Table::enterBlock() {
     }
 }
 
-void Table::enterFunBlock (ast::Function * fun) {
+void Table::enterFunBlock (ast::FunctionPtr fun) {
     current_scope = current_scope->newFunScope ();
     funcalls_stack.push (fun);
 }
@@ -64,9 +64,9 @@ void Table::addSymbol (Symbol * s, Position * pos) {
 }
 
 void Table::addFunSymbol (FunSymbol * s, Position * pos) {
-    if (current_scope->getFunSymbol (s->getName (), pos) != NULL)
+    if (getFunSymbol (s->getName (), pos) != NULL)
 	    throw MultipleDefException (Global::getInstance ()->file_name, pos, s->getName ());
-    current_scope->addFunSymbol (s, pos);
+    global_scope->addFunSymbol (s, pos);
 }
 
 Symbol * Table::getSymbol(string name, Position * pos) {
@@ -78,20 +78,10 @@ Symbol * Table::getGlobalSymbol (string name, Position * pos) {
 }
 
 FunSymbol * Table::getFunSymbol (string name, Position * pos) {
-    FunSymbol * res = current_scope->getFunSymbol (name, pos);
-    if (res == NULL)
-	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
-    return res;
+    return global_scope->getFunSymbol (name, pos);
 }
 
-FunSymbol * Table::getGlobalFunSymbol (string name, Position * pos) {
-    FunSymbol * res = global_scope->getFunSymbol (name, pos);
-    if (res == NULL)
-	throw SymbolNotFoundException (Global::getInstance ()->file_name, pos, name);
-    return res;    
-}
-
-ast::Function * Table::getCurrentFunction () {
+ast::FunctionPtr Table::getCurrentFunction () {
     return funcalls_stack.top ();
 }
 

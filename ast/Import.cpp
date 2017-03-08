@@ -4,8 +4,7 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Import::Import (vector<string> * path, Position * pos) {
-    this->pos = pos;
+Import::Import (vector<string> * path, Position * pos) : Declaration (pos) {
     this->path = path;
 }
 

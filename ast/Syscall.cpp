@@ -4,35 +4,34 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Syscall::Syscall (string ident, vector<ExpressionPtr> * params, Position * pos) {
-    this->ident = ident;
-    this->params = params;
-    this->pos = pos;
+Syscall::Syscall (string ident, vector<ExpressionPtr> * params, Position * pos) : Instruction (pos) {
+    _ident = ident;
+    _params = params;
 }
 
 Syscall::~Syscall () {
-    if (params)
-    	delete params;
+    if (_params)
+    	delete _params;
 }
 
 void Syscall::interpret () {
-    if (ident == "print") {
+    if (_ident == "print") {
     	sysPrint ();
-    } else if (ident == "println") {
+    } else if (_ident == "println") {
     	sysPrintln ();
     } else {
-    	throw SemanticErrorException ("Unknown syscall !", pos);
+    	throw SemanticErrorException ("Unknown syscall !", _pos);
     }
 }
 
 void Syscall::print (ostream & out, int offset) const {
     shift (out, offset);
-    out << "syscall<" << ident << "> (";
-    if (params != NULL) {
+    out << "syscall<" << _ident << "> (";
+    if (_params != NULL) {
 	int i = 0;
-	for (auto it : *params) {
+	for (auto it : *_params) {
 	    it->print (out);
-	    if (i < params->size () - 1)
+	    if (i < _params->size () - 1)
 		out << ", ";
 	    ++i;
 	}
@@ -81,7 +80,7 @@ void Syscall::_sysPrint (ExpressionPtr e) {
     	cout << e->getRangeEnd ()->getInt ();
     	break;
     default:
-    	SemanticErrorException ("Unknown type " + e->getType ()->toString () + "!", pos);
+    	SemanticErrorException ("Unknown type " + e->getType ()->toString () + "!", _pos);
     }
 
     if (e->getType ()->value == TYPE::ARRAY || e->getType ()->value == TYPE::RANGE)
@@ -89,14 +88,30 @@ void Syscall::_sysPrint (ExpressionPtr e) {
 }
 
 void Syscall::sysPrint () {
-    for (auto it : *params) {
+    for (auto it : *_params) {
     	_sysPrint (it->interpretExpression ());
     }
 }
 
 void Syscall::sysPrintln () {
-    for (auto it : *params) {
+    for (auto it : *_params) {
     	_sysPrint (it->interpretExpression ());
     }
     cout << endl;
+}
+
+std::string Syscall::getIdent () const {
+    return _ident;
+}
+
+void Syscall::setIdent (const std::string & ident) {
+    _ident = ident;
+}
+
+std::vector<ExpressionPtr> * Syscall::getParams () const {
+    return _params;
+}
+
+void Syscall::setParams (std::vector<ExpressionPtr> * params) {
+    _params = params;
 }

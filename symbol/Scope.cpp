@@ -31,7 +31,7 @@ Scope * Scope::newScope() {
 }
 
 Scope * Scope::newFunScope () {
-    if (_next_scope) {
+    if (_next_scope != NULL) {
 	cout << "[Error] Next scope already exist." << endl;
 	exit (-1);
     }
@@ -64,8 +64,6 @@ FunSymbol * Scope::getFunSymbol (string name, Position * pos) {
     auto it = _funSymbolsList.find (name);
     if (it != _funSymbolsList.end ())
 	return it->second;
-    if (_parent_scope)
-	return _parent_scope->getFunSymbol (name, pos);
     return NULL;
 }
 
@@ -93,5 +91,5 @@ FunSymbol * FunScope::getFunSymbol (string name, Position * pos) {
     auto it = _funSymbolsList.find(name);
     if (it != _funSymbolsList.end())
 	return it->second;
-    return Table::getInstance ()->getGlobalFunSymbol (name, pos);
+    return NULL;
 }

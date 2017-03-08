@@ -1,47 +1,48 @@
 #include "While.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
 
-While::While (string * ident, ExpressionPtr expr, BlocPtr bloc, Position * pos) {
-    this->ident = ident;
-    this->expr = expr;
-    this->bloc = bloc;
-    this->pos = pos;
+While::While (string * ident, ExpressionPtr expr, BlocPtr bloc, Position * pos) : Instruction (pos) {
+    _ident = ident;
+    _expr = expr;
+    _bloc = bloc;
 }
 
 While::~While () {
-    if (ident)
-	delete ident;
+    if (_ident)
+	delete _ident;
 }
 
 void While::interpret () {
     symbol::Table * table = symbol::Table::getInstance ();
     table->enterBlock ();
 
-    TYPE expr_type;
+    TYPE exprType;
 
-    bool keep_going = true;
-    while (keep_going) {
-    	expr = expr->interpretExpression ();
-    	expr_type = expr->getType ()->value;
+    bool keepGoing = true;
+    while (keepGoing) {
+    	_expr = _expr->interpretExpression ();
+    	exprType = _expr->getType ()->value;
 
-    	if (expr_type == TYPE::INT) {
-    	    keep_going = expr->getInt ();
-    	} else if (expr_type == TYPE::FLOAT) {
-    	    keep_going = expr->getFloat ();
-    	} else if (expr_type == TYPE::CHAR) {
-    	    keep_going = expr->getChar ();
-    	} else if (expr_type == TYPE::BOOL) {
-    	    keep_going = expr->getBool ();
+    	if (exprType == TYPE::INT) {
+    	    keepGoing = _expr->getInt ();
+    	} else if (exprType == TYPE::FLOAT) {
+    	    keepGoing = _expr->getFloat ();
+    	} else if (exprType == TYPE::CHAR) {
+    	    keepGoing = _expr->getChar ();
+    	} else if (exprType == TYPE::BOOL) {
+    	    keepGoing = _expr->getBool ();
     	} else {
-    	    throw SemanticErrorException ("Expected boolean expression.", pos);
+    	    throw SemanticErrorException ("Expected boolean expression.", _pos);
     	}
 
-    	if (keep_going) {
+    	if (keepGoing) {
     	    table->enterBlock ();
-    	    bloc->interpret ();
+    	    _bloc->interpret ();
     	    table->enterBlock ();
     	}
     }
@@ -53,12 +54,12 @@ void While::interpret () {
 void While::print (ostream & out, int offset) const {
     shift (out, offset);
     out << "While";
-    if (ident)
-	out << ":" << *ident;
+    if (_ident)
+	out << ":" << *_ident;
     out << " (";
-    expr->print (out);
+    _expr->print (out);
     out << ") {" << endl;
-    bloc->print (out, offset + INDENT);
+    _bloc->print (out, offset + INDENT);
     shift (out, offset);
     out << "}";
 }

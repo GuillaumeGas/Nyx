@@ -12,7 +12,8 @@ namespace nyx {
     namespace ast {
 	typedef ExpressionPtr UnOpPtr;
 
-	struct UnOp : public Expression {
+	class UnOp : public Expression {
+	public:
 	    UnOp (Operator * op, ExpressionPtr expr, Position * pos);
 	    ~UnOp ();
 
@@ -20,8 +21,14 @@ namespace nyx {
 
 	    ExpressionPtr interpretExpression();
 
-	    Operator * op;
-	    ExpressionPtr expr;
+	    Operator * getOp () const;
+	    void setOp (Operator * op);
+	    ExpressionPtr getExpr () const;
+	    void setExpr (ExpressionPtr expr);
+
+	private:
+	    Operator * _op;
+	    ExpressionPtr _expr;
 	};
     };
 };

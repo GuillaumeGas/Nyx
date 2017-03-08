@@ -10,19 +10,29 @@
 
 namespace nyx {
     namespace ast {
+	class VarDecl;
+	typedef std::shared_ptr<VarDecl> ParamPtr;
 	typedef InstructionPtr VarDeclPtr;
 
 	class VarDecl : public Instruction {
 	public:
-	    VarDecl (VarIdPtr var_id, Position * pos);
-	    VarDecl (Type * type, VarIdPtr var_id, Position * pos);
+	    VarDecl (VarIdPtr varId, Position * pos);
+	    VarDecl (Type * type, VarIdPtr varId, Position * pos);
 	    ~VarDecl();
 
 	    void interpret ();
 	    void print (std::ostream & out, int offset = 0) const;
 
-	    Type * type;
-	    VarIdPtr var_id;
+	    Type * getType () const;
+	    void setType (Type * type);
+	    VarIdPtr getVarId () const;
+	    void setVarId (VarIdPtr varId);
+
+	    static ParamPtr New (Type * type, VarIdPtr varId, Position * pos);
+
+	private:
+	    Type * _type;
+	    VarIdPtr _varId;
 	};
     };
 };

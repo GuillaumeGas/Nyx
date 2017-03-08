@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include "Ast.hpp"
 #include "Expression.hpp"
@@ -14,13 +15,21 @@
 
 namespace nyx {
     namespace ast {
-	typedef ExpressionPtr VarIdPtr;
+	class VarId;
+	typedef std::shared_ptr<VarId> VarIdPtr;
 
 	class VarId : public Expression {
 	public:
 	    VarId (std::string name, Position * pos);
-	    VarId (std::string name, ExpressionPtr ptr, Position * pos);
-	    ~VarId ();
+	    VarId (std::string name, Position * pos, ExpressionPtr ptr);
+
+	    static VarIdPtr New (std::string name, Position * pos);
+	    static VarIdPtr New (std::string name, Position * pos, ExpressionPtr ptr);
+
+	    std::string getName () const;
+	    void setName (const std::string name);
+	    ExpressionPtr getValue () const;
+	    void setValue (ExpressionPtr value);
 
 	    void print (std::ostream & out, int offset = 0) const;
 
@@ -51,10 +60,9 @@ namespace nyx {
 	    ExpressionPtr interpretMOD (ExpressionPtr e);
 
 	    ExpressionPtr interpretUnaryMINUS ();
-
-	    std::string name;
 	private:
-	    ExpressionPtr value;
+	    std::string _name;
+	    ExpressionPtr _value;
 
 	    ExpressionPtr _interpretBinop (Op op, ExpressionPtr e);
 	};
