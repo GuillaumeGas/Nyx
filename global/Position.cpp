@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "Position.hpp"
 
 using namespace std;
@@ -10,7 +12,9 @@ Position::Position(const Position& p) : line(p.line), column(p.column) {}
 Position::~Position() {  }
 
 string Position::toString() const {
-    return "Line " + std::to_string(line) + ", column " + std::to_string(column);
+    stringstream ss;
+    ss << "Line " << line << ", column " << column;
+    return ss.str();
 }
 
 DefaultPosition::DefaultPosition () : Position (DEFAULT_LINE, DEFAULT_COLUMN) {}

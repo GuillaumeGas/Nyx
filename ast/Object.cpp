@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "Object.hpp"
 #include "exceptions/SemanticException.hpp"
 
@@ -705,7 +707,9 @@ Float::~Float () {}
 float Float::getFloat () const { return value; }
 
 void Float::print (ostream & out, int offset) const {
-    out << "ConstFloat(" << std::to_string (this->value) << ")";
+    stringstream ss;
+    ss << "ConstFloat(" << this->value << ")";
+    cout << ss.str();
 }
 
 ExpressionPtr Float::clone () {

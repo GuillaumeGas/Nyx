@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "Token.hpp"
 
 using namespace std;
@@ -23,7 +25,9 @@ TokenPtr Token::makeEof (location_t loc) {
 
 string Token::toString() const {
     string type = Token::getType (this->type);
-    return "<" + type + "(" + value + "), loc(" + std::to_string(line) + ", " + std::to_string(column) + ")>";
+    stringstream ss;
+    ss << "<" << type << "(" << value << "), loc(" << line << ", " << column << ")>";
+    return ss.str();
 }
 
 bool Token::isEof() const {

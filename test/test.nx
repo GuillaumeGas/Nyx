@@ -1,49 +1,11 @@
-/* API EXAMPLE */
-import game.gmcalls;
-import nyx.syscalls;
-
-class Game {
-    public {
-	this () {
-	    this.players = $getPlayers ();
-	}
-
-	void printPlayers () {
-	    for (player in this.players) {
-		$print (player.id, " : ", player.name, "\n");
-	    }
-	}
-    }
+void main()
+{
+	let a = 2;
+	let b = 2;
+	$println("Result : ", add(a, b));
 }
 
-/* USER SCRIPT EXAMPLE */
-import api.Game;
-import api.Player;
-import api.Map;
-
-class MyIa : Player {
-    public {
-	this (Game game, String name) {
-	    super (name);
-	    this.game = game;
-	}
-
-	void run () {
-	    let map = this.game.getMap ();
-	    if (posX < map.getWidth () && posX > 0) {
-		this.goOnX ();
-	    } else {
-		this.setDirection (!this.getDirection ());
-	    }
-	}
-    }
-}
-
-int main (Game game) {
-    game.printPlayers ();
-
-    let ia = new MyIa (game, "test");
-    game.addIa (ia, 0, 0); //va executer run surchargée
-
-    return 0;
+int add (int a, int b)
+{
+	return a + b;
 }

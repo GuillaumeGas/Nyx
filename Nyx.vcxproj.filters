@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\ast">
+      <UniqueIdentifier>{73637377-7cf7-45f6-b405-cc3cca3a1176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compilo">
+      <UniqueIdentifier>{b2ab2adf-456a-493d-8b2e-90d654dfe3dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\global">
+      <UniqueIdentifier>{7d65feda-2691-4730-8dd9-f81b63b361f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\parser">
+      <UniqueIdentifier>{85ab0c5f-4297-4843-b35e-d762c8ad30d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\symbol">
+      <UniqueIdentifier>{a31fd20b-c5fc-413e-9060-a5afb988fd61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ast">
+      <UniqueIdentifier>{f094d90d-a470-4bd1-b302-70e0e2adb84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\compilo">
+      <UniqueIdentifier>{c17b7ae0-a780-4ce3-9cc1-747586352343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\global">
+      <UniqueIdentifier>{00c000e6-15ae-49fd-8f35-ca05f8430458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\symbol">
+      <UniqueIdentifier>{f61a3923-4eb6-458d-9aba-95e39134c561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\parser">
+      <UniqueIdentifier>{e1b667cd-8efd-437f-83d4-aff89b66e61c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ast\exceptions">
+      <UniqueIdentifier>{cbad24f5-8c8a-43ef-a1ed-65a93527065c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\parser\exceptions">
+      <UniqueIdentifier>{608c50ad-3004-4b80-a24c-c457ef210ef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\parser\exceptions">
+      <UniqueIdentifier>{03bfef06-a807-43b7-bd59-98b12d3753ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\symbol\exceptions">
+      <UniqueIdentifier>{28553cbe-71a0-4251-976e-a2b345a233f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\test">
+      <UniqueIdentifier>{6df6238f-b5b4-427e-80b3-74ea9fa0b2d1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\While.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\VarId.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\VarDecl.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\UnOp.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Type.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Syscall.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Return.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Program.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Operator.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Object.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Instruction.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Index.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Import.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\IfElse.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Function.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\FunCall.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\For.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Expression.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Declaration.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Class.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Cast.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Break.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Bloc.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Binop.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Ast.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="compilo\Compilo.cpp">
+      <Filter>Header Files\compilo</Filter>
+    </ClCompile>
+    <ClCompile Include="global\Global.cpp">
+      <Filter>Source Files\global</Filter>
+    </ClCompile>
+    <ClCompile Include="global\Position.cpp">
+      <Filter>Source Files\global</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Lexer.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Syntax.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Token.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\exceptions\SyntaxException.cpp">
+      <Filter>Source Files\parser\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="symbol\Scope.cpp">
+      <Filter>Source Files\symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="symbol\Symbol.cpp">
+      <Filter>Source Files\symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="symbol\Table.cpp">
+      <Filter>Source Files\symbol</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ast\Ast.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\AstIncludes.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Binop.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Bloc.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Break.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Cast.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Class.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Declaration.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Expression.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\For.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\FunCall.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Function.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\IfElse.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Import.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Index.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Instruction.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Object.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Operator.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Program.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Return.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Syscall.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Type.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\UnOp.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\VarDecl.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\VarId.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\While.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\exceptions\SemanticException.hpp">
+      <Filter>Header Files\ast\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="compilo\Compilo.hpp">
+      <Filter>Source Files\compilo</Filter>
+    </ClInclude>
+    <ClInclude Include="global\Global.hpp">
+      <Filter>Header Files\global</Filter>
+    </ClInclude>
+    <ClInclude Include="global\Position.hpp">
+      <Filter>Header Files\global</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Lexer.hpp">
+      <Filter>Header Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Syntax.hpp">
+      <Filter>Header Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Token.hpp">
+      <Filter>Header Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\TokenList.hpp">
+      <Filter>Header Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\exceptions\LexerException.hpp">
+      <Filter>Header Files\parser\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\exceptions\SyntaxException.hpp">
+      <Filter>Header Files\parser\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="symbol\Scope.hpp">
+      <Filter>Header Files\symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="symbol\Symbol.hpp">
+      <Filter>Header Files\symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="symbol\Table.hpp">
+      <Filter>Header Files\symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="symbol\exceptions\SymbolException.hpp">
+      <Filter>Header Files\symbol\exceptions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test\test.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="test\a.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="test\but.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="test\class.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="test\proto.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="test\test_loop.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="test\test1.nx">
+      <Filter>Resource Files\test</Filter>
+    </None>
+  </ItemGroup>
+</Project>

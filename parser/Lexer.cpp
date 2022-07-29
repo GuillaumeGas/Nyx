@@ -9,12 +9,11 @@ Lexer::Lexer (string file_name) {
     this->current_loc.column = 1;
     this->eof = false;
     this->new_line = true;
-    this->file = fopen (file_name.c_str (), "r");
     this->current_index = 0;
     this->comments_enabled = true;
 
-    if (!this->file) {
-	throw FileNotFoundException (file_name);
+    if (fopen_s(&this->file, file_name.c_str(), "r") != 0) {
+		throw FileNotFoundException (file_name);
     }
 
     Global::getInstance()->setFile (file_name);
