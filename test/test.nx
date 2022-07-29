@@ -2,6 +2,7 @@ void main()
 {
 	let a = $readInt();
 	let b = $readInt();
+	let c = 0;
 	$println("Result : ", add(a, b));
 }
 

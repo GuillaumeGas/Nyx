@@ -24,7 +24,7 @@ namespace nyx {
 	    /**
 	       Returns the value, a pointer on an abstract object
 	     */
-	    ast::ExpressionPtr getValue () const;
+	    ast::ExpressionPtr getValue ();
 
 	    /**
 	       Returns the symbol's name
@@ -51,11 +51,14 @@ namespace nyx {
 
 	    std::string toString() const;
 
+		bool isUsed() const;
+
 	protected:
 	    std::string _name;
 	    ast::ExpressionPtr _ptr;
 	    bool _is_def;
 	    bool _is_const;
+		bool _used_at_least_once;
 	};
 
 	class ConstSymbol : public Symbol {
