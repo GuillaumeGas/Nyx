@@ -11,19 +11,22 @@
 
 namespace nyx {
 	namespace ast {
-		typedef Instruction SyscallPtr;
+		typedef ExpressionPtr SyscallPtr;
 
-		class Syscall : public Instruction {
+		class Syscall : public Expression {
 		public:
 			Syscall(std::string ident, std::vector<ExpressionPtr>* params, Position* pos);
 			~Syscall();
 
 			void print(std::ostream& out, int offset = 0) const;
+			
 			void interpret();
+			ExpressionPtr interpretExpression();
 
 			//syscalls list
-			void sysPrint();
-			void sysPrintln();
+			ExpressionPtr sysPrint();
+			ExpressionPtr sysPrintln();
+			ExpressionPtr sysReadInt();
 
 			std::string getIdent() const;
 			void setIdent(const std::string& ident);

@@ -138,9 +138,6 @@
     <ClCompile Include="ast\Ast.cpp">
       <Filter>Source Files\ast</Filter>
     </ClCompile>
-    <ClCompile Include="compilo\Compilo.cpp">
-      <Filter>Header Files\compilo</Filter>
-    </ClCompile>
     <ClCompile Include="global\Global.cpp">
       <Filter>Source Files\global</Filter>
     </ClCompile>
@@ -167,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="symbol\Table.cpp">
       <Filter>Source Files\symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="compilo\Compilo.cpp">
+      <Filter>Source Files\compilo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +251,6 @@
     <ClInclude Include="ast\exceptions\SemanticException.hpp">
       <Filter>Header Files\ast\exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="compilo\Compilo.hpp">
-      <Filter>Source Files\compilo</Filter>
-    </ClInclude>
     <ClInclude Include="global\Global.hpp">
       <Filter>Header Files\global</Filter>
     </ClInclude>
@@ -290,6 +287,9 @@
     <ClInclude Include="symbol\exceptions\SymbolException.hpp">
       <Filter>Header Files\symbol\exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="compilo\Compilo.hpp">
+      <Filter>Header Files\compilo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test\test.nx">
@@ -312,6 +312,9 @@
     </None>
     <None Include="test\test1.nx">
       <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include=".gitignore">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -377,17 +377,11 @@ InstructionPtr Syntax::visitWhile() {
 /**
    syscall := $ident ( params* );
 */
-InstructionPtr Syntax::visitSyscall(TokenPtr token_ident) {
+ExpressionPtr Syntax::visitSyscall(TokenPtr token_ident) {
 	vector<ExpressionPtr>* params = visitParams();
 	Position* pos = new Position(token_ident->line, token_ident->column);
-	return Instruction::New<Syscall>(token_ident->value, params, pos);
+	return Expression::New<Syscall>(token_ident->value, params, pos);
 }
-
-// AstPtr Syntax::visitExprSyscall (TokenPtr token_ident) {
-//     vector<ExpressionPtr> * params = visitParams ();
-//     Position * pos = new Position (token_ident->line, token_ident->column);
-//     return Instruction::New<Syscall> (token_ident->value, params, pos);
-// }
 
 /**
    params := (varid*)
@@ -833,11 +827,14 @@ ExpressionPtr Syntax::visitIdent() {
 	TokenPtr next = pop();
 	if (next->type == TokenType::PAR_L) {
 		rewind();
-		// if (first->type == TokenType::DOLLAR) {
-		//     return visitSyscall (ident);
-		// }
+
+		if (first->type == TokenType::DOLLAR) {
+			return visitSyscall(ident);
+		}
+
 		return visitExprFunCall(ident);
 	}
+
 	rewind();
 	return Expression::New<VarId>(ident->value, new Position(ident->line, ident->column));
 }

@@ -207,6 +207,7 @@
     <ClInclude Include="symbol\Table.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="test\a.nx" />
     <None Include="test\but.nx" />
     <None Include="test\class.nx" />

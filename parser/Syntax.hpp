@@ -47,8 +47,7 @@ namespace nyx {
 	ast::InstructionPtr visitIfElse ();
 	ast::InstructionPtr visitFor ();
 	ast::InstructionPtr visitWhile ();
-	ast::InstructionPtr visitSyscall (TokenPtr token_ident);
-	ast::ExpressionPtr visitExprSyscall (TokenPtr token_ident);
+	ast::ExpressionPtr visitSyscall (TokenPtr token_ident);
 	std::vector<ast::ExpressionPtr> * visitParams ();
 	ast::InstructionPtr visitReturn ();
 	ast::InstructionPtr visitBreak ();

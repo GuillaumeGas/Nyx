@@ -6,9 +6,11 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Syscall::Syscall(string ident, vector<ExpressionPtr>* params, Position* pos) : Instruction(pos) {
+Syscall::Syscall(string ident, vector<ExpressionPtr>* params, Position* pos) : Expression(pos) {
 	_ident = ident;
 	_params = params;
+
+	this->setType(new Type("void", true));
 }
 
 Syscall::~Syscall() {
@@ -17,15 +19,20 @@ Syscall::~Syscall() {
 }
 
 void Syscall::interpret() {
+	interpretExpression();
+}
+
+ExpressionPtr Syscall::interpretExpression()
+{
 	if (_ident == "print") {
-		sysPrint();
+		return sysPrint();
 	}
 	else if (_ident == "println") {
-		sysPrintln();
+		return sysPrintln();
 	}
-	//else if (_ident == "readInt") {
-	//	sysReadInt();
-	//}
+	else if (_ident == "readInt") {
+		return sysReadInt();
+	}
 	else {
 		throw SemanticErrorException("Unknown syscall !", _pos);
 	}
@@ -94,23 +101,31 @@ void Syscall::_sysPrint(ExpressionPtr e) {
 		cout << "]";
 }
 
-void Syscall::sysPrint() {
+ExpressionPtr Syscall::sysPrint() {
 	for (auto it : *_params) {
 		_sysPrint(it->interpretExpression());
 	}
+
+	return NullExpression();
 }
 
-void Syscall::sysPrintln() {
+ExpressionPtr Syscall::sysPrintln() {
 	for (auto it : *_params) {
 		_sysPrint(it->interpretExpression());
 	}
 	cout << endl;
+
+	return NullExpression();
 }
 
-//void Syscall::sysReadInt() {
-//	int intInput;
-//	scanf("%d", &intInput);
-//}
+ExpressionPtr Syscall::sysReadInt() {
+	int intInput;
+	scanf_s("%d", &intInput, sizeof(int));
+
+	this->setType(new Type("int", true));
+
+	return Expression::New<Int>(intInput, _pos);
+}
 
 std::string Syscall::getIdent() const {
 	return _ident;

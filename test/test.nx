@@ -1,7 +1,7 @@
 void main()
 {
-	let a = 2;
-	let b = 2;
+	let a = $readInt();
+	let b = $readInt();
 	$println("Result : ", add(a, b));
 }
 
