@@ -13,6 +13,7 @@ namespace nyx {
             Program();
             ~Program();
 
+            void staticAnalysis();
             void execute();
             void print();
 

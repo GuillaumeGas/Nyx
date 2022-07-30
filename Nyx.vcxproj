@@ -163,6 +163,7 @@
     <ClCompile Include="symbol\Scope.cpp" />
     <ClCompile Include="symbol\Symbol.cpp" />
     <ClCompile Include="symbol\Table.cpp" />
+    <ClCompile Include="symbol\StaticAnalysis.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ast\Ast.hpp" />
@@ -205,9 +206,11 @@
     <ClInclude Include="symbol\Scope.hpp" />
     <ClInclude Include="symbol\Symbol.hpp" />
     <ClInclude Include="symbol\Table.hpp" />
+    <ClInclude Include="symbol\StaticAnalysis.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="README.md" />
     <None Include="test\a.nx" />
     <None Include="test\but.nx" />
     <None Include="test\class.nx" />

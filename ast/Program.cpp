@@ -14,15 +14,32 @@ Program::~Program() {
         delete _content;
 }
 
-void Program::execute() {
+void Program::staticAnalysis()
+{
+    symbol::Table* table = symbol::Table::getInstance();
+    table->enterBlock();
+
     _declare();
 
+    for (auto it : *_content)
+        it->staticAnalysis();
+
+    table->getCurrentScope()->staticAnalysis();
+
+    table->exitBlock();
+}
+
+void Program::execute() {
     symbol::Table* table = symbol::Table::getInstance();
+    table->enterBlock();
+
     symbol::FunSymbol* main_symbol = table->getFunSymbol(MAIN_FUN_NAME, new DefaultPosition());
     if (main_symbol == NULL)
         throw MainMissingErrorException();
 
     main_symbol->getPtr()->execute(NULL);
+
+    table->exitBlock();
 }
 
 void Program::addDeclaration(DeclarationPtr declaration) {

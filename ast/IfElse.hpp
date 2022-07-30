@@ -18,6 +18,7 @@ namespace nyx {
             IfElse(ExpressionPtr cond, BlocPtr blocIf, InstructionPtr elseIf, Position* pos);
 
             void print(std::ostream& out, int offset = 0) const;
+            void declare();
             void interpret();
 
             ExpressionPtr getCond() const;

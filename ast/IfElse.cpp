@@ -23,6 +23,12 @@ IfElse::IfElse(ExpressionPtr cond, BlocPtr blocIf, InstructionPtr elseIf, Positi
     _blocElseIf = elseIf;
 }
 
+void IfElse::declare() {
+    _cond->declare();
+    _blocIf->declare();
+    _blocElse->declare();
+}
+
 void IfElse::interpret() {
     _cond = _cond->interpretExpression();
 

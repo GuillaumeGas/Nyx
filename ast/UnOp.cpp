@@ -22,6 +22,10 @@ void UnOp::print(ostream& out, int offset) const {
     out << ")";
 }
 
+void UnOp::declare() {
+    _expr->declare();
+}
+
 ExpressionPtr UnOp::interpretExpression() {
     _expr = _expr->interpretExpression();
     ExpressionPtr res;

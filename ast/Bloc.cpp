@@ -16,9 +16,12 @@ vector<InstructionPtr>* Bloc::getContent() const {
     return _content;
 }
 
-void Bloc::interpret() {
-    symbol::Table* table = symbol::Table::getInstance();
+void Bloc::declare() {
+    for (InstructionPtr a : *_content)
+        a->declare();
+}
 
+void Bloc::interpret() {
     for (InstructionPtr a : *_content)
         a->interpret();
 }

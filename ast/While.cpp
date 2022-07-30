@@ -17,6 +17,11 @@ While::~While() {
         delete _ident;
 }
 
+void While::declare() {
+    _expr->declare();
+    _bloc->declare();
+}
+
 void While::interpret() {
     symbol::Table* table = symbol::Table::getInstance();
     table->enterBlock();

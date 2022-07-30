@@ -3,6 +3,8 @@
 #include "../symbol/Symbol.hpp"
 #include "Bloc.hpp"
 
+#include <iterator>
+
 using namespace std;
 using namespace nyx;
 using namespace ast;
@@ -23,10 +25,26 @@ Function::~Function() {
 
 void Function::interpret() {}
 
+void Function::staticAnalysis() {
+	symbol::Table* table = symbol::Table::getInstance();
+	table->enterBlock();
+
+	if (_params != NULL) {
+		for (auto it: *_params) {
+			it->declare();
+		}
+	}
+
+	_content->declare();
+
+	table->getCurrentScope()->staticAnalysis();
+
+	table->exitBlock();
+}
+
 void Function::declare() {
 	symbol::Table* table = symbol::Table::getInstance();
 	table->addFunSymbol(new symbol::FunSymbol(_name, shared_from_this()), _pos);
-	table->enterFunBlock(shared_from_this());
 }
 
 ExpressionPtr Function::execute(vector<ExpressionPtr>* params) {

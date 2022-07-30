@@ -39,31 +39,41 @@ void Compilo::compile() {
         exit(-1);
     }
 
-    cout << "/------------------- AST -------------------\\" << endl << endl;
+    cout << "/------------------------- AST ------------------------\\" << endl << endl;
     try {
         _syn = new Syntax(_lex, _program);
         _program = _syn->getAst();
         printAst();
-        cout << endl;
+        cout << endl << endl;
     }
     catch (SyntaxException const& e) {
         cout << e.toString() << endl;
         exit(-1);
     }
 
-    cout << "/---------------- Execution -----------------\\" << endl << endl;
+    cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
     try {
-        _program->execute();
-        cout << endl;
+        _program->staticAnalysis();
+        symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
     }
-    catch (SymbolException const& e) {
+    catch (SyntaxException const& e) {
         cout << e.toString() << endl;
         exit(-1);
     }
-    catch (SemanticErrorException const& e) {
-        cout << e.toString() << endl;
-        exit(-1);
-    }
+
+    //cout << "/---------------- Execution -----------------\\" << endl << endl;
+    //try {
+    //    _program->execute();
+    //    cout << endl;
+    //}
+    //catch (SymbolException const& e) {
+    //    cout << e.toString() << endl;
+    //    exit(-1);
+    //}
+    //catch (SemanticErrorException const& e) {
+    //    cout << e.toString() << endl;
+    //    exit(-1);
+    //}
 }
 
 void Compilo::printAst() const {

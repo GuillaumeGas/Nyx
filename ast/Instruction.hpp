@@ -13,6 +13,7 @@ namespace nyx {
         struct Instruction : public Ast {
             Instruction(Position* pos);
 
+            virtual void declare();
             virtual void interpret() = 0;
 
             template <class T, class... Args>

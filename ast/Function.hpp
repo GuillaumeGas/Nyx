@@ -26,6 +26,7 @@ namespace nyx {
 
             void declare();
             void interpret();
+            void staticAnalysis();
             ExpressionPtr execute(std::vector<ExpressionPtr>* params);
             void print(std::ostream& out, int offset = 0) const;
 

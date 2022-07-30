@@ -9,6 +9,10 @@ Return::Return(ExpressionPtr expr, Position* pos) : Instruction(pos) {
     _expr = expr;
 }
 
+void Return::declare() {
+    _expr->declare();
+}
+
 void Return::interpret() {
     symbol::Table* table = symbol::Table::getInstance();
     FunctionPtr function = table->getCurrentFunction();

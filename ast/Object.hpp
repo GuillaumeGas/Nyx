@@ -142,6 +142,8 @@ namespace nyx {
             std::vector<ExpressionPtr>* getArray() const;
             void print(std::ostream& out, int offset = 0) const;
 
+            void declare();
+
             ExpressionPtr clone();
             ExpressionPtr interpretExpression();
             // ExpressionPtr interpretAND (ExpressionPtr e);
@@ -165,6 +167,8 @@ namespace nyx {
         public:
             Range(ExpressionPtr begin, ExpressionPtr end, Position* pos);
             ~Range();
+
+            void declare();
 
             ExpressionPtr getRangeBegin() const;
             ExpressionPtr getRangeEnd() const;

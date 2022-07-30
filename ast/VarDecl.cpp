@@ -39,10 +39,12 @@ void VarDecl::setVarId(VarIdPtr varId) {
     _varId = varId;
 }
 
-void VarDecl::interpret() {
+void VarDecl::declare() {
     symbol::Table* table = symbol::Table::getInstance();
     table->addSymbol(new symbol::Symbol(_varId->getName()), _pos);
 }
+
+void VarDecl::interpret() {}
 
 void VarDecl::print(ostream& out, int offset) const {
     shift(out, offset);

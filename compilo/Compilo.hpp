@@ -13,6 +13,7 @@
 #include "../ast/Program.hpp"
 
 #include "../symbol/Table.hpp"
+#include "../symbol/StaticAnalysis.hpp"
 #include "../symbol/exceptions/SymbolException.hpp"
 #include "../global/Global.hpp"
 

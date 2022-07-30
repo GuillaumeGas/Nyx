@@ -1,5 +1,6 @@
 #include "Scope.hpp"
 #include "Table.hpp"
+#include "StaticAnalysis.hpp"
 
 using namespace std;
 using namespace nyx;
@@ -57,16 +58,17 @@ Symbol* Scope::getSymbol(string name, Position* pos) {
         return it->second;
     if (_parent_scope)
         return _parent_scope->getSymbol(name, pos);
-    return NULL;
+    //cout << "[ERROR] symbol '" << name << "' not found" << endl;
+    return nullptr;
 }
 
-void Scope::checkForUnusedSymbols()
+void Scope::staticAnalysis() const
 {
     for (auto it = _symbolsList.begin(); it != _symbolsList.end(); it++)
     {
         if (!it->second->isUsed())
         {
-            cout << "Unused " << it->second->getName() << endl;
+            StaticAnalysis::getInstance()->addUnusedSymbol(it->second->getName());
         }
     }
 }
@@ -75,7 +77,7 @@ FunSymbol* Scope::getFunSymbol(string name, Position* pos) {
     auto it = _funSymbolsList.find(name);
     if (it != _funSymbolsList.end())
         return it->second;
-    return NULL;
+    return nullptr;
 }
 
 string Scope::toString() const {

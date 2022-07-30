@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Syscall.hpp"
+#include "../symbol/Table.hpp"
 
 using namespace std;
 using namespace nyx;
@@ -11,6 +12,14 @@ Syscall::Syscall(string ident, vector<ExpressionPtr>* params, Position* pos) : E
     _params = params;
 
     this->setType(new Type("void", true));
+}
+
+void Syscall::declare() {
+    symbol::Table* table = symbol::Table::getInstance();
+
+    if (_params)
+        for (auto it : *_params)
+            it->declare();
 }
 
 Syscall::~Syscall() {

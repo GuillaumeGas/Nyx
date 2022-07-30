@@ -52,6 +52,7 @@ namespace nyx {
             std::string toString() const;
 
             bool isUsed() const;
+            void isUsed(const bool used);
 
         protected:
             std::string _name;

@@ -17,6 +17,7 @@ namespace nyx {
             ~For();
 
             void print(std::ostream& out, int offset = 0) const;
+            void declare();
             void interpret();
 
             std::string* getIdent() const;

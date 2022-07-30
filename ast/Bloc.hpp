@@ -18,6 +18,7 @@ namespace nyx {
             Bloc(std::vector<InstructionPtr>* content);
             ~Bloc();
 
+            void declare();
             void interpret();
             void print(std::ostream& out, int offset = 0) const;
 

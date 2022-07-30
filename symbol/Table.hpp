@@ -54,19 +54,23 @@ namespace nyx {
             /**
                Return a symbol depending on its name, raise an exception if the symbol is not found in the table
              */
-            Symbol* getSymbol(std::string name, Position* pos);
-            Symbol* getGlobalSymbol(std::string name, Position* pos);
+            Symbol* getSymbol(std::string name, Position* pos) const;
+            Symbol* getGlobalSymbol(std::string name, Position* pos) const;
 
             /**
                Returns a symbol depending on its name, raise an exception if the symbol is not found in the table
              */
-            FunSymbol* getFunSymbol(std::string name, Position* pos);
-            FunSymbol* getGlobalFunSymbol(std::string name, Position* pos);
+            FunSymbol* getFunSymbol(std::string name, Position* pos) const;
 
             /**
                Returns a pointer on the current function in which we are
              */
-            ast::FunctionPtr getCurrentFunction();
+            ast::FunctionPtr getCurrentFunction() const;
+
+            /**
+            * Returns a pointer on the current scope
+            */
+            Scope* getCurrentScope() const;
 
             std::string toString() const;
 

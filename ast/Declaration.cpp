@@ -6,3 +6,4 @@ using namespace ast;
 Declaration::Declaration(Position* pos) : Ast(pos) {}
 
 void Declaration::declare() {}
+void Declaration::staticAnalysis() {}

@@ -17,6 +17,16 @@ FunCall::~FunCall() {
         delete _params;
 }
 
+void FunCall::declare() {
+    symbol::Table* table = symbol::Table::getInstance();
+
+    //table->getSymbol(_name, _pos)->isUsed(true);
+
+    if (_params)
+        for (auto it : *_params)
+            it->declare();
+}
+
 void FunCall::interpret() {
     interpretExpression();
 }

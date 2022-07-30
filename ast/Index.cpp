@@ -17,6 +17,11 @@ void Index::print(ostream& out, int offset) const {
     out << "]";
 }
 
+void Index::declare() {
+    e1->declare();
+    e2->declare();
+}
+
 ExpressionPtr Index::interpretExpression() {
     // ExpressionPtr left_value = e1->interpretExpression ();
     // ExpressionPtr right_value = e2->interpretExpression ();

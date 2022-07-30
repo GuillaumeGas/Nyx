@@ -22,7 +22,6 @@ Symbol::Symbol(string name, ast::ExpressionPtr ptr) {
 Symbol::~Symbol() {}
 
 ast::ExpressionPtr Symbol::getValue() {
-    _used_at_least_once = true;
     return _ptr;
 }
 
@@ -114,4 +113,8 @@ string FunSymbol::toString() const {
 bool Symbol::isUsed() const
 {
     return _used_at_least_once;
+}
+
+void Symbol::isUsed(const bool used) {
+    _used_at_least_once = used;
 }

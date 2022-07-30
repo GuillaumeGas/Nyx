@@ -1118,6 +1118,11 @@ Array::Array(vector<ExpressionPtr>* array, Position* pos) : Expression(pos) {
     _type = new Type("array");
 }
 
+void Array::declare() {
+    for (auto it : *array)
+        it->declare();
+}
+
 ExpressionPtr Array::clone() {
     Position* new_pos = new Position(_pos->line, _pos->column);
     vector<ExpressionPtr>* vec = new vector<ExpressionPtr>();
@@ -1216,6 +1221,11 @@ void Range::print(ostream& out, int offset) const {
     out << " .. ";
     end->print(out);
     out << "]";
+}
+
+void Range::declare() {
+    begin->declare();
+    end->declare();
 }
 
 ExpressionPtr Range::interpretExpression() {

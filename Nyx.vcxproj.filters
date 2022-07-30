@@ -165,6 +165,9 @@
     <ClCompile Include="symbol\Table.cpp">
       <Filter>Source Files\symbol</Filter>
     </ClCompile>
+    <ClCompile Include="symbol\StaticAnalysis.cpp">
+      <Filter>Source Files\symbol</Filter>
+    </ClCompile>
     <ClCompile Include="compilo\Compilo.cpp">
       <Filter>Source Files\compilo</Filter>
     </ClCompile>
@@ -284,6 +287,9 @@
     <ClInclude Include="symbol\Table.hpp">
       <Filter>Header Files\symbol</Filter>
     </ClInclude>
+    <ClInclude Include="symbol\StaticAnalysis.hpp">
+      <Filter>Header Files\symbol</Filter>
+    </ClInclude>
     <ClInclude Include="symbol\exceptions\SymbolException.hpp">
       <Filter>Header Files\symbol\exceptions</Filter>
     </ClInclude>
@@ -314,6 +320,9 @@
       <Filter>Resource Files\test</Filter>
     </None>
     <None Include=".gitignore">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="README.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

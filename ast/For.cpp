@@ -19,6 +19,11 @@ For::~For() {
         delete _ident;
 }
 
+void For::declare() {
+    _expr->declare();
+    _bloc->declare();
+}
+
 void For::interpret() {
     _expr = _expr->interpretExpression();
     TYPE exprType = _expr->getType()->value;

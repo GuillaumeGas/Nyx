@@ -42,6 +42,8 @@ namespace nyx {
             ExpressionPtr getRangeEnd() const;
             // Object * getObject () const;
 
+            void declare();
+
             ExpressionPtr clone();
             ExpressionPtr interpretExpression();
             ExpressionPtr interpretASSIGN(ExpressionPtr e);

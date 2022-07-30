@@ -58,7 +58,10 @@ namespace nyx {
 
             std::string toString() const;
 
-            void checkForUnusedSymbols();
+            /**
+            * Do static analysis on the current scope
+            */
+            void staticAnalysis() const;
 
         protected:
             std::map<std::string, Symbol*> _symbolsList;

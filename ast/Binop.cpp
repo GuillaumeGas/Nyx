@@ -17,6 +17,12 @@ Binop::~Binop() {
         delete _op;
 }
 
+void Binop::declare() {
+    if (_op->value != Op::ASSIGN)
+        _left->declare();
+    _right->declare();
+}
+
 void Binop::interpret() {
     interpretExpression();
 }
