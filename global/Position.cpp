@@ -17,4 +17,4 @@ string Position::toString() const {
     return ss.str();
 }
 
-DefaultPosition::DefaultPosition () : Position (DEFAULT_LINE, DEFAULT_COLUMN) {}
+DefaultPosition::DefaultPosition() : Position(DEFAULT_LINE, DEFAULT_COLUMN) {}

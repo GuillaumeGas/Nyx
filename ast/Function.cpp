@@ -26,6 +26,7 @@ void Function::interpret() {}
 void Function::declare() {
 	symbol::Table* table = symbol::Table::getInstance();
 	table->addFunSymbol(new symbol::FunSymbol(_name, shared_from_this()), _pos);
+	table->enterFunBlock(shared_from_this());
 }
 
 ExpressionPtr Function::execute(vector<ExpressionPtr>* params) {

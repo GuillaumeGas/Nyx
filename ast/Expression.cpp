@@ -8,26 +8,26 @@ using namespace ast;
 Expression::Expression(Position* pos) : Instruction(pos), _type(nullptr) {}
 
 Expression::~Expression() {
-	if (_type)
-		delete _type;
+    if (_type)
+        delete _type;
 }
 
 void Expression::interpret() {
-	interpretExpression();
+    interpretExpression();
 }
 
 ExpressionPtr Expression::interpretExpression() {
-	return shared_from_this();
+    return shared_from_this();
 }
 
 Type* Expression::getType() const {
-	return _type;
+    return _type;
 }
 
 void Expression::setType(Type* type) {
-	if (_type)
-		delete _type;
-	_type = _type;
+    if (_type)
+        delete _type;
+    _type = _type;
 }
 
 bool Expression::getBool() const { throw - 1; }

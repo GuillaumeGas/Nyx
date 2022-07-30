@@ -8,20 +8,20 @@
 
 namespace nyx {
     namespace ast {
-	class Program {
-	public:
-	    Program ();
-	    ~Program ();
+        class Program {
+        public:
+            Program();
+            ~Program();
 
-	    void execute ();
-	    void print ();
+            void execute();
+            void print();
 
-	    void addDeclaration (DeclarationPtr declaration);
+            void addDeclaration(DeclarationPtr declaration);
 
-	private:
-	    std::vector<DeclarationPtr> *_content;
+        private:
+            std::vector<DeclarationPtr>* _content;
 
-	    void _declare ();
-	};
+            void _declare();
+        };
     };
 };

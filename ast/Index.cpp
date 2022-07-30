@@ -4,20 +4,20 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Index::Index (ExpressionPtr e1, ExpressionPtr e2, Position * pos) : Expression (pos) {
+Index::Index(ExpressionPtr e1, ExpressionPtr e2, Position* pos) : Expression(pos) {
     this->e1 = e1;
     this->e2 = e2;
 }
 
-void Index::print (ostream & out, int offset) const {
-    shift (out, offset);
-    e1->print (out);
+void Index::print(ostream& out, int offset) const {
+    shift(out, offset);
+    e1->print(out);
     out << "[";
-    e2->print (out);
+    e2->print(out);
     out << "]";
 }
 
-ExpressionPtr Index::interpretExpression () {
+ExpressionPtr Index::interpretExpression() {
     // ExpressionPtr left_value = e1->interpretExpression ();
     // ExpressionPtr right_value = e2->interpretExpression ();
 
@@ -38,11 +38,11 @@ ExpressionPtr Index::interpretExpression () {
     // } else {
     // 	throw SemanticErrorException ("Index out of bounds !", e2->pos);
     // }
-    return NullExpression ();
+    return NullExpression();
 }
 
 // TODO !
-ExpressionPtr Index::interpretASSIGN (ExpressionPtr e) {
+ExpressionPtr Index::interpretASSIGN(ExpressionPtr e) {
     // vector<Expression*> * vec = left_array->array;
 
     // delete (*vec)[index_value->getInt ()];
@@ -53,5 +53,5 @@ ExpressionPtr Index::interpretASSIGN (ExpressionPtr e) {
     // value = new Value (*e->getValue ());
 
     // return NULL;
-    return NullExpression ();
+    return NullExpression();
 }

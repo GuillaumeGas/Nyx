@@ -10,20 +10,20 @@
 
 namespace nyx {
     namespace ast {
-	typedef InstructionPtr ReturnPtr;
+        typedef InstructionPtr ReturnPtr;
 
-	class Return : public Instruction {
-	public:
-	    Return (ExpressionPtr expr, Position * pos);
+        class Return : public Instruction {
+        public:
+            Return(ExpressionPtr expr, Position* pos);
 
-	    void print (std::ostream & out, int offset = 0) const;
-	    void interpret ();
+            void print(std::ostream& out, int offset = 0) const;
+            void interpret();
 
-	    ExpressionPtr getExpr () const;
-	    void setExpr (ExpressionPtr expr);
+            ExpressionPtr getExpr() const;
+            void setExpr(ExpressionPtr expr);
 
-	private:
-	    ExpressionPtr _expr;
-	};
+        private:
+            ExpressionPtr _expr;
+        };
     };
 };

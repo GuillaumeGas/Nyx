@@ -3,4 +3,4 @@
 using namespace nyx;
 using namespace ast;
 
-Instruction::Instruction (Position * pos) : Ast (pos) {}
+Instruction::Instruction(Position* pos) : Ast(pos) {}

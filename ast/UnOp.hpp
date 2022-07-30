@@ -10,25 +10,25 @@
 
 namespace nyx {
     namespace ast {
-	typedef ExpressionPtr UnOpPtr;
+        typedef ExpressionPtr UnOpPtr;
 
-	class UnOp : public Expression {
-	public:
-	    UnOp (Operator * op, ExpressionPtr expr, Position * pos);
-	    ~UnOp ();
+        class UnOp : public Expression {
+        public:
+            UnOp(Operator* op, ExpressionPtr expr, Position* pos);
+            ~UnOp();
 
-	    void print (std::ostream & out, int offset = 0) const;
+            void print(std::ostream& out, int offset = 0) const;
 
-	    ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression();
 
-	    Operator * getOp () const;
-	    void setOp (Operator * op);
-	    ExpressionPtr getExpr () const;
-	    void setExpr (ExpressionPtr expr);
+            Operator* getOp() const;
+            void setOp(Operator* op);
+            ExpressionPtr getExpr() const;
+            void setExpr(ExpressionPtr expr);
 
-	private:
-	    Operator * _op;
-	    ExpressionPtr _expr;
-	};
+        private:
+            Operator* _op;
+            ExpressionPtr _expr;
+        };
     };
 };

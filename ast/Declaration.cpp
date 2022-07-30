@@ -3,6 +3,6 @@
 using namespace nyx;
 using namespace ast;
 
-Declaration::Declaration (Position * pos) : Ast (pos) {}
+Declaration::Declaration(Position* pos) : Ast(pos) {}
 
-void Declaration::declare () {}
+void Declaration::declare() {}

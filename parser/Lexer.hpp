@@ -13,48 +13,48 @@
 namespace nyx {
     class Lexer {
     public:
-	Lexer (std::string file_name);
-	~Lexer ();
+        Lexer(std::string file_name);
+        ~Lexer();
 
-	void setKeys (std::vector<std::string> keys);
-	void setSkips (std::vector<std::string> skips);
-	void setComs (std::vector<std::pair<std::string, std::string> > coms);
-	TokenPtr next ();
-	bool isEof () const;
-	void rewind (int count = 1);
-	void setSkipEnabled (const std::string & skip, bool value);
-	void setCommentsEnabled (bool value);
+        void setKeys(std::vector<std::string> keys);
+        void setSkips(std::vector<std::string> skips);
+        void setComs(std::vector<std::pair<std::string, std::string> > coms);
+        TokenPtr next();
+        bool isEof() const;
+        void rewind(int count = 1);
+        void setSkipEnabled(const std::string& skip, bool value);
+        void setCommentsEnabled(bool value);
 
-	std::string test () {
-		std::stringstream ss;
-	    ss << current_index << " : \n";
-	    int i = 0;
-	    for (auto it : current_line) {
-			ss << "  (" << i++ << ") " << it->toString () + "\n";
-	    }
-	    return ss.str();
-	}
+        std::string test() {
+            std::stringstream ss;
+            ss << current_index << " : \n";
+            int i = 0;
+            for (auto it : current_line) {
+                ss << "  (" << i++ << ") " << it->toString() + "\n";
+            }
+            return ss.str();
+        }
 
     private:
-	bool isSkip (TokenPtr t) const;
-	TokenPtr isCom (TokenPtr t) const;
-	TokenPtr getWord ();
-	TokenPtr getWord (int index);
-	void getLine (std::string & line);
-	void mfseek (const std::string & tok, unsigned int offset);
+        bool isSkip(TokenPtr t) const;
+        TokenPtr isCom(TokenPtr t) const;
+        TokenPtr getWord();
+        TokenPtr getWord(int index);
+        void getLine(std::string& line);
+        void mfseek(const std::string& tok, unsigned int offset);
 
-	std::string file_name;
-	FILE * file;
+        std::string file_name;
+        FILE* file;
 
-	location_t current_loc;
-	int current_index;
-	std::vector<TokenPtr> current_line;
-	bool eof;
-	bool new_line;
-	bool comments_enabled;
+        location_t current_loc;
+        int current_index;
+        std::vector<TokenPtr> current_line;
+        bool eof;
+        bool new_line;
+        bool comments_enabled;
 
-	std::vector<std::string> keys;
-	std::map<std::string, bool> skips;
-	std::vector<std::pair<std::string, std::string> > coms;
+        std::vector<std::string> keys;
+        std::map<std::string, bool> skips;
+        std::vector<std::pair<std::string, std::string> > coms;
     };
 };

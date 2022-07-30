@@ -5,31 +5,31 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-Bloc::Bloc(vector<InstructionPtr> * content) : _content (content), Instruction (new DefaultPosition ()) {}
+Bloc::Bloc(vector<InstructionPtr>* content) : _content(content), Instruction(new DefaultPosition()) {}
 
 Bloc::~Bloc() {
     if (_content)
-	delete _content;
+        delete _content;
 }
 
-vector<InstructionPtr> * Bloc::getContent () const {
+vector<InstructionPtr>* Bloc::getContent() const {
     return _content;
 }
 
 void Bloc::interpret() {
-    symbol::Table * table = symbol::Table::getInstance ();
+    symbol::Table* table = symbol::Table::getInstance();
 
     for (InstructionPtr a : *_content)
-	a->interpret ();
+        a->interpret();
 }
 
-void Bloc::print (ostream & out, int offset) const {
-    for(InstructionPtr a : *_content) {
-	a->print (out, offset);
-	out << endl;
+void Bloc::print(ostream& out, int offset) const {
+    for (InstructionPtr a : *_content) {
+        a->print(out, offset);
+        out << endl;
     }
 }
 
-BlocPtr Bloc::New (std::vector<InstructionPtr> * content) {
-    return std::make_shared<Bloc> (content);
+BlocPtr Bloc::New(std::vector<InstructionPtr>* content) {
+    return std::make_shared<Bloc>(content);
 }

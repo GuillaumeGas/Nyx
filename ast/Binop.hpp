@@ -10,28 +10,28 @@
 
 namespace nyx {
     namespace ast {
-	typedef ExpressionPtr BinopPtr;
-	
-	class Binop : public Expression {
-	public:
-	    Binop(ExpressionPtr left, ExpressionPtr right, Operator * op, Position * pos);
-	    ~Binop();
+        typedef ExpressionPtr BinopPtr;
 
-	    ExpressionPtr interpretExpression ();
-	    void interpret ();
-	    void print (std::ostream & out, int offset = 0) const;
+        class Binop : public Expression {
+        public:
+            Binop(ExpressionPtr left, ExpressionPtr right, Operator* op, Position* pos);
+            ~Binop();
 
-	    ExpressionPtr getLeft () const;
-	    void setLeft (ExpressionPtr left);
-	    ExpressionPtr getRight () const;
-	    void setRight (ExpressionPtr right);
-	    Operator * getOp () const;
-	    void setOp (Operator * op);
+            ExpressionPtr interpretExpression();
+            void interpret();
+            void print(std::ostream& out, int offset = 0) const;
 
-	private:
-	    ExpressionPtr _left;
-	    ExpressionPtr _right;
-	    Operator * _op;
-	};
+            ExpressionPtr getLeft() const;
+            void setLeft(ExpressionPtr left);
+            ExpressionPtr getRight() const;
+            void setRight(ExpressionPtr right);
+            Operator* getOp() const;
+            void setOp(Operator* op);
+
+        private:
+            ExpressionPtr _left;
+            ExpressionPtr _right;
+            Operator* _op;
+        };
     };
 };

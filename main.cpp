@@ -7,13 +7,13 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-	if (argc > 1) {
-		nyx::Compilo c(argv[1]);
-		c.compile();
-	}
-	else {
-		cout << "[Error] no source file." << endl;
-	}
+    if (argc > 1) {
+        nyx::Compilo c(argv[1]);
+        c.compile();
+    }
+    else {
+        cout << "[Error] no source file." << endl;
+    }
 
-	return 0;
+    return 0;
 }

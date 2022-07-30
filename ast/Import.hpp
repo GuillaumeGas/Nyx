@@ -8,18 +8,18 @@
 
 namespace nyx {
     namespace ast {
-	typedef DeclarationPtr ImportPtr;
+        typedef DeclarationPtr ImportPtr;
 
-	class Import : public Declaration {
-	public:
-	    Import (std::vector<std::string> * path, Position * pos);
-	    ~Import ();
+        class Import : public Declaration {
+        public:
+            Import(std::vector<std::string>* path, Position* pos);
+            ~Import();
 
-	    void interpret ();
-	    void print (std::ostream & out, int offset = 0) const;
+            void interpret();
+            void print(std::ostream& out, int offset = 0) const;
 
-	private:
-	    std::vector<std::string> * path;
-	};
+        private:
+            std::vector<std::string>* path;
+        };
     };
 };

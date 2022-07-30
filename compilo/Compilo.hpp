@@ -17,19 +17,19 @@
 #include "../global/Global.hpp"
 
 namespace nyx {
-	class Compilo {
-	public:
-		Compilo(std::string file_name);
-		~Compilo();
+    class Compilo {
+    public:
+        Compilo(std::string file_name);
+        ~Compilo();
 
-		void compile();
-		void printAst() const;
+        void compile();
+        void printAst() const;
 
-	private:
-		Lexer* _lex;
-		Syntax* _syn;
+    private:
+        Lexer* _lex;
+        Syntax* _syn;
 
-		std::string _file_name;
-		ast::Program* _program;
-	};
+        std::string _file_name;
+        ast::Program* _program;
+    };
 };
