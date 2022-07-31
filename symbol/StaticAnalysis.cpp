@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "StaticAnalysis.hpp"
+#include "Symbol.hpp"
 
 using namespace nyx;
 using namespace symbol;
@@ -20,14 +21,14 @@ StaticAnalysis* StaticAnalysis::getInstance()
 StaticAnalysis::StaticAnalysis() {}
 StaticAnalysis::~StaticAnalysis() {}
 
-void StaticAnalysis::addUnusedSymbol(string symbolName)
+void StaticAnalysis::addUnusedSymbol(string name, Position pos)
 {
-    _unusedSymbols.push_back(symbolName);
+    _unusedSymbols.push_back(std::make_pair(name, pos));
 }
 
 void StaticAnalysis::displayUnusedSymbols() const
 {
     for (auto it : _unusedSymbols) {
-        cout << "[!] Warning : symbol " << "'" << it << "' not used" << endl;
+        cout << "[!] Warning line " << it.second.line << " : symbol " << "'" << it.first << "' not used" << endl;
     }
 }

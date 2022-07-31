@@ -13,6 +13,7 @@ namespace nyx {
     public:
         Position(unsigned int line, unsigned int column);
         Position(const Position& p);
+        Position();
         ~Position();
         std::string toString() const;
         unsigned int line;

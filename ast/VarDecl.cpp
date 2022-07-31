@@ -41,7 +41,7 @@ void VarDecl::setVarId(VarIdPtr varId) {
 
 void VarDecl::declare() {
     symbol::Table* table = symbol::Table::getInstance();
-    table->addSymbol(new symbol::Symbol(_varId->getName()), _pos);
+    table->addSymbol(new symbol::Symbol(_varId->getName(), *_pos), _pos);
 }
 
 void VarDecl::interpret() {}

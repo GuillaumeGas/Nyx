@@ -61,7 +61,7 @@ void For::interpret() {
         }
     }
     else {
-        symbol::ConstSymbol* loopSymbol = new symbol::ConstSymbol(_varLoop->getName());
+        symbol::ConstSymbol* loopSymbol = new symbol::ConstSymbol(_varLoop->getName(), *_varLoop->getPos());
         table->addSymbol(loopSymbol, _varLoop->getPos());
 
         for (auto it : *(_expr->getArray())) {

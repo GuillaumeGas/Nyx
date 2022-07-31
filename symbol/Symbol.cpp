@@ -4,11 +4,12 @@ using namespace std;
 using namespace nyx;
 using namespace symbol;
 
-Symbol::Symbol(string name) {
+Symbol::Symbol(string name, Position & pos) {
     _name = name;
     _is_def = false;
     _is_const = false;
     _used_at_least_once = false;
+    _pos = pos;
 }
 
 Symbol::Symbol(string name, ast::ExpressionPtr ptr) {
@@ -17,6 +18,7 @@ Symbol::Symbol(string name, ast::ExpressionPtr ptr) {
     _is_const = false;
     _ptr = ptr;
     _used_at_least_once = false;
+    _pos = *(ptr->getPos());
 }
 
 Symbol::~Symbol() {}
@@ -27,6 +29,10 @@ ast::ExpressionPtr Symbol::getValue() {
 
 string Symbol::getName() const {
     return _name;
+}
+
+const Position& Symbol::getPos() const {
+    return _pos;
 }
 
 void Symbol::setValue(ast::ExpressionPtr v) {
@@ -89,7 +95,7 @@ ConstSymbol::ConstSymbol(string name, ast::ExpressionPtr ptr) : Symbol(name, ptr
     _is_const = true;
 }
 
-ConstSymbol::ConstSymbol(string name) : Symbol(name) {
+ConstSymbol::ConstSymbol(string name, Position& pos) : Symbol(name, pos) {
     _is_const = true;
 }
 

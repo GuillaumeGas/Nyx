@@ -6,6 +6,7 @@
 #include "../ast/Type.hpp"
 #include "../ast/Object.hpp"
 #include "../ast/Function.hpp"
+#include "../global/Position.hpp"
 
 /**
    Symbol class : represents a symbol.
@@ -17,7 +18,7 @@ namespace nyx {
     namespace symbol {
         class Symbol {
         public:
-            Symbol(std::string name);
+            Symbol(std::string name, Position& pos);
             Symbol(std::string name, ast::ExpressionPtr ptr);
             ~Symbol();
 
@@ -30,6 +31,8 @@ namespace nyx {
                Returns the symbol's name
              */
             std::string getName() const;
+
+            const Position& getPos() const;
 
             /**
                Returns
@@ -60,12 +63,14 @@ namespace nyx {
             bool _is_def;
             bool _is_const;
             bool _used_at_least_once;
+
+            Position _pos;
         };
 
         class ConstSymbol : public Symbol {
         public:
             ConstSymbol(std::string name, ast::ExpressionPtr ptr);
-            ConstSymbol(std::string name);
+            ConstSymbol(std::string name, Position& pos );
         };
 
         class FunSymbol {

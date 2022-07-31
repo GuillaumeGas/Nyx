@@ -68,7 +68,7 @@ void Scope::staticAnalysis() const
     {
         if (!it->second->isUsed())
         {
-            StaticAnalysis::getInstance()->addUnusedSymbol(it->second->getName());
+            StaticAnalysis::getInstance()->addUnusedSymbol(it->second->getName(), it->second->getPos());
         }
     }
 }

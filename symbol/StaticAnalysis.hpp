@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "Symbol.hpp"
+
 namespace nyx {
     namespace symbol {
         class StaticAnalysis {
@@ -9,7 +11,7 @@ namespace nyx {
             static StaticAnalysis* getInstance();
             ~StaticAnalysis();
 
-            void addUnusedSymbol(std::string symbolName);
+            void addUnusedSymbol(std::string name, Position pos);
             void displayUnusedSymbols() const;
 
         private:
@@ -17,7 +19,7 @@ namespace nyx {
 
             static StaticAnalysis* _instance;
 
-            std::vector<std::string> _unusedSymbols;
+            std::vector<std::pair<std::string, Position>> _unusedSymbols;
         };
     }
 }

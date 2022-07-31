@@ -9,6 +9,8 @@ Position::Position(unsigned int line, unsigned int column) : line(line), column(
 
 Position::Position(const Position& p) : line(p.line), column(p.column) {}
 
+Position::Position() : line(DEFAULT_LINE), column(DEFAULT_COLUMN) {}
+
 Position::~Position() {  }
 
 string Position::toString() const {
