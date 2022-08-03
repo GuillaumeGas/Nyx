@@ -81,6 +81,7 @@ ExpressionPtr Function::execute(vector<ExpressionPtr>* params) {
 	int i = 0;
 	int vec_size = vec_inst->size();
 	while (i < vec_size && _ret.back() == NULL) {
+		(*vec_inst)[i]->declare();
 		(*vec_inst)[i]->interpret();
 		i++;
 	}

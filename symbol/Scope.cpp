@@ -8,7 +8,7 @@ using namespace symbol;
 
 Scope::Scope(Scope* parent) {
     _parent_scope = parent;
-    _next_scope = NULL;
+    _next_scope = nullptr;
 }
 
 Scope::~Scope() {

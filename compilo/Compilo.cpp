@@ -51,29 +51,31 @@ void Compilo::compile() {
         exit(-1);
     }
 
-    cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
+    //cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
+    //try {
+    //    _program->staticAnalysis();
+    //    symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
+    //}
+    //catch (SyntaxException const& e) {
+    //    cout << e.toString() << endl;
+    //    exit(-1);
+    //}
+
+    //delete symbol::Table::getInstance();
+
+    cout << "/---------------- Execution -----------------\\" << endl << endl;
     try {
-        _program->staticAnalysis();
-        symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
+        _program->execute();
+        cout << endl;
     }
-    catch (SyntaxException const& e) {
+    catch (SymbolException const& e) {
         cout << e.toString() << endl;
         exit(-1);
     }
-
-    //cout << "/---------------- Execution -----------------\\" << endl << endl;
-    //try {
-    //    _program->execute();
-    //    cout << endl;
-    //}
-    //catch (SymbolException const& e) {
-    //    cout << e.toString() << endl;
-    //    exit(-1);
-    //}
-    //catch (SemanticErrorException const& e) {
-    //    cout << e.toString() << endl;
-    //    exit(-1);
-    //}
+    catch (SemanticErrorException const& e) {
+        cout << e.toString() << endl;
+        exit(-1);
+    }
 }
 
 void Compilo::printAst() const {

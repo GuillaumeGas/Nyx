@@ -30,8 +30,9 @@ void Program::staticAnalysis()
 }
 
 void Program::execute() {
+    _declare();
+
     symbol::Table* table = symbol::Table::getInstance();
-    table->enterBlock();
 
     symbol::FunSymbol* main_symbol = table->getFunSymbol(MAIN_FUN_NAME, new DefaultPosition());
     if (main_symbol == NULL)
@@ -39,7 +40,6 @@ void Program::execute() {
 
     main_symbol->getPtr()->execute(NULL);
 
-    table->exitBlock();
 }
 
 void Program::addDeclaration(DeclarationPtr declaration) {

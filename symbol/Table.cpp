@@ -8,7 +8,7 @@ Table* Table::instance = NULL;
 
 Table::Table() {
     global_scope = new Scope();
-    current_scope = nullptr;
+    current_scope = global_scope;
 }
 
 Table::~Table() {}
