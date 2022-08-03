@@ -1,6 +1,10 @@
 void main()
 {
+	$println("Hello world !");
+
+	$print("Give a first number : ");
 	let a = $readInt();
+	$print("Give a second number : ");
 	let b = $readInt();
 	let c = 0;
 	$println("Result : ", add(a, b));

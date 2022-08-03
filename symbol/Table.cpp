@@ -4,17 +4,29 @@ using namespace std;
 using namespace nyx;
 using namespace symbol;
 
-Table* Table::instance = NULL;
+Table* Table::instance = nullptr;
 
 Table::Table() {
     global_scope = new Scope();
     current_scope = global_scope;
 }
 
-Table::~Table() {}
+Table::~Table() {
+    if (current_scope != global_scope)
+        delete current_scope;
+
+    if (global_scope)
+        delete global_scope;
+}
+
+void Table::release()
+{
+    delete instance;
+    instance = nullptr;
+}
 
 Table* Table::getInstance() {
-    if (instance == NULL)
+    if (instance == nullptr)
         instance = new Table;
     return instance;
 }

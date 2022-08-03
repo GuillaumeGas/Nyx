@@ -51,19 +51,20 @@ void Compilo::compile() {
         exit(-1);
     }
 
-    //cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
-    //try {
-    //    _program->staticAnalysis();
-    //    symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
-    //}
-    //catch (SyntaxException const& e) {
-    //    cout << e.toString() << endl;
-    //    exit(-1);
-    //}
+    cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
+    try {
+        _program->staticAnalysis();
+        symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
+        cout << endl << endl;
+    }
+    catch (SyntaxException const& e) {
+        cout << e.toString() << endl;
+        exit(-1);
+    }
 
-    //delete symbol::Table::getInstance();
+    symbol::Table::getInstance()->release();
 
-    cout << "/---------------- Execution -----------------\\" << endl << endl;
+    cout << "/---------------------- Execution ----------------------\\" << endl << endl;
     try {
         _program->execute();
         cout << endl;

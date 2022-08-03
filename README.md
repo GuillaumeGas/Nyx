@@ -3,30 +3,29 @@
 Projet personnel pour le fun, la passion...
 Ebauche d'un interpréteur avec une syntaxe proche de celle du C.
 
-Syntaxe actuellement acceptée :
+Exemple simple :
 
 ```C++
-void print (int val) {
-    int a, b = 2;
-    $print_i (val);
+void main()
+{
+	$println("Hello world !");
+
+	$print("Give a first number : ");
+	let a = $readInt();
+	$print("Give a second number : ");
+	let b = $readInt();
+	let c = 0;
+	$println("Result : ", add(a, b));
 }
-int main (int a, int b) {
-    while:test (test) {
-	    foo ([1, 2, 3]);
-		if (a) {
-			for (i in foo (a) .. 3+5) {
-				print (fo(), 5+i);
-			}
-			break test;
-		} else {
-			for (a in [1, 2, 3]) {
-				print (a);
-			}
-		}
-    }
-    return 2*(2+3);
+
+int add (int a, int b)
+{
+	return a + b;
 }
 ```
+
+Capture d'écran du résultat :
+![Screenshot](screenshots/screenshot.bmp)
 
 # Détails
 

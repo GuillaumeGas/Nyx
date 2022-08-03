@@ -74,6 +74,8 @@ namespace nyx {
 
             std::string toString() const;
 
+            void release();
+
         private:
             Table();
 
