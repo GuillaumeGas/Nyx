@@ -1,3 +1,5 @@
+import test.testimport;
+
 void main()
 {
 	$println("Hello world !");
@@ -8,9 +10,4 @@ void main()
 	let b = $readInt();
 	let c = 0;
 	$println("Result : ", add(a, b));
-}
-
-int add (int a, int b)
-{
-	return a + b;
 }

@@ -202,3 +202,15 @@ void Lexer::mfseek(const string& tok, unsigned int offset) {
     }
     fseek(this->file, offset, SEEK_SET);
 }
+
+string Lexer::getMainFileDirectory()
+{
+    const size_t last_slash_idx = file_name.rfind('/');
+    string directory;
+    if (std::string::npos != last_slash_idx)
+    {
+        directory = file_name.substr(0, last_slash_idx);
+    }
+
+    return directory;
+}

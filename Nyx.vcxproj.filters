@@ -58,6 +58,9 @@
     <Filter Include="Resource Files\test">
       <UniqueIdentifier>{6df6238f-b5b4-427e-80b3-74ea9fa0b2d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\test\test">
+      <UniqueIdentifier>{355e3916-8176-4499-9686-dbf7441a1f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -324,6 +327,9 @@
     </None>
     <None Include="README.md">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="test\test\testimport.nx">
+      <Filter>Resource Files\test\test</Filter>
     </None>
   </ItemGroup>
 </Project>

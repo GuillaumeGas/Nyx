@@ -56,3 +56,8 @@ void Program::print() {
         it->print(cout);
     cout.flush();
 }
+
+vector<DeclarationPtr> Program::getDeclarations()
+{
+    return *_content;
+}

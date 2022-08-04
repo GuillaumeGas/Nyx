@@ -19,6 +19,8 @@ namespace nyx {
 
             void addDeclaration(DeclarationPtr declaration);
 
+            std::vector<DeclarationPtr> getDeclarations();
+
         private:
             std::vector<DeclarationPtr>* _content;
 

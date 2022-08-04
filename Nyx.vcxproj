@@ -217,6 +217,7 @@
     <None Include="test\proto.nx" />
     <None Include="test\test.nx" />
     <None Include="test\test1.nx" />
+    <None Include="test\test\testimport.nx" />
     <None Include="test\test_loop.nx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

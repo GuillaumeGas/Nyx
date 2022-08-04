@@ -33,8 +33,8 @@ namespace nyx {
         /* Visitor */
         void visitProgram();
         ast::DeclarationPtr visitFunDecl();
-        ast::DeclarationPtr visitImport();
-        ast::DeclarationPtr visitClass();
+        std::vector<ast::DeclarationPtr> visitImport();
+        //ast::DeclarationPtr visitClass();
 
         ast::BlocPtr visitBloc();
         ast::InstructionPtr visitInstruction();

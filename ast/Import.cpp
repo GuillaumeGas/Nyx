@@ -13,7 +13,9 @@ Import::~Import() {
         delete path;
 }
 
-void Import::interpret() {}
+void Import::interpret() {
+    
+}
 
 void Import::print(ostream& out, int offset) const {
     shift(out, offset);
@@ -23,5 +25,5 @@ void Import::print(ostream& out, int offset) const {
         if (i < path->size() - 1)
             out << ".";
     }
-    out << ">";
+    out << ">" << endl;
 }

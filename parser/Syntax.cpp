@@ -28,7 +28,11 @@ void Syntax::visitProgram() {
         rewind();
         switch (next->type) {
         case TokenType::IMPORT:
-            _program->addDeclaration(visitImport());
+        {
+            vector<DeclarationPtr> importedDeclarations = visitImport();
+            for (auto it : importedDeclarations)
+                _program->addDeclaration(it);
+        }
             break;
             //case TokenType::CLASS:
             //    _program->addDeclaration (visitClass ());
@@ -982,12 +986,12 @@ ExpressionPtr Syntax::visitArray() {
     return Expression::New<Array>(array, pos);
 }
 
-DeclarationPtr Syntax::visitImport() {
+vector<DeclarationPtr> Syntax::visitImport() {
     TokenPtr token_import = pop();
     TokenPtr next = pop();
-    vector<string>* path = new vector<string>();
+    vector<string> path;
     while (next->type != TokenType::SEMICOLON) {
-        path->push_back(next->value);
+        path.push_back(next->value);
         next = pop();
         if (next->type != TokenType::POINT &&
             next->type != TokenType::SEMICOLON) {
@@ -997,11 +1001,47 @@ DeclarationPtr Syntax::visitImport() {
             next = pop();
         }
     }
-    if (path->size() == 0) {
+    if (path.size() == 0) {
         throw SyntaxErrorException("Path missing.", Position(token_import->line, token_import->column));
     }
-    rewind();
-    return Declaration::New<Import>(path, new Position(token_import->line, token_import->column));
+    //return Declaration::New<Import>(path, new Position(token_import->line, token_import->column));
+
+    {
+        stringstream ss;
+        ss << _lex->getMainFileDirectory() << "/";
+        for (int i = 0; i < path.size(); i++)
+        {
+            ss << path[i];
+            if (i < path.size() - 1)
+                ss << "/";
+            else
+                ss << ".nx";
+        }
+
+        try {
+            Lexer lex(ss.str());
+            lex.setKeys({ "+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=", "!",
+                    "==", "!=", "(", ")", "=", "+=", "-=", "*=", "/=", "{", "}", "[", "]", ";", ",", ":",
+                    ".", "..", "$", "~", "\"", "\\", "'",
+                    " ", "/*", "*/", "//", "\n", "\r", "\t" });
+            lex.setSkips({ " ", "\n", "\r", "\t" });
+            lex.setComs({ make_pair("/*", "*/"), make_pair("//", "\n") });
+
+            try {
+                Program program;
+                Syntax syn(&lex, &program);
+                return program.getDeclarations();
+            }
+            catch (SyntaxException const& e) {
+                cout << e.toString() << endl;
+                exit(-1);
+            }
+        }
+        catch (LexerException const& e) {
+            cout << e.toString() << endl;
+            exit(-1);
+        }
+    }
 }
 
 
