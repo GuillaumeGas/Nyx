@@ -5,9 +5,8 @@ using namespace nyx;
 
 Compilo::Compilo(string file_name) {
     _file_name = file_name;
-    _lex = NULL;
-    _syn = NULL;
-    _program = new ast::Program;
+    _lex = nullptr;
+    _program = nullptr;
 }
 
 Compilo::~Compilo() {
@@ -24,32 +23,46 @@ Compilo::~Compilo() {
     delete symbol::Table::getInstance();
 }
 
-void Compilo::compile() {
+Lexer* Compilo::PassFileThroughLexer(string fileName)
+{
     try {
-        _lex = new Lexer(_file_name);
-        _lex->setKeys({ "+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=", "!",
+        Lexer * lex = new Lexer(fileName);
+        lex->setKeys({ "+", "++", "-", "--", "*", "/", "%", "%=", "<", "<=", ">", ">=", "!",
                 "==", "!=", "(", ")", "=", "+=", "-=", "*=", "/=", "{", "}", "[", "]", ";", ",", ":",
                 ".", "..", "$", "~", "\"", "\\", "'",
                 " ", "/*", "*/", "//", "\n", "\r", "\t" });
-        _lex->setSkips({ " ", "\n", "\r", "\t" });
-        _lex->setComs({ make_pair("/*", "*/"), make_pair("//", "\n") });
+        lex->setSkips({ " ", "\n", "\r", "\t" });
+        lex->setComs({ make_pair("/*", "*/"), make_pair("//", "\n") });
+
+        return lex;
     }
     catch (LexerException const& e) {
         cout << e.toString() << endl;
         exit(-1);
     }
+}
 
-    cout << "/------------------------- AST ------------------------\\" << endl << endl;
+ast::Program* Compilo::CreateAst(Lexer* lexer)
+{
     try {
-        _syn = new Syntax(_lex, _program);
-        _program = _syn->getAst();
-        printAst();
-        cout << endl << endl;
+        Syntax syn(lexer);
+        return syn.getAst();
     }
     catch (SyntaxException const& e) {
         cout << e.toString() << endl;
         exit(-1);
     }
+}
+
+void Compilo::compile()
+{
+    _lex = PassFileThroughLexer(_file_name);
+
+    cout << "/------------------------- AST ------------------------\\" << endl << endl;
+
+    _program = CreateAst(_lex);
+    printAst();
+    cout << endl << endl;
 
     cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
     try {

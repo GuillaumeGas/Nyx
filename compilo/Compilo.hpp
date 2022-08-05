@@ -26,6 +26,9 @@ namespace nyx {
         void compile();
         void printAst() const;
 
+        static Lexer* PassFileThroughLexer(std::string fileName);
+        static ast::Program* CreateAst(Lexer* lexer);
+
     private:
         Lexer* _lex;
         Syntax* _syn;

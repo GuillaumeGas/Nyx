@@ -23,7 +23,7 @@
 namespace nyx {
     class Syntax {
     public:
-        Syntax(Lexer* lex, ast::Program* program);
+        Syntax(Lexer* lex);
 
         ast::Program* getAst() const;
 
@@ -33,8 +33,8 @@ namespace nyx {
         /* Visitor */
         void visitProgram();
         ast::DeclarationPtr visitFunDecl();
-        std::vector<ast::DeclarationPtr> visitImport();
-        //ast::DeclarationPtr visitClass();
+        void visitImport();
+        std::vector<ast::DeclarationPtr> _visitImport();
 
         ast::BlocPtr visitBloc();
         ast::InstructionPtr visitInstruction();
