@@ -106,3 +106,16 @@ FunSymbol* FunScope::getFunSymbol(string name, Position* pos) {
         return it->second;
     return NULL;
 }
+
+void Scope::dumpSymbols(int indent) {
+    for (auto it : _symbolsList) {
+	cout << string(indent, ' ') << " [" << it.first << " => ";
+	if (it.second->getValue() == nullptr)
+	    cout << "null value";
+	else
+	    it.second->getValue()->print(cout);
+	cout << "]" << endl;
+    }
+    if (_parent_scope != nullptr)
+	_parent_scope->dumpSymbols(indent + 2);
+}

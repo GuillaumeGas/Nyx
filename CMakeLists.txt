@@ -11,6 +11,7 @@ file (
   parser/*
   ast/*
   symbol/*
+  debugger/*
 )
 
 add_executable (

@@ -27,6 +27,9 @@ int add (int a, int b)
 Capture d'écran du résultat :
 ![Screenshot](screenshots/screenshot.bmp)
 
+Exemple d'utilisation du debugger avec l'utilisation de *$debugBreak()* :
+![Screenshot](screenshots/output_breakpoint.png)
+
 # Détails
 
 - Le dossier parser contient la lexer ainsi que l'analyseur syntaxique, ce dernier étant basé sur le pattern visitor.

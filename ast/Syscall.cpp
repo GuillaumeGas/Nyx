@@ -2,10 +2,12 @@
 
 #include "Syscall.hpp"
 #include "../symbol/Table.hpp"
+#include "../debugger/Debugger.hpp"
 
 using namespace std;
 using namespace nyx;
 using namespace ast;
+using namespace debug;
 
 Syscall::Syscall(string ident, vector<ExpressionPtr>* params, Position* pos) : Expression(pos) {
     _ident = ident;
@@ -41,6 +43,9 @@ ExpressionPtr Syscall::interpretExpression()
     }
     else if (_ident == "readInt") {
         return sysReadInt();
+    }
+    else if (_ident == "debugBreak") {
+	return sysDebugBreak();
     }
     else {
         throw SemanticErrorException("Unknown syscall !", _pos);
@@ -129,11 +134,24 @@ ExpressionPtr Syscall::sysPrintln() {
 
 ExpressionPtr Syscall::sysReadInt() {
     int intInput;
+
+#ifdef __linux__
+    scanf("%d", &intInput);
+#else
     scanf_s("%d", &intInput, sizeof(int));
+#endif
 
     this->setType(new Type("int", true));
 
     return Expression::New<Int>(intInput, _pos);
+}
+
+ExpressionPtr Syscall::sysDebugBreak() {
+    Debugger* debugger = Debugger::getInstance();
+
+    debugger->debugBreak();
+
+    return NullExpression();
 }
 
 std::string Syscall::getIdent() const {

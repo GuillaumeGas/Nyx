@@ -12,7 +12,11 @@ Lexer::Lexer(string file_name) {
     this->current_index = 0;
     this->comments_enabled = true;
 
+#ifdef __linux__
+    if ((this->file = fopen(file_name.c_str(), "r")) == 0) {
+#else
     if (fopen_s(&this->file, file_name.c_str(), "r") != 0) {
+#endif
         throw FileNotFoundException(file_name);
     }
 

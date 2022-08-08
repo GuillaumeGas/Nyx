@@ -74,6 +74,8 @@ namespace nyx {
 
             std::string toString() const;
 
+	    void dumpVariablesOfCurrentScope();
+
             void release();
 
         private:

@@ -39,7 +39,6 @@ namespace nyx {
             virtual std::vector<ExpressionPtr>* getArray() const;
             virtual ExpressionPtr getRangeBegin() const;
             virtual ExpressionPtr getRangeEnd() const;
-            // virtual Object * getObject () const;
 
             virtual void setBool(bool v);
             virtual void setInt(int v);
@@ -48,7 +47,6 @@ namespace nyx {
             virtual void setArray(std::vector<ExpressionPtr>* v);
             virtual void setRangeBegin(ExpressionPtr v);
             virtual void setRangeEnd(ExpressionPtr v);
-            // virtual void setObject (Object * v);
 
             virtual ExpressionPtr clone();
             virtual ExpressionPtr interpretExpression();

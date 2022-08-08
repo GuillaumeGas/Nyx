@@ -1,13 +1,25 @@
-import test.testimport;
+void fibbo(int count) {
+    let previous1 = 0;
+    let previous2 = 1;
+
+    let turnsLeft = count - 2;
+
+    $println(0);
+    $println(1);
+
+    for (i in [0 .. count]) {
+	//$debugBreak();
+
+	let value = previous2 + previous1;
+	
+	previous1 = previous2;
+	previous2 = value;
+	$println(value);
+    }
+}
 
 void main()
 {
 	$println("Hello world !");
-
-	$print("Give a first number : ");
-	let a = $readInt();
-	$print("Give a second number : ");
-	let b = $readInt();
-	let c = 0;
-	$println("Result : ", add(a, b));
+	fibbo(4);
 }

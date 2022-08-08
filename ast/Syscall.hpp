@@ -28,6 +28,7 @@ namespace nyx {
             ExpressionPtr sysPrint();
             ExpressionPtr sysPrintln();
             ExpressionPtr sysReadInt();
+	    ExpressionPtr sysDebugBreak();
 
             std::string getIdent() const;
             void setIdent(const std::string& ident);

@@ -79,7 +79,7 @@ ExpressionPtr VarId::interpretASSIGN(ExpressionPtr e) {
     symbol::Table* table = symbol::Table::getInstance();
     symbol::Symbol* symbol = table->getSymbol(_name, _pos);
 
-    symbol->setValue(e->interpretExpression());
+    symbol->setValue(e->interpretExpression()->clone());
 
     return shared_from_this();
 }

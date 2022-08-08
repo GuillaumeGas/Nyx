@@ -63,6 +63,8 @@ namespace nyx {
             */
             void staticAnalysis() const;
 
+	    void dumpSymbols(int indent = 0);
+
         protected:
             std::map<std::string, Symbol*> _symbolsList;
             std::map<std::string, FunSymbol*> _funSymbolsList;

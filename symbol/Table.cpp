@@ -107,3 +107,12 @@ Scope* Table::getCurrentScope() const
 string Table::toString() const {
     return current_scope->toString();
 }
+
+void Table::dumpVariablesOfCurrentScope() {
+    if (current_scope == nullptr) {
+	cout << "No current scope" << endl;
+	return;
+    }
+    
+    current_scope->dumpSymbols();
+}
