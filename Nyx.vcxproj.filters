@@ -61,6 +61,12 @@
     <Filter Include="Resource Files\test\test">
       <UniqueIdentifier>{355e3916-8176-4499-9686-dbf7441a1f39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\debugger">
+      <UniqueIdentifier>{e61022e9-aecb-489c-968c-b977b226a624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\debugger">
+      <UniqueIdentifier>{1db80e6d-d67d-4244-a9bb-7064e34357fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -173,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="compilo\Compilo.cpp">
       <Filter>Source Files\compilo</Filter>
+    </ClCompile>
+    <ClCompile Include="debugger\Debugger.cpp">
+      <Filter>Source Files\debugger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +308,9 @@
     <ClInclude Include="compilo\Compilo.hpp">
       <Filter>Header Files\compilo</Filter>
     </ClInclude>
+    <ClInclude Include="debugger\Debugger.hpp">
+      <Filter>Header Files\debugger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test\test.nx">
@@ -328,7 +340,10 @@
     <None Include="README.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="test\test\testimport.nx">
+    <None Include="test\test\math.nx">
+      <Filter>Resource Files\test\test</Filter>
+    </None>
+    <None Include="test\test\fibbo.nx">
       <Filter>Resource Files\test\test</Filter>
     </None>
   </ItemGroup>

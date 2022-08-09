@@ -4,7 +4,7 @@ using namespace std;
 using namespace nyx;
 
 Compilo::Compilo(string file_name) {
-    _file_name = file_name;
+    _fileName = file_name;
     _lex = nullptr;
     _program = nullptr;
 }
@@ -17,8 +17,6 @@ Compilo::~Compilo() {
     if (_program)
         delete _program;
 
-    // we don't forget to free the global data...
-    delete Global::getInstance();
     // and the symbols table
     delete symbol::Table::getInstance();
 }
@@ -42,10 +40,10 @@ Lexer* Compilo::PassFileThroughLexer(string fileName)
     }
 }
 
-ast::Program* Compilo::CreateAst(Lexer* lexer)
+ast::Program* Compilo::CreateAst(Lexer* lexer, FileInfo* fileInfo)
 {
     try {
-        Syntax syn(lexer);
+        Syntax syn(lexer, fileInfo);
         return syn.getAst();
     }
     catch (SyntaxException const& e) {
@@ -56,11 +54,13 @@ ast::Program* Compilo::CreateAst(Lexer* lexer)
 
 void Compilo::compile()
 {
-    _lex = PassFileThroughLexer(_file_name);
+    FileInfo mainFile(_fileName);
+
+    _lex = PassFileThroughLexer(_fileName);
 
     cout << "/------------------------- AST ------------------------\\" << endl << endl;
 
-    _program = CreateAst(_lex);
+    _program = CreateAst(_lex, &mainFile);
     printAst();
     cout << endl << endl;
 

@@ -1,0 +1,21 @@
+import math;
+
+void fibbo(int count) {
+    let previous1 = 0;
+    let previous2 = 1;
+
+    let turnsLeft = count - 2;
+
+    $println(0);
+    $println(1);
+
+    for (i in [0 .. count]) {
+	//$debugBreak();
+
+	let value = add(previous2, previous1);
+	
+	previous1 = previous2;
+	previous2 = value;
+	$println(value);
+    }
+}

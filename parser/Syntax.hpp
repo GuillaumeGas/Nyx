@@ -13,6 +13,7 @@
 #include "../ast/AstIncludes.hpp"
 
 #include "../symbol/Table.hpp"
+#include "../global/FileInfo.hpp"
 
 #include "exceptions/SyntaxException.hpp"
 
@@ -23,7 +24,7 @@
 namespace nyx {
     class Syntax {
     public:
-        Syntax(Lexer* lex);
+        Syntax(Lexer* lex, FileInfo* fileInfo);
 
         ast::Program* getAst() const;
 

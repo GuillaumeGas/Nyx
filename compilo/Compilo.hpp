@@ -15,7 +15,7 @@
 #include "../symbol/Table.hpp"
 #include "../symbol/StaticAnalysis.hpp"
 #include "../symbol/exceptions/SymbolException.hpp"
-#include "../global/Global.hpp"
+#include "../global/FileInfo.hpp"
 
 namespace nyx {
     class Compilo {
@@ -27,13 +27,13 @@ namespace nyx {
         void printAst() const;
 
         static Lexer* PassFileThroughLexer(std::string fileName);
-        static ast::Program* CreateAst(Lexer* lexer);
+        static ast::Program* CreateAst(Lexer* lexer, FileInfo* fileInfo);
 
     private:
         Lexer* _lex;
         Syntax* _syn;
 
-        std::string _file_name;
+        std::string _fileName;
         ast::Program* _program;
     };
 };

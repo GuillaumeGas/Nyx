@@ -1,0 +1,10 @@
+On veut pouvoir ajouter le nom de fichier au symbole.
+Actuellement on gère le fichier (son nom notamment) avec une classe singleton Global.
+Du coup, quand on fait de l'import, on va aussi mettre le contenu des fichiers inclus dedans. C'est bof.
+
+Solution : virer cette classe globale pour faire quelque chose de plus local, associée aux objets qui vont en avoir besoin.
+Cet objet aura l'état du fichier en gros.
+Et quand on aura besoin de créer un symbole, en plus de la position dans ce fichier en particulier, on pourra renseigner son chemin.
+Puis afficher, dans les cas d'erreur d'analyse statique, le chemin vers le fichier.
+
+Global -> FileInfo { filePath : string, fileContent : vector<string> }

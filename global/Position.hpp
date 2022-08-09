@@ -11,13 +11,14 @@
 namespace nyx {
     class Position {
     public:
-        Position(unsigned int line, unsigned int column);
+        Position(unsigned int line, unsigned int column, std::string filePath);
         Position(const Position& p);
         Position();
         ~Position();
         std::string toString() const;
         unsigned int line;
         unsigned int column;
+        std::string filePath;
     };
 
     class DefaultPosition : public Position {

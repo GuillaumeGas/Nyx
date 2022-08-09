@@ -153,6 +153,7 @@
     <ClCompile Include="ast\VarId.cpp" />
     <ClCompile Include="ast\While.cpp" />
     <ClCompile Include="compilo\Compilo.cpp" />
+    <ClCompile Include="debugger\Debugger.cpp" />
     <ClCompile Include="global\Global.cpp" />
     <ClCompile Include="global\Position.cpp" />
     <ClCompile Include="main.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="ast\VarId.hpp" />
     <ClInclude Include="ast\While.hpp" />
     <ClInclude Include="compilo\Compilo.hpp" />
+    <ClInclude Include="debugger\Debugger.hpp" />
     <ClInclude Include="global\Global.hpp" />
     <ClInclude Include="global\Position.hpp" />
     <ClInclude Include="parser\exceptions\LexerException.hpp" />
@@ -217,7 +219,8 @@
     <None Include="test\proto.nx" />
     <None Include="test\test.nx" />
     <None Include="test\test1.nx" />
-    <None Include="test\test\testimport.nx" />
+    <None Include="test\test\fibbo.nx" />
+    <None Include="test\test\math.nx" />
     <None Include="test\test_loop.nx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
