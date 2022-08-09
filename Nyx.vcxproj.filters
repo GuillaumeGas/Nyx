@@ -147,7 +147,7 @@
     <ClCompile Include="ast\Ast.cpp">
       <Filter>Source Files\ast</Filter>
     </ClCompile>
-    <ClCompile Include="global\Global.cpp">
+    <ClCompile Include="global\FileInfo.cpp">
       <Filter>Source Files\global</Filter>
     </ClCompile>
     <ClCompile Include="global\Position.cpp">
@@ -266,7 +266,7 @@
     <ClInclude Include="ast\exceptions\SemanticException.hpp">
       <Filter>Header Files\ast\exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="global\Global.hpp">
+    <ClInclude Include="global\FileInfo.hpp">
       <Filter>Header Files\global</Filter>
     </ClInclude>
     <ClInclude Include="global\Position.hpp">
@@ -346,5 +346,10 @@
     <None Include="test\test\fibbo.nx">
       <Filter>Resource Files\test\test</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -154,7 +154,7 @@
     <ClCompile Include="ast\While.cpp" />
     <ClCompile Include="compilo\Compilo.cpp" />
     <ClCompile Include="debugger\Debugger.cpp" />
-    <ClCompile Include="global\Global.cpp" />
+    <ClCompile Include="global\FileInfo.cpp" />
     <ClCompile Include="global\Position.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser\exceptions\SyntaxException.cpp" />
@@ -196,7 +196,7 @@
     <ClInclude Include="ast\While.hpp" />
     <ClInclude Include="compilo\Compilo.hpp" />
     <ClInclude Include="debugger\Debugger.hpp" />
-    <ClInclude Include="global\Global.hpp" />
+    <ClInclude Include="global\FileInfo.hpp" />
     <ClInclude Include="global\Position.hpp" />
     <ClInclude Include="parser\exceptions\LexerException.hpp" />
     <ClInclude Include="parser\exceptions\SyntaxException.hpp" />
@@ -222,6 +222,9 @@
     <None Include="test\test\fibbo.nx" />
     <None Include="test\test\math.nx" />
     <None Include="test\test_loop.nx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
