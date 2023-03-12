@@ -1,7 +1,5 @@
 #include "Type.hpp"
 
-#include "../pch.h"
-
 using namespace std;
 using namespace nyx;
 using namespace ast;
