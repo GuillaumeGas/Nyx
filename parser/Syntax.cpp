@@ -31,6 +31,9 @@ void Syntax::visitProgram() {
         case TokenType::IMPORT:
             visitImport();
             break;
+        case TokenType::STRUCT:
+            _program->addDeclaration(visitStructDecl());
+            break;
         case TokenType::OTHER:
             _program->addDeclaration(visitFunDecl());
             break;
@@ -141,8 +144,11 @@ DeclarationPtr Syntax::visitFunDecl() {
     if (!isIdent(token_ident->value))
         throw MissingErrorException("var name", Position(token_ident->line, token_ident->column));
 
-    pop(); // '('
-    TokenPtr next = pop();
+    TokenPtr next = pop(); // '('
+    if (next->type != TokenType::PAR_L)
+        throw MissingErrorException("'('", Position(token_ident->line, token_ident->column));
+
+    next = pop();
     vector <ParamPtr>* params = NULL;
     if (next->type != TokenType::PAR_R) {
         rewind();
@@ -162,28 +168,82 @@ DeclarationPtr Syntax::visitFunDecl() {
     return Declaration::New<Function>(ident, pos, type, params, content);
 }
 
+DeclarationPtr Syntax::visitStructDecl()
+{
+    TokenPtr token_struct = pop();
+    TokenPtr token_ident = pop();
+
+    if (!isIdent(token_ident->value))
+        throw MissingErrorException("struct name", Position(token_ident->line, token_ident->column));
+
+    TokenPtr next = pop();
+    if (next->type != TokenType::ACCOL_L)
+        throw MissingErrorException("'{'", Position(token_ident->line, token_ident->column));
+
+    next = pop();
+    vector <MemberPtr>* membersDecl = NULL;
+    if (next->type != TokenType::ACCOL_R) {
+        rewind();
+        membersDecl = visitStructMembersDecl();
+    }
+
+    //rewind();
+    next = pop();
+    if (next->type != TokenType::ACCOL_R)
+        throw MissingErrorException("}", Position(next->line, next->column));
+
+    string ident = token_ident->value;
+    Position* pos = new Position(token_ident->line, token_ident->column);
+
+    return Declaration::New<Struct>(ident, pos, membersDecl);
+}
+
 /**
-   params := (type ident*))
+   params := (type ident,*))
 */
-vector <ParamPtr>* Syntax::visitParamsDecl() {
+vector <ParamPtr>* Syntax::visitParamsDecl()
+{
+    return visitParamsOrStructMembersDecl(TokenType::COMMA);
+}
+
+/**
+   params := (type ident;*))
+*/
+vector <ParamPtr>* Syntax::visitStructMembersDecl()
+{
+    return visitParamsOrStructMembersDecl(TokenType::SEMICOLON);
+}
+
+vector <ParamPtr>* Syntax::visitParamsOrStructMembersDecl(TokenType tokenTypeSeparator)
+{
     vector <ParamPtr>* params = new vector <ParamPtr>();
     TokenPtr next;
     do {
         TokenPtr type = pop();
         if (type->type != TokenType::OTHER)
+        {
+            if (type->type == TokenType::ACCOL_R && tokenTypeSeparator == TokenType::SEMICOLON)
+            {
+                // tokenTypeSeparator != TokenType::SEMICOLON => c'est moche mais la flemme de faire la diff entre les param qui se terminent pas par ','
+                //  et les members de struct où on termine toujours par ';'
+                rewind();
+                break;
+            }
             throw SyntaxErrorException(type->value, Position(type->line, type->column));
+        }
         VarIdPtr var_id = Ast::PointerCast<VarId>(visitIdent());
         next = pop();
         if (var_id == NULL) {
             throw SyntaxErrorException(next->value, Position(next->line, next->column));
         }
-        if (next->type != TokenType::COMMA && next->type != TokenType::PAR_R)
+        if (next->type != tokenTypeSeparator && next->type != TokenType::PAR_R)
             throw MissingErrorException(")", Position(next->line, next->column));
 
         Type* ast_type = new Type(type->value, true);
         Position* pos = new Position(type->line, type->column);
         params->push_back(VarDecl::New(ast_type, var_id, pos));
-    } while (next->type == TokenType::COMMA);
+    } while (next->type == tokenTypeSeparator);
+
     return params;
 }
 

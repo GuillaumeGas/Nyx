@@ -5,12 +5,22 @@ using namespace nyx;
 
 Global* Global::instance = NULL;
 
-Global::Global() {}
+Global::Global()
+{
+    instance = nullptr;
+}
 
 Global* Global::getInstance() {
     if (instance == NULL)
         instance = new Global;
     return instance;
+}
+
+void Global::release()
+{
+    if (instance)
+        delete instance;
+    instance = nullptr;
 }
 
 void Global::setFile(string& file_name) {

@@ -12,6 +12,7 @@ namespace nyx {
     namespace ast {
         class VarDecl;
         typedef std::shared_ptr<VarDecl> ParamPtr;
+        typedef std::shared_ptr<VarDecl> MemberPtr;
         typedef InstructionPtr VarDeclPtr;
 
         class VarDecl : public Instruction {

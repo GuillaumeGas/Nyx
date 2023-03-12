@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "Declaration.hpp"
+#include "Expression.hpp"
 
 namespace nyx {
     namespace ast {
@@ -17,12 +18,15 @@ namespace nyx {
             void execute();
             void print();
 
+            int getMainResult() const;
+
             void addDeclaration(DeclarationPtr declaration);
 
             std::vector<DeclarationPtr> getDeclarations();
 
         private:
             std::vector<DeclarationPtr>* _content;
+            int _mainResult;
 
             void _declare();
         };

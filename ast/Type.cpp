@@ -1,5 +1,7 @@
 #include "Type.hpp"
 
+#include "../pch.h"
+
 using namespace std;
 using namespace nyx;
 using namespace ast;
@@ -59,7 +61,7 @@ TYPE Type::getValue() const {
         return TYPE::RANGE;
     }
     else if (name == "void") {
-        return TYPE::VOID;
+        return TYPE::_VOID;
     }
     else if (name == "undef") {
         return TYPE::UNDEF;

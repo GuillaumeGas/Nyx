@@ -3,10 +3,17 @@
 using namespace std;
 using namespace nyx;
 
-Compilo::Compilo(string file_name) {
+bool g_debugNyx = false;
+
+#ifdef _DEBUG_NYX_
+g_debugNyx = true;
+#endif // _DEBUG_NYX_
+
+Compilo::Compilo(string file_name, bool debug_mode) {
     _file_name = file_name;
     _lex = nullptr;
     _program = nullptr;
+    g_debugNyx = debug_mode;
 }
 
 Compilo::~Compilo() {
@@ -18,9 +25,9 @@ Compilo::~Compilo() {
         delete _program;
 
     // we don't forget to free the global data...
-    delete Global::getInstance();
+    Global::getInstance()->release();
     // and the symbols table
-    delete symbol::Table::getInstance();
+    symbol::Table::getInstance()->release();
 }
 
 Lexer* Compilo::PassFileThroughLexer(string fileName)
@@ -54,33 +61,41 @@ ast::Program* Compilo::CreateAst(Lexer* lexer)
     }
 }
 
-void Compilo::compile()
+int Compilo::compile()
 {
     _lex = PassFileThroughLexer(_file_name);
 
-    cout << "/------------------------- AST ------------------------\\" << endl << endl;
+    if (g_debugNyx)
+        cout << "/------------------------- AST ------------------------\\" << endl << endl;
 
     _program = CreateAst(_lex);
-    printAst();
-    cout << endl << endl;
-
-    cout << "/------------------- Static Analysis -------------------\\" << endl << endl;
-    try {
-        _program->staticAnalysis();
-        symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
+    if (g_debugNyx)
+    {
+        printAst();
         cout << endl << endl;
     }
-    catch (SyntaxException const& e) {
-        cout << e.toString() << endl;
-        exit(-1);
+
+    if (g_debugNyx)
+    {
+        try {
+            _program->staticAnalysis();
+            symbol::StaticAnalysis::getInstance()->displayUnusedSymbols();
+            cout << endl << endl;
+        }
+        catch (SyntaxException const& e) {
+            cout << e.toString() << endl;
+            exit(-1);
+        }
+
+        symbol::Table::getInstance()->release();
     }
 
-    symbol::Table::getInstance()->release();
-
-    cout << "/---------------------- Execution ----------------------\\" << endl << endl;
+    if (g_debugNyx)
+        cout << "/---------------------- Execution ----------------------\\" << endl << endl;
     try {
         _program->execute();
-        cout << endl;
+        if (g_debugNyx)
+            cout << endl;
     }
     catch (SymbolException const& e) {
         cout << e.toString() << endl;
@@ -90,6 +105,8 @@ void Compilo::compile()
         cout << e.toString() << endl;
         exit(-1);
     }
+
+    return _program->getMainResult();
 }
 
 void Compilo::printAst() const {

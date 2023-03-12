@@ -35,12 +35,15 @@ namespace nyx {
         ast::DeclarationPtr visitFunDecl();
         void visitImport();
         std::vector<ast::DeclarationPtr> _visitImport();
+        ast::DeclarationPtr visitStructDecl();
 
         ast::BlocPtr visitBloc();
         ast::InstructionPtr visitInstruction();
         ast::InstructionPtr visitFunCall(TokenPtr token_ident);
         ast::ExpressionPtr visitExprFunCall(TokenPtr token_ident);
         std::vector <ast::ParamPtr>* visitParamsDecl();
+        std::vector <ast::ParamPtr>* visitStructMembersDecl();
+        std::vector <ast::ParamPtr>* visitParamsOrStructMembersDecl(TokenType tokenTypeSeparator);
         ast::InstructionPtr visitLet();
         ast::InstructionPtr visitVarDecl(TokenPtr token_ident);
         ast::InstructionPtr visitVarAssign(TokenPtr token_ident, TokenPtr token_op);
@@ -76,6 +79,7 @@ namespace nyx {
         ast::ExpressionPtr visitBool();
         ast::ExpressionPtr visitArray();
         ast::ExpressionPtr visitCast();
+        ast::ExpressionPtr visitNew();
 
         bool find(TokenType type, std::vector <TokenType> list);
         bool isIdent(std::string value);

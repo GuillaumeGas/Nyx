@@ -38,8 +38,13 @@ void Program::execute() {
     if (main_symbol == NULL)
         throw MainMissingErrorException();
 
-    main_symbol->getPtr()->execute(NULL);
+    ExpressionPtr mainResultExpression = main_symbol->getPtr()->execute(NULL);
+    _mainResult = mainResultExpression->interpretExpression()->getInt();
+}
 
+int Program::getMainResult() const
+{
+    return _mainResult;
 }
 
 void Program::addDeclaration(DeclarationPtr declaration) {

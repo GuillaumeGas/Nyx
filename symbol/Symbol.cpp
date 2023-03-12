@@ -72,7 +72,7 @@ string Symbol::toString() const {
         case ast::TYPE::CHAR:
             ss << _ptr->getChar();
             break;
-        case ast::TYPE::VOID:
+        case ast::TYPE::_VOID:
             ss << "void";
             break;
         case ast::TYPE::ARRAY:

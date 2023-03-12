@@ -8,6 +8,8 @@ namespace nyx {
     public:
         static Global* getInstance();
 
+        void release();
+
         void setFile(std::string& file_name);
         void addLine(std::string& line);
         std::string getLine(unsigned int num);

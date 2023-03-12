@@ -61,11 +61,14 @@
     <Filter Include="Resource Files\test\test">
       <UniqueIdentifier>{355e3916-8176-4499-9686-dbf7441a1f39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\debugger">
+      <UniqueIdentifier>{1fdc97b2-0e63-46cd-8a2e-d5d974acdec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\debugger">
+      <UniqueIdentifier>{74fdeef9-a81c-4aaf-a5cc-66fcbf7da7b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ast\While.cpp">
       <Filter>Source Files\ast</Filter>
     </ClCompile>
@@ -173,6 +176,15 @@
     </ClCompile>
     <ClCompile Include="compilo\Compilo.cpp">
       <Filter>Source Files\compilo</Filter>
+    </ClCompile>
+    <ClCompile Include="debugger\Debugger.cpp">
+      <Filter>Source Files\debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\Struct.cpp">
+      <Filter>Source Files\ast</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +310,18 @@
     </ClInclude>
     <ClInclude Include="compilo\Compilo.hpp">
       <Filter>Header Files\compilo</Filter>
+    </ClInclude>
+    <ClInclude Include="debugger\Debugger.hpp">
+      <Filter>Header Files\debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\Struct.hpp">
+      <Filter>Header Files\ast</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

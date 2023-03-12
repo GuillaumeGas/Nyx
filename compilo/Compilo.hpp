@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <queue>
-#include <fstream>
+#include <iosfwd>
 
 #include "../parser/Token.hpp"
 #include "../parser/Lexer.hpp"
@@ -17,13 +15,15 @@
 #include "../symbol/exceptions/SymbolException.hpp"
 #include "../global/Global.hpp"
 
+#define DllExport __declspec(dllexport)
+
 namespace nyx {
-    class Compilo {
+    class DllExport Compilo {
     public:
-        Compilo(std::string file_name);
+        Compilo(std::string file_name, bool debug_mode = false);
         ~Compilo();
 
-        void compile();
+        int compile();
         void printAst() const;
 
         static Lexer* PassFileThroughLexer(std::string fileName);

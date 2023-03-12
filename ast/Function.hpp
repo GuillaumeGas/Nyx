@@ -24,9 +24,9 @@ namespace nyx {
             Function(const std::string& name, Position* pos, Type* type, std::vector<ParamPtr>* params, BlocPtr content);
             ~Function();
 
-            void declare();
-            void interpret();
-            void staticAnalysis();
+            void declare() override;
+            void interpret() override;
+            void staticAnalysis() override;
             ExpressionPtr execute(std::vector<ExpressionPtr>* params);
             void print(std::ostream& out, int offset = 0) const;
 
