@@ -317,9 +317,6 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ast\Struct.hpp">
       <Filter>Header Files\ast</Filter>
     </ClInclude>

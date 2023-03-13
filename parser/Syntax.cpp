@@ -521,7 +521,7 @@ ExpressionPtr Syntax::visitULow() {
     ExpressionPtr left = visitLow();
 
     TokenPtr next_op = pop();
-    if (find(next_op->type, { ASSIGN, LE, GE, NE, PLUSEQ, MINUSEQ, MULEQ, DIVEQ, MODEQ })) {
+    if (find(next_op->type, { ASSIGN, LE, GE, NE, PLUSEQ, MINUSEQ, MULEQ, DIVEQ, MODEQ, NEW })) {
         ExpressionPtr right = visitLow();
         if (right == NULL)
             throw MissingErrorException("expression", Position(next_op->line, next_op->column));
@@ -857,6 +857,16 @@ ExpressionPtr Syntax::visitInt() {
     return Expression::New<Int>(stoi(next->value), new Position(next->line, next->column));
 }
 
+ast::ExpressionPtr Syntax::visitStructIdent()
+{
+    TokenPtr ident = pop();
+
+    if (!isIdent(ident->value))
+        throw SyntaxErrorException("Invalid struct identifier '" + ident->value + "'", Position(ident->line, ident->column));
+
+    return Expression::New<StructId>(ident->value, new Position(ident->line, ident->column));
+}
+
 /**
    Visite un identifiant (variable, appel de fonction ou de syscall)
  */
@@ -938,12 +948,21 @@ ExpressionPtr Syntax::visitUnaryOp() {
         rewind();
     }
 
-    if ((elem = visitIdent()) != NULL)
-        return Expression::New<UnOp>(ope, elem, pos);
-    if ((elem = visitConst()) != NULL)
-        return Expression::New<UnOp>(ope, elem, pos);
-    if ((elem = visitUnaryOp()) != NULL)
-        return Expression::New<UnOp>(ope, elem, pos);
+    if (op->type != TokenType::NEW)
+    {
+        if ((elem = visitIdent()) != NULL)
+            return Expression::New<UnOp>(ope, elem, pos);
+        if ((elem = visitConst()) != NULL)
+            return Expression::New<UnOp>(ope, elem, pos);
+        if ((elem = visitUnaryOp()) != NULL)
+            return Expression::New<UnOp>(ope, elem, pos);
+    }
+    else
+    {
+        if ((elem = visitStructIdent()) != NULL)
+            return Expression::New<UnOp>(ope, elem, pos);
+    }
+
     return NullExpression();
 }
 

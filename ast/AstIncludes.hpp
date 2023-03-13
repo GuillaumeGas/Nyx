@@ -24,3 +24,4 @@
 #include "Cast.hpp"
 #include "Index.hpp"
 #include "Struct.hpp"
+#include "StructId.hpp"

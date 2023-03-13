@@ -29,6 +29,7 @@ namespace nyx {
             AND,
             OR,
             INDEX,
+            NEW,
             UNKNOWN
         };
 
