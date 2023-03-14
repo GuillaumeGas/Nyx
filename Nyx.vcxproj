@@ -133,12 +133,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ast\Struct.hpp" />
+    <ClInclude Include="ast\StructDecl.hpp" />
     <ClInclude Include="ast\StructId.hpp" />
     <ClInclude Include="framework.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ast\Struct.cpp" />
+    <ClCompile Include="ast\StructDecl.cpp" />
     <ClCompile Include="ast\StructId.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>

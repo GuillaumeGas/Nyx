@@ -46,6 +46,8 @@ namespace nyx {
              */
             void addSymbol(Symbol* s, Position* pos);
 
+            void addGlobalSymbol(Symbol* s, Position* pos);
+
             /**
                Add a function symbol in the current scope, raise an exception if the symbol already exist with the same parameters
              */
@@ -74,7 +76,7 @@ namespace nyx {
 
             std::string toString() const;
 
-	    void dumpVariablesOfCurrentScope();
+	        void dumpVariablesOfCurrentScope();
 
             void release();
 

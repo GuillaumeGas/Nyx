@@ -20,6 +20,8 @@ namespace nyx
 			std::string getName() const;
 			void setName(const std::string name);
 
+			ExpressionPtr interpretExpression() override;
+
 			void print(std::ostream& out, int offset = 0) const;
 		private:
 			std::string _name;

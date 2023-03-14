@@ -195,7 +195,7 @@ DeclarationPtr Syntax::visitStructDecl()
     string ident = token_ident->value;
     Position* pos = new Position(token_ident->line, token_ident->column);
 
-    return Declaration::New<Struct>(ident, pos, membersDecl);
+    return Declaration::New<StructDecl>(ident, pos, membersDecl);
 }
 
 /**

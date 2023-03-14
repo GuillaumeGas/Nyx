@@ -29,7 +29,11 @@ void Binop::interpret() {
 
 ExpressionPtr Binop::interpretExpression() {
     ExpressionPtr left = _left->interpretExpression();
-    ExpressionPtr right = _right->interpretExpression();
+    ExpressionPtr right = nullptr;
+
+    // TODO : on doit pouvoir faire mieux en demandant plutôt à l'élément de gauche d'interpreter l'expression de droite si besoin
+    if (_op->value != Op::POINT)
+        right = _right->interpretExpression();
 
     ExpressionPtr res;
 

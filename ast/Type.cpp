@@ -64,6 +64,9 @@ TYPE Type::getValue() const {
     else if (name == "undef") {
         return TYPE::UNDEF;
     }
+    else if (name == "structId") {
+        return TYPE::STRUCT;
+    }
     else {
         return TYPE::ERR;
     }

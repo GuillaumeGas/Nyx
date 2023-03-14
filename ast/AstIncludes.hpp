@@ -23,5 +23,5 @@
 #include "Class.hpp"
 #include "Cast.hpp"
 #include "Index.hpp"
-#include "Struct.hpp"
+#include "StructDecl.hpp"
 #include "StructId.hpp"

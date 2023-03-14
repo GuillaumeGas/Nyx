@@ -77,6 +77,13 @@ void Table::addSymbol(Symbol* s, Position* pos) {
     current_scope->addSymbol(s, pos);
 }
 
+void Table::addGlobalSymbol(Symbol* s, Position* pos)
+{
+    if (global_scope->getSymbol(s->getName(), pos) != nullptr)
+        throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName());
+    global_scope->addSymbol(s, pos);
+}
+
 void Table::addFunSymbol(FunSymbol* s, Position* pos) {
     if (getFunSymbol(s->getName(), pos) != nullptr)
         throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName());

@@ -41,26 +41,27 @@ namespace nyx {
             ExpressionPtr getRangeEnd() const;
             // Object * getObject () const;
 
-            void declare();
+            void declare() override;
 
-            ExpressionPtr clone();
-            ExpressionPtr interpretExpression();
-            ExpressionPtr interpretASSIGN(ExpressionPtr e);
-            ExpressionPtr interpretLE(ExpressionPtr e);
-            ExpressionPtr interpretGE(ExpressionPtr e);
-            ExpressionPtr interpretNE(ExpressionPtr e);
-            ExpressionPtr interpretLT(ExpressionPtr e);
-            ExpressionPtr interpretGT(ExpressionPtr e);
-            ExpressionPtr interpretEQ(ExpressionPtr e);
-            ExpressionPtr interpretAND(ExpressionPtr e);
-            ExpressionPtr interpretOR(ExpressionPtr e);
-            ExpressionPtr interpretPLUS(ExpressionPtr e);
-            ExpressionPtr interpretMINUS(ExpressionPtr e);
-            ExpressionPtr interpretMUL(ExpressionPtr e);
-            ExpressionPtr interpretDIV(ExpressionPtr e);
-            ExpressionPtr interpretMOD(ExpressionPtr e);
+            ExpressionPtr clone() override;
+            ExpressionPtr interpretExpression() override;
+            ExpressionPtr interpretASSIGN(ExpressionPtr e) override;
+            ExpressionPtr interpretLE(ExpressionPtr e) override;
+            ExpressionPtr interpretGE(ExpressionPtr e) override;
+            ExpressionPtr interpretNE(ExpressionPtr e) override;
+            ExpressionPtr interpretLT(ExpressionPtr e) override;
+            ExpressionPtr interpretGT(ExpressionPtr e) override;
+            ExpressionPtr interpretEQ(ExpressionPtr e) override;
+            ExpressionPtr interpretAND(ExpressionPtr e) override;
+            ExpressionPtr interpretOR(ExpressionPtr e) override;
+            ExpressionPtr interpretPLUS(ExpressionPtr e) override;
+            ExpressionPtr interpretMINUS(ExpressionPtr e) override;
+            ExpressionPtr interpretMUL(ExpressionPtr e) override;
+            ExpressionPtr interpretDIV(ExpressionPtr e) override;
+            ExpressionPtr interpretMOD(ExpressionPtr e) override;
+            ExpressionPtr interpretPOINT(ExpressionPtr e) override;
 
-            ExpressionPtr interpretUnaryMINUS();
+            ExpressionPtr interpretUnaryMINUS() override;
         private:
             std::string _name;
             ExpressionPtr _value;

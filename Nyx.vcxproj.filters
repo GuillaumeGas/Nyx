@@ -183,7 +183,10 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ast\Struct.cpp">
+    <ClCompile Include="ast\StructDecl.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ast\StructId.cpp">
       <Filter>Source Files\ast</Filter>
     </ClCompile>
   </ItemGroup>
@@ -317,7 +320,10 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ast\Struct.hpp">
+    <ClInclude Include="ast\StructDecl.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\StructId.hpp">
       <Filter>Header Files\ast</Filter>
     </ClInclude>
   </ItemGroup>

@@ -82,7 +82,28 @@ ExpressionPtr VarId::interpretASSIGN(ExpressionPtr e) {
 
     symbol->setValue(e->interpretExpression()->clone());
 
+    if (e->getType()->value == TYPE::STRUCT)
+        symbol->setIsStruct(true);
+
     return shared_from_this();
+}
+
+ExpressionPtr VarId::interpretPOINT(ExpressionPtr e)
+{
+    symbol::Table* table = symbol::Table::getInstance();
+    symbol::Symbol* symbol = table->getSymbol(_name, _pos);
+
+    if (symbol == nullptr || !symbol->isStruct())
+        throw SemanticErrorException("'" + _name + "' is not a struct", _pos);
+
+    symbol::StructSymbol * structSymbol = (symbol::StructSymbol*)symbol;
+    VarIdPtr member = PointerCast<VarId>(e);
+    ExpressionPtr memberExpression = structSymbol->getMember(member->getName());
+
+    if (memberExpression == nullptr)
+        throw SemanticErrorException("'" + member->getName() + "' is not a member of '" + _name + "'", _pos);
+
+    return memberExpression->interpretExpression();
 }
 
 ExpressionPtr VarId::interpretLE(ExpressionPtr e) {

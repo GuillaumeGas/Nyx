@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "UnOp.hpp"
 
 #include "Expression.hpp"
@@ -36,11 +38,13 @@ ExpressionPtr UnOp::interpretExpression() {
     case Op::MINUS:
         res = _expr->interpretUnaryMINUS();
         break;
-    //case Op::NEW:
-    //    res = shared_from_this();
-    //    break;
+    case Op::NEW:
+        res = _expr->interpretExpression();
+        break;
     default:
-        throw SemanticErrorException("Unknown unary operator !", _pos);
+        std::stringstream ss;
+        ss << "Unknown unary operator '" << _op->value << "' !";
+        throw SemanticErrorException(ss.str(), _pos);
     }
 
     res->setPos(new_pos);

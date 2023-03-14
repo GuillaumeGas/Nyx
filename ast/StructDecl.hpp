@@ -12,15 +12,15 @@ namespace nyx
 {
     namespace ast
     {
-        class Struct;
-        typedef std::shared_ptr<Struct> StructPtr;
+        class StructDecl;
+        typedef std::shared_ptr<StructDecl> StructPtr;
         typedef DeclarationPtr StructDeclPtr;
 
-        class Struct : public Declaration,
-            public std::enable_shared_from_this<Struct> {
+        class StructDecl : public Declaration,
+            public std::enable_shared_from_this<StructDecl> {
         public:
-            Struct(const std::string& name, Position* pos, std::vector<MemberPtr>* membersDecl);
-            ~Struct();
+            StructDecl(const std::string& name, Position* pos, std::vector<MemberPtr>* membersDecl);
+            ~StructDecl();
 
             void declare() override;
             void interpret() override;

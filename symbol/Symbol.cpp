@@ -50,8 +50,18 @@ void Symbol::setConst(bool is_const) {
     _is_const = is_const;
 }
 
+void Symbol::setIsStruct(bool is_struct)
+{
+    _is_struct = is_struct;
+}
+
 bool Symbol::isDef() const {
     return _is_def;
+}
+
+bool Symbol::isStruct() const
+{
+    return _is_struct;
 }
 
 string Symbol::toString() const {
@@ -123,4 +133,22 @@ bool Symbol::isUsed() const
 
 void Symbol::isUsed(const bool used) {
     _used_at_least_once = used;
+}
+
+StructSymbol::StructSymbol(std::string name, Position& pos) : Symbol(name, pos)
+{
+    _is_struct = true;
+}
+
+ast::ExpressionPtr StructSymbol::getMember(std::string name)
+{
+    map<string, ast::ExpressionPtr>::iterator it = _members.find(name);
+    if (it == _members.end())
+        return nullptr;
+    return it->second;
+}
+
+void StructSymbol::addOrSetMember(std::string name, ast::ExpressionPtr value)
+{
+    _members[name] = value;
 }
