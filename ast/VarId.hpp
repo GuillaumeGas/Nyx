@@ -59,6 +59,7 @@ namespace nyx {
             ExpressionPtr interpretMUL(ExpressionPtr e);
             ExpressionPtr interpretDIV(ExpressionPtr e);
             ExpressionPtr interpretMOD(ExpressionPtr e);
+            ExpressionPtr interpretPOINT(ExpressionPtr e);
 
             ExpressionPtr interpretUnaryMINUS();
         private:

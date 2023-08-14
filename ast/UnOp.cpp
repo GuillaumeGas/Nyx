@@ -36,9 +36,9 @@ ExpressionPtr UnOp::interpretExpression() {
     case Op::MINUS:
         res = _expr->interpretUnaryMINUS();
         break;
-    //case Op::NEW:
-    //    res = shared_from_this();
-    //    break;
+    case Op::NEW:
+        res = _expr->interpretExpression();
+        break;
     default:
         throw SemanticErrorException("Unknown unary operator !", _pos);
     }

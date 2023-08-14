@@ -21,6 +21,9 @@ namespace nyx
 			void setName(const std::string name);
 
 			void print(std::ostream& out, int offset = 0) const;
+
+			ExpressionPtr interpretExpression();
+
 		private:
 			std::string _name;
 		};

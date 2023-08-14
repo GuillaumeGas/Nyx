@@ -126,6 +126,11 @@ ExpressionPtr VarId::interpretMOD(ExpressionPtr e) {
     return _interpretBinop(Operator::getValue("%"), e);
 }
 
+ExpressionPtr VarId::interpretPOINT(ExpressionPtr e)
+{
+
+}
+
 ExpressionPtr VarId::interpretUnaryMINUS() {
     if (_value->getType()->value != TYPE::INT && _value->getType()->value != TYPE::FLOAT)
         throw SemanticErrorException("Bad operand type for unary '-' : " + _value->getType()->toString(), _pos);

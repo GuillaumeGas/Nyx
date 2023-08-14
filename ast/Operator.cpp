@@ -88,6 +88,9 @@ Op Operator::getValue(string s) {
     else if (s == "[") {
         return Op::INDEX;
     }
+    else if (s == "new") {
+        return Op::NEW;
+    }
     else {
         return Op::UNKNOWN;
     }

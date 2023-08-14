@@ -23,3 +23,8 @@ void TypeIdentifier::print(std::ostream& out, int offset) const
 {
 	out << "TypeIdentifier " << _name;
 }
+
+ExpressionPtr TypeIdentifier::interpretExpression()
+{
+	return shared_from_this();
+}
