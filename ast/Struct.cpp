@@ -1,4 +1,6 @@
 #include "Struct.hpp"
+#include "../symbol/Table.hpp"
+#include "../symbol/Symbol.hpp"
 
 using namespace std;
 using namespace nyx;
@@ -18,7 +20,12 @@ Struct::~Struct()
 
 void Struct::interpret() {}
 void Struct::staticAnalysis() {}
-void Struct::declare() {}
+
+void Struct::declare()
+{
+	symbol::Table* table = symbol::Table::getInstance();
+	table->addStructSymbol(new symbol::StructSymbol(_name, shared_from_this()), _pos);
+}
 
 string Struct::getName() const {
     return _name;
