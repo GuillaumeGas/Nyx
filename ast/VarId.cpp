@@ -1,5 +1,6 @@
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"
+#include "TypeIdentifier.hpp"
 #include "VarId.hpp"
 
 using namespace std;
@@ -128,7 +129,16 @@ ExpressionPtr VarId::interpretMOD(ExpressionPtr e) {
 
 ExpressionPtr VarId::interpretPOINT(ExpressionPtr e)
 {
+    symbol::Table* table = symbol::Table::getInstance();
+    symbol::Scope* scope = table->getCurrentScope();
+    symbol::Symbol* symbol = scope->getSymbol(_name, _pos);
 
+    TypeIdentifierPtr typeIdentifier = Ast::PointerCast<TypeIdentifier>(symbol->getValue());
+
+    // TODO handle error ?
+    symbol::StructSymbol* structSymbol = table->getStructSymbol(typeIdentifier->getName(), typeIdentifier->getPos());
+
+    return shared_from_this();
 }
 
 ExpressionPtr VarId::interpretUnaryMINUS() {
