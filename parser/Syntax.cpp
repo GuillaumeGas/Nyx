@@ -857,14 +857,14 @@ ExpressionPtr Syntax::visitInt() {
     return Expression::New<Int>(stoi(next->value), new Position(next->line, next->column));
 }
 
-ast::ExpressionPtr Syntax::visitStructIdent()
+ast::ExpressionPtr Syntax::visitTypeIdentifier()
 {
     TokenPtr ident = pop();
 
     if (!isIdent(ident->value))
-        throw SyntaxErrorException("Invalid struct identifier '" + ident->value + "'", Position(ident->line, ident->column));
+        throw SyntaxErrorException("Invalid type identifier '" + ident->value + "'", Position(ident->line, ident->column));
 
-    return Expression::New<StructId>(ident->value, new Position(ident->line, ident->column));
+    return Expression::New<TypeIdentifier>(ident->value, new Position(ident->line, ident->column));
 }
 
 /**
@@ -948,18 +948,18 @@ ExpressionPtr Syntax::visitUnaryOp() {
         rewind();
     }
 
-    if (op->type != TokenType::NEW)
+    if (op->type == TokenType::NEW)
+    {
+        if ((elem = visitTypeIdentifier()) != NULL)
+            return Expression::New<UnOp>(ope, elem, pos);
+    }
+    else
     {
         if ((elem = visitIdent()) != NULL)
             return Expression::New<UnOp>(ope, elem, pos);
         if ((elem = visitConst()) != NULL)
             return Expression::New<UnOp>(ope, elem, pos);
         if ((elem = visitUnaryOp()) != NULL)
-            return Expression::New<UnOp>(ope, elem, pos);
-    }
-    else
-    {
-        if ((elem = visitStructIdent()) != NULL)
             return Expression::New<UnOp>(ope, elem, pos);
     }
 

@@ -186,6 +186,9 @@
     <ClCompile Include="ast\Struct.cpp">
       <Filter>Source Files\ast</Filter>
     </ClCompile>
+    <ClCompile Include="ast\TypeIdentifier.cpp">
+      <Filter>Source Files\ast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ast\Ast.hpp">
@@ -318,6 +321,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ast\Struct.hpp">
+      <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\TypeIdentifier.hpp">
       <Filter>Header Files\ast</Filter>
     </ClInclude>
   </ItemGroup>

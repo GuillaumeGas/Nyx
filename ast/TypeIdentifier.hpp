@@ -9,13 +9,13 @@ namespace nyx
 {
 	namespace ast
 	{
-		class StructId;
-		typedef std::shared_ptr<StructId> StructIdPtr;
+		class TypeIdentifier;
+		typedef std::shared_ptr<TypeIdentifier> StructIdPtr;
 
-		class StructId : public Expression
+		class TypeIdentifier : public Expression
 		{
 		public:
-			StructId(std::string name, Position* pos);
+			TypeIdentifier(std::string name, Position* pos);
 
 			std::string getName() const;
 			void setName(const std::string name);

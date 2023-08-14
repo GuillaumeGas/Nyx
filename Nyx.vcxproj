@@ -134,12 +134,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ast\Struct.hpp" />
-    <ClInclude Include="ast\StructId.hpp" />
+    <ClInclude Include="ast\TypeIdentifier.hpp" />
     <ClInclude Include="framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\Struct.cpp" />
-    <ClCompile Include="ast\StructId.cpp" />
+    <ClCompile Include="ast\TypeIdentifier.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
