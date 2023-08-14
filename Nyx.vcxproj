@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClInclude Include="ast\Struct.hpp" />
     <ClInclude Include="ast\TypeIdentifier.hpp" />
-    <ClInclude Include="framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\Struct.cpp" />
