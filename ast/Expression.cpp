@@ -27,7 +27,7 @@ Type* Expression::getType() const {
 void Expression::setType(Type* type) {
     if (_type)
         delete _type;
-    _type = _type;
+    _type = type;
 }
 
 bool Expression::getBool() const { throw - 1; }
