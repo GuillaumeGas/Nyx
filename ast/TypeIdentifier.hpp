@@ -10,7 +10,7 @@ namespace nyx
 	namespace ast
 	{
 		class TypeIdentifier;
-		typedef std::shared_ptr<TypeIdentifier> StructIdPtr;
+		typedef std::shared_ptr<TypeIdentifier> TypeIdentifierPtr;
 
 		class TypeIdentifier : public Expression
 		{

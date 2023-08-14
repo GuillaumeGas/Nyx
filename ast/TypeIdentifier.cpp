@@ -7,6 +7,7 @@ using namespace ast;
 TypeIdentifier::TypeIdentifier(string name, Position* pos) : Expression(pos)
 {
 	_name = name;
+	this->setType(new Type("struct", false));
 }
 
 std::string TypeIdentifier::getName() const
