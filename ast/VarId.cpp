@@ -53,7 +53,8 @@ void VarId::print(ostream& out, int offset) const {
     out << "VarId " << _name;
 }
 
-void VarId::declare() {
+void VarId::declare()
+{
     symbol::Table* table = symbol::Table::getInstance();
 
     table->getSymbol(_name, _pos)->isUsed(true);

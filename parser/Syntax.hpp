@@ -70,6 +70,7 @@ namespace nyx {
         ast::ExpressionPtr visitIndex();
         ast::ExpressionPtr visitConst();
         ast::ExpressionPtr visitIdent();
+        ast::ExpressionPtr visitStructIdent();
         ast::ExpressionPtr visitIdent(TokenPtr token_ident);
         ast::ExpressionPtr visitUnaryOp();
         ast::ExpressionPtr visitFloat();

@@ -5,10 +5,6 @@ using namespace nyx;
 
 bool g_debugNyx = false;
 
-#ifdef _DEBUG_NYX_
-g_debugNyx = true;
-#endif // _DEBUG_NYX_
-
 Compilo::Compilo(string file_name, bool debug_mode) {
     _file_name = file_name;
     _lex = nullptr;
