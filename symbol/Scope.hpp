@@ -45,6 +45,11 @@ namespace nyx {
             void addFunSymbol(FunSymbol* s, Position* pos);
 
             /**
+               Add the Struct symbole in the current scope
+             */
+            void addStructSymbol(StructSymbol* s, Position* pos);
+
+            /**
                Return the symbol according a name
                Return NULL if the symbol was not found
              */
@@ -55,6 +60,12 @@ namespace nyx {
                Returns NULL if the symbol was not found
              */
             virtual FunSymbol* getFunSymbol(std::string name, Position* pos);
+
+            /**
+               Returns the struct symbol according to a name
+               Returns NULL if the symbol was not found
+             */
+            virtual StructSymbol* getStructSymbol(std::string name, Position* pos);
 
             std::string toString() const;
 
@@ -68,6 +79,7 @@ namespace nyx {
         protected:
             std::map<std::string, Symbol*> _symbolsList;
             std::map<std::string, FunSymbol*> _funSymbolsList;
+            std::map<std::string, StructSymbol*> _structSymbolsList;
             Scope* _parent_scope;
             Scope* _next_scope;
         };

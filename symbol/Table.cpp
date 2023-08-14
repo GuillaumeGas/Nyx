@@ -83,6 +83,13 @@ void Table::addFunSymbol(FunSymbol* s, Position* pos) {
     global_scope->addFunSymbol(s, pos);
 }
 
+void Table::addStructSymbol(StructSymbol* s, Position* pos)
+{
+    if (getStructSymbol(s->getName(), pos) != nullptr)
+        throw MultipleDefException(Global::getInstance()->file_name, pos, s->getName());
+    global_scope->addStructSymbol(s, pos);
+}
+
 Symbol* Table::getSymbol(string name, Position* pos) const {
     return current_scope->getSymbol(name, pos);
 }
@@ -93,6 +100,10 @@ Symbol* Table::getGlobalSymbol(string name, Position* pos) const {
 
 FunSymbol* Table::getFunSymbol(string name, Position* pos) const {
     return global_scope->getFunSymbol(name, pos);
+}
+
+StructSymbol* Table::getStructSymbol(string name, Position* pos) const {
+    return global_scope->getStructSymbol(name, pos);
 }
 
 ast::FunctionPtr Table::getCurrentFunction() const {
@@ -110,9 +121,9 @@ string Table::toString() const {
 
 void Table::dumpVariablesOfCurrentScope() {
     if (current_scope == nullptr) {
-	cout << "No current scope" << endl;
-	return;
+        cout << "No current scope" << endl;
+        return;
     }
-    
+
     current_scope->dumpSymbols();
 }

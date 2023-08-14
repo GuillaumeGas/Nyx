@@ -91,6 +91,15 @@ string Symbol::toString() const {
     return ss.str();
 }
 
+bool Symbol::isUsed() const
+{
+    return _used_at_least_once;
+}
+
+void Symbol::isUsed(const bool used) {
+    _used_at_least_once = used;
+}
+
 ConstSymbol::ConstSymbol(string name, ast::ExpressionPtr ptr) : Symbol(name, ptr) {
     _is_const = true;
 }
@@ -116,11 +125,20 @@ string FunSymbol::toString() const {
     return _name;
 }
 
-bool Symbol::isUsed() const
-{
-    return _used_at_least_once;
+
+StructSymbol::StructSymbol(string name, ast::StructPtr ptr) {
+    _name = name;
+    _ptr = ptr;
 }
 
-void Symbol::isUsed(const bool used) {
-    _used_at_least_once = used;
+string StructSymbol::getName() const {
+    return _name;
+}
+
+ast::StructPtr StructSymbol::getPtr() const {
+    return _ptr;
+}
+
+string StructSymbol::toString() const {
+    return _name;
 }

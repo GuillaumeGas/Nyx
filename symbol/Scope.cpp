@@ -52,6 +52,10 @@ void Scope::addFunSymbol(FunSymbol* s, Position* pos) {
     _funSymbolsList[s->getName()] = s;
 }
 
+void Scope::addStructSymbol(StructSymbol* s, Position* pos) {
+    _structSymbolsList[s->getName()] = s;
+}
+
 Symbol* Scope::getSymbol(string name, Position* pos) {
     auto it = _symbolsList.find(name);
     if (it != _symbolsList.end())
@@ -80,11 +84,21 @@ FunSymbol* Scope::getFunSymbol(string name, Position* pos) {
     return nullptr;
 }
 
+StructSymbol* Scope::getStructSymbol(string name, Position* pos)
+{
+    auto it = _structSymbolsList.find(name);
+    if (it != _structSymbolsList.end())
+        return it->second;
+    return nullptr;
+}
+
 string Scope::toString() const {
     stringstream ss;
     for (auto it = _symbolsList.begin(); it != _symbolsList.end(); it++)
         ss << it->second->toString() << endl;
     for (auto it = _funSymbolsList.begin(); it != _funSymbolsList.end(); it++)
+        ss << it->second->toString() << endl;
+    for (auto it = _structSymbolsList.begin(); it != _structSymbolsList.end(); it++)
         ss << it->second->toString() << endl;
     if (_next_scope)
         ss << _next_scope->toString();
@@ -109,13 +123,13 @@ FunSymbol* FunScope::getFunSymbol(string name, Position* pos) {
 
 void Scope::dumpSymbols(int indent) {
     for (auto it : _symbolsList) {
-	cout << string(indent, ' ') << " [" << it.first << " => ";
-	if (it.second->getValue() == nullptr)
-	    cout << "null value";
-	else
-	    it.second->getValue()->print(cout);
-	cout << "]" << endl;
+        cout << string(indent, ' ') << " [" << it.first << " => ";
+        if (it.second->getValue() == nullptr)
+            cout << "null value";
+        else
+            it.second->getValue()->print(cout);
+        cout << "]" << endl;
     }
     if (_parent_scope != nullptr)
-	_parent_scope->dumpSymbols(indent + 2);
+        _parent_scope->dumpSymbols(indent + 2);
 }

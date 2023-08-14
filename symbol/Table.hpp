@@ -51,6 +51,11 @@ namespace nyx {
              */
             void addFunSymbol(FunSymbol* s, Position* pos);
 
+            /*
+               Add a struct symbol in the current scope, raise an exception if the symbol already exist
+            */
+            void addStructSymbol(StructSymbol* s, Position* pos);
+
             /**
                Return a symbol depending on its name, raise an exception if the symbol is not found in the table
              */
@@ -61,6 +66,11 @@ namespace nyx {
                Returns a symbol depending on its name, raise an exception if the symbol is not found in the table
              */
             FunSymbol* getFunSymbol(std::string name, Position* pos) const;
+
+            /**
+               Returns a symbol depending on its name, raise an exception if the symbol is not found in the table
+            */
+            StructSymbol* getStructSymbol(std::string name, Position* pos) const;
 
             /**
                Returns a pointer on the current function in which we are

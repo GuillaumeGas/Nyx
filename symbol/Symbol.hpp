@@ -6,6 +6,7 @@
 #include "../ast/Type.hpp"
 #include "../ast/Object.hpp"
 #include "../ast/Function.hpp"
+#include "../ast/Struct.hpp"
 #include "../global/Position.hpp"
 
 /**
@@ -82,6 +83,18 @@ namespace nyx {
             std::string toString() const;
         private:
             ast::FunctionPtr _ptr;
+            std::string _name;
+        };
+
+        class StructSymbol {
+        public:
+            StructSymbol(std::string name, ast::StructPtr ptr);
+            std::string getName() const;
+            ast::StructPtr getPtr() const;
+
+            std::string toString() const;
+        private:
+            ast::StructPtr _ptr;
             std::string _name;
         };
     };
