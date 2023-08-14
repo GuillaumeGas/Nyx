@@ -15,6 +15,7 @@ namespace nyx {
             RANGE,
             PTR,
             _VOID,
+            STRUCT,
             UNDEF,
             ERR
         };

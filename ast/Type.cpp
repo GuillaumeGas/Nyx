@@ -61,6 +61,9 @@ TYPE Type::getValue() const {
     else if (name == "void") {
         return TYPE::_VOID;
     }
+    else if (name == "struct") {
+        return TYPE::STRUCT;
+    }
     else if (name == "undef") {
         return TYPE::UNDEF;
     }
