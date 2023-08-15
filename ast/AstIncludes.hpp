@@ -24,4 +24,4 @@
 #include "Cast.hpp"
 #include "Index.hpp"
 #include "Struct.hpp"
-#include "TypeIdentifier.hpp"
+#include "StructExpr.hpp"

@@ -12,6 +12,12 @@ Struct::Struct(const string& name, Position* pos, vector<MemberPtr>* membersDecl
     _members = membersDecl;
 }
 
+Struct::Struct(const StructPtr structPtr) : Declaration(new Position(*structPtr->getPos()))
+{
+	_name = structPtr->getName();
+	_members = new vector<MemberPtr>(*structPtr->_members);
+}
+
 Struct::~Struct()
 {
     if (_members)
@@ -33,6 +39,11 @@ string Struct::getName() const {
 
 void Struct::setName(const std::string& name) {
     _name = name;
+}
+
+std::vector<MemberPtr>* Struct::getMembers() const
+{
+	return _members;
 }
 
 void Struct::print(ostream& out, int offset) const {

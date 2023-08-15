@@ -12,7 +12,7 @@ Debugger* Debugger::instance = nullptr;
 
 Debugger* Debugger::getInstance() {
     if (instance == nullptr)
-	instance = new Debugger();
+        instance = new Debugger();
     return instance;
 }
 
@@ -26,16 +26,16 @@ void Debugger::debugBreak() {
     string command;
 
     do {
-	cout << " > ";
-	cin >> command;
+        cout << " > ";
+        cin >> command;
 
-	if (command == "c") {
-	    cout << "continue" << endl;
-	}
-	else if (command == "v") {
-	    Table* table = Table::getInstance();
-	    table->dumpVariablesOfCurrentScope();
-	}
+        if (command == "c") {
+            cout << "continue" << endl;
+        }
+        else if (command == "v") {
+            Table* table = Table::getInstance();
+            table->dumpVariablesOfCurrentScope();
+        }
     } while (command != "c");
 }
 

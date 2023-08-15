@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <map>
 
 #include "Expression.hpp"
 
@@ -9,16 +10,18 @@ namespace nyx
 {
 	namespace ast
 	{
-		class TypeIdentifier;
-		typedef std::shared_ptr<TypeIdentifier> TypeIdentifierPtr;
+		class StructExpr;
+		typedef std::shared_ptr<StructExpr> StructExprPtr;
 
-		class TypeIdentifier : public Expression
+		class StructExpr : public Expression
 		{
 		public:
-			TypeIdentifier(std::string name, Position* pos);
+			StructExpr(std::string name, Position* pos);
 
 			std::string getName() const;
 			void setName(const std::string name);
+
+			const std::map<std::string, ExpressionPtr>& getValues() const;
 
 			void print(std::ostream& out, int offset = 0) const;
 
@@ -26,6 +29,7 @@ namespace nyx
 
 		private:
 			std::string _name;
+			std::map<std::string, ExpressionPtr> _values;
 		};
 	}
 }

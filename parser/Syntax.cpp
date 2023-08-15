@@ -864,7 +864,7 @@ ast::ExpressionPtr Syntax::visitTypeIdentifier()
     if (!isIdent(ident->value))
         throw SyntaxErrorException("Invalid type identifier '" + ident->value + "'", Position(ident->line, ident->column));
 
-    return Expression::New<TypeIdentifier>(ident->value, new Position(ident->line, ident->column));
+    return Expression::New<StructExpr>(ident->value, new Position(ident->line, ident->column));
 }
 
 /**

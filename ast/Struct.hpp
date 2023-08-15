@@ -20,6 +20,7 @@ namespace nyx
             public std::enable_shared_from_this<Struct> {
         public:
             Struct(const std::string& name, Position* pos, std::vector<MemberPtr>* membersDecl);
+            Struct(const StructPtr structPtr);
             ~Struct();
 
             void declare() override;
@@ -29,6 +30,8 @@ namespace nyx
 
             std::string getName() const;
             void setName(const std::string& name);
+
+            std::vector<MemberPtr>* getMembers() const;
 
         private:
             std::string _name;

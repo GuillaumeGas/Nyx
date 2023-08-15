@@ -1,6 +1,6 @@
 #include "../symbol/Table.hpp"
 #include "../symbol/Symbol.hpp"
-#include "TypeIdentifier.hpp"
+#include "StructExpr.hpp"
 #include "VarId.hpp"
 
 using namespace std;
@@ -83,6 +83,22 @@ ExpressionPtr VarId::interpretASSIGN(ExpressionPtr e) {
 
     symbol->setValue(e->interpretExpression()->clone());
 
+    if (e->getType()->value == STRUCT)
+    {
+        symbol::Scope* currentScope = table->getCurrentScope();
+        StructExprPtr structExpr = Ast::PointerCast<StructExpr>(e);
+
+        for (auto it : structExpr->getValues())
+        {
+            VarIdPtr member = Ast::PointerCast<VarId>(it.second);
+            string concatName = _name + "." + member->getName();
+            currentScope->addSymbol(new symbol::Symbol(concatName, *_pos), _pos);
+            member->setName(concatName);
+        }
+
+        table->dumpVariablesOfCurrentScope();
+    }
+
     return shared_from_this();
 }
 
@@ -131,14 +147,18 @@ ExpressionPtr VarId::interpretPOINT(ExpressionPtr e)
 {
     symbol::Table* table = symbol::Table::getInstance();
     symbol::Scope* scope = table->getCurrentScope();
-    symbol::Symbol* symbol = scope->getSymbol(_name, _pos);
 
-    TypeIdentifierPtr typeIdentifier = Ast::PointerCast<TypeIdentifier>(symbol->getValue());
+    // Left side
+    symbol::Symbol* leftSymbol = scope->getSymbol(_name, _pos);
+    StructExprPtr leftStructExpr = Ast::PointerCast<StructExpr>(leftSymbol->getValue());
 
-    // TODO handle error ?
-    symbol::StructSymbol* structSymbol = table->getStructSymbol(typeIdentifier->getName(), typeIdentifier->getPos());
+    // Right side
+    VarIdPtr rightVarId = Ast::PointerCast<VarId>(e);
+    auto structMember = leftStructExpr->getValues().find(rightVarId->getName());
+    if (structMember == leftStructExpr->getValues().end())
+        throw SemanticErrorException("Struct member not found (TODO improve error handling here)", e->getPos());
 
-    return shared_from_this();
+    return structMember->second;
 }
 
 ExpressionPtr VarId::interpretUnaryMINUS() {
