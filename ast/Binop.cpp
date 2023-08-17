@@ -20,7 +20,9 @@ Binop::~Binop() {
 void Binop::declare() {
     if (_op->value != Op::ASSIGN)
         _left->declare();
-    _right->declare();
+
+    if (_op->value != Op::POINT)
+        _right->declare();
 }
 
 void Binop::interpret() {
