@@ -16,6 +16,7 @@ namespace nyx {
 
         std::string file_name;
         std::vector<std::string> file_content;
+        std::ostream * ostream;
 
     private:
         Global();

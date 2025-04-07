@@ -16,7 +16,7 @@ namespace nyx {
 
             void staticAnalysis();
             void execute();
-            void print();
+            void print(std::ostream & ostream);
 
             int getMainResult() const;
 

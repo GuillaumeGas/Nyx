@@ -56,10 +56,10 @@ void Program::_declare() {
         it->declare();
 }
 
-void Program::print() {
+void Program::print(ostream & ostream) {
     for (auto it : *_content)
-        it->print(cout);
-    cout.flush();
+        it->print(ostream);
+    ostream.flush();
 }
 
 vector<DeclarationPtr> Program::getDeclarations()

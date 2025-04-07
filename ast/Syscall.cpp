@@ -71,21 +71,23 @@ void Syscall::_sysPrint(ExpressionPtr e) {
     vector<ExpressionPtr>* vec = NULL;
     RangePtr range;
 
+    ostream & out = *(Global::getInstance()->ostream);
+
     if (e->getType()->value == TYPE::ARRAY || e->getType()->value == TYPE::RANGE)
-        cout << "[";
+        out << "[";
 
     switch (e->getType()->value) {
     case TYPE::INT:
-        cout << e->getInt();
+        out << e->getInt();
         break;
     case TYPE::CHAR:
-        cout << e->getChar();
+        out << e->getChar();
         break;
     case TYPE::BOOL:
-        cout << e->getBool();
+        out << e->getBool();
         break;
     case TYPE::FLOAT:
-        cout << e->getFloat();
+        out << e->getFloat();
         break;
     case TYPE::STRING:
         vec = e->getArray();
@@ -99,20 +101,20 @@ void Syscall::_sysPrint(ExpressionPtr e) {
             ExpressionPtr obj = (*vec)[i]->interpretExpression();
             _sysPrint(obj);
             if (i < vec->size() - 1)
-                cout << ", ";
+                out << ", ";
         }
         break;
     case TYPE::RANGE:
-        cout << e->getRangeBegin()->getInt();
-        cout << " .. ";
-        cout << e->getRangeEnd()->getInt();
+        out << e->getRangeBegin()->getInt();
+        out << " .. ";
+        out << e->getRangeEnd()->getInt();
         break;
     default:
         SemanticErrorException("Unknown type " + e->getType()->toString() + "!", _pos);
     }
 
     if (e->getType()->value == TYPE::ARRAY || e->getType()->value == TYPE::RANGE)
-        cout << "]";
+        out << "]";
 }
 
 ExpressionPtr Syscall::sysPrint() {
@@ -124,10 +126,12 @@ ExpressionPtr Syscall::sysPrint() {
 }
 
 ExpressionPtr Syscall::sysPrintln() {
+    ostream & out = *(Global::getInstance()->ostream);
+
     for (auto it : *_params) {
         _sysPrint(it->interpretExpression());
     }
-    cout << endl;
+    out << endl;
 
     return NullExpression();
 }

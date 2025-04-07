@@ -5,7 +5,7 @@ using namespace nyx;
 
 Global* Global::instance = NULL;
 
-Global::Global()
+Global::Global() : ostream(&cout)
 {
     instance = nullptr;
 }
