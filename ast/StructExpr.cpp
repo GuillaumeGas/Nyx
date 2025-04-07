@@ -40,8 +40,12 @@ ExpressionPtr StructExpr::interpretExpression()
 	std::vector<MemberPtr>* members = symbol->getPtr()->getMembers();
 	for (auto i = 0; i < members->size(); i++)
 	{
-		std::string memberName = members->at(i)->getVarId()->getName();
+		MemberPtr member = members->at(i);
+		std::string memberName = member->getVarId()->getName();
+		Type* memberType = new Type(*(members->at(i)->getType()));
 		ExpressionPtr varId = Expression::New<VarId>(memberName, new Position(*_pos));
+		varId->setType(memberType);
+		//varId->setDefaultValue();
 		_values[memberName] = varId;
 	}
 

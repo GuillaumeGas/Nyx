@@ -148,12 +148,19 @@ ExpressionPtr VarId::interpretPOINT(ExpressionPtr e)
     symbol::Table* table = symbol::Table::getInstance();
     symbol::Scope* scope = table->getCurrentScope();
 
+    // Right side
+    VarIdPtr rightVarId = Ast::PointerCast<VarId>(e);
+
+    std::string concatSymbolName = _name + "." + rightVarId->getName();
+    symbol::Symbol* symbol = scope->getSymbol(concatSymbolName, _pos);
+
+    if (symbol != nullptr && symbol->getValue() != nullptr)
+        return symbol->getValue();
+
     // Left side
     symbol::Symbol* leftSymbol = scope->getSymbol(_name, _pos);
     StructExprPtr leftStructExpr = Ast::PointerCast<StructExpr>(leftSymbol->getValue());
-
-    // Right side
-    VarIdPtr rightVarId = Ast::PointerCast<VarId>(e);
+    
     auto structMember = leftStructExpr->getValues().find(rightVarId->getName());
     if (structMember == leftStructExpr->getValues().end())
         throw SemanticErrorException("Struct member not found (TODO improve error handling here)", e->getPos());
