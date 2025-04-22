@@ -19,7 +19,12 @@ For::~For() {
         delete _ident;
 }
 
-void For::declare() {
+void For::declare()
+{
+    symbol::Table* table = symbol::Table::getInstance();
+    symbol::ConstSymbol* loopSymbol = new symbol::ConstSymbol(_varLoop->getName(), *_varLoop->getPos());
+    table->addSymbol(loopSymbol, _varLoop->getPos());
+
     _expr->declare();
     _bloc->declare();
 }
@@ -34,14 +39,18 @@ void For::interpret() {
     symbol::Table* table = symbol::Table::getInstance();
     table->enterBlock();
 
+    symbol::ConstSymbol* loopSymbol = (symbol::ConstSymbol*)table->getSymbol(_varLoop->getName(), nullptr);
+
     if (exprType == TYPE::RANGE) {
         IntPtr rangeBegin = _expr->getRangeBegin();
         IntPtr rangeEnd = _expr->getRangeEnd();
         int begin = rangeBegin->getInt();
         int end = rangeEnd->getInt();
 
-        symbol::ConstSymbol* loopSymbol = new symbol::ConstSymbol(_varLoop->getName(), rangeBegin->clone());
-        table->addSymbol(loopSymbol, _varLoop->getPos());
+        loopSymbol->setConst(false);
+        loopSymbol->setValue(rangeBegin);
+        loopSymbol->getValue()->setInt(begin);
+        loopSymbol->setConst(true);
 
         if (begin < end) {
             for (; begin <= end; begin++) {
@@ -61,9 +70,6 @@ void For::interpret() {
         }
     }
     else {
-        symbol::ConstSymbol* loopSymbol = new symbol::ConstSymbol(_varLoop->getName(), *_varLoop->getPos());
-        table->addSymbol(loopSymbol, _varLoop->getPos());
-
         for (auto it : *(_expr->getArray())) {
             table->enterBlock();
             loopSymbol->setConst(false);
