@@ -26,20 +26,21 @@ IfElse::IfElse(ExpressionPtr cond, BlocPtr blocIf, InstructionPtr elseIf, Positi
 void IfElse::declare() {
     _cond->declare();
     _blocIf->declare();
-    _blocElse->declare();
+    if (_blocElse != nullptr)
+        _blocElse->declare();
 }
 
 void IfElse::interpret() {
-    _cond = _cond->interpretExpression();
+    ExpressionPtr cond = _cond->interpretExpression();
 
     symbol::Table* table = symbol::Table::getInstance();
 
-    TYPE condType = _cond->getType()->value;
+    TYPE condType = cond->getType()->value;
 
     if (condType != TYPE::BOOL)
-        throw SemanticErrorException("Boolean expression expected !", _cond->getPos());
+        throw SemanticErrorException("Boolean expression expected !", cond->getPos());
 
-    if (_cond->getBool() && _blocIf) {
+    if (cond->getBool() && _blocIf) {
         table->enterBlock();
         _blocIf->interpret();
         table->exitBlock();
