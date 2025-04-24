@@ -220,6 +220,23 @@ vector <ParamPtr>* Syntax::visitParamsOrStructMembersDecl(TokenType tokenTypeSep
     TokenPtr next;
     do {
         TokenPtr type = pop();
+        bool isArray = false;
+
+        next = pop();
+
+        if (next->type == TokenType::BRACKET_L)
+        {
+            next = pop();
+            if (next->type != TokenType::BRACKET_R)
+                throw MissingErrorException("]", Position(next->line, next->column));
+
+            isArray = true;
+        }
+        else
+        {
+            rewind();
+        }
+
         if (type->type != TokenType::OTHER)
         {
             if (type->type == TokenType::ACCOL_R && tokenTypeSeparator == TokenType::SEMICOLON)
@@ -231,15 +248,23 @@ vector <ParamPtr>* Syntax::visitParamsOrStructMembersDecl(TokenType tokenTypeSep
             }
             throw SyntaxErrorException(type->value, Position(type->line, type->column));
         }
+
         VarIdPtr var_id = Ast::PointerCast<VarId>(visitIdent());
+        
         next = pop();
-        if (var_id == NULL) {
+        
+        if (var_id == NULL)
             throw SyntaxErrorException(next->value, Position(next->line, next->column));
-        }
+
         if (next->type != tokenTypeSeparator && next->type != TokenType::PAR_R)
             throw MissingErrorException(")", Position(next->line, next->column));
 
-        Type* ast_type = new Type(type->value, true);
+        Type* ast_type = nullptr;
+        if (isArray)
+            ast_type = new Type("array");
+        else
+            ast_type = new Type(type->value);
+
         Position* pos = new Position(type->line, type->column);
         params->push_back(VarDecl::New(ast_type, var_id, pos));
     } while (next->type == tokenTypeSeparator);

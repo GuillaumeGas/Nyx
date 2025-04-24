@@ -8,8 +8,9 @@ Type::Type(const Type& type) : name(type.name), is_basic(type.is_basic) {
     value = getValue();
 }
 
-Type::Type(string name) : name(name), is_basic(true) {
+Type::Type(string name) : name(name) {
     value = getValue();
+    is_basic = value != TYPE::ERR;
 }
 
 Type::Type(string name, bool is_basic) : name(name), is_basic(is_basic) {
