@@ -6,21 +6,43 @@ Ebauche d'un interpréteur avec une syntaxe proche de celle du C.
 Exemple simple :
 
 ```C++
-void main()
+struct Position
 {
-	$println("Hello world !");
-
-	$print("Give a first number : ");
-	let a = $readInt();
-	$print("Give a second number : ");
-	let b = $readInt();
-	let c = 0;
-	$println("Result : ", add(a, b));
+    int x;      // User coordinates
+    int y;
+    int[] grid; // Grid content (0 if empty, 1 for walls, 2 for player)
 }
 
-int add (int a, int b)
+void printPosition(Position p)
 {
-	return a + b;
+    $println("Sum coordinates (very usefull) : ", p.x + p.y);
+    printArray(p.grid);
+}
+
+/*
+  Prints an array of integers !
+*/
+void printArray(int[] array)
+{
+    let i = 0;
+    for (elem in array)
+    {
+        $print(elem);
+        if (i < 4) { $println(); }
+    }
+    $println();
+}
+
+int main()
+{
+    let p = new Position;
+    p.x = 1;
+    p.y = 1;
+    p.grid = [1, 2, 3, 4];
+
+    printPosition(p);
+
+    return 0;
 }
 ```
 
