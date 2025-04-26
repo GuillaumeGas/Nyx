@@ -22,7 +22,7 @@ void Cast::print(ostream& out, int offset) const {
     out << ")";
 }
 
-ExpressionPtr Cast::interpretExpression() {
+ExpressionPtr Cast::interpretExpression(bool) {
     return NullExpression();
 }
 

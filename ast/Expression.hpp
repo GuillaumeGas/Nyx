@@ -49,7 +49,7 @@ namespace nyx {
             virtual void setRangeEnd(ExpressionPtr v);
 
             virtual ExpressionPtr clone();
-            virtual ExpressionPtr interpretExpression();
+            virtual ExpressionPtr interpretExpression(bool returnSymValue = false);
             virtual ExpressionPtr interpretASSIGN(ExpressionPtr e);
             virtual ExpressionPtr interpretLE(ExpressionPtr e);
             virtual ExpressionPtr interpretGE(ExpressionPtr e);

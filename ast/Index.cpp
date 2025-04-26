@@ -22,7 +22,7 @@ void Index::declare() {
     e2->declare();
 }
 
-ExpressionPtr Index::interpretExpression() {
+ExpressionPtr Index::interpretExpression(bool) {
     // ExpressionPtr left_value = e1->interpretExpression ();
     // ExpressionPtr right_value = e2->interpretExpression ();
 

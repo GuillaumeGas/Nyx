@@ -16,7 +16,7 @@ void Expression::interpret() {
     interpretExpression();
 }
 
-ExpressionPtr Expression::interpretExpression() {
+ExpressionPtr Expression::interpretExpression(bool) {
     return shared_from_this();
 }
 

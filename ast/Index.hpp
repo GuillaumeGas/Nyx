@@ -18,7 +18,7 @@ namespace nyx {
             void print(std::ostream& out, int offset = 0) const;
 
             void declare();
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool returnSymValue = false);
             ExpressionPtr interpretASSIGN(ExpressionPtr e);
 
             ExpressionPtr e1;

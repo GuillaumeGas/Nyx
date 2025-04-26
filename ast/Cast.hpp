@@ -17,7 +17,7 @@ namespace nyx {
             ~Cast();
 
             void print(std::ostream& out, int offset = 0) const;
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool returnSymValue = false);
 
             Type* getType() const;
             void setType(Type* type);

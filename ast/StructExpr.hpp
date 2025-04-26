@@ -21,15 +21,16 @@ namespace nyx
 			std::string getName() const;
 			void setName(const std::string name);
 
-			const std::map<std::string, ExpressionPtr>& getValues() const;
+			const std::map<std::string, ExpressionPtr>* getValues() const;
 
 			void print(std::ostream& out, int offset = 0) const;
 
-			ExpressionPtr interpretExpression();
+			ExpressionPtr interpretExpression(bool returnSymValue = false);
 
 		private:
 			std::string _name;
 			std::map<std::string, ExpressionPtr> _values;
+			bool _interpreted;
 		};
 	}
 }

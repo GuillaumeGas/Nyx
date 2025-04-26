@@ -33,7 +33,7 @@ void Syscall::interpret() {
     interpretExpression();
 }
 
-ExpressionPtr Syscall::interpretExpression()
+ExpressionPtr Syscall::interpretExpression(bool)
 {
     if (_ident == "print") {
         return sysPrint();
@@ -128,9 +128,13 @@ ExpressionPtr Syscall::sysPrint() {
 ExpressionPtr Syscall::sysPrintln() {
     ostream & out = *(Global::getInstance()->ostream);
 
-    for (auto it : *_params) {
-        _sysPrint(it->interpretExpression());
+    if (_params)
+    {
+        for (auto it : *_params) {
+            _sysPrint(it->interpretExpression());
+        }
     }
+
     out << endl;
 
     return NullExpression();

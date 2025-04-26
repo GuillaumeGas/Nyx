@@ -7,12 +7,12 @@ using namespace std;
 using namespace nyx;
 using namespace ast;
 
-VarId::VarId(string name, Position* pos) : Expression(pos) {
+VarId::VarId(string name, Position* pos) : Expression(pos), _isStructMember(false) {
     _type = NULL;
     _name = name;
 }
 
-VarId::VarId(string name, Position* pos, ExpressionPtr value) : Expression(pos) {
+VarId::VarId(string name, Position* pos, ExpressionPtr value) : Expression(pos), _isStructMember(false) {
     _type = NULL;
     _name = name;
     _value = value;
@@ -65,39 +65,38 @@ ExpressionPtr VarId::clone() {
     return _value->clone();
 }
 
-ExpressionPtr VarId::interpretExpression() {
+ExpressionPtr VarId::interpretExpression(bool returnSymValue) {
     symbol::Table* table = symbol::Table::getInstance();
     symbol::Symbol* symbol = table->getSymbol(_name, _pos);
-
+    
     if (symbol->isDef()) {
         _value = symbol->getValue();
         _type = new Type(*(_value->getType()));
+
+        if (returnSymValue)
+            return symbol->getValue();
     }
 
     return shared_from_this();
 }
 
+// TEST
+void VarId::setIsStructMember(bool value)
+{
+    _isStructMember = value;
+}
+
 ExpressionPtr VarId::interpretASSIGN(ExpressionPtr e) {
-    symbol::Table* table = symbol::Table::getInstance();
-    symbol::Symbol* symbol = table->getSymbol(_name, _pos);
 
-    symbol->setValue(e->interpretExpression()->clone());
-
-    if (e->getType()->value == STRUCT)
+    if (!_isStructMember)
     {
-        symbol::Scope* currentScope = table->getCurrentScope();
-        StructExprPtr structExpr = Ast::PointerCast<StructExpr>(e);
+        symbol::Table* table = symbol::Table::getInstance();
+        symbol::Symbol* symbol = table->getSymbol(_name, _pos);
 
-        for (auto it : structExpr->getValues())
-        {
-            VarIdPtr member = Ast::PointerCast<VarId>(it.second);
-            string concatName = _name + "." + member->getName();
-            currentScope->addSymbol(new symbol::Symbol(concatName, *_pos), _pos);
-            member->setName(concatName);
-        }
-
-        table->dumpVariablesOfCurrentScope();
+        symbol->setValue(e->interpretExpression());
     }
+
+    this->setValue(e->interpretExpression());
 
     return shared_from_this();
 }
@@ -148,21 +147,15 @@ ExpressionPtr VarId::interpretPOINT(ExpressionPtr e)
     symbol::Table* table = symbol::Table::getInstance();
     symbol::Scope* scope = table->getCurrentScope();
 
-    // Right side
-    VarIdPtr rightVarId = Ast::PointerCast<VarId>(e);
-
-    std::string concatSymbolName = _name + "." + rightVarId->getName();
-    symbol::Symbol* symbol = scope->getSymbol(concatSymbolName, _pos);
-
-    if (symbol != nullptr && symbol->getValue() != nullptr)
-        return symbol->getValue();
-
     // Left side
     symbol::Symbol* leftSymbol = scope->getSymbol(_name, _pos);
     StructExprPtr leftStructExpr = Ast::PointerCast<StructExpr>(leftSymbol->getValue());
-    
-    auto structMember = leftStructExpr->getValues().find(rightVarId->getName());
-    if (structMember == leftStructExpr->getValues().end())
+
+    // Right side
+    VarIdPtr rightVarId = Ast::PointerCast<VarId>(e);
+
+    auto structMember = leftStructExpr->getValues()->find(rightVarId->getName());
+    if (structMember == leftStructExpr->getValues()->end())
         throw SemanticErrorException("Struct member not found (TODO improve error handling here)", e->getPos());
 
     return structMember->second;

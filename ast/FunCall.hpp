@@ -20,7 +20,7 @@ namespace nyx {
 
             void declare();
             void interpret();
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool returnSymValue = false);
 
         private:
             std::string _name;

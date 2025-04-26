@@ -1156,7 +1156,7 @@ void Array::print(ostream& out, int offset) const {
     out << "]";
 }
 
-ExpressionPtr Array::interpretExpression() {
+ExpressionPtr Array::interpretExpression(bool) {
     for (auto& it : *array)
         it = it->interpretExpression();
 
@@ -1228,7 +1228,7 @@ void Range::declare() {
     end->declare();
 }
 
-ExpressionPtr Range::interpretExpression() {
+ExpressionPtr Range::interpretExpression(bool) {
     ExpressionPtr first = begin->interpretExpression();
     ExpressionPtr second = end->interpretExpression();
     if (first->getType()->value != TYPE::INT) {

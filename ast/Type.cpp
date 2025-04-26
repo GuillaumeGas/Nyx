@@ -10,7 +10,7 @@ Type::Type(const Type& type) : name(type.name), is_basic(type.is_basic) {
 
 Type::Type(string name) : name(name) {
     value = getValue();
-    is_basic = value != TYPE::ERR;
+    is_basic = value != TYPE::STRUCT;
 }
 
 Type::Type(string name, bool is_basic) : name(name), is_basic(is_basic) {
@@ -62,13 +62,7 @@ TYPE Type::getValue() const {
     else if (name == "void") {
         return TYPE::_VOID;
     }
-    else if (name == "struct") {
-        return TYPE::STRUCT;
-    }
-    else if (name == "undef") {
-        return TYPE::UNDEF;
-    }
     else {
-        return TYPE::ERR;
+        return TYPE::STRUCT;
     }
 }

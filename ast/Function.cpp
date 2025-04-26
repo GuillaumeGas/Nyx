@@ -65,7 +65,9 @@ ExpressionPtr Function::execute(vector<ExpressionPtr>* params) {
 				cout << "[!] Invalid param type !" << endl;
 				throw - 1;
 			}
-			table->addSymbol(new symbol::Symbol(param->getVarId()->getName(), value), param->getPos());
+
+			auto sym = new symbol::Symbol(param->getVarId()->getName(), value);
+			table->addSymbol(sym, param->getPos());
 		}
 	}
 	else {

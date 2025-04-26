@@ -31,13 +31,13 @@ void FunCall::interpret() {
     interpretExpression();
 }
 
-ExpressionPtr FunCall::interpretExpression() {
+ExpressionPtr FunCall::interpretExpression(bool) {
     symbol::Table* table = symbol::Table::getInstance();
     symbol::FunSymbol* s = table->getFunSymbol(_name, _pos);
     if (s != NULL) {
         if (_params != NULL)
             for (auto& it : *_params)
-                it = it->interpretExpression();
+                it = it->interpretExpression(true);
         return s->getPtr()->execute(_params);
     }
     else {

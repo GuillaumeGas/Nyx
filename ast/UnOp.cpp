@@ -26,7 +26,7 @@ void UnOp::declare() {
     _expr->declare();
 }
 
-ExpressionPtr UnOp::interpretExpression() {
+ExpressionPtr UnOp::interpretExpression(bool) {
     _expr = _expr->interpretExpression();
     ExpressionPtr res;
 

@@ -17,7 +17,7 @@ namespace nyx {
             Binop(ExpressionPtr left, ExpressionPtr right, Operator* op, Position* pos);
             ~Binop();
 
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool returnSymValue = false);
             void declare();
             void interpret();
             void print(std::ostream& out, int offset = 0) const;

@@ -145,7 +145,7 @@ namespace nyx {
             void declare();
 
             ExpressionPtr clone();
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool);
             // ExpressionPtr interpretAND (ExpressionPtr e);
             // ExpressionPtr interpretOR (ExpressionPtr e);
             ExpressionPtr interpretPLUS(ExpressionPtr e);
@@ -175,7 +175,7 @@ namespace nyx {
             void print(std::ostream& out, int offset = 0) const;
 
             ExpressionPtr clone();
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool);
 
             ExpressionPtr begin;
             ExpressionPtr end;

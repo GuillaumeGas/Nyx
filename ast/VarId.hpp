@@ -30,6 +30,8 @@ namespace nyx {
             ExpressionPtr getValue() const;
             void setValue(ExpressionPtr value);
 
+            void setIsStructMember(bool value);
+
             void print(std::ostream& out, int offset = 0) const;
 
             bool getBool() const;
@@ -44,7 +46,7 @@ namespace nyx {
             void declare();
 
             ExpressionPtr clone();
-            ExpressionPtr interpretExpression();
+            ExpressionPtr interpretExpression(bool returnSymValue = false);
             ExpressionPtr interpretASSIGN(ExpressionPtr e);
             ExpressionPtr interpretLE(ExpressionPtr e);
             ExpressionPtr interpretGE(ExpressionPtr e);
@@ -62,9 +64,11 @@ namespace nyx {
             ExpressionPtr interpretPOINT(ExpressionPtr e);
 
             ExpressionPtr interpretUnaryMINUS();
+
         private:
             std::string _name;
             ExpressionPtr _value;
+            bool _isStructMember;
 
             ExpressionPtr _interpretBinop(Op op, ExpressionPtr e);
         };
