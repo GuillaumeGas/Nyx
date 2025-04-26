@@ -46,11 +46,6 @@ int main()
 }
 ```
 
-Capture d'écran du résultat :
-![Screenshot](screenshots/screenshot.bmp)
-
-Exemple d'utilisation du debugger avec l'utilisation de *$debugBreak()* :
-![Screenshot](screenshots/output_breakpoint.png)
 
 # Détails
 
