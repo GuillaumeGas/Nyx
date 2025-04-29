@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include "../SyscallsInterface.hpp"
+
 namespace nyx {
     class Global {
     public:
@@ -17,6 +19,7 @@ namespace nyx {
         std::string file_name;
         std::vector<std::string> file_content;
         std::ostream * ostream;
+        SyscallsInterface* syscallInterface;
 
     private:
         Global();

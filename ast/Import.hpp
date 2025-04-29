@@ -10,7 +10,7 @@ namespace nyx {
     namespace ast {
         typedef DeclarationPtr ImportPtr;
 
-        class Import : public Declaration {
+        class DllExport Import : public Declaration {
         public:
             Import(std::vector<std::string>* path, Position* pos);
             ~Import();

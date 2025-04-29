@@ -13,7 +13,7 @@ namespace nyx {
     namespace ast {
         typedef ExpressionPtr SyscallPtr;
 
-        class Syscall : public Expression {
+        class DllExport Syscall : public Expression {
         public:
             Syscall(std::string ident, std::vector<ExpressionPtr>* params, Position* pos);
             ~Syscall();
@@ -28,7 +28,7 @@ namespace nyx {
             ExpressionPtr sysPrint();
             ExpressionPtr sysPrintln();
             ExpressionPtr sysReadInt();
-	    ExpressionPtr sysDebugBreak();
+	        ExpressionPtr sysDebugBreak();
 
             std::string getIdent() const;
             void setIdent(const std::string& ident);

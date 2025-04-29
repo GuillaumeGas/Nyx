@@ -16,7 +16,7 @@ namespace nyx
         typedef std::shared_ptr<Struct> StructPtr;
         typedef DeclarationPtr StructDeclPtr;
 
-        class Struct : public Declaration,
+        class DllExport Struct : public Declaration,
             public std::enable_shared_from_this<Struct> {
         public:
             Struct(const std::string& name, Position* pos, std::vector<MemberPtr>* membersDecl);

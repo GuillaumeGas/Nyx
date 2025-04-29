@@ -15,7 +15,7 @@ namespace nyx {
         typedef std::shared_ptr<Expression> ExpressionPtr;
         typedef ExpressionPtr NullExpression;
 
-        class Expression : public Instruction,
+        class DllExport Expression : public Instruction,
             public std::enable_shared_from_this<Expression> {
         public:
             Expression(Position* pos);
@@ -25,7 +25,7 @@ namespace nyx {
             virtual void print(std::ostream& out, int offset = 0) const = 0;
 
             template <class T, class... Args>
-            static ExpressionPtr New(Args&&... args) {
+            static DllExport ExpressionPtr New(Args&&... args) {
                 return std::make_shared<T>(args...);
             }
 

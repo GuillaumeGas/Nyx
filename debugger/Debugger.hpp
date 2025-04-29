@@ -1,8 +1,10 @@
 #pragma once
 
+#define DllExport __declspec(dllexport)
+
 namespace nyx {
     namespace debug {
-	class Debugger {
+	class DllExport Debugger {
 	public:
 	    static Debugger* getInstance();
 	    ~Debugger();

@@ -12,7 +12,7 @@ namespace nyx {
     namespace ast {
         typedef InstructionPtr WhilePtr;
 
-        class While : public Instruction {
+        class DllExport While : public Instruction {
         public:
             While(std::string* ident, ExpressionPtr expr, BlocPtr bloc, Position* pos);
             ~While();

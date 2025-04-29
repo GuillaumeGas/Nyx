@@ -1,3 +1,5 @@
+#define DllExport __declspec(dllexport)
+
 #include "Program.hpp"
 #include "Ast.hpp"
 #include "Bloc.hpp"

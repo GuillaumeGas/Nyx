@@ -13,7 +13,7 @@
 
 namespace nyx {
     namespace ast {
-        class Ast {
+        class DllExport Ast {
         public:
             Ast(Position* pos);
             virtual ~Ast();

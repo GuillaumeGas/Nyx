@@ -12,7 +12,7 @@ namespace nyx {
     namespace ast {
         typedef InstructionPtr ReturnPtr;
 
-        class Return : public Instruction {
+        class DllExport Return : public Instruction {
         public:
             Return(ExpressionPtr expr, Position* pos);
 

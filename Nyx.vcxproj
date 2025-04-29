@@ -135,11 +135,13 @@
   <ItemGroup>
     <ClInclude Include="ast\Struct.hpp" />
     <ClInclude Include="ast\StructExpr.hpp" />
+    <ClInclude Include="SyscallsInterface.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\Struct.cpp" />
     <ClCompile Include="ast\StructExpr.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="SyscallsInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\Ast.cpp" />

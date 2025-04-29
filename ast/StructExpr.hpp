@@ -13,7 +13,7 @@ namespace nyx
 		class StructExpr;
 		typedef std::shared_ptr<StructExpr> StructExprPtr;
 
-		class StructExpr : public Expression
+		class DllExport StructExpr : public Expression
 		{
 		public:
 			StructExpr(std::string name, Position* pos);

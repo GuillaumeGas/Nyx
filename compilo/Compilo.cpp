@@ -5,12 +5,13 @@ using namespace nyx;
 
 bool g_debugNyx = false;
 
-Compilo::Compilo(string file_name, std::ostream & outstream, bool debug_mode) : _outstream(outstream) {
+Compilo::Compilo(string file_name, SyscallsInterface * syscallInterface, std::ostream & outstream, bool debug_mode) : _outstream(outstream) {
     _file_name = file_name;
     _lex = nullptr;
     _program = nullptr;
     g_debugNyx = debug_mode;
     Global::getInstance()->ostream = &outstream;
+    Global::getInstance()->syscallInterface = syscallInterface;
 }
 
 Compilo::~Compilo() {

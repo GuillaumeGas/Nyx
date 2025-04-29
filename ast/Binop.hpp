@@ -12,7 +12,7 @@ namespace nyx {
     namespace ast {
         typedef ExpressionPtr BinopPtr;
 
-        class Binop : public Expression {
+        class DllExport Binop : public Expression {
         public:
             Binop(ExpressionPtr left, ExpressionPtr right, Operator* op, Position* pos);
             ~Binop();

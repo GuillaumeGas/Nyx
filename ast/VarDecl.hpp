@@ -15,7 +15,7 @@ namespace nyx {
         typedef std::shared_ptr<VarDecl> MemberPtr;
         typedef InstructionPtr VarDeclPtr;
 
-        class VarDecl : public Instruction {
+        class DllExport VarDecl : public Instruction {
         public:
             VarDecl(VarIdPtr varId, Position* pos);
             VarDecl(Type* type, VarIdPtr varId, Position* pos);

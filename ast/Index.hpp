@@ -11,7 +11,7 @@ namespace nyx {
     namespace ast {
         typedef ExpressionPtr IndexPtr;
 
-        class Index : public Expression {
+        class DllExport Index : public Expression {
         public:
             Index(ExpressionPtr e1, ExpressionPtr e2, Position* pos);
 

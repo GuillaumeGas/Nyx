@@ -11,7 +11,7 @@ namespace nyx {
     namespace ast {
         typedef InstructionPtr IfElsePtr;
 
-        class IfElse : public Instruction {
+        class DllExport IfElse : public Instruction {
         public:
             IfElse(ExpressionPtr cond, BlocPtr blocIf, Position* pos);
             IfElse(ExpressionPtr cond, BlocPtr blocIf, BlocPtr blocElse, Position* pos);

@@ -10,7 +10,7 @@ namespace nyx {
         struct Declaration;
         typedef std::shared_ptr<Declaration> DeclarationPtr;
 
-        struct Declaration : public Ast {
+        struct DllExport Declaration : public Ast {
             Declaration(Position* pos);
 
             virtual void declare();

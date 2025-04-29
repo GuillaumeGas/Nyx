@@ -10,7 +10,7 @@ namespace nyx {
         struct Instruction;
         typedef std::shared_ptr<Instruction> InstructionPtr;
 
-        struct Instruction : public Ast {
+        struct DllExport Instruction : public Ast {
             Instruction(Position* pos);
 
             virtual void declare();

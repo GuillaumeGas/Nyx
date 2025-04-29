@@ -35,21 +35,16 @@ void Syscall::interpret() {
 
 ExpressionPtr Syscall::interpretExpression(bool)
 {
-    if (_ident == "print") {
-        return sysPrint();
+    ExpressionPtr res = Global::getInstance()->syscallInterface->execute(_ident, _params);
+    
+    if (res)
+    {
+        this->setType(new Type(*res->getType()));
+        if (res->getPos() == nullptr)
+            res->setPos(new Position(*_pos));
     }
-    else if (_ident == "println") {
-        return sysPrintln();
-    }
-    else if (_ident == "readInt") {
-        return sysReadInt();
-    }
-    else if (_ident == "debugBreak") {
-	return sysDebugBreak();
-    }
-    else {
-        throw SemanticErrorException("Unknown syscall !", _pos);
-    }
+    
+    return res;
 }
 
 void Syscall::print(ostream& out, int offset) const {
@@ -65,101 +60,6 @@ void Syscall::print(ostream& out, int offset) const {
         }
     }
     out << ")";
-}
-
-void Syscall::_sysPrint(ExpressionPtr e) {
-    vector<ExpressionPtr>* vec = NULL;
-    RangePtr range;
-
-    ostream & out = *(Global::getInstance()->ostream);
-
-    if (e->getType()->value == TYPE::ARRAY || e->getType()->value == TYPE::RANGE)
-        out << "[";
-
-    switch (e->getType()->value) {
-    case TYPE::INT:
-        out << e->getInt();
-        break;
-    case TYPE::CHAR:
-        out << e->getChar();
-        break;
-    case TYPE::BOOL:
-        out << e->getBool();
-        break;
-    case TYPE::FLOAT:
-        out << e->getFloat();
-        break;
-    case TYPE::STRING:
-        vec = e->getArray();
-        for (auto it : *vec) {
-            _sysPrint(it);
-        }
-        break;
-    case TYPE::ARRAY:
-        vec = e->getArray();
-        for (int i = 0; i < vec->size(); i++) {
-            ExpressionPtr obj = (*vec)[i]->interpretExpression();
-            _sysPrint(obj);
-            if (i < vec->size() - 1)
-                out << ", ";
-        }
-        break;
-    case TYPE::RANGE:
-        out << e->getRangeBegin()->getInt();
-        out << " .. ";
-        out << e->getRangeEnd()->getInt();
-        break;
-    default:
-        SemanticErrorException("Unknown type " + e->getType()->toString() + "!", _pos);
-    }
-
-    if (e->getType()->value == TYPE::ARRAY || e->getType()->value == TYPE::RANGE)
-        out << "]";
-}
-
-ExpressionPtr Syscall::sysPrint() {
-    for (auto it : *_params) {
-        _sysPrint(it->interpretExpression());
-    }
-
-    return NullExpression();
-}
-
-ExpressionPtr Syscall::sysPrintln() {
-    ostream & out = *(Global::getInstance()->ostream);
-
-    if (_params)
-    {
-        for (auto it : *_params) {
-            _sysPrint(it->interpretExpression());
-        }
-    }
-
-    out << endl;
-
-    return NullExpression();
-}
-
-ExpressionPtr Syscall::sysReadInt() {
-    int intInput;
-
-#ifdef __linux__
-    scanf("%d", &intInput);
-#else
-    scanf_s("%d", &intInput, sizeof(int));
-#endif
-
-    this->setType(new Type("int", true));
-
-    return Expression::New<Int>(intInput, _pos);
-}
-
-ExpressionPtr Syscall::sysDebugBreak() {
-    Debugger* debugger = Debugger::getInstance();
-
-    debugger->debugBreak();
-
-    return NullExpression();
 }
 
 std::string Syscall::getIdent() const {

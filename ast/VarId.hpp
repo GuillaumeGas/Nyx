@@ -17,7 +17,7 @@ namespace nyx {
         class VarId;
         typedef std::shared_ptr<VarId> VarIdPtr;
 
-        class VarId : public Expression {
+        class DllExport VarId : public Expression {
         public:
             VarId(std::string name, Position* pos);
             VarId(std::string name, Position* pos, ExpressionPtr ptr);

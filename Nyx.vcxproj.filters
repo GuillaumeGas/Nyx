@@ -67,6 +67,12 @@
     <Filter Include="Header Files\debugger">
       <UniqueIdentifier>{74fdeef9-a81c-4aaf-a5cc-66fcbf7da7b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\interface">
+      <UniqueIdentifier>{49575de7-9c00-44dd-8e09-6d07031f57ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interface">
+      <UniqueIdentifier>{79061346-5de0-4b05-8837-4f85602e74b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\While.cpp">
@@ -188,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="ast\StructExpr.cpp">
       <Filter>Source Files\ast</Filter>
+    </ClCompile>
+    <ClCompile Include="SyscallsInterface.cpp">
+      <Filter>Source Files\interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="ast\StructExpr.hpp">
       <Filter>Header Files\ast</Filter>
+    </ClInclude>
+    <ClInclude Include="SyscallsInterface.hpp">
+      <Filter>Header Files\interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

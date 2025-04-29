@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#define DllExport __declspec(dllexport)
+
 namespace nyx {
     namespace ast {
         enum TYPE {
@@ -20,7 +22,7 @@ namespace nyx {
             ERR
         };
 
-        class Type {
+        class DllExport Type {
         public:
             Type(const Type& type);
             Type(std::string name);

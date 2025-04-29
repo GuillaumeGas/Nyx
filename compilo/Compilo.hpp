@@ -15,12 +15,14 @@
 #include "../symbol/exceptions/SymbolException.hpp"
 #include "../global/Global.hpp"
 
-#include "../NyxQt_global.h"
+#include "../SyscallsInterface.hpp"
+
+#define DllExport __declspec(dllexport)
 
 namespace nyx {
-    class NYXQT_EXPORT Compilo {
+    class DllExport Compilo {
     public:
-        Compilo(std::string file_name, std::ostream & outstream = std::cout, bool debug_mode = false);
+        Compilo(std::string file_name, SyscallsInterface * syscallInterface, std::ostream & outstream = std::cout, bool debug_mode = false);
         ~Compilo();
 
         int compile();

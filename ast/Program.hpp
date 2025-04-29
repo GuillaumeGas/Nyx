@@ -9,7 +9,7 @@
 
 namespace nyx {
     namespace ast {
-        class Program {
+        class DllExport Program {
         public:
             Program();
             ~Program();

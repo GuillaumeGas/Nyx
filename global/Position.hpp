@@ -8,8 +8,10 @@
 #define NULL_POSITION_PTR				\
     (Position *) NULL
 
+#define DllExport __declspec(dllexport)
+
 namespace nyx {
-    class Position {
+    class DllExport Position {
     public:
         Position(unsigned int line, unsigned int column);
         Position(const Position& p);

@@ -11,7 +11,7 @@ namespace nyx {
     namespace ast {
         typedef InstructionPtr ForPtr;
 
-        class For : public Instruction {
+        class DllExport For : public Instruction {
         public:
             For(std::string* ident, VarIdPtr varLoop, ExpressionPtr expr, BlocPtr bloc, Position* pos);
             ~For();

@@ -11,7 +11,7 @@ namespace nyx {
     namespace ast {
         typedef DeclarationPtr ClassPtr;
 
-        class Class : public Declaration {
+        class DllExport Class : public Declaration {
         public:
             Class(std::string& ident, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position* pos);
             Class(std::string& ident, std::string& inheritance, FunctionPtr constructor, FunctionPtr destructor, BlocPtr public_bloc, BlocPtr private_bloc, Position* pos);

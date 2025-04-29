@@ -12,7 +12,7 @@ namespace nyx {
     namespace ast {
         typedef ExpressionPtr UnOpPtr;
 
-        class UnOp : public Expression {
+        class DllExport UnOp : public Expression {
         public:
             UnOp(Operator* op, ExpressionPtr expr, Position* pos);
             ~UnOp();

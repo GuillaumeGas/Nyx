@@ -13,7 +13,7 @@ namespace nyx {
         class Bloc;
         typedef std::shared_ptr<Bloc> BlocPtr;
 
-        class Bloc : public Instruction {
+        class DllExport Bloc : public Instruction {
         public:
             Bloc(std::vector<InstructionPtr>* content);
             ~Bloc();

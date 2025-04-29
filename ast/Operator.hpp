@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#define DllExport __declspec(dllexport)
+
 namespace nyx {
     namespace ast {
         enum Op {
@@ -33,7 +35,7 @@ namespace nyx {
             UNKNOWN
         };
 
-        class Operator {
+        class DllExport Operator {
         public:
             Operator(std::string s);
             Operator(const Operator& op);

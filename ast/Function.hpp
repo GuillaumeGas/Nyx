@@ -18,7 +18,7 @@ namespace nyx {
         typedef std::shared_ptr<Function> FunctionPtr;
         typedef DeclarationPtr FunctionDeclPtr;
 
-        class Function : public Declaration,
+        class DllExport Function : public Declaration,
             public std::enable_shared_from_this<Function> {
         public:
             Function(const std::string& name, Position* pos, Type* type, std::vector<ParamPtr>* params, BlocPtr content);

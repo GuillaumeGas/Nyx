@@ -9,7 +9,7 @@ namespace nyx {
     namespace ast {
         typedef Instruction BreakPtr;
 
-        class Break : public Instruction {
+        class DllExport Break : public Instruction {
         public:
             Break(std::string* ident, Position* pos);
             ~Break();

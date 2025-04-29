@@ -11,7 +11,7 @@ namespace nyx {
         typedef InstructionPtr FunCallPtr;
         typedef ExpressionPtr ExprFunCallPtr;
 
-        class FunCall : public Expression {
+        class DllExport FunCall : public Expression {
         public:
             FunCall(std::string name, std::vector<ExpressionPtr>* params, Position* pos);
             ~FunCall();

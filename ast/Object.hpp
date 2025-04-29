@@ -17,7 +17,7 @@ namespace nyx {
         typedef ExpressionPtr StringPtr;
         typedef ExpressionPtr RangePtr;
 
-        class Bool : public Expression {
+        class DllExport Bool : public Expression {
         public:
             Bool(bool value, Position* pos);
             ~Bool();
@@ -46,7 +46,7 @@ namespace nyx {
             bool value;
         };
 
-        class Int : public Expression {
+        class DllExport Int : public Expression {
         public:
             Int(int value, Position* pos);
             ~Int();
@@ -77,7 +77,7 @@ namespace nyx {
             int value;
         };
 
-        class Char : public Expression {
+        class DllExport Char : public Expression {
         public:
             Char(char value, Position* pos);
             ~Char();
@@ -106,7 +106,7 @@ namespace nyx {
             char value;
         };
 
-        class Float : public Expression {
+        class DllExport Float : public Expression {
         public:
             Float(float value, Position* pos);
             ~Float();
@@ -134,7 +134,7 @@ namespace nyx {
             float value;
         };
 
-        class Array : public Expression {
+        class DllExport Array : public Expression {
         public:
             Array(std::vector<ExpressionPtr>* array, Position* pos);
             ~Array();
@@ -155,7 +155,7 @@ namespace nyx {
             std::vector<ExpressionPtr>* array;
         };
 
-        class String : public Array {
+        class DllExport String : public Array {
         public:
             String(std::string str, Position* pos);
             String(const String& str, Position* pos);
@@ -163,7 +163,7 @@ namespace nyx {
             void print(std::ostream& out, int offset = 0) const;
         };
 
-        class Range : public Expression {
+        class DllExport Range : public Expression {
         public:
             Range(ExpressionPtr begin, ExpressionPtr end, Position* pos);
             ~Range();

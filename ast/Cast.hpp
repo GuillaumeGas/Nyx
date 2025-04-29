@@ -11,7 +11,7 @@ namespace nyx {
     namespace ast {
         typedef ExpressionPtr CastPtr;
 
-        class Cast : public Expression {
+        class DllExport Cast : public Expression {
         public:
             Cast(Type* type, ExpressionPtr expr, Position* pos);
             ~Cast();
