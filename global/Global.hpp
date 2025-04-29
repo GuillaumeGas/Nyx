@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../SyscallsInterface.hpp"
+#include "../interface/SyscallsInterface.hpp"
 
 namespace nyx {
     class Global {

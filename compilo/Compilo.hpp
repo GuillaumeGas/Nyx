@@ -15,7 +15,7 @@
 #include "../symbol/exceptions/SymbolException.hpp"
 #include "../global/Global.hpp"
 
-#include "../SyscallsInterface.hpp"
+#include "../interface/SyscallsInterface.hpp"
 
 #define DllExport __declspec(dllexport)
 

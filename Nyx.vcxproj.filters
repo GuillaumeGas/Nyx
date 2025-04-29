@@ -195,7 +195,7 @@
     <ClCompile Include="ast\StructExpr.cpp">
       <Filter>Source Files\ast</Filter>
     </ClCompile>
-    <ClCompile Include="SyscallsInterface.cpp">
+    <ClCompile Include="interface\SyscallsInterface.cpp">
       <Filter>Source Files\interface</Filter>
     </ClCompile>
   </ItemGroup>
@@ -332,7 +332,7 @@
     <ClInclude Include="ast\StructExpr.hpp">
       <Filter>Header Files\ast</Filter>
     </ClInclude>
-    <ClInclude Include="SyscallsInterface.hpp">
+    <ClInclude Include="interface\SyscallsInterface.hpp">
       <Filter>Header Files\interface</Filter>
     </ClInclude>
   </ItemGroup>

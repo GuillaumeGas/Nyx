@@ -135,13 +135,11 @@
   <ItemGroup>
     <ClInclude Include="ast\Struct.hpp" />
     <ClInclude Include="ast\StructExpr.hpp" />
-    <ClInclude Include="SyscallsInterface.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\Struct.cpp" />
     <ClCompile Include="ast\StructExpr.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="SyscallsInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ast\Ast.cpp" />
@@ -173,6 +171,7 @@
     <ClCompile Include="debugger\Debugger.cpp" />
     <ClCompile Include="global\Global.cpp" />
     <ClCompile Include="global\Position.cpp" />
+    <ClCompile Include="interface\SyscallsInterface.cpp" />
     <ClCompile Include="parser\exceptions\SyntaxException.cpp" />
     <ClCompile Include="parser\Lexer.cpp" />
     <ClCompile Include="parser\Syntax.cpp" />
@@ -214,6 +213,7 @@
     <ClInclude Include="debugger\Debugger.hpp" />
     <ClInclude Include="global\Global.hpp" />
     <ClInclude Include="global\Position.hpp" />
+    <ClInclude Include="interface\SyscallsInterface.hpp" />
     <ClInclude Include="parser\exceptions\LexerException.hpp" />
     <ClInclude Include="parser\exceptions\SyntaxException.hpp" />
     <ClInclude Include="parser\Lexer.hpp" />
