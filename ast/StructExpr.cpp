@@ -12,6 +12,13 @@ StructExpr::StructExpr(string name, Position* pos) : Expression(pos), _interpret
 	this->setType(new Type("struct", false));
 }
 
+StructExpr::StructExpr(string name, map<string, ExpressionPtr> values, bool interpreted, Position* pos) : Expression(pos), _interpreted(interpreted)
+{
+	_name = name;
+	_values = values;
+	this->setType(new Type("struct", false));
+}
+
 std::string StructExpr::getName() const
 {
 	return _name;

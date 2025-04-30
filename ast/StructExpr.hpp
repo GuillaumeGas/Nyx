@@ -17,6 +17,7 @@ namespace nyx
 		{
 		public:
 			StructExpr(std::string name, Position* pos);
+			StructExpr(std::string name, std::map<std::string, ExpressionPtr> values, bool interpreted, Position* pos);
 
 			std::string getName() const;
 			void setName(const std::string name);
